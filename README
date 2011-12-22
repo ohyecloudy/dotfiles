@@ -1,0 +1,9 @@
+1. setup
+$git clone git@github.com:ohyecloudy/vim-conf.git
+
+2. symbolic link
+2.1 windows
+mklink .vimrc vim-conf\.vimrc
+
+3. install vundle
+https://github.com/gmarik/vundle
