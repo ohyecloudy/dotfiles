@@ -2,6 +2,8 @@ set nocompatible  " be iMproved
 filetype off " vundle required!
 behave mswin
 
+syntax on " syntax highlighting
+
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
