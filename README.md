@@ -6,7 +6,9 @@ https://github.com/gmarik/vundle
 
 # 3. symbolic link
 ## 3.1 windows
+    mklink .vim vim-conf\.vim
     mklink .vimrc vim-conf\.vimrc
 ## 3.2 OS X
+    ln -s vim-conf/.vim	
     ln -s vim-conf/.vimrc
 
