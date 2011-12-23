@@ -14,7 +14,10 @@ set hlsearch " 검색 결과 강조
 set enc=utf-8
 set fencs=ucs-bom,utf-8,cp949
 set fenc=utf-8
-lang mes en
+" mac에서 명령어 인식을 못한다. 원인은 모르겠다.
+if has("win32")
+	lang mes en
+endif
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
