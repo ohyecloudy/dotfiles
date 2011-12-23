@@ -8,6 +8,7 @@ set ts=4
 set sw=4
 set softtabstop=4
 set autoindent
+set hlsearch " 검색 결과 강조
 
 " windows gvim에서 utf8로 인코딩 설정시 메시지가 깨져서 영문 메시지를 사용
 set enc=utf-8
