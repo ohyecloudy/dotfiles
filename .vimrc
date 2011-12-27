@@ -27,6 +27,7 @@ call vundle#rc()
 " required!
 Bundle 'gmarik/vundle'
 Bundle 'fugitive.vim'
+Bundle 'EasyMotion'
 
 if has('gui_running')
 	set guioptions-=T " no toolbar
