@@ -25,9 +25,9 @@ call vundle#rc()
 
 " let Vundle manage Vundle
 " required!
-Bundle 'gmarik/vundle'
-Bundle 'fugitive.vim'
-Bundle 'EasyMotion'
+Bundle 'gmarik/vundle' " http://kldp.org/node/125263 
+Bundle 'fugitive.vim' " https://github.com/tpope/vim-fugitive 
+Bundle 'EasyMotion' " http://bit.ly/sXJJpS 
 
 if has('gui_running')
 	set guioptions-=T " no toolbar
