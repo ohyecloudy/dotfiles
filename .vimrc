@@ -28,10 +28,12 @@ call vundle#rc()
 Bundle 'gmarik/vundle' 
 Bundle 'fugitive.vim' 
 Bundle 'EasyMotion' 
+Bundle 'scrooloose/nerdtree'
 
 " vundle http://kldp.org/node/125263 
 " fugitive https://github.com/tpope/vim-fugitive 
 " EasyMotion http://bit.ly/sXJJpS 
+" nerdtree https://github.com/scrooloose/nerdtree
 
 if has('gui_running')
 	set guioptions-=T " no toolbar
