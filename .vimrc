@@ -10,6 +10,9 @@ set softtabstop=4
 set autoindent
 set cindent
 set hlsearch " 검색 결과 강조
+set noerrorbells
+set novisualbell
+set vb " mac에서 거슬리는 효과음을 비활성화
 
 " windows gvim에서 utf8로 인코딩 설정시 메시지가 깨져서 영문 메시지를 사용
 set enc=utf-8
