@@ -29,14 +29,14 @@ call vundle#rc()
 " let Vundle manage Vundle
 " required!
 Bundle 'gmarik/vundle' 
-Bundle 'fugitive.vim' 
 Bundle 'EasyMotion' 
 Bundle 'scrooloose/nerdtree'
+Bundle 'vcscommand.vim'
 
 " vundle http://kldp.org/node/125263 
-" fugitive https://github.com/tpope/vim-fugitive 
 " EasyMotion http://bit.ly/sXJJpS 
 " nerdtree https://github.com/scrooloose/nerdtree
+" vcscommand https://github.com/vim-scripts/vcscommand.vim
 
 if has('gui_running')
 	set guioptions-=T " no toolbar
