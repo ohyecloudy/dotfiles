@@ -22,5 +22,5 @@
 *.RTF	 diff=astextplain
 
 # vim
-*.vimrc -text=auto
+*.vimrc text=auto
 
