@@ -31,7 +31,6 @@ call vundle#rc()
 Bundle 'gmarik/vundle' 
 Bundle 'EasyMotion' 
 Bundle 'scrooloose/nerdtree'
-Bundle 'vcscommand.vim'
 
 " vundle http://kldp.org/node/125263 
 " EasyMotion http://bit.ly/sXJJpS 
@@ -77,4 +76,10 @@ map ㅍ v
 map ㅠ b
 map ㅜ n
 map ㅡ m
+
+" powershell
+if has("win32")
+	set shell=powershell
+	set shellcmdflag=-command
+endif
 
