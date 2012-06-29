@@ -31,11 +31,12 @@ call vundle#rc()
 Bundle 'gmarik/vundle' 
 Bundle 'EasyMotion' 
 Bundle 'scrooloose/nerdtree'
+Bundle 'PProvost/vim-ps1'
 
 " vundle http://kldp.org/node/125263 
 " EasyMotion http://bit.ly/sXJJpS 
 " nerdtree https://github.com/scrooloose/nerdtree
-" vcscommand https://github.com/vim-scripts/vcscommand.vim
+" ps1.vim https://github.com/PProvost/vim-ps1
 
 if has('gui_running')
 	set guioptions-=T " no toolbar
