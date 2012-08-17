@@ -14,9 +14,10 @@ set cindent
 set hlsearch " 검색 결과 강조
 set ignorecase " 대소문자 무시 검색
 set smartcase " 대문자가 검색 문자열에 있을때는 noignorecase
-set noerrorbells
-set novisualbell
-set vb " mac에서 거슬리는 효과음을 비활성화
+
+" sound, visual bell 둘 다 비활성화.
+set noerrorbells visualbell t_vb=
+autocmd GUIEnter * set visualbell t_vb=
 
 " windows gvim에서 utf8로 인코딩 설정시 메시지가 깨져서 영문 메시지를 사용
 set enc=utf-8
