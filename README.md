@@ -1,6 +1,6 @@
 # setup
-## windows
-    git clone git@github.com:ohyecloudy/vim-conf.git ./.vim
+## windows : powershell
+    git clone git@github.com:ohyecloudy/vim-conf.git $env:home/.vim
 ## OS X
     git clone git@github.com:ohyecloudy/vim-conf.git ~/.vim
 
