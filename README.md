@@ -1,14 +1,12 @@
 # setup
-## windows : powershell
     git clone git@github.com:ohyecloudy/vim-conf.git $env:home/.vim
-## OS X
-    git clone git@github.com:ohyecloudy/vim-conf.git ~/.vim
+    $ git clone git@github.com:ohyecloudy/vim-conf.git ~/.vim
 
 # install vundle
+    git clone https://github.com/gmarik/vundle.git $env:home/.vim/bundle/vundle
+    $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 https://github.com/gmarik/vundle
 
 # symbolic link
-## windows
     mklink .vimrc .vim\.vimrc
-## OS X
-    ln -s .vim/.vimrc
+    $ ln -s .vim/.vimrc
