@@ -7,9 +7,13 @@ set nu " line number
 set ts=4
 set sw=4
 set softtabstop=4
+set scrolloff=999 "스크롤할 때, 커서를 중앙에 
+set ruler " 현재 row, col을 출력
 set autoindent
 set cindent
 set hlsearch " 검색 결과 강조
+set ignorecase " 대소문자 무시 검색
+set smartcase " 대문자가 검색 문자열에 있을때는 noignorecase
 set noerrorbells
 set novisualbell
 set vb " mac에서 거슬리는 효과음을 비활성화
