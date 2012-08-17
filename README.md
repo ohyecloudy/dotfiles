@@ -1,5 +1,8 @@
 # setup
-    $git clone git@github.com:ohyecloudy/vim-conf.git ~/.vim
+## windows
+    git clone git@github.com:ohyecloudy/vim-conf.git ./.vim
+## OS X
+    git clone git@github.com:ohyecloudy/vim-conf.git ~/.vim
 
 # install vundle
 https://github.com/gmarik/vundle
