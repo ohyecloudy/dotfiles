@@ -8,5 +8,5 @@
 https://github.com/gmarik/vundle
 
 # symbolic link
-    mklink .vimrc .vim\.vimrc
+    mklink %homedrive%%homepath%\.vimrc %homedrive%%homepath%\.vim\.vimrc
     $ ln -s .vim/.vimrc
