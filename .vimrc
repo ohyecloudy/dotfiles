@@ -7,7 +7,7 @@ set nu " line number
 set ts=4
 set sw=4
 set softtabstop=4
-set scrolloff=999 "스크롤할 때, 커서를 중앙에 
+set scrolloff=15 " scroll offset. 15줄 범위에서부터 scroll
 set ruler " 현재 row, col을 출력
 set autoindent
 set cindent
@@ -36,12 +36,13 @@ call vundle#rc()
 Bundle 'gmarik/vundle' 
 Bundle 'EasyMotion' 
 Bundle 'scrooloose/nerdtree'
-Bundle 'PProvost/vim-ps1'
-
+if has("win32")
+	Bundle 'PProvost/vim-ps1'
+else
+	Bundle 'nelstrom/vim-markdown-preview'
+endif
 " vundle http://kldp.org/node/125263 
 " EasyMotion http://bit.ly/sXJJpS 
-" nerdtree https://github.com/scrooloose/nerdtree
-" ps1.vim https://github.com/PProvost/vim-ps1
 
 if has('gui_running')
 	set guioptions-=T " no toolbar
