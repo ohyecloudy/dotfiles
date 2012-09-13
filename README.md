@@ -7,6 +7,11 @@
     $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 https://github.com/gmarik/vundle
 
+## windows
+* [GitHub for Windows](http://windows.github.com/) 설치 여부와 상관없이 git을 설치해야 한다.
+* command line에서 git 실행이 가능해야 하기 때문
+* https://github.com/gmarik/vundle/wiki/Vundle-for-Windows 참고
+
 # symbolic link
     mklink %homedrive%%homepath%\.vimrc %homedrive%%homepath%\.vim\.vimrc
     $ ln -s .vim/.vimrc
