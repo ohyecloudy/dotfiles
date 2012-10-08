@@ -7,6 +7,7 @@ set nu " line number
 set ts=4
 set sw=4
 set softtabstop=4
+set expandtab " tab을 space로 저장
 set scrolloff=15 " scroll offset. 15줄 범위에서부터 scroll
 set ruler " 현재 row, col을 출력
 set autoindent
