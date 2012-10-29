@@ -1,6 +1,6 @@
 @echo submodule update
 
-cd %homedrive%%homepath%\vimrc
+cd /d %homedrive%%homepath%\vimrc
 git submodule update --init 
 
 @echo create symbolic link
