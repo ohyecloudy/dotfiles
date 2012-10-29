@@ -1,4 +1,4 @@
-mklink %homedrive%%homepath%\.vimrc %homedrive%%homepath%\.vim\.vimrc
+mklink %homedrive%%homepath%\.vimrc %homedrive%%homepath%\vimrc\.vimrc
 
 pause
 
