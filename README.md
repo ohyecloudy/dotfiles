@@ -1,8 +1,8 @@
 # setup
 
 ## clone
-    git clone git@github.com:ohyecloudy/vimrc.git $env:home/vimrc
-    $ git clone git@github.com:ohyecloudy/vimrc.git ~/vimrc
+    git clone git@github.com:ohyecloudy/vimrc.git $env:home/.vim
+    $ git clone git@github.com:ohyecloudy/vimrc.git ~/.vim
 
 ## windows
 * command line에서 git 사용이 가능해야 함

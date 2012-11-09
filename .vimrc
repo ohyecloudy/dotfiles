@@ -29,7 +29,7 @@ if has("win32")
 	lang mes en
 endif
 
-set rtp+=~/vimrc/bundle/vundle/
+set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " let Vundle manage Vundle
