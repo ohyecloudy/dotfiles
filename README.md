@@ -9,8 +9,8 @@
  * http://code.google.com/p/msysgit/
 
 ## setup script
-    /script/setup-windows.bat (관리자 권한)
-    /script/setup.sh
+    /script/setup.bat (관리자 권한)
+    /script/setup.sh (chmod +x)
 
 ## bundle install
     :BundleInstall
