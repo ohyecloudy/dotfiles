@@ -12,6 +12,7 @@ set scrolloff=15 " scroll offset. 15줄 범위에서부터 scroll
 set ruler " 현재 row, col을 출력
 set autoindent
 set cindent
+set incsearch " incremental search
 set hlsearch " 검색 결과 강조
 set ignorecase " 대소문자 무시 검색
 set smartcase " 대문자가 검색 문자열에 있을때는 noignorecase
