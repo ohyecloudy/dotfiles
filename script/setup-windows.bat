@@ -5,7 +5,7 @@ git submodule update --init
 
 @echo create symbolic link
 
-mklink %homedrive%%homepath%\.vimrc %homedrive%%homepath%\.vim\.vimrc
+mklink %homedrive%%homepath%\.vimrc %homedrive%%homepath%\.vim\vimrc
 
 pause
 
