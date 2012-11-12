@@ -15,6 +15,7 @@ set cindent
 set hlsearch " 검색 결과 강조
 set ignorecase " 대소문자 무시 검색
 set smartcase " 대문자가 검색 문자열에 있을때는 noignorecase
+set laststatus=2 " vim-powerline이 꾸며주는 상태바를 항상 출력하기 위해
 
 " sound, visual bell 둘 다 비활성화.
 set noerrorbells visualbell t_vb=
@@ -37,6 +38,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle' 
 Bundle 'EasyMotion' 
 Bundle 'scrooloose/nerdtree'
+Bundle 'Lokaltog/vim-powerline' 
 if has("win32")
 	Bundle 'PProvost/vim-ps1'
 else
