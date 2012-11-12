@@ -10,7 +10,8 @@
 
 ## setup script
     /script/setup-windows.bat (관리자 권한)
-	$ ln -s .vim/.vimrc (MacOS는 update 예정)
+    /script/setup.sh
 
 ## bundle install
-	:BundleInstall
+    :BundleInstall
+
