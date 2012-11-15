@@ -40,6 +40,7 @@ Bundle 'gmarik/vundle'
 Bundle 'EasyMotion' 
 Bundle 'scrooloose/nerdtree'
 Bundle 'Lokaltog/vim-powerline' 
+Bundle 'vim-ruby/vim-ruby'
 if has("win32")
 	Bundle 'PProvost/vim-ps1'
 else
@@ -60,9 +61,4 @@ if has('gui_running')
 endif
 
 filetype plugin indent on " vundle required!
-
-" powershell에서 vim을 열었을때, syntax highlighting이 안돼서 추가.
-" 참고로 vim-ps1/ftdetect/ps1.vim에 정의되어 있다. 
-" 왜 적용이 안 되는지는 모르는 상태
-au BufNewFile,BufRead *.ps1 set ft=ps1
 
