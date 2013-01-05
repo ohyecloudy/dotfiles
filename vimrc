@@ -41,6 +41,7 @@ Bundle 'EasyMotion'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Lokaltog/vim-powerline' 
 Bundle 'vim-ruby/vim-ruby'
+Bundle 'tpope/vim-unimpaired'
 if has("win32")
 	Bundle 'PProvost/vim-ps1'
 else
@@ -61,4 +62,16 @@ if has('gui_running')
 endif
 
 filetype plugin indent on " vundle required!
+
+" bubbling text - vimcasts
+" http://vimcasts.org/episodes/bubbling-text/
+
+" Bubble single lines
+" edge case 처리가 힘들어 ddkP, ddp 대신 unimpaired 사용
+nmap <C-Up> [e
+nmap <C-Down> ]e
+" Bubble multiple lines
+" edge case 처리가 힘들어 xkP`[V`], xp`[V`]대신 unimpaired 사용
+vmap <C-Up> [egv
+vmap <C-Down> ]egv
 
