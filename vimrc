@@ -42,6 +42,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'Lokaltog/vim-powerline' 
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-unimpaired'
+Bundle 'nblock/vim-dokuwiki'
 if has("win32")
 	Bundle 'PProvost/vim-ps1'
 else
