@@ -26,9 +26,14 @@ autocmd GUIEnter * set visualbell t_vb=
 set enc=utf-8
 set fencs=ucs-bom,utf-8,cp949
 set fenc=utf-8
-" mac에서 명령어 인식을 못한다. 원인은 모르겠다.
 if has("win32")
+    " mac에서 명령어 인식을 못한다. 원인은 모르겠다.
 	lang mes en
+
+    " E303: Unable to open swap file for [No Name], recovery impossible
+    " 방지하기 위해서 swap 파일을 저장할 디렉토리를 지정해 준다.
+    " mac에서는 문제가 없으므로 win32에서만
+    set directory=.,$TEMP
 endif
 
 set rtp+=~/.vim/bundle/vundle/
