@@ -36,7 +36,9 @@ if has("win32")
     set directory=.,$TEMP
 endif
 
-set rtp+=~/.vim/bundle/vundle/
+" FIXME: 이렇게 무조건 절대 경로로 설정해야 하나? 
+" vimrc 파일 위치를 기준으로 설정할 수 있는 방법은 없나?
+set rtp+=~/.dotfiles/vim/bundle/vundle/
 call vundle#rc()
 
 " let Vundle manage Vundle
