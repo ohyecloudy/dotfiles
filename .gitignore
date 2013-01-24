@@ -1,6 +1,7 @@
-*.swp
+*.*.swp
 *.DS_Store
 
 # bundle 이하 vundle만 빼고
-/bundle/*
-!/bundle/vundle
+/vim/bundle/*
+!/vim/bundle/vundle
+
