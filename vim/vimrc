@@ -83,3 +83,7 @@ nmap <C-Down> ]e
 vmap <C-Up> [egv
 vmap <C-Down> ]egv
 
+" ctrl-j 로 라인을 분리.
+" http://stackoverflow.com/questions/3961730/how-to-break-a-line-in-vim-in-normal-mode
+nnoremap <NL> i<CR><ESC>
+
