@@ -9,7 +9,7 @@
  * http://code.google.com/p/msysgit/
 
 ### setup script
-    /script/setup.bat (관리자 권한)
+    /script/windows-bootstrap.bat (관리자 권한)
     /script/ios-bootstrap.sh (chmod +x)
 
 ### bundle install
