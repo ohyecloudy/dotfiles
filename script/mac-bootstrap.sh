@@ -5,6 +5,9 @@ echo customise mac
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool TRUE; killall Finder
 # defaults write com.apple.finder _FXShowPosixPathInTitle -bool FALSE; killall Finder
 
+# change the screen capture file format
+defaults write com.apple.screencapture type png; killall SystemUIServer 
+
 # 실행되는 쉘 절대 경로 구하기
 # http://kldp.org/node/119861
 cd ${0%/*} 2>/dev/null
