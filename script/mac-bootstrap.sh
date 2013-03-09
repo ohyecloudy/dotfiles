@@ -23,4 +23,5 @@ git submodule update --init
 
 echo "create symbolic link"
 ln -s $root_path/vim/vimrc ~/.vimrc
+ln -s $root_path/vim/xvimrc ~/.xvimrc
 

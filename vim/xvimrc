@@ -1,0 +1,6 @@
+" XVim - a vim plugin for xcode
+" https://github.com/JugglerShu/XVim/blob/master/Documents/Users/FeatureList.md
+
+set incsearch 
+set ignorecase
+
