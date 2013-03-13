@@ -74,6 +74,11 @@ endif
 
 filetype plugin indent on " vundle required!
 
+" 80 column을 넘어서면 배경으로 강조
+" http://stackoverflow.com/questions/235439/vim-80-column-layout-concerns
+highlight OverLength ctermbg=red ctermfg=white guibg=#ff0000
+match OverLength /\%81v.\+/
+
 " bubbling text - vimcasts
 " http://vimcasts.org/episodes/bubbling-text/
 
@@ -87,6 +92,6 @@ vmap <C-Up> [egv
 vmap <C-Down> ]egv
 
 " ctrl-j 로 라인을 분리.
-" http://stackoverflow.com/questions/3961730/how-to-break-a-line-in-vim-in-normal-mode
+" http://goo.gl/qxOlY
 nnoremap <NL> i<CR><ESC>
 
