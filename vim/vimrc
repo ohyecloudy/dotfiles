@@ -95,3 +95,8 @@ vmap <C-Down> ]egv
 " http://goo.gl/qxOlY
 nnoremap <NL> i<CR><ESC>
 
+" enter, shift-enter: insert newline without entering insert mode
+" http://vim.wikia.com/wiki/Insert_newline_without_entering_insert_mode
+nnoremap <S-Enter> O<ESC>j
+nnoremap <CR> o<ESC>k
+
