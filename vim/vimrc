@@ -50,7 +50,9 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'msanders/snipmate.vim'
-Bundle "myusuf3/numbers.vim"
+if version >= 730
+    Bundle "myusuf3/numbers.vim"
+endif
 if has("win32")
 	Bundle 'PProvost/vim-ps1'
 else
