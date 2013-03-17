@@ -19,3 +19,9 @@ ln -s $root_path/vim/vimrc ~/.vimrc
 echo "create a gitconfig symbolic link"
 ln -s $root_path/git/gitconfig ~/.gitconfig
 
+echo "install leiningen"
+mkdir ~/bin
+wget -P ~/bin https://raw.github.com/technomancy/leiningen/stable/bin/lein
+chmod 755 ~/bin/lein
+~/bin/lein seif-install
+
