@@ -25,3 +25,6 @@ echo "create symbolic link"
 ln -s $root_path/vim/vimrc ~/.vimrc
 ln -s $root_path/vim/xvimrc ~/.xvimrc
 
+ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+brew install leiningen
+
