@@ -27,4 +27,5 @@ ln -s $root_path/vim/xvimrc ~/.xvimrc
 
 ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
 brew install leiningen
+brew install --override-system-vim macvim
 
