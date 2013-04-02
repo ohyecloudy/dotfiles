@@ -56,9 +56,7 @@ Bundle 'msanders/snipmate.vim'
 Bundle 'tpope/vim-fireplace'
 Bundle 'tpope/vim-classpath'
 Bundle 'guns/vim-clojure-static'
-if version >= 730
-    Bundle "myusuf3/numbers.vim"
-endif
+Bundle "myusuf3/numbers.vim"
 if has("win32")
 	Bundle 'PProvost/vim-ps1'
 else
