@@ -80,10 +80,10 @@ endif
 
 filetype plugin indent on " vundle required!
 
-" 80 column을 넘어서면 배경으로 강조
-" http://stackoverflow.com/questions/235439/vim-80-column-layout-concerns
-highlight OverLength ctermbg=red ctermfg=white guibg=#ff0000
-match OverLength /\%81v.\+/
+" Changing background color in vim at a certain column - stackoverflow
+" http://goo.gl/whqKr
+set cc=80
+highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 
 " bubbling text - vimcasts
 " http://vimcasts.org/episodes/bubbling-text/
