@@ -106,6 +106,8 @@ nnoremap <NL> i<CR><ESC>
 nnoremap <S-Enter> O<ESC>j
 nnoremap <CR> o<ESC>k
 
+autocmd BufWinEnter *.{md,mkd,mkdn,mark*} silent setf markdown
+
 if has("gui_macvim")
     set guifont=Menlo:h13
 endif
