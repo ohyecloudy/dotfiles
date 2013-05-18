@@ -49,19 +49,15 @@ call vundle#rc()
 Bundle 'gmarik/vundle' 
 Bundle 'scrooloose/nerdtree'
 Bundle 'Lokaltog/vim-powerline' 
-Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'tomtom/tcomment_vim'
-Bundle 'msanders/snipmate.vim'
+Bundle 'ohyecloudy/snipmate.vim'
 Bundle 'tpope/vim-fireplace'
 Bundle 'tpope/vim-classpath'
 Bundle 'guns/vim-clojure-static'
-Bundle "myusuf3/numbers.vim"
-if has("win32")
-	Bundle 'PProvost/vim-ps1'
-else
-	Bundle 'nelstrom/vim-markdown-preview'
-endif
+Bundle 'myusuf3/numbers.vim'
+Bundle 'mhinz/vim-startify'
+Bundle 'nelstrom/vim-markdown-preview'
 " vundle http://kldp.org/node/125263 
 " EasyMotion http://bit.ly/sXJJpS - navigation이 익숙해지기 전까지 막아둠
 " tcomment http://goo.gl/KHx5V
@@ -105,4 +101,10 @@ nnoremap <NL> i<CR><ESC>
 " http://vim.wikia.com/wiki/Insert_newline_without_entering_insert_mode
 nnoremap <S-Enter> O<ESC>j
 nnoremap <CR> o<ESC>k
+
+autocmd BufWinEnter *.{md,mkd,mkdn,mark*} silent setf markdown
+
+if has("gui_macvim")
+    set guifont=Menlo:h13
+endif
 
