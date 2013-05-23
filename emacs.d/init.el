@@ -22,3 +22,7 @@
 ; tab -> space
 (setq indent-tabs-mode nil)
 
+; evil http://www.emacswiki.org/emacs-en/Evil
+(add-to-list 'load-path "~/.emacs.d/evil")
+(require 'evil)
+(evil-mode 1)
