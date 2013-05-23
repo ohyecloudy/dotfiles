@@ -5,8 +5,17 @@
 cd /d %homedrive%%homepath%\.dotfiles
 git submodule update --init 
 
-@echo create symbolic link
+@echo set home
+
+setx HOME %homedrive%%homepath%
+
+@echo create vimrc symbolic link
 
 mklink %homedrive%%homepath%\.vimrc %homedrive%%homepath%\.dotfiles\vim\vimrc
 
+@echo create emacs directory junction
+
+mklink /J %homedrive%%homepath%\.emacs.d %homedrive%%homepath%\.dotfiles\emacs.d
+
 pause
+
