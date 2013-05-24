@@ -26,3 +26,11 @@
 (add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
 (evil-mode 1)
+
+; clojure-mode https://github.com/technomancy/clojure-mode
+(add-to-list 'load-path' "~/.emacs.d/clojure-mode")
+(require 'clojure-mode)
+
+; nrepl.el https://github.com/kingtim/nrepl.el
+(add-to-list 'load-path' "~/.emacs.d/nrepl.el")
+(require 'nrepl)
