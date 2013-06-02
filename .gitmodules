@@ -4,9 +4,6 @@
 [submodule "emacs.d/evil"]
 	path = emacs.d/evil
 	url = git://gitorious.org/evil/evil.git
-[submodule "emacs.d/clojure-mode"]
-	path = emacs.d/clojure-mode
-	url = https://github.com/technomancy/clojure-mode.git
 [submodule "emacs.d/nrepl.el"]
 	path = emacs.d/nrepl.el
 	url = https://github.com/kingtim/nrepl.el.git
