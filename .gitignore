@@ -1,6 +1,10 @@
 *.*.swp
 *.DS_Store
 
+# hlink build output
+# 이건 매번 그냥 빌드해서 사용할꺼다.
+/mac/hlink
+
 # bundle 이하 vundle만 빼고
 /vim/bundle/*
 !/vim/bundle/vundle
