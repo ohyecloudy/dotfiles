@@ -25,6 +25,12 @@ echo "create symbolic link"
 ln -s $root_path/vim/vimrc ~/.vimrc
 ln -s $root_path/vim/xvimrc ~/.xvimrc
 
+echo "make hlink"
+gcc $root_path/mac/hlink.c -o $root_path/mac/hlink 
+
+echo "create hard linked directory"
+$root_path/mac/hlink $root_path/emacs.d ~/.emacs.d
+
 ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
 brew install leiningen
 brew install --override-system-vim macvim
