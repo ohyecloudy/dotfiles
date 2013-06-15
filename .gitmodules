@@ -10,6 +10,6 @@
 [submodule "emacs.d/clojure-mode"]
 	path = emacs.d/clojure-mode
 	url = https://github.com/technomancy/clojure-mode.git
-[submodule "emacs.d/tomorrow-theme"]
-	path = emacs.d/tomorrow-theme
+[submodule "theme"]
+	path = theme
 	url = https://github.com/ohyecloudy/tomorrow-theme.git

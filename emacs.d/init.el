@@ -1,8 +1,8 @@
 ;; 참고 : http://goo.gl/15KtG (clojure.or.kr)
 
 ; theme
-(load-file "~/.emacs.d/tomorrow-theme/GNU Emacs/color-theme-tomorrow.el")
-(add-to-list 'custom-theme-load-path "~/.emacs.d/tomorrow-theme/GNU Emacs")
+(load-file "~/.dotfiles/theme/GNU Emacs/color-theme-tomorrow.el")
+(add-to-list 'custom-theme-load-path "~/.dotfiles/theme/GNU Emacs")
 (load-theme 'tomorrow-night t)
 
 (setq is-mac (eq system-type 'darwin))
