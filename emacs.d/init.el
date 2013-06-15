@@ -27,7 +27,7 @@
 
 ; 괄호 하이라이팅
 (setq show-paren-display 0
-     show-paren-style 'parenthesis)
+     show-paren-style 'expression)
 (show-paren-mode t)
 
 ; syntax highlighting on
