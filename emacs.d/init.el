@@ -49,6 +49,9 @@
 (add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
 (evil-mode 1)
+; ctrl+u 를 바인딩.
+; (setq evil-want-C-u-scroll t)가 동작 안해서 직접 정의
+(define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-up)
 
 ;; change mode-line color by evil state
 ;; http://www.emacswiki.org/emacs/Evil
