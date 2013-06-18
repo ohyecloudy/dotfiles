@@ -37,11 +37,33 @@
 (setq indent-tabs-mode nil)
 
 (tool-bar-mode -1)
+; 거슬리는 경고 소리를 끈다.
+(setq ring-bell-function 'ignore)
+
+; undo-tree http://www.emacswiki.org/emacs/UndoTree
+; evil에서 사용한다.
+; 설치해야 Ctrl+R이 redo로 동작
+(add-to-list 'load-path "~/.emacs.d/undo-tree")
 
 ; evil http://www.emacswiki.org/emacs-en/Evil
 (add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
 (evil-mode 1)
+
+;; change mode-line color by evil state
+;; http://www.emacswiki.org/emacs/Evil
+(lexical-let ((default-color (cons (face-background 'mode-line)
+				   (face-foreground 'mode-line))))
+  (add-hook 'post-command-hook
+	    (lambda ()
+	      (let ((color
+		     (cond ((minibufferp) default-color)
+			   ((evil-insert-state-p) '("#e80000" . "#ffffff"))
+			   ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
+			   ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
+			   (t default-color))))
+		(set-face-background 'mode-line (car color))
+		(set-face-foreground 'mode-line (cdr color))))))
 
 ; clojure-mode https://github.com/technomancy/clojure-mode
 (add-to-list 'load-path' "~/.emacs.d/clojure-mode")

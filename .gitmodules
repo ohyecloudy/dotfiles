@@ -13,3 +13,6 @@
 [submodule "theme"]
 	path = theme
 	url = https://github.com/ohyecloudy/tomorrow-theme.git
+[submodule "emacs.d/undo-tree"]
+	path = emacs.d/undo-tree
+	url = https://github.com/emacsmirror/undo-tree.git
