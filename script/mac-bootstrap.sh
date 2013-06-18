@@ -3,10 +3,15 @@
 echo customise mac
 # 파인더에서 전체 경로 보기
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool TRUE; killall Finder
-# defaults write com.apple.finder _FXShowPosixPathInTitle -bool FALSE; killall Finder
 
 # change the screen capture file format
 defaults write com.apple.screencapture type png; killall SystemUIServer 
+
+# dashboard 사용 안 하기
+defaults write com.apple.dashboard mcx-disabled -boolean YES; killall Dock
+
+# 파인더에 숨은 파일 표시하기
+defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder
 
 # 실행되는 쉘 절대 경로 구하기
 # http://kldp.org/node/119861
