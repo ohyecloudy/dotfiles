@@ -18,3 +18,5 @@ cup vim
 cup emacs
 cup python
 cup Wget
+cup Lein
+
