@@ -36,7 +36,9 @@
 ; tab -> space
 (setq indent-tabs-mode nil)
 
-(tool-bar-mode -1)
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+
 ; 거슬리는 경고 소리를 끈다.
 (setq ring-bell-function 'ignore)
 
