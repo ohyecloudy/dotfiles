@@ -65,6 +65,7 @@ Bundle 'nelstrom/vim-markdown-preview'
 
 if has('gui_running')
 	set guioptions-=T " no toolbar
+    set guioptions-=m " no memnubar
 	" windows gvim에서 encoding을 utf-8로 설정하면 메뉴가 깨져서 langmenu를
 	" 설정해 준다. 좀 무식해 보여...
 	if has("win32")
