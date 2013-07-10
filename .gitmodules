@@ -16,3 +16,6 @@
 [submodule "emacs.d/undo-tree"]
 	path = emacs.d/undo-tree
 	url = https://github.com/emacsmirror/undo-tree.git
+[submodule "emacs.d/markdown-mode"]
+	path = emacs.d/markdown-mode
+	url = git://jblevins.org/git/markdown-mode.git
