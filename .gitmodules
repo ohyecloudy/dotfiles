@@ -19,3 +19,6 @@ url=https://github.com/clojure-emacs/clojure-mode.git
 [submodule "emacs.d/markdown-mode"]
 	path = emacs.d/markdown-mode
 	url = git://jblevins.org/git/markdown-mode.git
+[submodule "emacs.d/ac-nrepl"]
+	path = emacs.d/ac-nrepl
+	url = https://github.com/clojure-emacs/ac-nrepl
