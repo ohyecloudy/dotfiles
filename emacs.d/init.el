@@ -45,21 +45,52 @@
 ; M-x - C-xC-m
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 
-; undo-tree http://www.emacswiki.org/emacs/UndoTree
-; evil에서 사용한다.
-; 설치해야 Ctrl+R이 redo로 동작
-(add-to-list 'load-path "~/.emacs.d/undo-tree")
+; common lisp - loop는 CL macro
+(require 'cl)
 
-; evil http://www.emacswiki.org/emacs-en/Evil
-(add-to-list 'load-path "~/.emacs.d/evil")
+;;; packages
+(require 'package)
+(package-initialize)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+;; http://www.aaronbedra.com/emacs.d/ 참고
+(defvar ohyecloudy/packages '(clojure-mode
+                              nrepl
+                              undo-tree
+                              evil)
+  "default packages")
+(defun ohyecloudy/packages-installed-p ()
+  (loop for pkg in ohyecloudy/packages
+        when (not (package-installed-p pkg)) do (return nil)
+                  finally (return t)))
+(unless (ohyecloudy/packages-installed-p)
+  (message "%s" "Refreshing package database...")
+  (package-refresh-contents)
+  (dolist (pkg ohyecloudy/packages)
+    (when (not (package-installed-p pkg))
+      (package-install pkg))))
+
+;; clojure-mode https://github.com/technomancy/clojure-mode
+(require 'clojure-mode)
+
+;; nrepl.el https://github.com/kingtim/nrepl.el
+(require 'nrepl)
+
+;; undo-tree http://www.emacswiki.org/emacs/UndoTree
+;; evil에서 사용한다.
+;; 설치해야 Ctrl+R이 redo로 동작
+
+;; evil http://www.emacswiki.org/emacs-en/Evil
 (require 'evil)
 (evil-mode 1)
+
 ; ctrl+u 를 바인딩.
 ; (setq evil-want-C-u-scroll t)가 동작 안해서 직접 정의
 (define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-up)
 
-;; change mode-line color by evil state
-;; http://www.emacswiki.org/emacs/Evil
+; change mode-line color by evil state
+; http://www.emacswiki.org/emacs/Evil
 (lexical-let ((default-color (cons (face-background 'mode-line)
 				   (face-foreground 'mode-line))))
   (add-hook 'post-command-hook
@@ -73,17 +104,3 @@
 		(set-face-background 'mode-line (car color))
 		(set-face-foreground 'mode-line (cdr color))))))
 
-; clojure-mode https://github.com/technomancy/clojure-mode
-(add-to-list 'load-path' "~/.emacs.d/clojure-mode")
-(require 'clojure-mode)
-
-; nrepl.el https://github.com/kingtim/nrepl.el
-(add-to-list 'load-path' "~/.emacs.d/nrepl.el")
-(require 'nrepl)
-
-; markdown-mode http://jblevins.org/projects/markdown-mode/
-(add-to-list 'load-path' "~/.emacs.d/markdown-mode")
-(autoload 'markdown-mode "markdown-mode" "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
