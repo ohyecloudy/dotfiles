@@ -58,7 +58,9 @@
 (defvar ohyecloudy/packages '(clojure-mode
                               nrepl
                               undo-tree
-                              evil)
+                              evil
+			      auto-complete
+                              ac-nrepl)
   "default packages")
 (defun ohyecloudy/packages-installed-p ()
   (loop for pkg in ohyecloudy/packages
@@ -104,3 +106,13 @@
 		(set-face-background 'mode-line (car color))
 		(set-face-foreground 'mode-line (cdr color))))))
 
+;; auto-complete https://github.com/auto-complete/auto-complete
+(require 'auto-complete-config)
+(ac-config-default)
+
+;; ac-nrepl https://github.com/clojure-emacs/ac-nrepl
+(require 'ac-nrepl)
+(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'nrepl-mode))
