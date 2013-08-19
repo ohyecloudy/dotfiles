@@ -60,7 +60,8 @@
                               undo-tree
                               evil
 			      auto-complete
-                              ac-nrepl)
+                              ac-nrepl
+			      markdown-mode)
   "default packages")
 (defun ohyecloudy/packages-installed-p ()
   (loop for pkg in ohyecloudy/packages
@@ -116,3 +117,10 @@
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'nrepl-mode))
+
+;; markdown-mode http://jblevins.org/projects/markdown-mode/
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
