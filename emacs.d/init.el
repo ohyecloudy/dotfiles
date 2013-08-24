@@ -81,6 +81,8 @@
 ; 그래서 RET 바인딩이 사라지고 C-j에 바인딩.
 ; 하지만 너무 불편해. 그냥 평소처럼 RET에 바인딩해서 사용한다.
 (define-key clojure-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+; clojurescript
+(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
 ;; nrepl.el https://github.com/kingtim/nrepl.el
 (require 'nrepl)
