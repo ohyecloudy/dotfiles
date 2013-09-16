@@ -1,5 +1,3 @@
-@powershell -NoProfile -ExecutionPolicy unrestricted -File %homedrive%%homepath%\.dotfiles\script\windows-bootstrap.ps1
-
 @echo submodule update
 
 cd /d %homedrive%%homepath%\.dotfiles
