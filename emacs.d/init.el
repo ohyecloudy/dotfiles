@@ -61,6 +61,7 @@
                               evil
 			      auto-complete
                               ac-nrepl
+			      edit-server
 			      markdown-mode)
   "default packages")
 (defun ohyecloudy/packages-installed-p ()
@@ -124,6 +125,10 @@
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'nrepl-mode))
+
+;; edit-server http://www.emacswiki.org/emacs/Edit_with_Emacs
+(require 'edit-server)
+(edit-server-start)
 
 ;; markdown-mode http://jblevins.org/projects/markdown-mode/
 (autoload 'markdown-mode "markdown-mode"
