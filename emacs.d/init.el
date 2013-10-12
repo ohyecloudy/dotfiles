@@ -36,6 +36,9 @@
 ; tab -> space
 (setq indent-tabs-mode nil)
 
+; find-file, switch-to-buffer에서 file 이름을 보여주는 mode
+(ido-mode t)
+
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 
