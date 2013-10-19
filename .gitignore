@@ -9,9 +9,10 @@
 /vim/bundle/*
 !/vim/bundle/vundle
 
-# emacs에서 package 저장소 제거. init.el에서 알아서 갱신
+## Emacs
 /emacs.d/elpa/*
 /emacs.d/eshell/*
+/emacs.d/target/*
 
 # ac-nrepl 임시 파일
 ac-comphist.dat

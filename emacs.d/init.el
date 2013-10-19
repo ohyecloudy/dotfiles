@@ -59,7 +59,7 @@
 
 ;; http://www.aaronbedra.com/emacs.d/ 참고
 (defvar ohyecloudy/packages '(clojure-mode
-                              nrepl
+                              cider
                               undo-tree
                               evil
 			      auto-complete
@@ -88,8 +88,8 @@
 ; clojurescript
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
-;; nrepl.el https://github.com/kingtim/nrepl.el
-(require 'nrepl)
+;; cider https://github.com/clojure-emacs/cider
+(require 'cider)
 
 ;; undo-tree http://www.emacswiki.org/emacs/UndoTree
 ;; evil에서 사용한다.
