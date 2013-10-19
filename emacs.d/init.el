@@ -53,9 +53,9 @@
 
 ;;; packages
 (require 'package)
-(package-initialize)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
 
 ;; http://www.aaronbedra.com/emacs.d/ 참고
 (defvar ohyecloudy/packages '(clojure-mode
