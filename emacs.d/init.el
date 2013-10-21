@@ -48,16 +48,13 @@
 ; M-x - C-xC-m
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 
-; common lisp - loop는 CL macro
-(require 'cl)
-
 ;;; packages
 (require 'package)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+	     '("melpa" . "http://melpa.milkbox.net/packages/")
+	     t)
 (package-initialize)
 
-;; http://www.aaronbedra.com/emacs.d/ 참고
 (defvar ohyecloudy/packages '(clojure-mode
                               cider
                               undo-tree
@@ -65,18 +62,11 @@
 			      auto-complete
                               ac-nrepl
 			      edit-server
-			      markdown-mode)
-  "default packages")
-(defun ohyecloudy/packages-installed-p ()
-  (loop for pkg in ohyecloudy/packages
-        when (not (package-installed-p pkg)) do (return nil)
-                  finally (return t)))
-(unless (ohyecloudy/packages-installed-p)
-  (message "%s" "Refreshing package database...")
-  (package-refresh-contents)
-  (dolist (pkg ohyecloudy/packages)
-    (when (not (package-installed-p pkg))
-      (package-install pkg))))
+			      markdown-mode))
+
+(dolist (pkg ohyecloudy/packages)
+  (when (not (package-installed-p pkg))
+    (package-install pkg)))
 
 ;; clojure-mode https://github.com/technomancy/clojure-mode
 (require 'clojure-mode)
