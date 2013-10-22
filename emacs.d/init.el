@@ -45,6 +45,9 @@
 ; 거슬리는 경고 소리를 끈다.
 (setq ring-bell-function 'ignore)
 
+; 마우스 꺼져. 타이핑을 시작하면 구석으로 마우스 커서를 치운다.
+(mouse-avoidance-mode 'banish)
+
 ; M-x - C-xC-m
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 
