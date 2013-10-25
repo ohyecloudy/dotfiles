@@ -3,6 +3,7 @@
 (add-to-list 'custom-theme-load-path "~/.dotfiles/theme/GNU Emacs")
 (load-theme 'tomorrow-night t)
 
+(setq windows? (eq system-type 'windows-nt))
 (setq mac? (eq system-type 'darwin))
 
 (when mac?
@@ -11,6 +12,16 @@
   (set-fontset-font (frame-parameter nil 'font)
 		    'hangul
 		    '("Apple SD Gothic Neo" . "ios10646-1")))
+
+(defun available-font? (font)
+  (if (member font (font-family-list)) t nil))
+(when windows?
+  ;; font
+  (when (available-font? "DejaVu Sans Mono")
+    (set-face-attribute 'default nil
+			:font "Dejavu Sans Mono-11"
+			:weight `normal)
+    (setq-default line-spacing 3)))
 
 ;; 한글
 (set-language-environment "Korean")
