@@ -135,3 +135,9 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;;; emacs-lisp-mode
+(add-hook 'emacs-lisp-mode-hook
+	  (lambda ()
+	    ;; clojure cider mode에서 쓰는 키와 맞춘다. C-M-x는 입력이 괴로움
+	    (define-key emacs-lisp-mode-map "\C-c\C-c" 'eval-defun)))
