@@ -1,8 +1,3 @@
-;;; theme
-(load-file "~/.dotfiles/theme/GNU Emacs/color-theme-tomorrow.el")
-(add-to-list 'custom-theme-load-path "~/.dotfiles/theme/GNU Emacs")
-(load-theme 'tomorrow-night t)
-
 (setq windows? (eq system-type 'windows-nt))
 (setq mac? (eq system-type 'darwin))
 
@@ -79,6 +74,7 @@
 			      auto-complete
                               ac-nrepl
 			      edit-server
+			      color-theme-solarized
 			      markdown-mode))
 
 (dolist (pkg ohyecloudy/packages)
@@ -139,6 +135,9 @@
 ;;; edit-server http://www.emacswiki.org/emacs/Edit_with_Emacs
 (require 'edit-server)
 (edit-server-start)
+
+;;; solarized theme https://github.com/sellout/emacs-color-theme-solarized
+(load-theme 'solarized-light t)
 
 ;;; markdown-mode http://jblevins.org/projects/markdown-mode/
 (autoload 'markdown-mode "markdown-mode"
