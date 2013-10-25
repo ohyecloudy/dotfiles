@@ -1,6 +1,4 @@
-;; 참고 : http://goo.gl/15KtG (clojure.or.kr)
-
-; theme
+;;; theme
 (load-file "~/.dotfiles/theme/GNU Emacs/color-theme-tomorrow.el")
 (add-to-list 'custom-theme-load-path "~/.dotfiles/theme/GNU Emacs")
 (load-theme 'tomorrow-night t)
@@ -14,41 +12,42 @@
 		    'hangul
 		    '("Apple SD Gothic Neo" . "ios10646-1")))
 
-; 한글
+;; 한글
 (set-language-environment "Korean")
+;; 한글 환경에서는 cp949 인코딩이 디폴트이기 때문.
 (prefer-coding-system 'utf-8)
 
-; startup-message 안 보기
+;; startup-message 안 보기
 (setq inhibit-startup-message t)
-; *scratch* 버퍼 깨끗하게 시작하기
+;; *scratch* 버퍼 깨끗하게 시작하기
 (setq initial-scratch-message nil)
-; 컬러 넘버 보기
+;; 컬럼 넘버 보기
 (setq column-number-mode t)
 
-; 괄호 하이라이팅
+;; 괄호 하이라이팅
 (setq show-paren-display 0
-     show-paren-style 'expression)
+      show-paren-style 'expression)
 (show-paren-mode t)
 
-; syntax highlighting on
+;; syntax highlighting on
 (global-font-lock-mode t)
 
-; tab -> space
+;; tab -> space
 (setq indent-tabs-mode nil)
 
-; find-file, switch-to-buffer에서 file 이름을 보여주는 mode
+;; find-file, switch-to-buffer에서 file 이름을 보여주는 mode
 (ido-mode t)
 
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 
-; 거슬리는 경고 소리를 끈다.
+;; 거슬리는 경고 소리를 끈다.
 (setq ring-bell-function 'ignore)
 
-; 마우스 꺼져. 타이핑을 시작하면 구석으로 마우스 커서를 치운다.
+;; 마우스 꺼져. 타이핑을 시작하면 구석으로 마우스 커서를 치운다.
 (mouse-avoidance-mode 'banish)
 
-; M-x - C-xC-m
+;; M-x - C-xC-m
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 
 ;;; packages
@@ -71,33 +70,33 @@
   (when (not (package-installed-p pkg))
     (package-install pkg)))
 
-;; clojure-mode https://github.com/technomancy/clojure-mode
+;;; clojure-mode https://github.com/technomancy/clojure-mode
 (require 'clojure-mode)
-; From 23.2.1, GNU Emacs Lisp Reference Manual edition 3.1:
-; Major modes for editing text should not define <RET> to do anything other than insert a newline.
-; 그래서 RET 바인딩이 사라지고 C-j에 바인딩.
-; 하지만 너무 불편해. 그냥 평소처럼 RET에 바인딩해서 사용한다.
+;; From 23.2.1, GNU Emacs Lisp Reference Manual edition 3.1:
+;; Major modes for editing text should not define <RET> to do anything other than insert a newline.
+;; 그래서 RET 바인딩이 사라지고 C-j에 바인딩.
+;; 하지만 너무 불편해. 그냥 평소처럼 RET에 바인딩해서 사용한다.
 (define-key clojure-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
-; clojurescript
+;; clojurescript
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
-;; cider https://github.com/clojure-emacs/cider
+;;; cider https://github.com/clojure-emacs/cider
 (require 'cider)
 
-;; undo-tree http://www.emacswiki.org/emacs/UndoTree
+;;; undo-tree http://www.emacswiki.org/emacs/UndoTree
 ;; evil에서 사용한다.
 ;; 설치해야 Ctrl+R이 redo로 동작
 
-;; evil http://www.emacswiki.org/emacs-en/Evil
+;;; evil http://www.emacswiki.org/emacs-en/Evil
 (require 'evil)
 (evil-mode 1)
 
-; ctrl+u 를 바인딩.
-; (setq evil-want-C-u-scroll t)가 동작 안해서 직접 정의
+;; ctrl+u 를 바인딩.
+;; (setq evil-want-C-u-scroll t)가 동작 안해서 직접 정의
 (define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-up)
 
-; change mode-line color by evil state
-; http://www.emacswiki.org/emacs/Evil
+;; change mode-line color by evil state
+;; http://www.emacswiki.org/emacs/Evil
 (lexical-let ((default-color (cons (face-background 'mode-line)
 				   (face-foreground 'mode-line))))
   (add-hook 'post-command-hook
@@ -111,24 +110,24 @@
 		(set-face-background 'mode-line (car color))
 		(set-face-foreground 'mode-line (cdr color))))))
 
-;; auto-complete https://github.com/auto-complete/auto-complete
+;;; auto-complete https://github.com/auto-complete/auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
 
-;; ac-nrepl https://github.com/clojure-emacs/ac-nrepl
+;;; ac-nrepl https://github.com/clojure-emacs/ac-nrepl
 (require 'ac-nrepl)
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'nrepl-mode))
 
-;; edit-server http://www.emacswiki.org/emacs/Edit_with_Emacs
+;;; edit-server http://www.emacswiki.org/emacs/Edit_with_Emacs
 (require 'edit-server)
 (edit-server-start)
 
-;; markdown-mode http://jblevins.org/projects/markdown-mode/
+;;; markdown-mode http://jblevins.org/projects/markdown-mode/
 (autoload 'markdown-mode "markdown-mode"
-   "Major mode for editing Markdown files" t)
+  "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
