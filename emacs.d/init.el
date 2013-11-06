@@ -33,6 +33,10 @@
 (global-linum-mode t) 
 ;; 컬럼 넘버 보기
 (setq column-number-mode t)
+;; word-wrap
+(global-visual-line-mode t)
+;; 커서가 있는 라인 하이라이트
+(global-hl-line-mode t)
 
 ;; 괄호 하이라이팅
 (setq show-paren-display 0
