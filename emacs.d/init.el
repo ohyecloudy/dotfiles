@@ -3,10 +3,11 @@
 
 (when mac?
   ;; font
-  (set-face-attribute 'default nil :height 140)
+  (set-face-attribute 'default nil :height 150)
   (set-fontset-font (frame-parameter nil 'font)
 		    'hangul
-		    '("Apple SD Gothic Neo" . "ios10646-1")))
+		    '("Apple SD Gothic Neo" . "ios10646-1"))
+  (setq-default line-spacing 1))
 
 (defun available-font? (font)
   (if (member font (font-family-list)) t nil))
