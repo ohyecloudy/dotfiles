@@ -39,4 +39,6 @@ $root_path/mac/hlink $root_path/emacs.d ~/.emacs.d
 ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
 brew install leiningen
 brew install --override-system-vim macvim
+brew install --cocoa emacs
+brew linkapps
 
