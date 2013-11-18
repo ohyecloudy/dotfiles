@@ -39,11 +39,6 @@
 ;; 커서가 있는 라인 하이라이트
 (global-hl-line-mode t)
 
-;; 괄호 하이라이팅
-(setq show-paren-display 0
-      show-paren-style 'expression)
-(show-paren-mode t)
-
 ;; syntax highlighting on
 (global-font-lock-mode t)
 
@@ -78,6 +73,7 @@
                               evil
 			      auto-complete
                               ac-nrepl
+			      highlight-parentheses
 			      edit-server
 			      color-theme-solarized
 			      markdown-mode))
@@ -136,6 +132,18 @@
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'nrepl-mode))
+
+;;; highlight-parentheses https://github.com/nschum/highlight-parentheses.el
+(require 'highlight-parentheses)
+(setq hl-paren-colors nil)
+(setq hl-paren-background-colors '("gray"))
+;; global로 highlight-parentheses minor mode를 활성화 http://goo.gl/ig5YuY 참고
+(define-global-minor-mode global-highlight-parentheses-minor-mode
+  highlight-parentheses-mode highlight-parentheses-mode)
+(global-highlight-parentheses-minor-mode t)
+
+(setq show-paren-display 0)
+(show-paren-mode t)
 
 ;;; edit-server http://www.emacswiki.org/emacs/Edit_with_Emacs
 (require 'edit-server)
