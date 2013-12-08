@@ -9,8 +9,7 @@
 		    '("Apple SD Gothic Neo" . "ios10646-1"))
   (setq-default line-spacing 1))
 
-(defun available-font? (font)
-  (if (member font (font-family-list)) t nil))
+(defun available-font? (font) (member font (font-family-list)))
 (when windows?
   ;; font
   (when (available-font? "DejaVu Sans Mono")
