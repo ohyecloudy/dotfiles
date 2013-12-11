@@ -147,6 +147,7 @@
 ;;; edit-server http://www.emacswiki.org/emacs/Edit_with_Emacs
 (require 'edit-server)
 (edit-server-start)
+(setq edit-server-new-frame nil)
 
 ;;; solarized theme https://github.com/sellout/emacs-color-theme-solarized
 (load-theme 'solarized-light t)
