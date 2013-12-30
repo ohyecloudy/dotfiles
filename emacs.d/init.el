@@ -47,7 +47,7 @@
 ;; find-file, switch-to-buffer에서 file 이름을 보여주는 mode
 (ido-mode t)
 
-(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'menu-bar-mode) (menu-bar-mode t))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 
 ;; 거슬리는 경고 소리를 끈다.
