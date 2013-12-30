@@ -80,26 +80,9 @@ filetype plugin indent on " vundle required!
 set cc=80
 highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 
-" bubbling text - vimcasts
-" http://vimcasts.org/episodes/bubbling-text/
-
-" Bubble single lines
-" edge case 처리가 힘들어 ddkP, ddp 대신 unimpaired 사용
-nmap <C-Up> [e
-nmap <C-Down> ]e
-" Bubble multiple lines
-" edge case 처리가 힘들어 xkP`[V`], xp`[V`]대신 unimpaired 사용
-vmap <C-Up> [egv
-vmap <C-Down> ]egv
-
 " ctrl-j 로 라인을 분리.
 " http://goo.gl/qxOlY
 nnoremap <NL> i<CR><ESC>
-
-" enter, shift-enter: insert newline without entering insert mode
-" http://vim.wikia.com/wiki/Insert_newline_without_entering_insert_mode
-nnoremap <S-Enter> O<ESC>j
-nnoremap <CR> o<ESC>k
 
 autocmd BufWinEnter *.{md,mkd,mkdn,mark*} silent setf markdown
 
