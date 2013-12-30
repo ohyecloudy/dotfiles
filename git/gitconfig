@@ -5,3 +5,9 @@
 	excludesfile = ~/.gitignore_global
 [credential]
 	helper = cache --timeout=3600
+[alias]
+	co = checkout
+	ds = diff --staged
+	st = status -sb
+	ls = log --pretty=format:'%C(yellow)%h %C(blue)%ad%C(red)%d %C(reset)%s%C(green) [%cn]' --graph --decorate --date=short
+	standup = log --since '1 day ago' --oneline --author ohyecloudy
