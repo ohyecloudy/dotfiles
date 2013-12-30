@@ -1,8 +1,7 @@
 [user]
 	name = ohyecloudy
 	email = ohyecloudy@gmail.com
+[core]
+	excludesfile = ~/.gitignore_global
 [credential]
 	helper = cache --timeout=3600
-[core]
-	autocrlf = input
-	editor = vim

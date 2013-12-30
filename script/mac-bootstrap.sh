@@ -30,6 +30,10 @@ echo "create symbolic link"
 ln -s $root_path/vim/vimrc ~/.vimrc
 ln -s $root_path/vim/xvimrc ~/.xvimrc
 
+echo "git"
+ln -s $root_path/git/gitignore_global ~/.gitignore_global
+ln -s $root_path/git/gitconfig ~/.gitconfig
+
 echo "make hlink"
 gcc $root_path/mac/hlink.c -o $root_path/mac/hlink 
 
