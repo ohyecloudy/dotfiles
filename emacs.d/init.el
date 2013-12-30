@@ -75,7 +75,8 @@
 			      highlight-parentheses
 			      edit-server
 			      color-theme-solarized
-			      markdown-mode))
+			      markdown-mode
+			      magit))
 
 (dolist (pkg ohyecloudy/packages)
   (when (not (package-installed-p pkg))
