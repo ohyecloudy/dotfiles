@@ -9,5 +9,5 @@
 	co = checkout
 	ds = diff --staged
 	st = status -sb
-	ls = log --pretty=format:'%C(yellow)%h %C(blue)%ad%C(red)%d %C(reset)%s%C(green) [%cn]' --graph --decorate --date=short
+	ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	standup = log --since '1 day ago' --oneline --author ohyecloudy
