@@ -171,3 +171,10 @@
 	  (lambda ()
 	    ;; clojure cider mode에서 쓰는 키와 맞춘다. C-M-x는 입력이 괴로움
 	    (define-key lisp-interaction-mode-map "\C-c\C-c" 'eval-defun)))
+
+;;; shell mode
+(add-hook 'shell-mode-hook
+	  (lambda ()
+	    ;; evil-scroll-up과 충돌
+	    (define-key shell-mode-map "\C-d" nil)))
+
