@@ -51,7 +51,6 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'Lokaltog/vim-powerline' 
 Bundle 'tpope/vim-unimpaired'
 Bundle 'tomtom/tcomment_vim'
-Bundle 'ohyecloudy/snipmate.vim'
 Bundle 'guns/vim-clojure-static'
 Bundle 'myusuf3/numbers.vim'
 Bundle 'mhinz/vim-startify'
@@ -59,7 +58,6 @@ Bundle 'nelstrom/vim-markdown-preview'
 " vundle http://kldp.org/node/125263 
 " EasyMotion http://bit.ly/sXJJpS - navigation이 익숙해지기 전까지 막아둠
 " tcomment http://goo.gl/KHx5V
-" snipmate http://goo.gl/fXXLG
 
 if has('gui_running')
 	set guioptions-=T " no toolbar
