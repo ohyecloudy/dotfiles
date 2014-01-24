@@ -76,6 +76,7 @@
 			      edit-server
 			      color-theme-solarized
 			      markdown-mode
+			      yaml-mode
 			      magit))
 
 (dolist (pkg ohyecloudy/packages)
