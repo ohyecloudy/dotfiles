@@ -173,7 +173,17 @@
 	    ;; clojure cider mode에서 쓰는 키와 맞춘다. C-M-x는 입력이 괴로움
 	    (define-key lisp-interaction-mode-map "\C-c\C-c" 'eval-defun)))
 
-;;; shell mode
+;;; shell
+(when windows?
+  (let ((bash-dir "C:/Program Files (x86)/Git/bin"))
+    (setq explicit-shell-file-name (concat bash-dir "/bash.exe"))
+    (setq shell-file-name explicit-shell-file-name)
+    (add-to-list 'exec-path bash-dir)
+    (setq explicit-bash.exe-args '("--noediting" "--login" "-i"))
+    (setenv "SHELL" explicit-shell-file-name)
+    (setenv "PATH" (concat bash-dir path-separator (getenv "PATH")))))
+
+;; shell mode hook
 (add-hook 'shell-mode-hook
 	  (lambda ()
 	    ;; evil-scroll-up과 충돌
