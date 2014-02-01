@@ -55,6 +55,7 @@
 
 ;; 마우스 꺼져. 타이핑을 시작하면 구석으로 마우스 커서를 치운다.
 (mouse-avoidance-mode 'banish)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; M-x - C-xC-m
 (global-set-key "\C-x\C-m" 'execute-extended-command)
