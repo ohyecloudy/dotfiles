@@ -147,6 +147,10 @@
 (setq show-paren-display 0)
 (show-paren-mode t)
 
+;;; emacs-server
+(require 'server)
+(server-start)
+
 ;;; edit-server http://www.emacswiki.org/emacs/Edit_with_Emacs
 (require 'edit-server)
 (edit-server-start)
