@@ -194,3 +194,5 @@
 	    ;; evil-scroll-up과 충돌
 	    (define-key shell-mode-map "\C-d" nil)))
 
+;;; http://robots.thoughtbot.com/no-newline-at-end-of-file
+(setq require-final-newline t)
