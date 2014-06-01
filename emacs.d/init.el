@@ -196,3 +196,6 @@
 
 ;;; http://robots.thoughtbot.com/no-newline-at-end-of-file
 (setq require-final-newline t)
+
+;;; title bar
+(setq frame-title-format "%b")
