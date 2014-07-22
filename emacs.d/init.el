@@ -78,9 +78,9 @@
                               ac-nrepl
 			      highlight-parentheses
 			      edit-server
-			      color-theme-solarized
 			      markdown-mode
 			      yaml-mode
+			      solarized-theme
 			      magit))
 
 (dolist (pkg ohyecloudy/packages)
@@ -159,8 +159,9 @@
 (edit-server-start)
 (setq edit-server-new-frame nil)
 
-;;; solarized theme https://github.com/sellout/emacs-color-theme-solarized
-(load-theme 'solarized-light t)
+;;; solarized-emacs
+;;; https://github.com/bbatsov/solarized-emacs
+(load-theme 'solarized-light 'NO-CONFIRM)
 
 ;;; markdown-mode http://jblevins.org/projects/markdown-mode/
 (autoload 'markdown-mode "markdown-mode"
@@ -202,3 +203,4 @@
 
 ;;; title bar
 (setq frame-title-format "%b")
+
