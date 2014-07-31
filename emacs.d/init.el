@@ -1,9 +1,6 @@
 (setq windows? (eq system-type 'windows-nt))
 (setq mac? (eq system-type 'darwin))
 
-(add-to-list 'load-path "~/.emacs.d/config")
-(load "platform.el")
-
 (when mac?
   ;; font
   (set-face-attribute 'default nil :height 150)
@@ -90,18 +87,9 @@
   (when (not (package-installed-p pkg))
     (package-install pkg)))
 
-;;; clojure-mode https://github.com/technomancy/clojure-mode
-(require 'clojure-mode)
-;; From 23.2.1, GNU Emacs Lisp Reference Manual edition 3.1:
-;; Major modes for editing text should not define <RET> to do anything other than insert a newline.
-;; 그래서 RET 바인딩이 사라지고 C-j에 바인딩.
-;; 하지만 너무 불편해. 그냥 평소처럼 RET에 바인딩해서 사용한다.
-(define-key clojure-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
-;; clojurescript
-(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
-
-;;; cider https://github.com/clojure-emacs/cider
-(require 'cider)
+(add-to-list 'load-path "~/.emacs.d/config")
+(load "platform.el")
+(load "clojure.el")
 
 ;;; undo-tree http://www.emacswiki.org/emacs/UndoTree
 ;; evil에서 사용한다.
@@ -133,13 +121,6 @@
 ;;; auto-complete https://github.com/auto-complete/auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
-
-;;; ac-nrepl https://github.com/clojure-emacs/ac-nrepl
-(require 'ac-nrepl)
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'nrepl-mode))
 
 ;;; highlight-parentheses https://github.com/nschum/highlight-parentheses.el
 (require 'highlight-parentheses)
