@@ -1,6 +1,9 @@
 (setq windows? (eq system-type 'windows-nt))
 (setq mac? (eq system-type 'darwin))
 
+(add-to-list 'load-path "~/.emacs.d/config")
+(load "platform.el")
+
 (when mac?
   ;; font
   (set-face-attribute 'default nil :height 150)
