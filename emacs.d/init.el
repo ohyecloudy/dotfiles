@@ -90,6 +90,7 @@
 (add-to-list 'load-path "~/.emacs.d/config")
 (load "platform.el")
 (load "clojure.el")
+(load "backup.el")
 
 ;;; undo-tree http://www.emacswiki.org/emacs/UndoTree
 ;; evil에서 사용한다.
