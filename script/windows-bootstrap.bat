@@ -7,6 +7,11 @@ git submodule update --init
 
 setx HOME %homedrive%%homepath%
 
+@echo git
+
+mklink %homedrive%%homepath%\.gitignore_global %homedrive%%homepath%\.dotfiles\git\gitignore_global
+mklink %homedrive%%homepath%\.gitconfig %homedrive%%homepath%\.dotfiles\git\gitconfig
+
 @echo create vimrc symbolic link
 
 mklink %homedrive%%homepath%\.vimrc %homedrive%%homepath%\.dotfiles\vim\vimrc
