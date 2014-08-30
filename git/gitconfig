@@ -3,6 +3,7 @@
 	email = ohyecloudy@gmail.com
 [core]
 	excludesfile = ~/.gitignore_global
+	commentchar = $
 [credential]
 	helper = cache --timeout=3600
 [alias]
