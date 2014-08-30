@@ -13,6 +13,7 @@
 /emacs.d/elpa/*
 /emacs.d/eshell/*
 /emacs.d/target/*
+/emacs.d/server/*
 
 # ac-nrepl 임시 파일
 ac-comphist.dat
