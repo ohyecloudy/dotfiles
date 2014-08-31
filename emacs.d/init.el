@@ -73,6 +73,7 @@
 (defvar ohyecloudy/packages '(clojure-mode
                               cider
                               undo-tree
+			      paredit
                               evil
 			      auto-complete
                               ac-nrepl
