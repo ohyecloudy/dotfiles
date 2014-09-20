@@ -76,7 +76,7 @@
 			      paredit
                               evil
 			      auto-complete
-                              ac-nrepl
+			      ac-cider
 			      highlight-parentheses
 			      edit-server
 			      markdown-mode

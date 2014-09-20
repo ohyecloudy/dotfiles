@@ -18,13 +18,13 @@
 ;; clojurescript
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
-;;; ac-nrepl
-;;; https://github.com/clojure-emacs/ac-nrepl
-(require 'ac-nrepl)
-(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-(add-hook 'cider-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'cider-repl-mode))
+;;; ac-cider
+;;; https://github.com/clojure-emacs/ac-cider
+(require 'ac-cider)
+(add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+(add-hook 'cider-mode-hook 'ac-cider-setup)
+(add-hook 'cider-repl-mode-hook 'ac-cider-setup)
+(eval-after-load "auto-complete" '(add-to-list 'ac-modes 'cider-mode))
 
 ;; tab으로 자동완성
 (defun set-auto-complete-as-completion-at-point-function ()
