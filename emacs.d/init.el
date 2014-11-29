@@ -93,6 +93,7 @@
 (load "clojure.el")
 (load "backup.el")
 (load "vim.el")
+(load "ws.el")
 
 ;;; auto-complete https://github.com/auto-complete/auto-complete
 (require 'auto-complete-config)
