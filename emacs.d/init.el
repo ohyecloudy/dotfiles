@@ -5,8 +5,8 @@
   ;; font
   (set-face-attribute 'default nil :height 150)
   (set-fontset-font (frame-parameter nil 'font)
-		    'hangul
-		    '("Apple SD Gothic Neo" . "ios10646-1"))
+                    'hangul
+                    '("Apple SD Gothic Neo" . "ios10646-1"))
   (setq-default line-spacing 1))
 
 (defun available-font? (font) (member font (font-family-list)))
@@ -14,8 +14,8 @@
   ;; font
   (when (available-font? "DejaVu Sans Mono")
     (set-face-attribute 'default nil
-			:font "Dejavu Sans Mono-11"
-			:weight `normal)
+                        :font "Dejavu Sans Mono-11"
+                        :weight `normal)
     (setq-default line-spacing 3)))
 
 ;; 한글
@@ -30,7 +30,7 @@
 ;; 선택 텍스트를 타이핑할 때, 삭제
 (delete-selection-mode t)
 ;; 라인 넘버 보기
-(global-linum-mode t) 
+(global-linum-mode t)
 ;; 컬럼 넘버 보기
 (setq column-number-mode t)
 ;; word-wrap
@@ -66,23 +66,23 @@
 ;;; packages
 (require 'package)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/")
-	     t)
+             '("melpa" . "http://melpa.milkbox.net/packages/")
+             t)
 (package-initialize)
 
 (defvar ohyecloudy/packages '(clojure-mode
                               cider
                               undo-tree
-			      paredit
+                              paredit
                               evil
-			      auto-complete
-			      ac-cider
-			      highlight-parentheses
-			      edit-server
-			      markdown-mode
-			      yaml-mode
-			      solarized-theme
-			      magit))
+                              auto-complete
+                              ac-cider
+                              highlight-parentheses
+                              edit-server
+                              markdown-mode
+                              yaml-mode
+                              solarized-theme
+                              magit))
 
 (dolist (pkg ohyecloudy/packages)
   (when (not (package-installed-p pkg))
@@ -133,15 +133,15 @@
 
 ;;; emacs-lisp-mode
 (add-hook 'emacs-lisp-mode-hook
-	  (lambda ()
-	    ;; clojure cider mode에서 쓰는 키와 맞춘다. C-M-x는 입력이 괴로움
-	    (define-key emacs-lisp-mode-map "\C-c\C-c" 'eval-defun)))
+          (lambda ()
+            ;; clojure cider mode에서 쓰는 키와 맞춘다. C-M-x는 입력이 괴로움
+            (define-key emacs-lisp-mode-map "\C-c\C-c" 'eval-defun)))
 
 ;;; lisp-interaction-mode
 (add-hook 'lisp-interaction-mode-hook
-	  (lambda ()
-	    ;; clojure cider mode에서 쓰는 키와 맞춘다. C-M-x는 입력이 괴로움
-	    (define-key lisp-interaction-mode-map "\C-c\C-c" 'eval-defun)))
+          (lambda ()
+            ;; clojure cider mode에서 쓰는 키와 맞춘다. C-M-x는 입력이 괴로움
+            (define-key lisp-interaction-mode-map "\C-c\C-c" 'eval-defun)))
 
 ;;; shell
 (when windows?
@@ -155,13 +155,12 @@
 
 ;; shell mode hook
 (add-hook 'shell-mode-hook
-	  (lambda ()
-	    ;; evil-scroll-up과 충돌
-	    (define-key shell-mode-map "\C-d" nil)))
+          (lambda ()
+            ;; evil-scroll-up과 충돌
+            (define-key shell-mode-map "\C-d" nil)))
 
 ;;; http://robots.thoughtbot.com/no-newline-at-end-of-file
 (setq require-final-newline t)
 
 ;;; title bar
 (setq frame-title-format "%b")
-
