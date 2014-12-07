@@ -82,6 +82,7 @@
                               markdown-mode
                               yaml-mode
                               solarized-theme
+                              pretty-mode
                               magit))
 
 (dolist (pkg ohyecloudy/packages)
@@ -164,3 +165,6 @@
 
 ;;; title bar
 (setq frame-title-format "%b")
+
+;;; pretty-mode
+(add-hook 'prog-mode-hook 'turn-on-pretty-mode)
