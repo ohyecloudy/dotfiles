@@ -24,3 +24,7 @@
                            (t default-color))))
                 (set-face-background 'mode-line (car color))
                 (set-face-foreground 'mode-line (cdr color))))))
+
+;;; evil-matchit
+(require 'evil-matchit)
+(global-evil-matchit-mode 1)

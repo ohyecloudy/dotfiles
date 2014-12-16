@@ -75,6 +75,7 @@
                               undo-tree
                               paredit
                               evil
+                              evil-matchit
                               auto-complete
                               ac-cider
                               highlight-parentheses
