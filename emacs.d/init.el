@@ -49,6 +49,7 @@
 
 (when (fboundp 'menu-bar-mode) (menu-bar-mode t))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 ;; 거슬리는 경고 소리를 끈다.
 (setq ring-bell-function 'ignore)
