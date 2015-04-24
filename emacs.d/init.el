@@ -85,6 +85,7 @@
                               yaml-mode
                               solarized-theme
                               pretty-mode
+                              smart-mode-line
                               magit))
 
 (dolist (pkg ohyecloudy/packages)
@@ -170,3 +171,10 @@
 
 ;;; pretty-mode
 (add-hook 'prog-mode-hook 'turn-on-pretty-mode)
+
+;;; smart-mode-line
+(setq sml/no-confirm-load-theme t)
+(setq sml/show-eol t) ;; show end-of-line. ex) CRLF(dos)
+(setq sml/theme 'respectful)
+(sml/setup)
+(add-to-list 'sml/replacer-regexp-list '("^c:/work/" ":Dev:") t)
