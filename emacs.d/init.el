@@ -86,6 +86,7 @@
                               solarized-theme
                               pretty-mode
                               smart-mode-line
+                              org-journal
                               magit))
 
 (dolist (pkg ohyecloudy/packages)
@@ -98,6 +99,7 @@
 (load "backup.el")
 (load "vim.el")
 (load "ws.el")
+(load "org-conf.el")
 
 ;;; auto-complete https://github.com/auto-complete/auto-complete
 (require 'auto-complete-config)
