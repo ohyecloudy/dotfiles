@@ -94,12 +94,12 @@
     (package-install pkg)))
 
 (add-to-list 'load-path "~/.emacs.d/config")
-(load "platform.el")
-(load "clojure.el")
-(load "backup.el")
-(load "vim.el")
-(load "ws.el")
-(load "org-conf.el")
+(load "my-platform.el")
+(load "my-clojure.el")
+(load "my-backup.el")
+(load "my-vim.el")
+(load "my-ws.el")
+(load "my-org.el")
 
 ;;; auto-complete https://github.com/auto-complete/auto-complete
 (require 'auto-complete-config)
