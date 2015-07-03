@@ -13,3 +13,6 @@
 ;;; evil-matchit
 (require 'evil-matchit)
 (global-evil-matchit-mode 1)
+
+;; disable
+(evil-set-initial-state 'calendar-mode 'emacs)
