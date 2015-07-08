@@ -22,6 +22,8 @@
 (set-language-environment "Korean")
 ;; 한글 환경에서는 cp949 인코딩이 디폴트이기 때문.
 (prefer-coding-system 'utf-8)
+;; 날짜 표시를 영어로하려고
+(setq system-time-locale "C")
 
 ;; startup-message 안 보기
 (setq inhibit-startup-message t)
