@@ -4,11 +4,9 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	commentchar = $
-[credential]
-	helper = cache --timeout=3600
 [alias]
 	co = checkout
-	ds = diff --staged
+	cp = cherry-pick -x
 	st = status -sb
 	ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	standup = log --since '1 day ago' --oneline --author ohyecloudy
