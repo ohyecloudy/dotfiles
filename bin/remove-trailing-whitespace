@@ -1,0 +1,33 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+def iterfiles(rootdir, ft):
+    for rt, _, files in os.walk(rootdir):
+        for file in files:
+            if ft(file):
+                yield os.path.join(rt, file)
+
+def iscppfiles(name):
+    return name.endswith(('.h', '.cpp', '.inl', '.hpp'))
+
+def rem_trailing_ws(fname):
+    clean_lines = []
+    with open(fname, 'r') as f:
+        clean_lines = [l.rstrip() for l in f.readlines()]
+    with open(fname, 'w') as f:
+        f.writelines('\n'.join(clean_lines))
+        f.write('\n') # newline at end of file
+    sys.stdout.write('.')
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        sys.exit('Usage: {0} root-directory'
+                 '\n\tex) {0} c:\work\code'.format(sys.argv[0]))
+
+    rootdir = sys.argv[1]
+    print 'remove trailing whitespace, root dir {}'.format(rootdir)
+
+    for fname in iterfiles(rootdir, iscppfiles):
+        rem_trailing_ws(fname)
