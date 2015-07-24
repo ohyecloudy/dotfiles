@@ -86,7 +86,6 @@
                               markdown-mode
                               yaml-mode
                               solarized-theme
-                              pretty-mode
                               smart-mode-line
                               org-journal
                               magit))
@@ -172,9 +171,6 @@
 
 ;;; title bar
 (setq frame-title-format "%b")
-
-;;; pretty-mode
-(add-hook 'prog-mode-hook 'turn-on-pretty-mode)
 
 ;;; smart-mode-line
 (setq sml/no-confirm-load-theme t)
