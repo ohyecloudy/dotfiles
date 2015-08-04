@@ -88,6 +88,7 @@
                               solarized-theme
                               smart-mode-line
                               org-journal
+                              elpy
                               magit))
 
 (dolist (pkg ohyecloudy/packages)
@@ -178,3 +179,6 @@
 (setq sml/theme 'respectful)
 (sml/setup)
 (add-to-list 'sml/replacer-regexp-list '("^c:/work/" ":Dev:") t)
+
+;;; elpy https://github.com/jorgenschaefer/elpy
+(elpy-enable)
