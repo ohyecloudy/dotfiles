@@ -102,6 +102,7 @@
 (load "my-vim.el")
 (load "my-ws.el")
 (load "my-org.el")
+(load "my-python.el")
 
 ;;; auto-complete https://github.com/auto-complete/auto-complete
 (require 'auto-complete-config)
@@ -179,6 +180,3 @@
 (setq sml/theme 'respectful)
 (sml/setup)
 (add-to-list 'sml/replacer-regexp-list '("^c:/work/" ":Dev:") t)
-
-;;; elpy https://github.com/jorgenschaefer/elpy
-(elpy-enable)
