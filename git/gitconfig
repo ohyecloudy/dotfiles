@@ -10,5 +10,7 @@
 	st = status -sb
 	ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	standup = log --since '1 day ago' --oneline --author ohyecloudy
+	delete-merged-branches = "!git co master && git branch --merged | grep -v \\* | xargs -n 1 git branch -d;"
+	unmerged = diff --name-only --diff-filter=U
 [pull]
 	rebase = true
