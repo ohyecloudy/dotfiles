@@ -12,5 +12,6 @@
 	standup = log --since '1 day ago' --oneline --author ohyecloudy
 	delete-merged-branches = "!git co master && git branch --merged | grep -v \\* | xargs -n 1 git branch -d;"
 	unmerged = diff --name-only --diff-filter=U
+	rebase-branches = "!git co master && git branch | grep -v \\\\* | xargs -n 1 git rebase master;"
 [pull]
 	rebase = true
