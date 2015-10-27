@@ -4,6 +4,7 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	commentchar = $
+	editor = ec-wait
 [alias]
 	co = checkout
 	cp = cherry-pick -x
