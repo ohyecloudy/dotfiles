@@ -1,0 +1,3 @@
+#!/bin/sh
+
+emacsclientw -na runemacs "$@"
