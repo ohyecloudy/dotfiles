@@ -14,6 +14,7 @@
 /emacs.d/eshell/*
 /emacs.d/target/*
 /emacs.d/server/*
+/emacs.d/url/*
 
 # ac-nrepl 임시 파일
 ac-comphist.dat
@@ -33,4 +34,3 @@ tramp
 # Org-mode
 .org-id-locations
 *_archive
-
