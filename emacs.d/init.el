@@ -180,3 +180,6 @@
 (setq sml/theme 'respectful)
 (sml/setup)
 (add-to-list 'sml/replacer-regexp-list '("^c:/work/" ":Dev:") t)
+
+;;; prettify-symbols-mode
+(add-hook 'prog-mode-hook 'prettify-symbols-mode)
