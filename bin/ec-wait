@@ -1,3 +1,8 @@
 #!/bin/sh
 
-emacsclientw -a runemacs "$@"
+if [ "OS" = "Windows_NT" ]
+then
+    emacsclientw --alternate-editor=runemacs "$@"
+else
+    emacsclient --alternate-editor=/Applications/Emacs.app/Contents/MacOS/Emacs "$@"
+fi
