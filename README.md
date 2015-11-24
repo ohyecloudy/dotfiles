@@ -10,9 +10,7 @@ http://msysgit.github.io/
 * command line에서 git 사용이 가능해야 함
 
 ### setup script
-    /script/windows-bootstrap.bat (관리자 권한)
-    /script/ios-bootstrap.sh (chmod +x)
+    script/bootstrap
 
 ### bundle install
     :BundleInstall
-
