@@ -4,3 +4,5 @@
 (setq org-journal-date-prefix "#+TITLE: ")
 (setq org-journal-time-format "")
 (setq org-journal-time-prefix "")
+
+(setq org-adapt-indentation nil)
