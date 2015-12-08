@@ -2,17 +2,18 @@
 @chcp 65001
 
 @set hpath=%homedrive%%homepath%
-@set binpath=%~dp0..\bin
+@set dotpath=%~dp0..
+@set binpath=%dotpath%\bin
 
 call %binpath%\is-elevated.bat || goto :finally
 
 setx HOME %hpath% || goto :finally
 
-mklink %hpath%\.gitignore_global %hpath%\.dotfiles\git\gitignore_global || goto :finally
-mklink %hpath%\.gitconfig %hpath%\.dotfiles\git\gitconfig || goto :finally
-mklink %hpath%\.vimrc %hpath%\.dotfiles\vim\vimrc || goto :finally
+mklink %hpath%\.gitignore_global %dotpath%\git\gitignore_global || goto :finally
+mklink %hpath%\.gitconfig %dotpath%\git\gitconfig || goto :finally
+mklink %hpath%\.vimrc %dotpath%\vim\vimrc || goto :finally
 
-mklink /J %hpath%\.emacs.d %hpath%\.dotfiles\emacs.d || goto :finally
+mklink /J %hpath%\.emacs.d %dotpath%\emacs.d || goto :finally
 
 :finally
 @set err=%errorlevel%
