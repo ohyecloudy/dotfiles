@@ -9,6 +9,10 @@
 /vim/bundle/*
 !/vim/bundle/vundle
 
+# bin.local
+/bin.local/*
+!/bin.local/.gitkeep
+
 ## Emacs
 /emacs.d/elpa/*
 /emacs.d/eshell/*

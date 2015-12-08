@@ -7,13 +7,16 @@
 
 call %binpath%\is-elevated.bat || goto :finally
 
-setx HOME %hpath% || goto :finally
+echo ;%path%; | find /c /i ";%hpath%\bin.local;" > NUL || setx /m PATH "%PATH%;%hpath%\bin.local;%hpath%\bin"
+setx /m HOME %hpath% || goto :finally
 
 mklink %hpath%\.gitignore_global %dotpath%\git\gitignore_global || goto :finally
 mklink %hpath%\.gitconfig %dotpath%\git\gitconfig || goto :finally
 mklink %hpath%\.vimrc %dotpath%\vim\vimrc || goto :finally
 
 mklink /J %hpath%\.emacs.d %dotpath%\emacs.d || goto :finally
+mklink /J %hpath%\bin %dotpath%\bin || goto :finally
+mklink /J %hpath%\bin.local %dotpath%\bin.local || goto :finally
 
 :finally
 @set err=%errorlevel%
