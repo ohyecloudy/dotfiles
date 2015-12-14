@@ -19,6 +19,7 @@
 /emacs.d/target/*
 /emacs.d/server/*
 /emacs.d/url/*
+/emacs.d/ido.last
 
 # ac-nrepl 임시 파일
 ac-comphist.dat
