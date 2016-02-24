@@ -61,7 +61,6 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'sh 'shell)
-(defalias 'list-buffers 'ibuffer)
 
 ;; M-x - C-xC-m
 (global-set-key "\C-x\C-m" 'execute-extended-command)
@@ -183,3 +182,12 @@
 
 ;;; prettify-symbols-mode
 (add-hook 'prog-mode-hook 'prettify-symbols-mode)
+
+;;; ibuffer-mode
+(defalias 'list-buffers 'ibuffer)
+(setq ibuffer-expert t)
+(setq ibuffer-default-sorting-mode 'major-mode)
+(add-hook 'ibuffer-mode-hook
+          '(lambda ()
+             (ibuffer-auto-mode 1)
+             (add-to-list 'ibuffer-never-show-predicates "^\\*")))
