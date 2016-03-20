@@ -1,5 +1,4 @@
 set nocompatible  " be iMproved
-filetype off " vundle required!
 behave mswin
 
 syntax on " syntax highlighting
@@ -19,7 +18,7 @@ set smartcase " 대문자가 검색 문자열에 있을때는 noignorecase
 set laststatus=2 " vim-powerline이 꾸며주는 상태바를 항상 출력하기 위해
 " When off a buffer is unloaded when it is abandoned.
 " argdo 명령으로 여러 파일을 변경할 수 있게
-set hidden 
+set hidden
 
 " sound, visual bell 둘 다 비활성화.
 set noerrorbells visualbell t_vb=
@@ -39,26 +38,6 @@ if has("win32")
     set directory=.,$TEMP
 endif
 
-" FIXME: 이렇게 무조건 절대 경로로 설정해야 하나? 
-" vimrc 파일 위치를 기준으로 설정할 수 있는 방법은 없나?
-set rtp+=~/.dotfiles/vim/bundle/vundle/
-call vundle#rc()
-
-" let Vundle manage Vundle
-" required!
-Bundle 'gmarik/vundle' 
-Bundle 'scrooloose/nerdtree'
-Bundle 'Lokaltog/vim-powerline' 
-Bundle 'tpope/vim-unimpaired'
-Bundle 'tomtom/tcomment_vim'
-Bundle 'guns/vim-clojure-static'
-Bundle 'myusuf3/numbers.vim'
-Bundle 'mhinz/vim-startify'
-Bundle 'nelstrom/vim-markdown-preview'
-" vundle http://kldp.org/node/125263 
-" EasyMotion http://bit.ly/sXJJpS - navigation이 익숙해지기 전까지 막아둠
-" tcomment http://goo.gl/KHx5V
-
 if has('gui_running')
 	set guioptions-=T " no toolbar
     set guioptions-=m " no memnubar
@@ -70,8 +49,6 @@ if has('gui_running')
 		source $VIMRUNTIME/menu.vim
 	endif
 endif
-
-filetype plugin indent on " vundle required!
 
 " Changing background color in vim at a certain column - stackoverflow
 " http://goo.gl/whqKr
@@ -87,4 +64,3 @@ autocmd BufWinEnter *.{md,mkd,mkdn,mark*} silent setf markdown
 if has("gui_macvim")
     set guifont=Menlo:h13
 endif
-
