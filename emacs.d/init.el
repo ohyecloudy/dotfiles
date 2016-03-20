@@ -43,6 +43,8 @@
 ;; syntax highlighting on
 (global-font-lock-mode t)
 
+(global-auto-revert-mode 1)
+
 ;; tab -> space
 (setq indent-tabs-mode nil)
 
