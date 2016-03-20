@@ -16,3 +16,5 @@
 
 ;; disable
 (evil-set-initial-state 'calendar-mode 'emacs)
+
+(setq-default evil-symbol-word-search 1)
