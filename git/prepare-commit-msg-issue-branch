@@ -1,0 +1,13 @@
+#!/bin/sh
+
+branchname=`git rev-parse --abbrev-ref HEAD`
+issuetag="\${issue}"
+if [ "$branchname" = "master" ]; then
+
+    sed -i "s/$issuetag//" "$1"
+
+else
+
+    sed -i "s/$issuetag/\#$branchname/" "$1"
+
+fi
