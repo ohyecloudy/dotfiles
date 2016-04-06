@@ -1,16 +1,12 @@
 # dotfiles
 
 ## install
-    git clone https://github.com/ohyecloudy/dotfiles.git %HOMEDRIVE%\%HOMEPATH%\.dotfiles
-    $ git clone https://github.com/ohyecloudy/dotfiles.git ~/.dotfiles
+    $ git clone git@github.com:ohyecloudy/dotfiles.git ~/.dotfiles
 
 ### windows
-http://msysgit.github.io/
+https://git-for-windows.github.io/
 
 * command line에서 git 사용이 가능해야 함
 
 ### setup script
     script/bootstrap
-
-### bundle install
-    :BundleInstall
