@@ -90,6 +90,7 @@
                               smart-mode-line
                               org-journal
                               elpy
+                              coffee-mode
                               magit))
 
 (dolist (pkg ohyecloudy/packages)
