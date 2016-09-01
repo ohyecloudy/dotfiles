@@ -51,15 +51,12 @@
 ;; find-file, switch-to-buffer에서 file 이름을 보여주는 mode
 (ido-mode t)
 
-(when (fboundp 'menu-bar-mode) (menu-bar-mode t))
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 ;; 거슬리는 경고 소리를 끈다.
 (setq ring-bell-function 'ignore)
-
-;; 마우스 꺼져. 타이핑을 시작하면 구석으로 마우스 커서를 치운다.
-(mouse-avoidance-mode 'banish)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'sh 'shell)
