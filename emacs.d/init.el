@@ -197,3 +197,6 @@
           '(lambda ()
              (ibuffer-auto-mode 1)
              (add-to-list 'ibuffer-never-show-predicates "^\\*")))
+
+;;; grep
+(setq grep-command "grep -nH -i -r ")
