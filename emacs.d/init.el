@@ -156,13 +156,16 @@
 
 ;;; shell
 (when windows?
-  (let ((bash-dir "C:/Program Files (x86)/Git/bin"))
+  (let ((git-dir "C:/Program Files/Git")
+        (bash-dir "C:/Program Files/Git/bin"))
     (setq explicit-shell-file-name (concat bash-dir "/bash.exe"))
     (setq shell-file-name explicit-shell-file-name)
+    (add-to-list 'exec-path git-dir)
     (add-to-list 'exec-path bash-dir)
     (setq explicit-bash.exe-args '("--noediting" "--login" "-i"))
-    (setenv "SHELL" explicit-shell-file-name)
-    (setenv "PATH" (concat bash-dir path-separator (getenv "PATH")))))
+    (setenv "SHELL" shell-file-name)
+    (setenv "PATH" (concat git-dir path-separator
+                           (concat bash-dir path-separator (getenv "PATH"))))))
 
 ;; shell mode hook
 (add-hook 'shell-mode-hook
