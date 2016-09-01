@@ -16,3 +16,5 @@
 	rebase-branches = "!git co master && git branch | grep -v \\\\* | xargs -n 1 git rebase master;"
 [pull]
 	rebase = true
+[push]
+	default = simple
