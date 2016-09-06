@@ -153,8 +153,8 @@
 
 ;;; shell
 (when windows?
-  (let ((git-dir "C:/Program Files/Git")
-        (bash-dir "C:/Program Files/Git/bin"))
+  (let* ((git-dir "C:/Program Files/Git")
+         (bash-dir (concat (file-name-as-directory git-dir) "bin")))
     (setq explicit-shell-file-name (concat bash-dir "/bash.exe"))
     (setq shell-file-name explicit-shell-file-name)
     (add-to-list 'exec-path git-dir)
