@@ -22,4 +22,5 @@
             (when org-inline-image-overlays
               (org-redisplay-inline-images))))
 (add-to-list 'org-structure-template-alist
-             '("u" "#+BEGIN_SRC plantuml :file ?.png\nskinparam monochrome true\n#+END_SRC"))
+             '("u" "#+BEGIN_SRC plantuml :file ?.png\n
+                    skinparam monochrome true\n#+END_SRC"))
