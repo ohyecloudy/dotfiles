@@ -88,6 +88,7 @@
                               org-journal
                               elpy
                               coffee-mode
+                              ranger
                               magit))
 
 (dolist (pkg ohyecloudy/packages)
@@ -198,3 +199,6 @@
 
 ;;; grep
 (setq grep-command "grep -nH -i -r ")
+
+;;; ranger
+(ranger-override-dired-mode t)
