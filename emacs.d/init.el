@@ -74,12 +74,32 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+;;; evil
+;;; https://www.emacswiki.org/emacs/Evil
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode t)
+  (evil-set-initial-state 'calendar-mode 'emacs)
+  (evil-set-initial-state 'calculator-mode 'emacs)
+  (evil-set-initial-state 'git-rebase-mode 'emacs)
+  (evil-set-initial-state 'magit-blame-mode 'emacs)
+  (setq-default evil-symbol-word-search t)
+  ;; (setq-default evil-want-C-u-scroll t)가 동작 안해서 직접 정의
+  :bind (:map evil-motion-state-map
+              ("C-u" . evil-scroll-up)))
+
+;;; evil-matchit
+;;; https://github.com/redguardtoo/evil-matchit
+(use-package evil-matchit
+  :ensure t
+  :config
+  (global-evil-matchit-mode t))
+
 (defvar ohyecloudy/packages '(clojure-mode
                               cider
                               undo-tree
                               paredit
-                              evil
-                              evil-matchit
                               auto-complete
                               ac-cider
                               highlight-parentheses
@@ -102,7 +122,6 @@
 (load "my-platform.el")
 (load "my-clojure.el")
 (load "my-backup.el")
-(load "my-vim.el")
 (load "my-ws.el")
 (load "my-org.el")
 (load "my-python.el")
