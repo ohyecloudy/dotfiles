@@ -70,6 +70,9 @@
              '("melpa" . "http://melpa.milkbox.net/packages/")
              t)
 (package-initialize)
+(when (not (package-installed-p 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (defvar ohyecloudy/packages '(clojure-mode
                               cider
