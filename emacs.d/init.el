@@ -78,16 +78,15 @@
 ;;; https://www.emacswiki.org/emacs/Evil
 (use-package evil
   :ensure t
+  :init
+  (setq evil-want-C-u-scroll t)
   :config
   (evil-mode t)
   (evil-set-initial-state 'calendar-mode 'emacs)
   (evil-set-initial-state 'calculator-mode 'emacs)
   (evil-set-initial-state 'git-rebase-mode 'emacs)
   (evil-set-initial-state 'magit-blame-mode 'emacs)
-  (setq-default evil-symbol-word-search t)
-  ;; (setq-default evil-want-C-u-scroll t)가 동작 안해서 직접 정의
-  :bind (:map evil-motion-state-map
-              ("C-u" . evil-scroll-up)))
+  (setq-default evil-symbol-word-search t))
 
 ;;; evil-matchit
 ;;; https://github.com/redguardtoo/evil-matchit
