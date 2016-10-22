@@ -101,12 +101,7 @@
   :config
   (load-theme 'solarized-light 'NO-CONFIRM))
 
-(defvar ohyecloudy/packages '(clojure-mode
-                              cider
-                              paredit
-                              auto-complete
-                              ac-cider
-                              markdown-mode
+(defvar ohyecloudy/packages '(markdown-mode
                               yaml-mode
                               smart-mode-line
                               org-journal
@@ -121,15 +116,10 @@
 
 (add-to-list 'load-path "~/.emacs.d/config")
 (load "my-platform.el")
-(load "my-clojure.el")
 (load "my-backup.el")
 (load "my-ws.el")
 (load "my-org.el")
 (load "my-python.el")
-
-;;; auto-complete https://github.com/auto-complete/auto-complete
-(require 'auto-complete-config)
-(ac-config-default)
 
 (setq show-paren-display 0)
 (show-paren-mode t)
