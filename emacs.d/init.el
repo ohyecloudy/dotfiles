@@ -137,19 +137,6 @@
 ;;; https://github.com/magit/magit
 (use-package magit :ensure t)
 
-(defvar ohyecloudy/packages '(org-journal
-                              coffee-mode))
-
-(dolist (pkg ohyecloudy/packages)
-  (when (not (package-installed-p pkg))
-    (package-install pkg)))
-
-(add-to-list 'load-path "~/.emacs.d/config")
-(load "my-platform.el")
-(load "my-backup.el")
-(load "my-ws.el")
-(load "my-org.el")
-
 (setq show-paren-display 0)
 (show-paren-mode t)
 
@@ -209,3 +196,57 @@
 
 ;;; grep
 (setq grep-command "grep -nH -i -r ")
+
+;;; PATH env
+(setq mac? (eq system-type 'darwin))
+(when mac?
+  (let ((usr-local "/usr/local/bin"))
+    (add-to-list 'exec-path usr-local)
+    (setenv "PATH" (concat usr-local path-separator (getenv "PATH")))))
+
+;;; backup
+(add-to-list 'backup-directory-alist '("." . "~/.emacs-saves"))
+(setq delete-old-versions t
+      kept-old-versions 2
+      kept-new-versions 2
+      version-control t)
+
+;; whitespace mode
+(custom-set-faces
+ '(whitespace-line ((nil (:bold t :background "yellow"))))
+ '(whitespace-trailing ((nil (:bold t :background "red1"))))
+ '(whitespace-tab ((nil (:bold t :background "linen")))))
+
+(global-whitespace-mode t)
+
+(add-hook
+ 'after-change-major-mode-hook
+ '(lambda ()
+    (if (derived-mode-p 'prog-mode)
+        (setq whitespace-line-column 80
+              whitespace-style '(face trailing lines-tail tab-mark))
+      (setq whitespace-line-column nil
+            whitespace-style '(face trailing tab-mark)))))
+
+;; disable tabs mode
+(setq-default indent-tabs-mode nil)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;;; org
+(setq org-startup-with-inline-images t)
+
+;;; plantuml
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((plantuml . t)))
+(setq org-confirm-babel-evaluate nil)
+(setq org-plantuml-jar-path
+      (expand-file-name "~/bin/plantuml.jar"))
+(add-hook 'org-babel-after-execute-hook
+          (lambda ()
+            (when org-inline-image-overlays
+              (org-redisplay-inline-images))))
+(add-to-list 'org-structure-template-alist
+             '("u" "#+BEGIN_SRC plantuml :file ?.png\n
+                    skinparam monochrome true\n#+END_SRC"))
