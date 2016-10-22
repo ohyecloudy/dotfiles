@@ -134,9 +134,11 @@
 ;;; https://github.com/yoshiki/yaml-mode
 (use-package yaml-mode :ensure t)
 
+;;; https://github.com/magit/magit
+(use-package magit :ensure t)
+
 (defvar ohyecloudy/packages '(org-journal
-                              coffee-mode
-                              magit))
+                              coffee-mode))
 
 (dolist (pkg ohyecloudy/packages)
   (when (not (package-installed-p pkg))
