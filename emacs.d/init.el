@@ -107,7 +107,6 @@
                               paredit
                               auto-complete
                               ac-cider
-                              edit-server
                               markdown-mode
                               yaml-mode
                               smart-mode-line
@@ -139,11 +138,6 @@
 ;;; emacs-server
 (require 'server)
 (server-start)
-
-;;; edit-server http://www.emacswiki.org/emacs/Edit_with_Emacs
-(require 'edit-server)
-(edit-server-start)
-(setq edit-server-new-frame nil)
 
 ;;; markdown-mode http://jblevins.org/projects/markdown-mode/
 (autoload 'markdown-mode "markdown-mode"
