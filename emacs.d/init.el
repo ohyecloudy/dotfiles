@@ -131,8 +131,10 @@
   :ensure t
   :config (ranger-override-dired-mode t))
 
-(defvar ohyecloudy/packages '(yaml-mode
-                              org-journal
+;;; https://github.com/yoshiki/yaml-mode
+(use-package yaml-mode :ensure t)
+
+(defvar ohyecloudy/packages '(org-journal
                               coffee-mode
                               magit))
 
