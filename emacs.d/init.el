@@ -107,7 +107,6 @@
                               paredit
                               auto-complete
                               ac-cider
-                              highlight-parentheses
                               edit-server
                               markdown-mode
                               yaml-mode
@@ -133,15 +132,6 @@
 ;;; auto-complete https://github.com/auto-complete/auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
-
-;;; highlight-parentheses https://github.com/nschum/highlight-parentheses.el
-(require 'highlight-parentheses)
-(setq hl-paren-colors nil)
-(setq hl-paren-background-colors '("gray"))
-;; global로 highlight-parentheses minor mode를 활성화 http://goo.gl/ig5YuY 참고
-(define-global-minor-mode global-highlight-parentheses-minor-mode
-  highlight-parentheses-mode highlight-parentheses-mode)
-(global-highlight-parentheses-minor-mode t)
 
 (setq show-paren-display 0)
 (show-paren-mode t)
