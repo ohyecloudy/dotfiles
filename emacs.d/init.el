@@ -95,6 +95,12 @@
   :config
   (global-evil-matchit-mode t))
 
+;;; https://github.com/bbatsov/solarized-emacs
+(use-package solarized-theme
+  :ensure t
+  :config
+  (load-theme 'solarized-light 'NO-CONFIRM))
+
 (defvar ohyecloudy/packages '(clojure-mode
                               cider
                               undo-tree
@@ -105,7 +111,6 @@
                               edit-server
                               markdown-mode
                               yaml-mode
-                              solarized-theme
                               smart-mode-line
                               org-journal
                               elpy
@@ -149,10 +154,6 @@
 (require 'edit-server)
 (edit-server-start)
 (setq edit-server-new-frame nil)
-
-;;; solarized-emacs
-;;; https://github.com/bbatsov/solarized-emacs
-(load-theme 'solarized-light 'NO-CONFIRM)
 
 ;;; markdown-mode http://jblevins.org/projects/markdown-mode/
 (autoload 'markdown-mode "markdown-mode"
