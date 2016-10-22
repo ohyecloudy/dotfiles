@@ -103,7 +103,6 @@
 
 (defvar ohyecloudy/packages '(clojure-mode
                               cider
-                              undo-tree
                               paredit
                               auto-complete
                               ac-cider
