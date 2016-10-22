@@ -110,10 +110,15 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
+;;; Elpy, the Emacs Lisp Python Environment
+;;; elpy https://github.com/jorgenschaefer/elpy
+(use-package elpy
+  :ensure t
+  :config (elpy-enable))
+
 (defvar ohyecloudy/packages '(yaml-mode
                               smart-mode-line
                               org-journal
-                              elpy
                               coffee-mode
                               ranger
                               magit))
@@ -127,7 +132,6 @@
 (load "my-backup.el")
 (load "my-ws.el")
 (load "my-org.el")
-(load "my-python.el")
 
 (setq show-paren-display 0)
 (show-paren-mode t)
