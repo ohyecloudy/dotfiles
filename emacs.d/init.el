@@ -116,8 +116,17 @@
   :ensure t
   :config (elpy-enable))
 
+;;; https://github.com/Malabarba/smart-mode-line
+(use-package smart-mode-line
+  :ensure t
+  :config
+  (setq sml/no-confirm-load-theme t)
+  (setq sml/show-eol t) ;; show end-of-line. ex) CRLF(dos)
+  (setq sml/theme 'respectful)
+  (sml/setup)
+  (add-to-list 'sml/replacer-regexp-list '("^c:/work/" ":Dev:") t))
+
 (defvar ohyecloudy/packages '(yaml-mode
-                              smart-mode-line
                               org-journal
                               coffee-mode
                               ranger
@@ -177,13 +186,6 @@
 
 ;;; title bar
 (setq frame-title-format "%b")
-
-;;; smart-mode-line
-(setq sml/no-confirm-load-theme t)
-(setq sml/show-eol t) ;; show end-of-line. ex) CRLF(dos)
-(setq sml/theme 'respectful)
-(sml/setup)
-(add-to-list 'sml/replacer-regexp-list '("^c:/work/" ":Dev:") t)
 
 ;;; prettify-symbols-mode
 (add-hook 'prog-mode-hook 'prettify-symbols-mode)
