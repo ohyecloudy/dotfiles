@@ -137,14 +137,6 @@
 ;;; https://github.com/magit/magit
 (use-package magit :ensure t)
 
-;;; https://github.com/lewang/command-log-mode
-(use-package command-log-mode
-  :ensure t
-  :config
-  (setq clm/command-log-buffer
-        (get-buffer-create " *command-log*"))
-  (setq command-log-mode-auto-show t))
-
 (setq show-paren-display 0)
 (show-paren-mode t)
 
