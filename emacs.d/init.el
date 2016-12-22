@@ -95,6 +95,13 @@
   :config
   (global-evil-matchit-mode t))
 
+;;; evil-visualstar
+;;; https://github.com/bling/evil-visualstar
+(use-package evil-visualstar
+  :ensure t
+  :config
+  (global-evil-visualstar-mode t))
+
 ;;; https://github.com/bbatsov/solarized-emacs
 (use-package solarized-theme
   :ensure t
