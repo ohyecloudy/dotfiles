@@ -203,6 +203,12 @@
 
 ;;; grep
 (setq grep-command "grep -nH -i -r ")
+;; grep: warning: GREP_OPTIONS is deprecated; please use an alias or script
+;; grep-highlight-matches 변수를 세팅하니 경고 메시지 작렬
+;; 그래서 고쳐지기 전까지는 --color 옵션을 직접 세팅해준다.
+(setq grep-template "grep <X> --color=always <C> -nH <R> <F>")
+(setq grep-find-template
+      "find . <X> -type f <F> -exec grep --color=always <C> -nH <R> {} \\;")
 
 ;;; PATH env
 (setq mac? (eq system-type 'darwin))
