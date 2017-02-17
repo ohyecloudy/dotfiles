@@ -137,6 +137,7 @@
 ;;; https://github.com/magit/magit
 (use-package magit
   :ensure t
+  :bind ("C-x g" . magit-status)
   :config
   ;;; (evil-set-initial-state 'magit-blame-mode 'emacs) 동작을 안 해서
   ;;; 원인은 모름
