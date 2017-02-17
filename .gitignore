@@ -20,6 +20,7 @@
 /emacs.d/server/*
 /emacs.d/url/*
 /emacs.d/ido.last
+/emacs.d/recentf
 
 # ac-nrepl 임시 파일
 ac-comphist.dat

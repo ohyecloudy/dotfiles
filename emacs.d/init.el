@@ -48,9 +48,6 @@
 ;; tab -> space
 (setq indent-tabs-mode nil)
 
-;; find-file, switch-to-buffer에서 file 이름을 보여주는 mode
-(ido-mode t)
-
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -60,9 +57,6 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'sh 'shell)
-
-;; M-x - C-xC-m
-(global-set-key "\C-x\C-m" 'execute-extended-command)
 
 ;;; packages
 (require 'package)
@@ -151,6 +145,20 @@
               (if magit-blame-mode
                   (evil-emacs-state 1)
                 (evil-normal-state 1)))))
+
+;;; https://github.com/emacs-helm/helm
+(use-package helm
+  :ensure t
+  :diminish helm-mode
+  :bind (("M-x" . helm-M-x)
+         ("C-x C-m" . helm-M-x)
+         ("C-x b" . helm-mini)
+         ("C-x C-f" . helm-find-files))
+  :init
+  (setq helm-split-window-in-side-p t)
+  :config
+  (helm-mode 1)
+  (helm-autoresize-mode 1))
 
 (setq show-paren-display 0)
 (show-paren-mode t)
