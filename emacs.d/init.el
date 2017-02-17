@@ -85,7 +85,6 @@
   (evil-set-initial-state 'calendar-mode 'emacs)
   (evil-set-initial-state 'calculator-mode 'emacs)
   (evil-set-initial-state 'git-rebase-mode 'emacs)
-  (evil-set-initial-state 'magit-blame-mode 'emacs)
   (setq-default evil-symbol-word-search t))
 
 ;;; evil-matchit
@@ -142,7 +141,16 @@
 (use-package yaml-mode :ensure t)
 
 ;;; https://github.com/magit/magit
-(use-package magit :ensure t)
+(use-package magit
+  :ensure t
+  :config
+  ;;; (evil-set-initial-state 'magit-blame-mode 'emacs) 동작을 안 해서
+  ;;; 원인은 모름
+  (add-hook 'magit-blame-mode-hook
+            (lambda ()
+              (if magit-blame-mode
+                  (evil-emacs-state 1)
+                (evil-normal-state 1)))))
 
 (setq show-paren-display 0)
 (show-paren-mode t)
