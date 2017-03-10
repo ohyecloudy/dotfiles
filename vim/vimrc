@@ -64,3 +64,6 @@ autocmd BufWinEnter *.{md,mkd,mkdn,mark*} silent setf markdown
 if has("gui_macvim")
     set guifont=Menlo:h13
 endif
+
+" http://vi.stackexchange.com/a/185
+nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
