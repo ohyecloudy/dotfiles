@@ -265,6 +265,9 @@
 
 ;;; org
 (setq org-startup-with-inline-images t)
+;;; heading 라인에서 evil-open-below 호출 시, indentation이 들어가는 것 방지
+(setq org-adapt-indentation nil)
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
