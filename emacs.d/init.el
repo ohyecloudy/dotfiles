@@ -265,11 +265,13 @@
 
 ;;; org
 (setq org-startup-with-inline-images t)
-
-;;; plantuml
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((plantuml . t)))
+ '((emacs-lisp . t)
+   (plantuml . t)
+   (C . t)))
+
+;;; plantuml
 (setq org-confirm-babel-evaluate nil)
 (setq org-plantuml-jar-path
       (expand-file-name "~/bin/plantuml.jar"))
