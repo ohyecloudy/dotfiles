@@ -263,27 +263,29 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;;; org
-(setq org-startup-with-inline-images t)
-;;; heading 라인에서 evil-open-below 호출 시, indentation이 들어가는 것 방지
-(setq org-adapt-indentation nil)
+(use-package org
+  :ensure t
+  :config
+  (setq org-startup-with-inline-images t)
+  ;; heading 라인에서 evil-open-below 호출 시, indentation이 들어가는 것 방지
+  (setq org-adapt-indentation nil)
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (plantuml . t)
-   (C . t)))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (plantuml . t)
+     (C . t)))
 
-;;; plantuml
-(setq org-confirm-babel-evaluate nil)
-(setq org-plantuml-jar-path
-      (expand-file-name "~/bin/plantuml.jar"))
-(add-hook 'org-babel-after-execute-hook
-          (lambda ()
-            (when org-inline-image-overlays
-              (org-redisplay-inline-images))))
-(add-to-list 'org-structure-template-alist
-             '("u" "#+BEGIN_SRC plantuml :file ?.png\nskinparam monochrome true\n#+END_SRC"))
+  ;; plantuml
+  (setq org-confirm-babel-evaluate nil)
+  (setq org-plantuml-jar-path
+        (expand-file-name "~/bin/plantuml.jar"))
+  (add-hook 'org-babel-after-execute-hook
+            (lambda ()
+              (when org-inline-image-overlays
+                (org-redisplay-inline-images))))
+  (add-to-list 'org-structure-template-alist
+               '("u" "#+BEGIN_SRC plantuml :file ?.png\nskinparam monochrome true\n#+END_SRC")))
 
 ;;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
 (defun copy-file-name-to-clipboard ()
