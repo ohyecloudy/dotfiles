@@ -140,8 +140,10 @@
   :ensure t
   :bind ("C-x g" . magit-status)
   :config
-  ;;; (evil-set-initial-state 'magit-blame-mode 'emacs) 동작을 안 해서
-  ;;; 원인은 모름
+  ;; (evil-set-initial-state 'magit-blame-mode 'emacs) 동작을 안 해서
+  ;; 원인은 모름
+  ;; Magit 20170322.1550, Git 2.11.0.windows.1, Emacs 24.4.1, windows-nt
+  ;; Evil version 1.2.12
   (add-hook 'magit-blame-mode-hook
             (lambda ()
               (if magit-blame-mode
