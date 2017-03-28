@@ -80,6 +80,7 @@
   (evil-set-initial-state 'calculator-mode 'emacs)
   (evil-set-initial-state 'git-rebase-mode 'emacs)
   (evil-set-initial-state 'finder-mode 'emacs)
+  (evil-set-initial-state 'Man-mode 'emacs)
   (setq-default evil-symbol-word-search t))
 
 ;;; evil-matchit
