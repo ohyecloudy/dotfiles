@@ -185,17 +185,21 @@
 
 ;;; shell
 (when windows?
-  (let* ((git-dir "C:/Program Files/Git")
-         (bash-dir (concat (file-name-as-directory git-dir) "bin")))
-    (setq explicit-shell-file-name (concat (file-name-as-directory bash-dir)
-                                           "bash.exe"))
-    (setq shell-file-name explicit-shell-file-name)
-    (add-to-list 'exec-path git-dir)
-    (add-to-list 'exec-path bash-dir)
+  (let* ((combine-path (lambda (dir dir-or-file)
+                         (concat (file-name-as-directory dir) dir-or-file)))
+         (base-dir "C:/git-sdk-64")
+         (msys2-bin-dir (funcall combine-path base-dir "usr/bin"))
+         (mingw64-bin-dir (funcall combine-path base-dir "mingw64/bin"))
+         (bash-path (funcall combine-path msys2-bin-dir "bash.exe")))
+    (add-to-list 'exec-path msys2-bin-dir)
+    (add-to-list 'exec-path mingw64-bin-dir)
+    (setq explicit-shell-file-name bash-path)
+    (setq shell-file-name bash-path)
+    (setenv "SHELL" bash-path)
     (setq explicit-bash.exe-args '("--noediting" "--login" "-i"))
-    (setenv "SHELL" shell-file-name)
-    (setenv "PATH" (concat git-dir path-separator
-                           (concat bash-dir path-separator (getenv "PATH"))))))
+    (setenv "PATH" (concat msys2-bin-dir path-separator
+                           (concat mingw64-bin-dir path-separator
+                                   (getenv "PATH"))))))
 
 ;; shell mode hook
 (add-hook 'shell-mode-hook
