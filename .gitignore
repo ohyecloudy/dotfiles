@@ -21,6 +21,7 @@
 /emacs.d/url/*
 /emacs.d/ido.last
 /emacs.d/recentf
+/emacs.d/NUL
 
 # ac-nrepl 임시 파일
 ac-comphist.dat
