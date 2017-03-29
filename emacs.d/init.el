@@ -63,6 +63,9 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/")
              t)
+(add-to-list 'package-archives
+             '("org" . "http://orgmode.org/elpa/")
+             t)
 (package-initialize)
 (when (not (package-installed-p 'use-package))
   (package-refresh-contents)
@@ -272,7 +275,8 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (use-package org
-  :ensure t
+  :pin org
+  :ensure org-plus-contrib
   :config
   (setq org-startup-with-inline-images t)
   ;; heading 라인에서 evil-open-below 호출 시, indentation이 들어가는 것 방지
