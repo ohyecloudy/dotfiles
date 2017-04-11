@@ -192,8 +192,8 @@
   (let* ((combine-path (lambda (dir dir-or-file)
                          (concat (file-name-as-directory dir) dir-or-file)))
          (base-dir "C:/git-sdk-64")
-         (msys2-bin-dir (funcall combine-path base-dir "usr/bin"))
          (mingw64-bin-dir (funcall combine-path base-dir "mingw64/bin"))
+         (msys2-bin-dir (funcall combine-path base-dir "usr/bin"))
          (bash-path (funcall combine-path msys2-bin-dir "bash.exe")))
     (add-to-list 'exec-path msys2-bin-dir)
     (add-to-list 'exec-path mingw64-bin-dir)
@@ -201,8 +201,8 @@
     (setq shell-file-name bash-path)
     (setenv "SHELL" bash-path)
     (setq explicit-bash.exe-args '("--noediting" "--login" "-i"))
-    (setenv "PATH" (concat msys2-bin-dir path-separator
-                           (concat mingw64-bin-dir path-separator
+    (setenv "PATH" (concat mingw64-bin-dir path-separator
+                           (concat msys2-bin-dir path-separator
                                    (getenv "PATH"))))))
 
 ;; shell mode hook
