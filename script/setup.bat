@@ -13,6 +13,8 @@ setx /m HOME %hpath% || goto :finally
 mklink %hpath%\.gitignore_global %dotpath%\git\gitignore_global || goto :finally
 mklink %hpath%\.gitconfig %dotpath%\git\gitconfig || goto :finally
 mklink %hpath%\.vimrc %dotpath%\vim\vimrc || goto :finally
+mklink %hpath%\.bashrc %dotpath%\bashrc || goto :finally
+mklink %hpath%\.bash_profile %dotpath%\bash_profile || goto :finally
 
 mklink /J %hpath%\.emacs.d %dotpath%\emacs.d || goto :finally
 mklink /J %hpath%\bin %dotpath%\bin || goto :finally
