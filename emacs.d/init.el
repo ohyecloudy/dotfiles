@@ -289,6 +289,7 @@
    'org-babel-load-languages
    '((emacs-lisp . t)
      (plantuml . t)
+     (python . t)
      (C . t)))
 
   ;; plantuml
