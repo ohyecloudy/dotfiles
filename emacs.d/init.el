@@ -279,8 +279,6 @@
   :ensure org-plus-contrib
   :config
   (setq org-startup-with-inline-images t)
-  ;; heading 라인에서 evil-open-below 호출 시, indentation이 들어가는 것 방지
-  (setq org-adapt-indentation nil)
   ;; Make RET also indent
   ;; https://github.com/pkkm/.emacs.d/blob/master/conf/mode-specific/org.el
   (bind-key [remap org-return] #'org-return-indent org-mode-map)
