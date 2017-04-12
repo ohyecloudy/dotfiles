@@ -278,6 +278,7 @@
   :pin org
   :ensure org-plus-contrib
   :config
+  (require 'ox-confluence)
   (setq org-startup-with-inline-images t)
   ;; Make RET also indent
   ;; https://github.com/pkkm/.emacs.d/blob/master/conf/mode-specific/org.el
