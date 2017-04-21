@@ -73,10 +73,9 @@
 
 ;;; evil
 ;;; https://www.emacswiki.org/emacs/Evil
+(setq evil-want-C-u-scroll t) ;; :init에 넣어도 동작 안 함 Evil version 1.2.12
 (use-package evil
   :ensure t
-  :init
-  (setq evil-want-C-u-scroll t)
   :config
   (evil-mode t)
   (evil-set-initial-state 'calendar-mode 'emacs)
