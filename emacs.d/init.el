@@ -253,9 +253,13 @@
 
 ;; whitespace mode
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(whitespace-line ((nil (:bold t :background "yellow"))))
- '(whitespace-trailing ((nil (:bold t :background "red1"))))
- '(whitespace-tab ((nil (:bold t :background "linen")))))
+ '(whitespace-tab ((nil (:bold t :background "linen"))))
+ '(whitespace-trailing ((nil (:bold t :background "red1")))))
 
 (global-whitespace-mode t)
 
@@ -311,3 +315,11 @@
     (when filename
       (kill-new filename)
       (message "Copied buffer file name '%s' to the clipboard." filename))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (org-plus-contrib helm magit yaml-mode ranger smart-mode-line elpy markdown-mode solarized-theme evil-visualstar evil-matchit evil use-package))))
