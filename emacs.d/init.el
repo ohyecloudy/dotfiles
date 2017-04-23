@@ -176,6 +176,32 @@
   (setq company-idle-delay 0)
   (setq company-show-numbers "on"))
 
+;;; org-mode에서 #+ 다음에 completion cadidates가 나오도록
+;;; https://emacs.stackexchange.com/a/30691
+(defun org-keyword-backend (command &optional arg &rest ignored)
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'org-keyword-backend))
+    (prefix (and (eq major-mode 'org-mode)
+                 (cons (company-grab-line "^#\\+\\(\\w*\\)" 1)
+                       t)))
+    (candidates (mapcar #'upcase
+                        (cl-remove-if-not
+                         (lambda (c) (string-prefix-p arg c))
+                         (pcomplete-completions))))
+    (ignore-case t)
+    (duplicates t)))
+(add-to-list 'company-backends 'org-keyword-backend)
+
+;;; https://github.com/manuel-uberti/helm-company
+(use-package helm-company
+  :ensure t
+  :config
+  (eval-after-load 'company
+    '(progn
+       (define-key company-mode-map (kbd "C-:") 'helm-company)
+       (define-key company-active-map (kbd "C-:") 'helm-company))))
+
 (setq show-paren-display 0)
 (show-paren-mode t)
 
@@ -292,6 +318,14 @@
   :config
   (require 'ox-confluence)
   (setq org-startup-with-inline-images t)
+  ;; org keyword를 company 모드 completion에 추가함
+  ;; https://emacs.stackexchange.com/a/21173
+  (add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'completion-at-point-functions
+                      'pcomplete-completions-at-point
+                      nil
+                      t)))
   ;; Make RET also indent
   ;; https://github.com/pkkm/.emacs.d/blob/master/conf/mode-specific/org.el
   (bind-key [remap org-return] #'org-return-indent org-mode-map)
