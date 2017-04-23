@@ -167,6 +167,15 @@
   (helm-mode 1)
   (helm-autoresize-mode 1))
 
+;;; http://company-mode.github.io/
+(use-package company
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (setq company-idle-delay 0)
+  (setq company-show-numbers "on"))
+
 (setq show-paren-display 0)
 (show-paren-mode t)
 
