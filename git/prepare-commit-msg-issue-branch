@@ -8,6 +8,6 @@ if [ "$branchname" = "master" ]; then
 
 else
 
-    sed -i "s/$issuetag/\#$branchname/" "$1"
+    sed -i "s/$issuetag/$branchname/" "$1"
 
 fi
