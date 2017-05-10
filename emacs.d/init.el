@@ -312,6 +312,9 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;;; https://github.com/zweifisch/ob-http
+(use-package ob-http :ensure t)
+
 (use-package org
   :pin org
   :ensure org-plus-contrib
@@ -339,6 +342,7 @@
    '((emacs-lisp . t)
      (plantuml . t)
      (python . t)
+     (http . t)
      (C . t)))
 
   ;; plantuml
@@ -369,4 +373,4 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (org-plus-contrib helm magit yaml-mode ranger smart-mode-line elpy markdown-mode solarized-theme evil-visualstar evil-matchit evil use-package))))
+    (ob-http org-plus-contrib helm magit yaml-mode ranger smart-mode-line elpy markdown-mode solarized-theme evil-visualstar evil-matchit evil use-package))))
