@@ -83,7 +83,18 @@
   (evil-set-initial-state 'git-rebase-mode 'emacs)
   (evil-set-initial-state 'finder-mode 'emacs)
   (evil-set-initial-state 'Man-mode 'emacs)
-  (setq-default evil-symbol-word-search t))
+  (setq-default evil-symbol-word-search t)
+
+  ;; http://blog.binchen.org/posts/auto-complete-word-in-emacs-mini-buffer-when-using-evil.html
+  ;; / 문자를 Punctuation characters로 변경함
+  ;; %s/old/new/g 입력할 때, M-/ 누르면 자동완성 된다.
+  (defun minibuffer-inactive-mode-hook-setup ()
+    ;; make `try-expand-dabbrev' from `hippie-expand' work in mini-buffer
+    ;; @see `he-dabbrev-beg', so we need re-define syntax for '/'
+    (set-syntax-table (let* ((table (make-syntax-table)))
+                        (modify-syntax-entry ?/ "." table)
+                        table)))
+  (add-hook 'minibuffer-inactive-mode-hook 'minibuffer-inactive-mode-hook-setup))
 
 ;;; evil-matchit
 ;;; https://github.com/redguardtoo/evil-matchit
