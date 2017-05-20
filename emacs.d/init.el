@@ -323,6 +323,9 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;;; compose-mail 바인딩 키 제거
+(global-set-key (kbd "C-x m") nil)
+
 ;;; https://github.com/zweifisch/ob-http
 (use-package ob-http :ensure t)
 
