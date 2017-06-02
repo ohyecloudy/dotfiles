@@ -351,6 +351,18 @@
   (setq org-todo-keywords
         '((sequence "TODO" "|" "DONE" "HALF-DONE")))
 
+  (setq org-tag-alist '((:startgroup . nil)
+                        ("greview" . ?g)
+                        ("jira" . ?j)
+                        ("meeting" . ?m)
+                        ("interview" . ?i)
+                        ("confluence" . ?c)
+                        ("review" . ?r)
+                        (:endgroup . nil)))
+
+  ;; agenda
+  (setq org-agenda-files '("~/Dropbox/org-work/"))
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
