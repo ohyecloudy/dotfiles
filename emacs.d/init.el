@@ -374,7 +374,7 @@
   ;; <h가 #+BEGIN_HTML #+END_HTML에서 #+BEGIN_EXPORT html #+END_EXPORT로 변경됨
   ;; jekyll-org가 지원 안해서 예전으로 되돌림
   (add-to-list 'org-structure-template-alist
-               '("h" "#+BEGIN_HTML\n?\n#+END_HTML")))
+               '("h" "#+BEGIN_HTML\n?\n#+END_HTML"))
 
   ;; plantuml
   (setq org-confirm-babel-evaluate nil)
