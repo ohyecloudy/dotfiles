@@ -17,7 +17,7 @@ BROWNISH_YELLOW='\[\033[33m\]'
 CYAN='\[\033[36m\]'
 NO_COLOR='\[\033[0m\]'
 
-if [[ "$TERM" == "dumb" ]]; then
+if [[ "$TERM" == "dumb" ]] || [[ "$TERM" == "emacs" ]]; then
     PS1=''
 else
     TITLEPREFIX=$MSYSTEM
