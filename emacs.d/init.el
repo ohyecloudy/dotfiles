@@ -387,6 +387,9 @@
   (add-to-list 'org-structure-template-alist
                '("u" "#+BEGIN_SRC plantuml :file ?.png\nskinparam monochrome true\n#+END_SRC")))
 
+;;; cc-mode
+(setq-default c-basic-offset 4)
+
 ;;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
 (defun copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
