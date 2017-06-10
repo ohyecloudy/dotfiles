@@ -358,6 +358,11 @@
                         ("interview" . ?i)
                         ("confluence" . ?c)
                         ("review" . ?r)
+                        (:endgroup . nil)
+                        (:startgroup . nil)
+                        ("blog" . ?b)
+                        ("trivial" . ?t)
+                        ("side-project" . ?s)
                         (:endgroup . nil)))
 
   ;; agenda
