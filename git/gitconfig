@@ -14,6 +14,11 @@
 	delete-merged-branches = "!git co master && git branch --merged | grep -v \\* | xargs -n 1 git branch -d;"
 	unmerged = diff --name-only --diff-filter=U
 	rebase-branches = "!git co master && git branch | grep -v \\\\* | xargs -n 1 git rebase master;"
+	pu = "!f() { \
+		[[ $(git config \"branch.$(git symbolic-ref --short HEAD).merge\") = '' ]] && \
+		git push -u origin $(git symbolic-ref --short HEAD) $@ || \
+		git push $@; \
+		}; f"
 	stsh = stash --keep-index
 	staash = stash --include-untracked
 [pull]
