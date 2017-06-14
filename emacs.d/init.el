@@ -332,6 +332,7 @@
 (use-package org
   :pin org
   :ensure org-plus-contrib
+  :bind (("C-c a" . org-agenda))
   :config
   (require 'ox-confluence)
   (setq org-startup-with-inline-images t)
@@ -366,7 +367,9 @@
                         (:endgroup . nil)))
 
   ;; agenda
-  (setq org-agenda-files '("~/Dropbox/org/"))
+  (setq org-agenda-files '("~/Dropbox/org"
+                           "~/Dropbox/org/work"
+                           "~/Dropbox/org/side"))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
