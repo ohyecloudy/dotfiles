@@ -371,9 +371,9 @@
                         (:endgroup . nil)))
 
   ;; agenda
-  (setq org-agenda-files '("~/Dropbox/org"
-                           "~/Dropbox/org/work"
-                           "~/Dropbox/org/side"))
+  (setq org-agenda-files '("~/org"
+                           "~/org/work"
+                           "~/org/side"))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
