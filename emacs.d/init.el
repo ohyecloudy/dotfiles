@@ -7,9 +7,13 @@
   (set-fontset-font (frame-parameter nil 'font)
                     'hangul
                     '("Apple SD Gothic Neo" . "ios10646-1"))
-  (setq-default line-spacing 1))
+  (setq-default line-spacing 1)
 
-(defun available-font? (font) (member font (font-family-list)))
+  ;; keybinding
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'super))
+
+(Defun available-font? (font) (member font (font-family-list)))
 (when windows?
   ;; font
   (when (available-font? "DejaVu Sans Mono")
