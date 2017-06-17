@@ -367,7 +367,7 @@
                         (:startgroup . nil)
                         ("blog" . ?b)
                         ("trivial" . ?t)
-                        ("side-project" . ?s)
+                        ("sideproject" . ?s)
                         (:endgroup . nil)))
 
   ;; agenda
