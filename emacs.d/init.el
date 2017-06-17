@@ -13,7 +13,7 @@
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'super))
 
-(Defun available-font? (font) (member font (font-family-list)))
+(defun available-font? (font) (member font (font-family-list)))
 (when windows?
   ;; font
   (when (available-font? "DejaVu Sans Mono")
