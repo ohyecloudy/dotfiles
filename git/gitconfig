@@ -25,3 +25,5 @@
 	rebase = true
 [push]
 	default = simple
+[fetch]
+	prune = true
