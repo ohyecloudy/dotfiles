@@ -352,9 +352,8 @@
   ;; https://github.com/pkkm/.emacs.d/blob/master/conf/mode-specific/org.el
   (bind-key [remap org-return] #'org-return-indent org-mode-map)
 
-  ;; 파일 단위로 TODO가 이어질 때 사용할 HALF-DONE 추가
   (setq org-todo-keywords
-        '((sequence "TODO" "|" "DONE" "HALF-DONE")))
+        '((sequence "TODO" "STARTED" "|" "DONE")))
 
   (setq org-tag-alist '((:startgroup . nil)
                         ("greview" . ?g)
