@@ -355,6 +355,9 @@
   (setq org-todo-keywords
         '((sequence "TODO" "STARTED" "|" "DONE")))
 
+  (setq org-todo-keyword-faces
+        '(("STARTED" . (:background "yellow" :weight bold))))
+
   (setq org-tag-alist '((:startgroup . nil)
                         ("greview" . ?g)
                         ("jira" . ?j)
