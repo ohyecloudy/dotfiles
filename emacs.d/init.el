@@ -358,6 +358,21 @@
   (setq org-todo-keyword-faces
         '(("STARTED" . (:background "yellow" :weight bold))))
 
+  ;; http://sachachua.com/blog/2007/12/clocking-time-with-emacs-org/
+  ;; STARTED 키워드로 변경되면 org-clock 시작
+  ;; 또는 org-clock을 시작하면 STARTED 키워드로 변경
+  (progn
+    (defun wicked/org-clock-in-if-starting ()
+      "Clock in when the task is marked STARTED."
+      (when (and (string= org-state "STARTED")
+                 (not (string= org-last-state org-state)))
+        (org-clock-in)))
+    (add-hook 'org-after-todo-state-change-hook
+              'wicked/org-clock-in-if-starting)
+    (defadvice org-clock-in (after wicked activate)
+      "Set this task's status to 'STARTED'."
+      (org-todo "STARTED")))
+
   (setq org-tag-alist '((:startgroup . nil)
                         ("greview" . ?g)
                         ("jira" . ?j)
