@@ -416,6 +416,12 @@
   (add-to-list 'org-structure-template-alist
                '("u" "#+BEGIN_SRC plantuml :file ?.png\nskinparam monochrome true\n#+END_SRC")))
 
+;;; https://github.com/krisajenkins/ob-translate
+(use-package ob-translate
+  :ensure t
+  :config
+  (setq ob-translate:default-dest "ko"))
+
 ;;; cc-mode
 (setq-default c-basic-offset 4)
 
@@ -436,4 +442,4 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ob-http org-plus-contrib helm magit yaml-mode ranger smart-mode-line elpy markdown-mode solarized-theme evil-visualstar evil-matchit evil use-package))))
+    (ob-translate org-plus-contrib ob-http helm-company helm magit yaml-mode ranger smart-mode-line elpy markdown-mode solarized-theme evil-visualstar evil-matchit evil use-package))))
