@@ -422,6 +422,9 @@
   :config
   (setq ob-translate:default-dest "ko"))
 
+;;; https://github.com/clojure-emacs/clojure-mode
+(use-package clojure-mode :ensure t)
+
 ;;; cc-mode
 (setq-default c-basic-offset 4)
 
