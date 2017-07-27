@@ -87,6 +87,7 @@
   (evil-set-initial-state 'git-rebase-mode 'emacs)
   (evil-set-initial-state 'finder-mode 'emacs)
   (evil-set-initial-state 'Man-mode 'emacs)
+  (evil-set-initial-state 'helm-ag-mode 'emacs)
   (setq-default evil-symbol-word-search t)
 
   ;; http://blog.binchen.org/posts/auto-complete-word-in-emacs-mini-buffer-when-using-evil.html
@@ -180,7 +181,50 @@
   (setq helm-split-window-in-side-p t)
   :config
   (helm-mode 1)
-  (helm-autoresize-mode 1))
+  (helm-autoresize-mode 1)
+
+  (when windows?
+    ;; helm-ag 명령어 실행시 hang
+    ;; 해결은 아니라 delay를 줘서 회피하는 반창고
+    ;; https://github.com/syohex/emacs-helm-ag/issues/188
+    (setq helm-input-idle-delay 0.1)
+    (setq helm-cycle-resume-delay 2)
+    (setq helm-follow-input-idle-delay 1)))
+
+;;; https://github.com/syohex/emacs-helm-ag
+(use-package helm-ag
+  :ensure t
+  :config
+
+  ;; windows에서만 문제가 발생
+  (when windows?
+    ;; mingw64/mingw-w64-x86_64-ag 2.0.0.r1912.ccdbe93-1 사용시
+    ;; 한글 검색이 안 된다. grep, rip 모두 잘 되는 걸로 봐서는 패키지를 의심
+    ;; helm-ag 패키지로도 사용할 수 있는 ripgrep을 사용한다.
+    ;; https://github.com/BurntSushi/ripgrep
+    ;; macOS에서도 ag 대신 ripgrep을 사용할지는 고민 중.
+    (setq helm-ag-base-command "rg --no-heading --vimgrep")
+
+    ;; helm-do-ag 처럼 process로 한글 인자를 넘길 때, encoding 문제를 해결하기 위해
+    ;; 내부 동작을 정확히 파악하지 못했다.
+    ;;
+    ;; cp949일 때
+    ;; - (korean-iso-8bit-dos . korean-iso-8bit-unix)
+    ;; - 출력은 깨지지만 입력은 process로 제대로 전달된다.
+    ;; utf-8일 때
+    ;; - (utf-8-dos . utf-8-unix)
+    ;; - 입력은 깨지지만 출력은 제대로 된다.
+    ;;
+    ;; 둘을 조합했다.
+    ;; 다른 건 utf-8로 잘 동작하니 helm-do-ag 실행할 때만 프로세스 인코딩을 변경한다
+    (advice-add 'helm-do-ag
+                :before (lambda (&rest _)
+                          (setq default-process-coding-system
+                                '(utf-8-dos . korean-iso-8bit-unix))))
+    (advice-add 'helm-do-ag
+                :after (lambda (&rest _)
+                         (setq default-process-coding-system
+                               '(utf-8-dos . utf-8-unix))))))
 
 ;;; http://company-mode.github.io/
 (use-package company
