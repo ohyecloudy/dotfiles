@@ -382,7 +382,6 @@
   :ensure org-plus-contrib
   :bind (("C-c a" . org-agenda))
   :config
-  (require 'ox-confluence)
   (setq org-startup-with-inline-images t)
   ;; org keyword를 company 모드 completion에 추가함
   ;; https://emacs.stackexchange.com/a/21173
@@ -472,6 +471,10 @@
 
 ;;; cc-mode
 (setq-default c-basic-offset 4)
+
+;;; local package
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(require 'my-ox-confluence)
 
 ;;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
 (defun copy-file-name-to-clipboard ()
