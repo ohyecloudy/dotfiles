@@ -421,6 +421,7 @@
                         ("interview" . ?i)
                         ("confluence" . ?c)
                         ("review" . ?r)
+                        ("til" . ?l)
                         (:endgroup . nil)
                         (:startgroup . nil)
                         ("blog" . ?b)
