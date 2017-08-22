@@ -261,6 +261,9 @@
        (define-key company-mode-map (kbd "C-:") 'helm-company)
        (define-key company-active-map (kbd "C-:") 'helm-company))))
 
+;;; https://github.com/Kitware/CMake
+(use-package cmake-mode :ensure t)
+
 (setq show-paren-display 0)
 (show-paren-mode t)
 
