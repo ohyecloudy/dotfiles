@@ -80,7 +80,7 @@
 (defun org-confluence-example-block (example-block contents info)
   ;; FIXME: provide a user-controlled variable for theme
   (let ((content (org-export-format-code-default example-block info)))
-    (org-confluence--block "none" "Confluence" content)))
+    (org-confluence--block "none" "Emacs" content)))
 
 (defun org-confluence-italic (italic contents info)
   (format "_%s_" contents))
@@ -104,7 +104,7 @@
 (defun org-confluence-fixed-width (fixed-width contents info)
   (org-confluence--block
    "none"
-   "Confluence"
+   "Emacs"
    (org-trim (org-element-property :value fixed-width))))
 
 (defun org-confluence-verbatim (verbatim contents info)
