@@ -470,7 +470,8 @@
 (use-package clojure-mode :ensure t)
 
 ;;; cc-mode
-(setq-default c-basic-offset 4)
+(setq-default c-default-style "bsd"
+              c-basic-offset 4)
 
 ;;; local package
 (add-to-list 'load-path "~/.emacs.d/lisp/")
