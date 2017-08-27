@@ -144,7 +144,10 @@
   (setq sml/show-eol t) ;; show end-of-line. ex) CRLF(dos)
   (setq sml/theme 'respectful)
   (sml/setup)
-  (add-to-list 'sml/replacer-regexp-list '("^c:/work/" ":Dev:") t))
+  (add-to-list 'sml/replacer-regexp-list '("^c:/work/" ":Dev:") t)
+  (add-to-list 'rm-blacklist " WS" t)
+  (add-to-list 'rm-blacklist " Undo-Tree" t)
+  (add-to-list 'rm-blacklist " Wrap" t))
 
 ;;; https://github.com/ralesi/ranger.el
 (use-package ranger
