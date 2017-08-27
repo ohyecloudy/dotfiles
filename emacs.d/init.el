@@ -416,6 +416,19 @@
       "Set this task's status to 'STARTED'."
       (org-todo "STARTED")))
 
+  ;; org-set-effort 함수 실행 시 나오는 preset 리스트
+  (setq org-global-properties
+        '(("Effort_ALL" .
+           "1:00 2:00 3:00 4:00 8:00 16:00 24:00 32:00 40:00 0:30")))
+  ;; hotkey 1    2    3    4    5    6     7     8     9     0
+
+  ;; org-columns에서 effort를 볼 수 있게 추가
+  (setq org-columns-default-format "%50ITEM(Task) %10Effort{:} %10CLOCKSUM")
+
+  ;; org-clock-report 기본 프로퍼티
+  (setq org-clock-clocktable-default-properties
+        '(:maxlevel 2 :scope file :properties ("effort")))
+
   (setq org-tag-alist '((:startgroup . nil)
                         ("greview" . ?g)
                         ("jira" . ?j)
