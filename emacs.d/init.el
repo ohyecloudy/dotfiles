@@ -419,6 +419,14 @@
       "Set this task's status to 'STARTED'."
       (org-todo "STARTED")))
 
+  ;; org-clock persistence 설정. 컴퓨터 꺼도 emacs 시계는 굴러간다.
+  ;; https://writequit.org/denver-emacs/presentations/2017-04-11-time-clocking-with-org.html
+  (progn
+    (org-clock-persistence-insinuate)
+    (setq org-clock-persist t)
+    (setq org-clock-in-resume t)
+    (setq org-clock-persist-query-resume nil))
+
   ;; org-set-effort 함수 실행 시 나오는 preset 리스트
   (setq org-global-properties
         '(("Effort_ALL" .
