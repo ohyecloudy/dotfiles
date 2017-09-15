@@ -383,7 +383,8 @@
 (use-package org
   :pin org
   :ensure org-plus-contrib
-  :bind (("C-c a" . org-agenda))
+  :bind (("C-c a" . org-agenda)
+         ("C-c c" . org-capture))
   :config
   (setq org-startup-with-inline-images t)
   ;; org keyword를 company 모드 completion에 추가함
@@ -459,6 +460,14 @@
   (setq org-agenda-files '("~/org"
                            "~/org/work"
                            "~/org/side"))
+
+  ;; capture
+  (setq org-capture-templates
+        '(("j"
+           "Journal"
+           entry
+           (file+datetree+prompt (format-time-string "~/journal/%B.org"))
+           "* %?")))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
