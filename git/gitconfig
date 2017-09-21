@@ -27,3 +27,5 @@
 	default = simple
 [fetch]
 	prune = true
+[magit]
+	hideCampaign = true
