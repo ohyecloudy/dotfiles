@@ -14,12 +14,14 @@
   (setq mac-option-modifier 'super))
 
 (defun available-font? (font) (member font (font-family-list)))
+
+;; | 12345678 |   |
+;; |----------+---|
+;; | 일이삼사 |   |
 (when windows?
-  ;; font
-  (when (available-font? "DejaVu Sans Mono")
-    (set-face-attribute 'default nil
-                        :font "Dejavu Sans Mono-11"
-                        :weight `normal)
+  (when (available-font? "Consolas")
+    (set-frame-font "Consolas-13" nil t)
+    (set-fontset-font t 'hangul (font-spec :name "Batangche"))
     (setq-default line-spacing 3)))
 
 ;; 한글
