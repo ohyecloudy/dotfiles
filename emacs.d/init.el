@@ -120,6 +120,13 @@
 ;;; https://github.com/bbatsov/solarized-emacs
 (use-package solarized-theme
   :ensure t
+  :init
+  ;; org에서 커진 한글 폰트가 너무 안 예뻐서
+  (setq solarized-height-minus-1 1.0)
+  (setq solarized-height-plus-1 1.0)
+  (setq solarized-height-plus-2 1.0)
+  (setq solarized-height-plus-3 1.0)
+  (setq solarized-height-plus-4 1.0)
   :config
   (load-theme 'solarized-light 'NO-CONFIRM))
 
