@@ -510,6 +510,9 @@
   :config
   (setq ob-translate:default-dest "ko"))
 
+;;; https://github.com/larstvei/ox-gfm
+(use-package ox-gfm :ensure t)
+
 ;;; https://github.com/clojure-emacs/clojure-mode
 (use-package clojure-mode :ensure t)
 
