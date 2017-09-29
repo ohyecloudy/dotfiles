@@ -389,6 +389,9 @@
 ;;; https://github.com/zweifisch/ob-http
 (use-package ob-http :ensure t)
 
+;;; https://github.com/zweifisch/ob-elixir
+(use-package ob-elixir :ensure t)
+
 (use-package org
   :pin org
   :ensure org-plus-contrib
@@ -486,6 +489,7 @@
      (plantuml . t)
      (python . t)
      (http . t)
+     (elixir . t)
      (C . t)))
 
   ;; <h가 #+BEGIN_HTML #+END_HTML에서 #+BEGIN_EXPORT html #+END_EXPORT로 변경됨
