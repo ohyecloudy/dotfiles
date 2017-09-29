@@ -437,6 +437,9 @@
     (setq org-clock-in-resume t)
     (setq org-clock-persist-query-resume nil))
 
+  ;; 자리비움 감지 기준
+  (setq org-clock-idle-time 15)
+
   ;; org-set-effort 함수 실행 시 나오는 preset 리스트
   (setq org-global-properties
         '(("Effort_ALL" .
