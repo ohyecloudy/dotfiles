@@ -516,6 +516,9 @@
 ;;; https://github.com/clojure-emacs/clojure-mode
 (use-package clojure-mode :ensure t)
 
+;;; https://github.com/elixir-editors/emacs-elixir
+(use-package elixir-mode :ensure t)
+
 ;;; cc-mode
 (setq-default c-default-style "bsd"
               c-basic-offset 4)
