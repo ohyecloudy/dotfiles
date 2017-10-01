@@ -90,6 +90,8 @@
   (evil-set-initial-state 'finder-mode 'emacs)
   (evil-set-initial-state 'Man-mode 'emacs)
   (evil-set-initial-state 'helm-ag-mode 'emacs)
+  (evil-set-initial-state 'ert-results-mode 'emacs)
+  (evil-set-initial-state 'ert-simple-view-mode 'emacs)
   (setq-default evil-symbol-word-search t)
 
   ;; http://blog.binchen.org/posts/auto-complete-word-in-emacs-mini-buffer-when-using-evil.html
