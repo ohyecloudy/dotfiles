@@ -539,6 +539,9 @@
 ;;; https://github.com/elixir-editors/emacs-elixir
 (use-package elixir-mode :ensure t)
 
+;;; https://github.com/rejeep/el-mock.el
+(use-package el-mock :ensure t)
+
 ;;; cc-mode
 (setq-default c-default-style "bsd"
               c-basic-offset 4)
