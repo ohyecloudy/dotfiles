@@ -246,8 +246,7 @@
   :ensure t
   :config
   (projectile-mode)
-  (when windows?
-    (setq projectile-indexing-method 'alien)))
+  (setq projectile-indexing-method 'alien))
 
 ;;; https://github.com/bbatsov/helm-projectile
 (use-package helm-projectile
