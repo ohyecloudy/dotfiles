@@ -241,6 +241,20 @@
                          (setq default-process-coding-system
                                '(utf-8-dos . utf-8-unix))))))
 
+;;; https://github.com/bbatsov/projectile
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode)
+  (when windows?
+    (setq projectile-indexing-method 'alien)))
+
+;;; https://github.com/bbatsov/helm-projectile
+(use-package helm-projectile
+  :ensure t
+  :config
+  (helm-projectile-on))
+
 ;;; http://company-mode.github.io/
 (use-package company
   :ensure t
