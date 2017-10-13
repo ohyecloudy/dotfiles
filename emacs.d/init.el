@@ -246,6 +246,7 @@
   :ensure t
   :config
   (projectile-mode)
+  (setq projectile-enable-caching t)
   (setq projectile-indexing-method 'alien))
 
 ;;; https://github.com/bbatsov/helm-projectile
