@@ -497,7 +497,7 @@
         '(("j"
            "Journal"
            entry
-           (file+datetree+prompt (format-time-string "~/journal/%B.org"))
+           (file+datetree+prompt (format-time-string "~/journal/journal.org"))
            "* %?")))
 
   (org-babel-do-load-languages
