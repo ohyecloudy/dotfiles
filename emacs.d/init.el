@@ -82,6 +82,9 @@
 (setq evil-want-C-u-scroll t) ;; :init에 넣어도 동작 안 함 Evil version 1.2.12
 (use-package evil
   :ensure t
+  ;; 쓰지 않는 키바인딩. alchemist-mode에서 사용하려고 unbinding
+  :bind (:map evil-normal-state-map
+         ("M-." . nil) ("M-," . nil))
   :config
   (evil-mode t)
   (evil-set-initial-state 'calendar-mode 'emacs)
@@ -93,6 +96,10 @@
   (evil-set-initial-state 'ert-results-mode 'emacs)
   (evil-set-initial-state 'ert-simple-view-mode 'emacs)
   (evil-set-initial-state 'process-menu-mode 'emacs)
+  (evil-set-initial-state 'alchemist-mix-mode 'emacs)
+  (evil-set-initial-state 'alchemist-hex-mode 'emacs)
+  (evil-set-initial-state 'alchemist-help-minor-mode 'emacs)
+  (evil-set-initial-state 'alchemist-test-report-mode 'emacs)
   (setq-default evil-symbol-word-search t)
 
   ;; http://blog.binchen.org/posts/auto-complete-word-in-emacs-mini-buffer-when-using-evil.html
@@ -159,6 +166,7 @@
   (add-to-list 'sml/replacer-regexp-list '("^c:/work/" ":Dev:") t)
   (add-to-list 'rm-blacklist " WS" t)
   (add-to-list 'rm-blacklist " Undo-Tree" t)
+  (add-to-list 'rm-blacklist " alchemist" t)
   (add-to-list 'rm-blacklist " Wrap" t))
 
 ;;; https://github.com/ralesi/ranger.el
@@ -546,6 +554,9 @@
 ;;; https://github.com/elixir-editors/emacs-elixir
 (use-package elixir-mode :ensure t)
 
+;;; https://github.com/tonini/alchemist.el
+(use-package alchemist :ensure t)
+
 ;;; https://github.com/rejeep/el-mock.el
 (use-package el-mock :ensure t)
 
@@ -574,4 +585,4 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ob-translate org-plus-contrib ob-http helm-company helm magit yaml-mode ranger smart-mode-line elpy markdown-mode solarized-theme evil-visualstar evil-matchit evil use-package))))
+    (alchemist ob-translate org-plus-contrib ob-http helm-company helm magit yaml-mode ranger smart-mode-line elpy markdown-mode solarized-theme evil-visualstar evil-matchit evil use-package))))
