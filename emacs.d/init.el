@@ -226,7 +226,7 @@
     ;; helm-ag 패키지로도 사용할 수 있는 ripgrep을 사용한다.
     ;; https://github.com/BurntSushi/ripgrep
     ;; macOS에서도 ag 대신 ripgrep을 사용할지는 고민 중.
-    (setq helm-ag-base-command "rg --no-heading --vimgrep")
+    (setq helm-ag-base-command "rg -i --no-heading --vimgrep")
 
     ;; helm-do-ag 처럼 process로 한글 인자를 넘길 때, encoding 문제를 해결하기 위해
     ;; 내부 동작을 정확히 파악하지 못했다.
