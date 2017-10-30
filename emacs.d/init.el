@@ -201,7 +201,7 @@
          ("C-x b" . helm-mini)
          ("C-x C-f" . helm-find-files))
   :init
-  (setq helm-split-window-in-side-p t)
+  (setq helm-split-window-inside-p t)
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
