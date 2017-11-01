@@ -190,7 +190,10 @@
             (lambda ()
               (if magit-blame-mode
                   (evil-emacs-state 1)
-                (evil-normal-state 1)))))
+                (evil-normal-state 1))))
+  ;; commit message 편집하는 버퍼가 열리면 evil-emacs-state로 켜짐
+  ;; Magit 20171031.1141, Git 2.14.1.windows.1, Emacs 25.2.1, windows-nt
+  (add-hook 'git-commit-setup-hook (lambda () (evil-normal-state 1))))
 
 ;;; https://github.com/emacs-helm/helm
 (use-package helm
