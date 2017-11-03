@@ -482,6 +482,9 @@
            "1:00 2:00 3:00 4:00 8:00 16:00 24:00 32:00 40:00 0:30")))
   ;; hotkey 1    2    3    4    5    6     7     8     9     0
 
+  ;; 기간 포맷으로 시간:분 사용. 24시가 넘어갈 때, 1d로 표현하는 게 보기 싫어서
+  (setq org-duration-format (quote h:mm))
+
   ;; org-columns에서 effort를 볼 수 있게 추가
   (setq org-columns-default-format "%50ITEM(Task) %10Effort{:} %10CLOCKSUM")
 
