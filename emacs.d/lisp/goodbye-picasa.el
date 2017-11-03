@@ -78,5 +78,25 @@
                          (not (string-match "-02" path)))))
            (list "b-01" "b-03" "b-04"))))
 
+(defun bye-picasa--img-src-dest-lists (path contents file-exist?)
+  (let* (img-src-list (bye-picasa--extract-picasa-images-url contents))
+    img-src-list))
+
+(ert-deftest bye-picasa--img-src-dest-lists-test ()
+  (let* ((img-src-1 "https://lh5.googleusercontent.com/-AZbhW9g5lyo/TxuF05Ay8II/AAAAAAAAKLI/M1Z6xKzULpE/s640/thumbnail1.jpg")
+         (img-src-2 "https://lh5.googleusercontent.com/-1Txefxmwfdg/TxuFylM_MCI/AAAAAAAAKLA/WANDTRNQdgY/s640/thumbnail-1.png")
+         (test-buffer (concat "[[" img-src-1 "][test]]\n"
+                              "a href=\"" img-src-2 "\">"))
+         (test-file-base "~/project/lifelog/_posts/2009-02-08-523")
+         (test-path (concat test-file-base ".org"))
+         (file-exist '(lambda (path) (and
+                         (not (string-match "-01" path))
+                         (not (string-match "-02" path))))))
+    (should (equal
+             (bye-picasa--img-src-dest-lists test-path test-buffer file-exist)
+             (list
+              (list img-src-1 (concat test-file-base "-00.jpg"))
+              (list img-src-2 (concat test-file-base "-03.png")))))))
+
 ;;; TODO 이미지 패스에서 확장자 추출하고 full-img-path로 실제 다운로드 받을 이미지 경로 추출
 ;;; TODO full-img-path 이건 헷갈린다. 어차피 img 라서. dest와 source path로 구분하자
