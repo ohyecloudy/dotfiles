@@ -202,11 +202,22 @@
   :bind (("M-x" . helm-M-x)
          ("C-x C-m" . helm-M-x)
          ("C-x b" . helm-mini)
-         ("C-x C-f" . helm-find-files))
-  :init
-  (setq helm-split-window-inside-p t)
+         ("C-x C-f" . helm-find-files)
+         ("C-c h s" . helm-do-ag)
+         ("C-c h o" . helm-occur))
   :config
-  (helm-mode 1)
+  (require 'helm-config)
+  ;; http://tuhdo.github.io/helm-intro.html 권고에 따라 키 바꿈 C-x C-c 실수에 동의
+  (progn
+    (global-set-key (kbd "C-c h") 'helm-command-prefix)
+    (global-unset-key (kbd "C-x c")))
+
+  (setq helm-split-window-inside-p t
+        helm-move-to-line-cycle-in-source t
+        helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t
+        helm-apropos-fuzzy-match t)
   (helm-autoresize-mode 1)
 
   (when windows?
@@ -215,7 +226,9 @@
     ;; https://github.com/syohex/emacs-helm-ag/issues/188
     (setq helm-input-idle-delay 0.1)
     (setq helm-cycle-resume-delay 2)
-    (setq helm-follow-input-idle-delay 1)))
+    (setq helm-follow-input-idle-delay 1))
+
+  (helm-mode 1))
 
 ;;; https://github.com/syohex/emacs-helm-ag
 (use-package helm-ag
