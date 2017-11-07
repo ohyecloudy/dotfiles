@@ -258,12 +258,7 @@
   :config
   (projectile-mode)
   (setq projectile-enable-caching t)
-  (setq projectile-indexing-method 'alien)
-  ;; Projectile 20171009.848 버전에서 projectile-mode가 켜졌을 때, 느려짐
-  ;; https://github.com/bbatsov/projectile/issues/1183
-  (setq projectile-mode-line
-        '(:eval (format " Projectile[%s]"
-                        (projectile-project-name)))))
+  (setq projectile-indexing-method 'alien))
 
 ;;; https://github.com/bbatsov/helm-projectile
 (use-package helm-projectile
