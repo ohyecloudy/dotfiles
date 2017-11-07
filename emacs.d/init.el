@@ -264,7 +264,19 @@
 (use-package helm-projectile
   :ensure t
   :config
-  (helm-projectile-on))
+  (helm-projectile-on)
+
+  ;; windows에서는 ag대신 ripgrep을 사용.
+  ;; --ignore 옵션이 하드코딩돼서 ripgrep을 사용 못함
+  ;; projectile 0.14.0
+  (when windows?
+    (advice-add 'helm-do-ag
+                :before (lambda (&rest _)
+                          (setq helm-ag-base-command
+                                (replace-regexp-in-string
+                                 "--ignore.*"
+                                 ""
+                                 helm-ag-base-command))))))
 
 ;;; http://company-mode.github.io/
 (use-package company
