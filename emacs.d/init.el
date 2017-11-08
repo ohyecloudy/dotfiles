@@ -202,15 +202,16 @@
   :bind (("M-x" . helm-M-x)
          ("C-x C-m" . helm-M-x)
          ("C-x b" . helm-mini)
-         ("C-x C-f" . helm-find-files)
-         ("C-c h s" . helm-do-ag)
-         ("C-c h o" . helm-occur))
+         ("C-x C-f" . helm-find-files))
   :config
   (require 'helm-config)
   ;; http://tuhdo.github.io/helm-intro.html 권고에 따라 키 바꿈 C-x C-c 실수에 동의
   (progn
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-unset-key (kbd "C-x c")))
+  (progn
+    (global-set-key (kbd "C-c h s") 'helm-do-ag)
+    (global-set-key (kbd "C-c h o") 'helm-occur))
 
   (setq helm-split-window-inside-p t
         helm-move-to-line-cycle-in-source t
