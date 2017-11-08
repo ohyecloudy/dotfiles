@@ -214,7 +214,6 @@
     (global-set-key (kbd "C-c h o") 'helm-occur))
 
   (setq helm-split-window-inside-p t
-        helm-move-to-line-cycle-in-source t
         helm-M-x-fuzzy-match t
         helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match t
