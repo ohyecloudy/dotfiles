@@ -585,6 +585,9 @@
 ;;; https://github.com/rejeep/el-mock.el
 (use-package el-mock :ensure t)
 
+;;; https://github.com/josteink/csharp-mode
+(use-package csharp-mode :ensure t)
+
 ;;; cc-mode
 (setq-default c-default-style "bsd"
               c-basic-offset 4)
