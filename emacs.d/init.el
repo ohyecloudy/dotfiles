@@ -83,8 +83,12 @@
 (use-package evil
   :ensure t
   ;; 쓰지 않는 키바인딩. alchemist-mode에서 사용하려고 unbinding
-  :bind (:map evil-normal-state-map
-         ("M-." . nil) ("M-," . nil))
+  :bind (:map
+         evil-normal-state-map
+         ("M-." . nil) ("M-," . nil)
+         :map
+         evil-emacs-state-map
+         ("C-w" . evil-window-map))
   :config
   (evil-mode t)
   (evil-set-initial-state 'calendar-mode 'emacs)
