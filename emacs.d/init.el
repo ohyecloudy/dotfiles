@@ -584,7 +584,15 @@
 (use-package elixir-mode :ensure t)
 
 ;;; https://github.com/tonini/alchemist.el
-(use-package alchemist :ensure t)
+(use-package alchemist
+  :ensure t
+  :config
+  (add-hook 'alchemist-mode-hook
+            (lambda ()
+              (when alchemist-mode
+                (message "alchemist-mode")
+                (define-key evil-motion-state-local-map
+                  (kbd "g d") 'alchemist-goto-definition-at-point)))))
 
 ;;; https://github.com/rejeep/el-mock.el
 (use-package el-mock :ensure t)
