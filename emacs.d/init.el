@@ -80,15 +80,15 @@
 ;;; evil
 ;;; https://www.emacswiki.org/emacs/Evil
 (setq evil-want-C-u-scroll t) ;; :init에 넣어도 동작 안 함 Evil version 1.2.12
+(setq evil-want-C-w-in-emacs-state t) ;; :init, :config 넣어도 동작 안 함
 (use-package evil
   :ensure t
   ;; 쓰지 않는 키바인딩. alchemist-mode에서 사용하려고 unbinding
   :bind (:map
          evil-normal-state-map
-         ("M-." . nil) ("M-," . nil)
-         :map
-         evil-emacs-state-map
-         ("C-w" . evil-window-map))
+         ("M-." . nil) ("M-," . nil))
+  :init
+  (setq evil-want-C-w-delete nil)
   :config
   (evil-mode t)
   (evil-set-initial-state 'calendar-mode 'emacs)
