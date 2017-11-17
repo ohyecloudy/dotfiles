@@ -224,14 +224,6 @@
         helm-apropos-fuzzy-match t)
   (helm-autoresize-mode 1)
 
-  (when windows?
-    ;; helm-ag 명령어 실행시 hang
-    ;; 해결은 아니라 delay를 줘서 회피하는 반창고
-    ;; https://github.com/syohex/emacs-helm-ag/issues/188
-    (setq helm-input-idle-delay 0.1)
-    (setq helm-cycle-resume-delay 2)
-    (setq helm-follow-input-idle-delay 1))
-
   (helm-mode 1))
 
 ;;; https://github.com/syohex/emacs-helm-ag
