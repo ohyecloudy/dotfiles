@@ -448,7 +448,10 @@
   :pin org
   :ensure org-plus-contrib
   :bind (("C-c a" . org-agenda)
-         ("C-c c" . org-capture))
+         ("C-c c" . org-capture)
+         :map
+         org-mode-map
+         ("C-a" . nil)) ; universal-argument 키바인딩 때문
   :config
   (setq org-startup-with-inline-images t)
   ;; org keyword를 company 모드 completion에 추가함
