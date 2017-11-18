@@ -605,6 +605,9 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (require 'my-ox-confluence)
 
+;; C-u 키바인딩을 evil에게 양보하고 가장 그럴듯한 키바인딩을 사용
+(global-set-key (kbd "C-a") 'universal-argument)
+
 ;;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
 (defun copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
