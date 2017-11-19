@@ -1,4 +1,5 @@
 (require 'el-mock)
+(require 'cl-lib)
 
 (defun goodbye-picasa (filename)
   ;; 다운로드할 picasa 주소 추출
@@ -19,7 +20,7 @@
               nil
               t)
         (add-to-list 'url-list (match-string 1)))
-      url-list)))
+      (reverse url-list))))
 
 (ert-deftest bye-picasa--extract-picasa-images-url-test ()
   (let* ((to-extract-1 "https://lh5.googleusercontent.com/-1Txefxmwfdg/TxuFylM_MCI/AAAAAAAAKLA/WANDTRNQdgY/s640/thumbnail-1.jpg")
@@ -74,13 +75,20 @@
             "b-"
             3
             '(lambda (path) (and
-                         (not (string-match "-00" path))
-                         (not (string-match "-02" path)))))
+                         (not (string-match "-00$" path))
+                         (not (string-match "-02$" path)))))
            (list "b-01" "b-03" "b-04"))))
 
 (defun bye-picasa--img-src-dest-lists (path contents file-exist?)
-  (let* (img-src-list (bye-picasa--extract-picasa-images-url contents))
-    img-src-list))
+  (let* ((img-src-list (bye-picasa--extract-picasa-images-url contents))
+         (base-path (bye-picasa--make-img-base-path path))
+         (dest-path-list (bye-picasa--full-img-path base-path
+                                                    (length img-src-list)
+                                                    file-exist?)))
+    (cl-mapcar '(lambda (src dest)
+                  (list src (concat dest "." (file-name-extension src))))
+               img-src-list
+               dest-path-list)))
 
 (ert-deftest bye-picasa--img-src-dest-lists-test ()
   (let* ((img-src-1 "https://lh5.googleusercontent.com/-AZbhW9g5lyo/TxuF05Ay8II/AAAAAAAAKLI/M1Z6xKzULpE/s640/thumbnail1.jpg")
@@ -88,15 +96,15 @@
          (test-buffer (concat "[[" img-src-1 "][test]]\n"
                               "a href=\"" img-src-2 "\">"))
          (test-file-base "~/project/lifelog/_posts/2009-02-08-523")
+         (test-file-asset-base "~/project/lifelog/assets/2009-02-08-523")
          (test-path (concat test-file-base ".org"))
          (file-exist '(lambda (path) (and
-                         (not (string-match "-01" path))
-                         (not (string-match "-02" path))))))
+                         (not (string-match "-01$" path))
+                         (not (string-match "-02$" path))))))
     (should (equal
              (bye-picasa--img-src-dest-lists test-path test-buffer file-exist)
              (list
-              (list img-src-1 (concat test-file-base "-00.jpg"))
-              (list img-src-2 (concat test-file-base "-03.png")))))))
+              (list img-src-1 (concat test-file-asset-base "-00.jpg"))
+              (list img-src-2 (concat test-file-asset-base "-03.png")))))))
 
-;;; TODO 이미지 패스에서 확장자 추출하고 full-img-path로 실제 다운로드 받을 이미지 경로 추출
-;;; TODO full-img-path 이건 헷갈린다. 어차피 img 라서. dest와 source path로 구분하자
+;; TODO full-img-path 이건 헷갈린다. 어차피 img 라서. dest와 source path로 구분하자
