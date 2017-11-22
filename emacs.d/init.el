@@ -588,7 +588,6 @@
   (add-hook 'alchemist-mode-hook
             (lambda ()
               (when alchemist-mode
-                (message "alchemist-mode")
                 (define-key evil-motion-state-local-map
                   (kbd "g d") 'alchemist-goto-definition-at-point)))))
 
