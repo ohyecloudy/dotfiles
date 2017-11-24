@@ -106,7 +106,18 @@
   (evil-set-initial-state 'alchemist-test-report-mode 'emacs)
   (setq-default evil-symbol-word-search t)
 
-  ;; http://blog.binchen.org/posts/auto-complete-word-in-emacs-mini-buffer-when-using-evil.html
+  (add-hook 'emacs-lisp-mode-hook
+            #'(lambda ()
+                (modify-syntax-entry ?_ "w")
+                (modify-syntax-entry ?- "w")))
+  (add-hook 'c-mode-common-hook
+            #'(lambda () (modify-syntax-entry ?_ "w")))
+  (add-hook 'elixir-mode-hook
+            #'(lambda ()
+                (modify-syntax-entry ?_ "w")
+                (modify-syntax-entry ?_ ":")))
+
+  ;; Http://blog.binchen.org/posts/auto-complete-word-in-emacs-mini-buffer-when-using-evil.html
   ;; / 문자를 Punctuation characters로 변경함
   ;; %s/old/new/g 입력할 때, M-/ 누르면 자동완성 된다.
   (defun minibuffer-inactive-mode-hook-setup ()
