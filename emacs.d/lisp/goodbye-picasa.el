@@ -1,12 +1,30 @@
 (require 'el-mock)
 (require 'cl-lib)
 
-(defun goodbye-picasa (filename)
-  ;; 다운로드할 picasa 주소 추출
-  ;; 해당 주소를 대체할 local path 생성
-  ;; 다운로드
-  ;; 버퍼에서 picasa 주소를 local path로 대체
-  )
+(defun goodbye-picasa ()
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (with-temp-file filename
+      (insert-file-contents filename)
+      (let* ((file-exist '(lambda (path)
+                            (and
+                             (not (file-exists-p (concat path ".png")))
+                             (not (file-exists-p (concat path ".jpg"))))))
+             (src-dest-list (bye-picasa--img-src-dest-lists
+                             filename
+                             (buffer-string)
+                             file-exist)))
+        (message "goodbye picasa - %s" filename)
+        (dolist (elem src-dest-list)
+          (let ((src-path (car elem))
+                (dst-path (cadr elem)))
+            (message "  downloading - %s -> %s" src-path dst-path)
+            (url-copy-file src-path dst-path)
+            (goto-char (point-min))
+            (while (search-forward src-path nil t)
+              (replace-match (concat
+                              "{{ site.asseturl }}/"
+                              (file-name-nondirectory dst-path))))))))))
 
 ;; 이걸 string이나 혹은 file로 바꾸고 싶은데, 가능하나?
 (defun bye-picasa--extract-picasa-images-url (string)
@@ -16,7 +34,7 @@
     (let ((case-fold-search nil)
           (url-list ()))
       (while (search-forward-regexp
-              "\\([^][ \"\']*googleusercontent[^][ \"\']*\\)"
+              "\\([^][ \"\'\(]*googleusercontent[^][ \"\'\)]*\\)"
               nil
               t)
         (add-to-list 'url-list (match-string 1)))
