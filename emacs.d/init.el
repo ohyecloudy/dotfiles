@@ -631,3 +631,15 @@
     (when filename
       (kill-new filename)
       (message "Copied buffer file name '%s' to the clipboard." filename))))
+
+(defun unity-open-editor-log ()
+  (interactive)
+  (let ((path (format "C:/Users/%s/AppData/Local/Unity/Editor/Editor.log"
+                      (getenv "USERNAME"))))
+    (if (file-exists-p path)
+        (progn
+          (find-file path)
+          (auto-revert-tail-mode 1)
+          (read-only-mode 1)
+          (goto-char (point-max)))
+      (message (concat "log file not found - " path)))))
