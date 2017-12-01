@@ -115,7 +115,8 @@
   (add-hook 'elixir-mode-hook
             #'(lambda ()
                 (modify-syntax-entry ?_ "w")
-                (modify-syntax-entry ?_ ":")))
+                (modify-syntax-entry ?: ".")
+                (modify-syntax-entry ?% ".")))
 
   ;; Http://blog.binchen.org/posts/auto-complete-word-in-emacs-mini-buffer-when-using-evil.html
   ;; / 문자를 Punctuation characters로 변경함
