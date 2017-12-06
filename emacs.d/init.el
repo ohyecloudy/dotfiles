@@ -606,6 +606,9 @@
 ;;; https://github.com/rejeep/el-mock.el
 (use-package el-mock :ensure t)
 
+;;; https://github.com/joshwnj/json-mode
+(use-package json-mode :ensure t)
+
 ;;; https://github.com/josteink/csharp-mode
 (use-package csharp-mode
   :if windows?
