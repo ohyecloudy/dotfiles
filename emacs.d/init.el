@@ -647,3 +647,10 @@
           (read-only-mode 1)
           (goto-char (point-max)))
       (message (concat "log file not found - " path)))))
+
+(defun jekyll-default-image ()
+  (interactive)
+  (let ((name (format "{{ site.asseturl }}/%s-00.jpg"
+                      (file-name-base (buffer-file-name)))))
+    (kill-new name)
+    (message "Copied default image name '%s' to the clipboard." name)))
