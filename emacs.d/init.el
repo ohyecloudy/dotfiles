@@ -610,7 +610,11 @@
             (lambda ()
               (when alchemist-mode
                 (define-key evil-motion-state-local-map
-                  (kbd "g d") 'alchemist-goto-definition-at-point)))))
+                  (kbd "g d") 'alchemist-goto-definition-at-point))))
+  (add-hook 'alchemist-iex-mode-hook
+          (lambda ()
+            ;; evil-scroll-up과 충돌
+            (define-key alchemist-iex-mode-map "\C-d" nil))))
 
 ;;; https://github.com/rejeep/el-mock.el
 (use-package el-mock :ensure t)
