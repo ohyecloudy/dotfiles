@@ -618,10 +618,38 @@
 ;;; https://github.com/joshwnj/json-mode
 (use-package json-mode :ensure t)
 
-;;; https://github.com/josteink/csharp-mode
-(use-package csharp-mode
-  :if windows?
-  :ensure t)
+;;; https://github.com/OmniSharp/omnisharp-emacs
+(use-package omnisharp
+  :ensure t
+  :config
+  (add-hook 'csharp-mode-hook 'omnisharp-mode)
+  (eval-after-load 'company '(add-to-list 'company-backends 'company-omnisharp))
+  (if windows?
+      (setq omnisharp-server-executable-path "C:\\omnisharp\\OmniSharp.exe"))
+  (add-hook 'omnisharp-mode-hook
+            (lambda ()
+              (when omnisharp-mode
+                (define-key evil-motion-state-local-map
+                  (kbd "g d") 'omnisharp-go-to-definition))))
+  (evil-define-key 'insert omnisharp-mode-map (kbd "M-.") 'omnisharp-auto-complete)
+  (evil-define-key 'normal omnisharp-mode-map (kbd "g u") 'omnisharp-find-usages)
+  (evil-define-key 'normal omnisharp-mode-map (kbd "g I") 'omnisharp-find-implementations) ; g i is taken
+  (evil-define-key 'normal omnisharp-mode-map (kbd "g r") 'omnisharp-run-code-action-refactoring)
+  (evil-define-key 'normal omnisharp-mode-map (kbd "g f") 'omnisharp-fix-code-issue-at-point)
+  (evil-define-key 'normal omnisharp-mode-map (kbd "g F") 'omnisharp-fix-usings)
+  (evil-define-key 'normal omnisharp-mode-map (kbd "g R") 'omnisharp-rename)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", i") 'omnisharp-current-type-information)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", I") 'omnisharp-current-type-documentation)
+  (evil-define-key 'insert omnisharp-mode-map (kbd ".") 'omnisharp-add-dot-and-auto-complete)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", n t") 'omnisharp-navigate-to-current-file-member)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", n s") 'omnisharp-navigate-to-solution-member)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", n f") 'omnisharp-navigate-to-solution-file-then-file-member)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", n F") 'omnisharp-navigate-to-solution-file)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", n r") 'omnisharp-navigate-to-region)
+  (evil-define-key 'normal omnisharp-mode-map (kbd "<f12>") 'omnisharp-show-last-auto-complete-result)
+  (evil-define-key 'insert omnisharp-mode-map (kbd "<f12>") 'omnisharp-show-last-auto-complete-result)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ",.") 'omnisharp-show-overloads-at-point)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ",rl") 'recompile))
 
 ;;; cc-mode
 (setq-default c-default-style "bsd"
