@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: org header
+# key: oh
+# --
+# -*- mode: org -*-
+# -*- coding: utf-8 -*-
+#+TITLE: $1
+#+AUTHOR: Jongbin Oh
+#+EMAIL: ohyecloudy@gmail.com
+
+$0

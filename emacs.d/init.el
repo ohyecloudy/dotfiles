@@ -450,6 +450,15 @@
 ;;; compose-mail 바인딩 키 제거
 (global-set-key (kbd "C-x m") nil)
 
+;;; https://github.com/AndreaCrotti/yasnippet-snippets
+(use-package yasnippet-snippets :ensure t)
+
+;;; https://github.com/joaotavora/yasnippet
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
 ;;; https://github.com/zweifisch/ob-http
 (use-package ob-http :ensure t)
 
