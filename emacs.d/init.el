@@ -658,11 +658,6 @@
   (evil-define-key 'normal omnisharp-mode-map (kbd ",.") 'omnisharp-show-overloads-at-point)
   (evil-define-key 'normal omnisharp-mode-map (kbd ",rl") 'recompile))
 
-;;; https://github.com/gonewest818/dimmer.el
-(use-package dimmer
-  :ensure t
-  :config (dimmer-mode))
-
 ;;; cc-mode
 (setq-default c-default-style "bsd"
               c-basic-offset 4)
