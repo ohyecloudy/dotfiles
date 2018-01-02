@@ -459,8 +459,11 @@
   :config
   (yas-global-mode 1))
 
-;;; https://github.com/zweifisch/ob-http
-(use-package ob-http :ensure t)
+;;; https://github.com/pashky/restclient.el
+(use-package restclient :ensure t)
+
+;;; https://github.com/alf/ob-restclient.el
+(use-package ob-restclient :ensure t)
 
 ;;; https://github.com/zweifisch/ob-elixir
 (use-package ob-elixir :ensure t)
@@ -567,8 +570,8 @@
    '((emacs-lisp . t)
      (plantuml . t)
      (python . t)
-     (http . t)
      (elixir . t)
+     (restclient . t)
      (C . t)))
 
   ;; <h가 #+BEGIN_HTML #+END_HTML에서 #+BEGIN_EXPORT html #+END_EXPORT로 변경됨
