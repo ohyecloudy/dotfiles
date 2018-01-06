@@ -273,6 +273,19 @@
                          (setq default-process-coding-system
                                '(utf-8-dos . utf-8-unix))))))
 
+;;; https://github.com/ShingoFukuyama/helm-swoop
+(use-package helm-swoop
+  :ensure t
+  :bind
+  (("M-i" . helm-swoop)
+   ("M-I" . helm-swoop-back-to-last-point)
+   ("C-c M-i" . helm-multi-swoop)
+   ("C-x M-i" . helm-multi-swoop-all)
+   :map
+   helm-swoop-map
+   ("M-i" . helm-multi-swoop-all-from-helm-swoop)
+   ("M-m" . helm-multi-swoop-current-mode-from-helm-swoop)))
+
 ;;; https://github.com/bbatsov/projectile
 (use-package projectile
   :ensure t
