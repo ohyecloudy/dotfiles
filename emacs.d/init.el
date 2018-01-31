@@ -360,8 +360,18 @@
     (package-install 'el-get)
     (require 'el-get))
 
-  (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-  (el-get 'sync))
+  (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes"))
+
+;;; https://github.com/anildigital/mix-format.el
+(progn
+  (el-get-bundle anildigital/mix-format.el
+    (require 'mix-format))
+
+  (when windows?
+    (setq mixfmt-mix "c:/Program Files (x86)/Elixir/bin/mix"))
+
+  (add-hook 'elixir-mode-hook
+            (lambda () (add-hook 'before-save-hook 'mix-format-before-save))))
 
 (setq show-paren-display 0)
 (show-paren-mode t)
