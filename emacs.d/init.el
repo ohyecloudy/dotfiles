@@ -691,6 +691,9 @@
   (evil-define-key 'normal omnisharp-mode-map (kbd ",.") 'omnisharp-show-overloads-at-point)
   (evil-define-key 'normal omnisharp-mode-map (kbd ",rl") 'recompile))
 
+;;; https://github.com/spotify/dockerfile-mode
+(use-package dockerfile-mode :ensure t)
+
 ;;; cc-mode
 (setq-default c-default-style "bsd"
               c-basic-offset 4)
