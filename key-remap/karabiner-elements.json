@@ -1,35 +1,38 @@
-"rules": [
-    {
-        "description": "emacs - friendly input method",
-        "manipulators": [
-            {
-                "conditions": [
-                    {
-                        "bundle_identifiers": [
-                            "^org.gnu.Emacs"
-                        ],
-                        "type": "frontmost_application_unless"
-                    }
-                ],
-                "from": {
-                    "key_code": "spacebar",
-                    "modifiers": {
-                        "mandatory": [
-                            "left_shift"
-                        ]
-                    }
-                },
-                "to": [
-                    {
+{
+    "title": "Emacs",
+    "rules": [
+        {
+            "description": "emacs - friendly input method",
+            "manipulators": [
+                {
+                    "conditions": [
+                        {
+                            "bundle_identifiers": [
+                                "^org.gnu.Emacs"
+                            ],
+                            "type": "frontmost_application_unless"
+                        }
+                    ],
+                    "from": {
                         "key_code": "spacebar",
-                        "modifiers": [
-                            "left_control",
-                            "left_shift"
-                        ]
-                    }
-                ],
-                "type": "basic"
-            }
-        ]
-    }
-]
+                        "modifiers": {
+                            "mandatory": [
+                                "left_shift"
+                            ]
+                        }
+                    },
+                    "to": [
+                        {
+                            "key_code": "spacebar",
+                            "modifiers": [
+                                "left_control",
+                                "left_shift"
+                            ]
+                        }
+                    ],
+                    "type": "basic"
+                }
+            ]
+        }
+    ]
+}
