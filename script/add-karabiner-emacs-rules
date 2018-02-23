@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+# 실행되는 쉘 절대 경로 구하기
+# http://kldp.org/node/119861
+cd ${0%/*} 2>/dev/null
+shell_path=$PWD/${0##*/}
+script_path=${shell_path%/*}
+root_path=${script_path%/*}
+
+ln -s $root_path/key-remap/karabiner-elements.json ~/.config/karabiner/assets/complex_modifications/emacs.json
