@@ -1,3 +1,8 @@
+(defconst local-init-el-path "~/.emacs.d/init.el.local")
+(when (file-exists-p local-init-el-path)
+  (message (format "load local init el - %s" local-init-el-path))
+  (load-file local-init-el-path))
+
 (setq windows? (eq system-type 'windows-nt))
 (setq mac? (eq system-type 'darwin))
 
@@ -734,3 +739,45 @@
                       (file-name-base (buffer-file-name)))))
     (kill-new name)
     (message "Copied default image name '%s' to the clipboard." name)))
+
+(when (and (boundp 'gitlab-private-key)
+           (boundp 'gitlab-api-base-url)
+           (boundp 'gitlab-base-url))
+  (defun insert-gitlab-mr-link (id)
+    (interactive "nmerge request id: ")
+    (insert (format "[[%s/merge_requests/%d][!%d]]" gitlab-base-url id id)))
+
+  (defun insert-gitlab-issue-link (id)
+    (interactive "nissue id: ")
+    (insert (format "[[%s/issues/%d][#%d]]" gitlab-base-url id id)))
+
+  (defun parse-title (url)
+    (let ((title ""))
+      (with-temp-buffer
+        (url-insert-file-contents url)
+        (let* ((json-key-type 'string)
+               (content (json-read)))
+          (dolist (element content)
+            (when (string= (car element) "title")
+              (setq title (cdr element))))))
+      title))
+
+  (defun insert-gitlab-mr (id)
+    (interactive "nmerge request id: ")
+    (insert-gitlab-mr-link id)
+    (let ((url (format "%s/merge_requests/%d?private_token=%s"
+                       gitlab-api-base-url
+                       id
+                       gitlab-private-key)))
+      (insert (format " %s" (parse-title url)))))
+
+  (defun insert-gitlab-issue (id)
+    (interactive "nissue id: ")
+    (insert-gitlab-issue-link id)
+    (let ((url (format "%s/issues/%d?private_token=%s"
+                       gitlab-api-base-url
+                       id
+                       gitlab-private-key)))
+      (insert (format " %s" (parse-title url)))))
+
+  (message "define gitlab related functions"))
