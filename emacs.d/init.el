@@ -574,7 +574,7 @@
 
   ;; org-clock-report 기본 프로퍼티
   (setq org-clock-clocktable-default-properties
-        '(:maxlevel 2 :scope file :narrow 30! :properties ("effort")))
+        '(:maxlevel 2 :scope file :narrow 25! :link t :indent nil :emphasize t :properties ("effort")))
 
   (setq org-tag-alist '((:startgroup . nil)
                         ("task" . ?t)
