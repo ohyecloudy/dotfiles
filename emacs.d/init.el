@@ -545,9 +545,9 @@
         (org-clock-in)))
     (add-hook 'org-after-todo-state-change-hook
               'wicked/org-clock-in-if-starting)
-    (defadvice org-clock-in (after wicked activate)
-      "Set this task's status to 'STARTED'."
-      (org-todo "STARTED")))
+    (advice-add 'org-clock-in
+                :after (lambda (&rest _)
+                         (org-todo "STARTED"))))
 
   ;; org-clock persistence 설정. 컴퓨터 꺼도 emacs 시계는 굴러간다.
   ;; https://writequit.org/denver-emacs/presentations/2017-04-11-time-clocking-with-org.html
