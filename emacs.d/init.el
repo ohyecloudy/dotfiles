@@ -111,6 +111,19 @@
   (evil-set-initial-state 'alchemist-test-report-mode 'emacs)
   (setq-default evil-symbol-word-search t)
 
+  (progn
+    ;; solarized.el 컬러
+    (defconst my/solarized-light-red "#FF6E64")
+    (defconst my/solarized-light-green "#B4C342")
+    (defconst my/solarized-light-orange "#F2804F")
+
+    (setq evil-emacs-state-cursor (list my/solarized-light-red 'box))
+    (setq evil-normal-state-cursor (list my/solarized-light-green 'box))
+    (setq evil-visual-state-cursor (list my/solarized-light-orange 'box))
+    (setq evil-insert-state-cursor (list my/solarized-light-red 'bar))
+    (setq evil-replace-state-cursor (list my/solarized-light-red 'bar))
+    (setq evil-operator-state-cursor (list my/solarized-light-red 'hollow)))
+
   (add-hook 'emacs-lisp-mode-hook
             #'(lambda ()
                 (modify-syntax-entry ?_ "w")
