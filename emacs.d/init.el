@@ -793,8 +793,6 @@
                        gitlab-private-key)))
       (insert (format " %s" (parse-title url)))))
 
-  ;; gitlab 10.6에 반영되는지 보자. 아직 updated_before, updated_after는 설명만 반영된 듯
-  ;; https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/17417
   (defun merge-requests-updated-between-url (begin-date end-date)
     (let ((before (format "%sT00:00:00.000%%2B09:00" end-date))
           (after (format "%sT00:00:00.000%%2B09:00" begin-date))
@@ -820,12 +818,9 @@
                 (add-to-list 'ids (cdr element)))))))
       ids))
 
-  ;; gitlab 10.6을 기다리자. 그 전엔 update 범위 query 의미없다.
-  ;;(defun insert-gitlab-mrs-between (begin-date end-date)
-  ;;  (interactive "sbegin-date(YYYY-mm-dd): \nsend-date(%s ~ YYYY-MM-DD): ")
-  (defun insert-gitlab-mrs-between ()
-    (interactive)
-    (let ((ids (merge-request-ids-updated-between "2000-01-01" "2000-01-01")))
+  (defun insert-gitlab-mrs-between (begin-date end-date)
+    (interactive "sbegin-date(YYYY-mm-dd): \nsend-date(%s ~ YYYY-MM-DD): ")
+    (let ((ids (merge-request-ids-updated-between begin-date end-date)))
       (dolist (id ids)
         (insert "*** TODO ")
         (insert-gitlab-mr id)
