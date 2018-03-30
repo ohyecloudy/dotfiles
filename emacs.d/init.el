@@ -793,7 +793,7 @@
                        gitlab-private-key)))
       (insert (format " %s" (parse-title url)))))
 
-  (defun merge-requests-updated-between-url (begin-date end-date)
+  (defun merge-requests-updated-url (begin-date end-date)
     (let ((before (format "%sT00:00:00.000%%2B09:00" end-date))
           (after (format "%sT00:00:00.000%%2B09:00" begin-date))
           (options "order_by=updated_at&state=merged&scope=all&per_page=100"))
@@ -804,10 +804,10 @@
               before
               gitlab-private-key)))
 
-  (defun merge-request-ids-updated-between (begin-date end-date)
+  (defun merge-request-ids-updated (begin-date end-date)
     (let ((ids '())
           (json-array-type 'list)
-          (url (merge-requests-updated-between-url begin-date end-date)))
+          (url (merge-requests-updated-url begin-date end-date)))
       (with-temp-buffer
         (url-insert-file-contents url)
         (let* ((json-key-type 'string)
@@ -818,9 +818,11 @@
                 (add-to-list 'ids (cdr element)))))))
       ids))
 
-  (defun insert-gitlab-mrs-between (begin-date end-date)
-    (interactive "sbegin-date(YYYY-mm-dd): \nsend-date(%s ~ YYYY-MM-DD): ")
-    (let ((ids (merge-request-ids-updated-between begin-date end-date)))
+  (defun insert-gitlab-mrs-range ()
+    (interactive)
+    (let* ((begin-date (org-read-date))
+           (end-date (org-read-date))
+           (ids (merge-request-ids-updated begin-date end-date)))
       (dolist (id ids)
         (insert "*** TODO ")
         (insert-gitlab-mr id)
