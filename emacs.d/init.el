@@ -69,6 +69,11 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'sh 'shell)
 
+;;; emacs가 init.el에 추가하는 설정 방지
+;;; (custom-set-variables ...
+;;; https://jamiecollinson.com/blog/my-emacs-config/
+(setq custom-file (make-temp-file "emacs-custom"))
+
 ;;; packages
 (require 'package)
 (add-to-list 'package-archives
