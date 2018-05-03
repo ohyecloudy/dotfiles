@@ -533,6 +533,21 @@
          org-mode-map
          ("C-a" . nil)) ; universal-argument 키바인딩 때문
   :config
+  (progn
+    ;; syntax highlighting이 들어가니 가독성이 떨어져 org block에서는 끈다
+    (setq org-src-fontify-natively nil)
+    ;; fontify를 켜줘야 quote와 verse block도 배경 색상을 바꿀 수 있다
+    (setq org-fontify-quote-and-verse-blocks t)
+    (defconst my/solarized-base2 "#eee8d5")
+    (custom-theme-set-faces
+     'solarized-light
+     `(org-block
+       ((t (:background ,my/solarized-base2))))
+     `(org-block-begin-line
+       ((t (:background ,my/solarized-base2))))
+     `(org-block-end-line
+       ((t (:background ,my/solarized-base2))))))
+
   (setq org-startup-with-inline-images t)
   ;; org keyword를 company 모드 completion에 추가함
   ;; https://emacs.stackexchange.com/a/21173
