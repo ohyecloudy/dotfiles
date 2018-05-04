@@ -48,9 +48,6 @@
 (setq column-number-mode t)
 ;; word-wrap
 (global-visual-line-mode t)
-;; 커서가 있는 라인 하이라이트
-(global-hl-line-mode t)
-
 ;; syntax highlighting on
 (global-font-lock-mode t)
 
@@ -104,6 +101,16 @@
 (defconst my/solarized-light-green "#B4C342")
 (defconst my/solarized-light-orange "#F2804F")
 (defconst my/solarized-base2 "#EEE8D5")
+(defconst my/solarized-hl "#EEEED5")
+
+(progn
+  ;; 커서가 있는 라인 하이라이트
+  (global-hl-line-mode t)
+
+  (custom-theme-set-faces
+   'solarized-light
+   `(hl-line
+     ((t (:background ,my/solarized-hl))))))
 
 ;;; evil
 ;;; https://www.emacswiki.org/emacs/Evil
