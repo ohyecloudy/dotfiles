@@ -87,6 +87,24 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+;;; https://github.com/bbatsov/solarized-emacs
+(use-package solarized-theme
+  :ensure t
+  :init
+  ;; org에서 커진 한글 폰트가 너무 안 예뻐서
+  (setq solarized-height-minus-1 1.0)
+  (setq solarized-height-plus-1 1.0)
+  (setq solarized-height-plus-2 1.0)
+  (setq solarized-height-plus-3 1.0)
+  (setq solarized-height-plus-4 1.0)
+  :config
+  (load-theme 'solarized-light 'NO-CONFIRM))
+
+(defconst my/solarized-light-red "#FF6E64")
+(defconst my/solarized-light-green "#B4C342")
+(defconst my/solarized-light-orange "#F2804F")
+(defconst my/solarized-base2 "#EEE8D5")
+
 ;;; evil
 ;;; https://www.emacswiki.org/emacs/Evil
 (setq evil-want-C-u-scroll t) ;; :init에 넣어도 동작 안 함 Evil version 1.2.12
@@ -117,11 +135,6 @@
   (setq-default evil-symbol-word-search t)
 
   (progn
-    ;; solarized.el 컬러
-    (defconst my/solarized-light-red "#FF6E64")
-    (defconst my/solarized-light-green "#B4C342")
-    (defconst my/solarized-light-orange "#F2804F")
-
     (setq evil-emacs-state-cursor (list my/solarized-light-red 'box))
     (setq evil-normal-state-cursor (list my/solarized-light-green 'box))
     (setq evil-visual-state-cursor (list my/solarized-light-orange 'box))
@@ -165,19 +178,6 @@
   :ensure t
   :config
   (global-evil-visualstar-mode t))
-
-;;; https://github.com/bbatsov/solarized-emacs
-(use-package solarized-theme
-  :ensure t
-  :init
-  ;; org에서 커진 한글 폰트가 너무 안 예뻐서
-  (setq solarized-height-minus-1 1.0)
-  (setq solarized-height-plus-1 1.0)
-  (setq solarized-height-plus-2 1.0)
-  (setq solarized-height-plus-3 1.0)
-  (setq solarized-height-plus-4 1.0)
-  :config
-  (load-theme 'solarized-light 'NO-CONFIRM))
 
 ;;; http://jblevins.org/projects/markdown-mode/
 (use-package markdown-mode
@@ -538,7 +538,6 @@
     (setq org-src-fontify-natively nil)
     ;; fontify를 켜줘야 quote와 verse block도 배경 색상을 바꿀 수 있다
     (setq org-fontify-quote-and-verse-blocks t)
-    (defconst my/solarized-base2 "#eee8d5")
     (custom-theme-set-faces
      'solarized-light
      `(org-block
