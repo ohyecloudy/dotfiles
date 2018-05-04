@@ -115,7 +115,7 @@
 ;;; evil
 ;;; https://www.emacswiki.org/emacs/Evil
 (setq evil-want-C-u-scroll t) ;; :init에 넣어도 동작 안 함 Evil version 1.2.12
-  (setq evil-want-C-w-in-emacs-state t) ;; :init에 넣어도 동작 안 함
+(setq evil-want-C-w-in-emacs-state t) ;; :init에 넣어도 동작 안 함
 (use-package evil
   :ensure t
   ;; 쓰지 않는 키바인딩. alchemist-mode에서 사용하려고 unbinding
@@ -558,11 +558,11 @@
   ;; org keyword를 company 모드 completion에 추가함
   ;; https://emacs.stackexchange.com/a/21173
   (add-hook 'org-mode-hook
-          (lambda ()
-            (add-hook 'completion-at-point-functions
-                      'pcomplete-completions-at-point
-                      nil
-                      t)))
+            (lambda ()
+              (add-hook 'completion-at-point-functions
+                        'pcomplete-completions-at-point
+                        nil
+                        t)))
   ;; Make RET also indent
   ;; https://github.com/pkkm/.emacs.d/blob/master/conf/mode-specific/org.el
   (bind-key [remap org-return] #'org-return-indent org-mode-map)
@@ -692,9 +692,9 @@
                 (define-key evil-motion-state-local-map
                   (kbd "g d") 'alchemist-goto-definition-at-point))))
   (add-hook 'alchemist-iex-mode-hook
-          (lambda ()
-            ;; evil-scroll-up과 충돌
-            (define-key alchemist-iex-mode-map "\C-d" nil))))
+            (lambda ()
+              ;; evil-scroll-up과 충돌
+              (define-key alchemist-iex-mode-map "\C-d" nil))))
 
 ;;; https://github.com/rejeep/el-mock.el
 (use-package el-mock :ensure t)
