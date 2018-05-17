@@ -618,15 +618,13 @@
   (setq org-tag-alist '((:startgroup . nil)
                         ("task" . ?t)
                         ("codereview" . ?c)
-                        ("meeting" . ?m)
-                        ("interview" . ?i)
+                        ("meeting" . ?m) ; 회의
+                        ("interview" . ?i) ; 면접
+                        ("ftf-talk" . ?f) ; 면담
                         ("wiki" . ?w)
-                        ("til" . ?l)
                         (:endgroup . nil)
                         (:startgroup . nil)
-                        ("blog" . ?b)
-                        ("trivial" . ?t)
-                        ("sideproject" . ?s)
+                        ("til" . ?l)
                         (:endgroup . nil)))
 
   ;; agenda
