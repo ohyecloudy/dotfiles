@@ -6,19 +6,21 @@
 (setq windows? (eq system-type 'windows-nt))
 (setq mac? (eq system-type 'darwin))
 
+(defun available-font? (font) (member font (font-family-list)))
+
+;; | 12345678 |   |
+;; |----------+---|
+;; | 일이삼사 |   |
 (when mac?
   ;; font
-  (set-face-attribute 'default nil :height 150)
-  (set-fontset-font (frame-parameter nil 'font)
-                    'hangul
-                    '("Apple SD Gothic Neo" . "ios10646-1"))
-  (setq-default line-spacing 1)
+  (when (available-font? "Consolas")
+    (set-frame-font "Consolas-15" nil t)
+    (set-fontset-font t 'hangul (font-spec :name "PCMyungjo-16"))
+    (setq-default line-spacing 2))
 
   ;; keybinding
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'super))
-
-(defun available-font? (font) (member font (font-family-list)))
 
 ;; | 12345678 |   |
 ;; |----------+---|
