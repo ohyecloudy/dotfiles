@@ -622,7 +622,7 @@
                         ("codereview" . ?c)
                         ("meeting" . ?m) ; 회의
                         ("interview" . ?i) ; 면접
-                        ("ftf-talk" . ?f) ; 면담
+                        ("ftf" . ?f) ; 면담
                         ("wiki" . ?w)
                         (:endgroup . nil)
                         (:startgroup . nil)
