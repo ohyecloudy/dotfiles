@@ -402,6 +402,9 @@
   (when windows?
     (setq mixfmt-mix "c:/Program Files (x86)/Elixir/bin/mix"))
 
+  (when mac?
+    (setq mixfmt-mix "/usr/local/bin/mix"))
+
   (add-hook 'elixir-mode-hook
             (lambda () (add-hook 'before-save-hook 'mix-format-before-save))))
 
