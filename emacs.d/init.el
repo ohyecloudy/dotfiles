@@ -27,7 +27,7 @@
 ;; | 일이삼사 |   |
 (when windows?
   (when (available-font? "Consolas")
-    (set-frame-font "Consolas-13" nil t)
+    (set-frame-font "Consolas-11" nil t)
     (set-fontset-font t 'hangul (font-spec :name "Batangche"))
     (setq-default line-spacing 3)))
 
