@@ -539,8 +539,7 @@
 (use-package org
   :pin org
   :ensure org-plus-contrib
-  :bind (("C-c a" . org-agenda)
-         ("C-c c" . org-capture)
+  :bind (("C-c c" . org-capture)
          :map
          org-mode-map
          ("C-a" . nil)) ; universal-argument 키바인딩 때문
@@ -631,11 +630,6 @@
                         (:startgroup . nil)
                         ("til" . ?l)
                         (:endgroup . nil)))
-
-  ;; agenda
-  (setq org-agenda-files '("~/org"
-                           "~/org/work"
-                           "~/org/side"))
 
   ;; capture
   (setq org-capture-templates
