@@ -852,3 +852,5 @@
         (insert "\n"))))
 
   (message "define gitlab related functions"))
+
+(load-file "~/.emacs.d/lisp/my-gitlab.el")
