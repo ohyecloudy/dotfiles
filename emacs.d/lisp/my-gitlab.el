@@ -26,7 +26,9 @@
                            (list :id
                                  (plist-get commit :id)
                                  :title
-                                 (plist-get commit :title)))))))
+                                 (plist-get commit :title)
+                                 :message
+                                 (plist-get commit :message)))))))
       id-titles))
 
   (defun my/merge-request-url-from-commit (commit-id)
@@ -41,12 +43,16 @@
           (source-commits (my/commits begin-date end-date)))
       (message (format "total commit count - %d" (length source-commits)))
       (dolist (c source-commits)
-        (with-temp-buffer
-          (url-insert-file-contents (my/merge-request-url-from-commit (plist-get c :id)))
-          (let ((json-key-type 'string)
-                (content (json-read)))
-            (when (eq 0 (length content))
-              (add-to-list 'ret c)))))
+        ;; gitlab이 만든 merge 커밋은 연관된 merge request 정보가 없다.
+        ;; merge request 번호를 적은 커밋 메시지를 찾아서 걸러낸다
+        (unless (string-match "See merge request"
+                              (plist-get c :message))
+          (with-temp-buffer
+            (url-insert-file-contents (my/merge-request-url-from-commit (plist-get c :id)))
+            (let ((json-key-type 'string)
+                  (content (json-read)))
+              (when (eq 0 (length content))
+                (add-to-list 'ret c))))))
       ret))
 
   (defun insert-gitlab-commit-link (id)
