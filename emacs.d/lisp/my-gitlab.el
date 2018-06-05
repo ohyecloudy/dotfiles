@@ -13,7 +13,7 @@
               gitlab-private-key)))
 
   (defun my/commits (begin-date end-date)
-    (let ((id-titles '())
+    (let ((commits '())
           (json-array-type 'list)
           (json-object-type 'plist)
           (json-key-type 'keyword))
@@ -22,14 +22,14 @@
           (url-insert-file-contents (my/commits-url begin-date end-date (+ page 1)))
           (let ((content (json-read)))
             (dolist (commit content)
-              (add-to-list 'id-titles
+              (add-to-list 'commits
                            (list :id
                                  (plist-get commit :id)
                                  :title
                                  (plist-get commit :title)
                                  :message
                                  (plist-get commit :message)))))))
-      id-titles))
+      (reverse commits)))
 
   (defun my/merge-request-url-from-commit (commit-id)
     (format "%s/repository/commits/%s/merge_requests?private_token=%s"
