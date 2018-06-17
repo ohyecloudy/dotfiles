@@ -28,7 +28,9 @@
                                  :title
                                  (plist-get commit :title)
                                  :message
-                                 (plist-get commit :message)))))))
+                                 (plist-get commit :message)
+                                 :author_name
+                                 (plist-get commit :author_name)))))))
       (reverse commits)))
 
   (defun my/merge-request-url-from-commit (commit-id)
@@ -66,5 +68,5 @@
       (dolist (c source-commits)
         (insert "*** TODO ")
         (insert-gitlab-commit-link (plist-get c :id))
-        (insert (format " %s" (plist-get c :title)))
+        (insert (format " [%s] %s" (plist-get c :author_name) (plist-get c :title)))
         (insert "\n")))))
