@@ -38,10 +38,10 @@
                        gitlab-private-key)))
       (insert (format " %s" (parse-title url)))))
 
-  (defun merge-requests-updated-url (begin-date end-date)
+  (defun my/mrs-url (begin-date end-date page)
     (let ((before (format "%sT00:00:00.000%%2B09:00" end-date))
           (after (format "%sT00:00:00.000%%2B09:00" begin-date))
-          (options "order_by=updated_at&state=merged&scope=all&per_page=100"))
+          (options (format "order_by=updated_at&state=merged&scope=all&per_page=100&page=%d" page)))
       (format "%s/merge_requests?%s&updated_after=%s&updated_before=%s&private_token=%s"
               gitlab-api-base-url
               options
@@ -49,28 +49,47 @@
               before
               gitlab-private-key)))
 
-  (defun merge-request-ids-updated (begin-date end-date)
-    (let ((ids '())
+  (defun my/mrs (begin-date end-date)
+    (let ((mrs '())
           (json-array-type 'list)
-          (url (merge-requests-updated-url begin-date end-date)))
-      (with-temp-buffer
-        (url-insert-file-contents url)
-        (let* ((json-key-type 'string)
-               (content (json-read)))
-          (dolist (merge-request content)
-            (dolist (element merge-request)
-              (when (string= (car element) "iid")
-                (add-to-list 'ids (cdr element)))))))
-      ids))
+          (json-object-type 'plist)
+          (json-key-type 'keyword))
+      (dotimes (page 10) ;; 현명하게 그만둘 수 있는 방법이 있을텐데. 무식하게 10번 돈다 고고
+        (with-temp-buffer
+          (url-insert-file-contents (my/mrs-url begin-date end-date (+ page 1)))
+          (let ((content (json-read)))
+            (dolist (mr content)
+              (add-to-list 'mrs
+                           (list :iid
+                                 (plist-get mr :iid)
+                                 :title
+                                 (plist-get mr :title)
+                                 :target_branch
+                                 (plist-get mr :target_branch)
+                                 :author
+                                 (plist-get mr :author)
+                                 :assignee
+                                 (plist-get mr :assignee)))))))
+      (reverse mrs)))
+
+  (defun name (plist)
+    (if (eq plist nil)
+        "none"
+      (plist-get plist :name)))
 
   (defun insert-gitlab-mrs-range ()
     (interactive)
     (let* ((begin-date (org-read-date))
            (end-date (org-read-date))
-           (ids (merge-request-ids-updated begin-date end-date)))
-      (dolist (id ids)
+           (mrs (my/mrs begin-date end-date)))
+      (dolist (mr mrs)
         (insert "*** TODO ")
-        (insert-gitlab-mr id)
+        (insert-gitlab-mr-link (plist-get mr :iid))
+        (insert (format " [%s TO %s][%s] %s"
+                        (name (plist-get mr :author))
+                        (name (plist-get mr :assignee))
+                        (plist-get mr :target_branch)
+                        (plist-get mr :title)))
         (insert "\n"))))
 
   (defun my/commits-url (begin-date end-date page)
