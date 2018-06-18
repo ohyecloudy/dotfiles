@@ -82,7 +82,7 @@
       (dolist (mr mrs)
         (insert "*** TODO ")
         (insert-gitlab-mr-link (plist-get mr :iid))
-        (insert (format " [%s TO %s][%s] %s"
+        (insert (format " [%s - %s][%s] %s"
                         (name (plist-get mr :author))
                         (name (plist-get mr :assignee))
                         (plist-get mr :target_branch)
