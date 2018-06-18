@@ -77,11 +77,8 @@
         "none"
       (plist-get plist :name)))
 
-  (defun insert-gitlab-mrs-range ()
-    (interactive)
-    (let* ((begin-date (org-read-date))
-           (end-date (org-read-date))
-           (mrs (my/mrs begin-date end-date)))
+  (defun my/insert-gitlab-mrs (begin-date end-date)
+    (let ((mrs (my/mrs begin-date end-date)))
       (dolist (mr mrs)
         (insert "*** TODO ")
         (insert-gitlab-mr-link (plist-get mr :iid))
@@ -91,6 +88,12 @@
                         (plist-get mr :target_branch)
                         (plist-get mr :title)))
         (insert "\n"))))
+
+  (defun insert-gitlab-mrs-range ()
+    (interactive)
+    (let ((begin-date (org-read-date))
+          (end-date (org-read-date)))
+      (my/insert-gitlab-mrs begin-date end-date)))
 
   (defun my/commits-url (begin-date end-date page)
     (let ((before (format "%sT00:00:00.000%%2B09:00" end-date))
@@ -150,15 +153,25 @@
   (defun insert-gitlab-commit-link (id)
     (insert (format "[[%s/commit/%s][%s]]" gitlab-base-url id (substring id 0 10))))
 
-  (defun insert-gitlab-commits-without-mr-range ()
-    (interactive)
-    (let* ((begin-date (org-read-date))
-           (end-date (org-read-date))
-           (source-commits (my/commits-without-merge-request begin-date end-date)))
+  (defun my/insert-gitlab-commits-without-mr (begin-date end-date)
+    (let ((source-commits (my/commits-without-merge-request begin-date end-date)))
       (dolist (c source-commits)
         (insert "*** TODO ")
         (insert-gitlab-commit-link (plist-get c :id))
         (insert (format " [%s] %s" (plist-get c :author_name) (plist-get c :title)))
         (insert "\n"))))
+
+  (defun insert-gitlab-commits-without-mr-range ()
+    (interactive)
+    (let ((begin-date (org-read-date))
+          (end-date (org-read-date)))
+      (my/insert-gitlab-commits-without-mr begin-date end-date)))
+
+  (defun insert-gitlab-todo-codereview ()
+    (interactive)
+    (let ((begin-date (org-read-date))
+          (end-date (org-read-date)))
+      (my/insert-gitlab-mrs begin-date end-date)
+      (my/insert-gitlab-commits-without-mr begin-date end-date)))
 
   (message "define gitlab related functions"))
