@@ -590,7 +590,12 @@
               'wicked/org-clock-in-if-starting)
     (advice-add 'org-clock-in
                 :after (lambda (&rest _)
-                         (org-todo "STARTED"))))
+                         (org-todo "STARTED")))
+    ;; 다른 org-clock 시작으로 clock-out 됐을 때, todo도 바꿔준다
+    (add-hook 'org-clock-out-hook
+              (lambda ()
+                (when (string= org-state "STARTED")
+                  (org-todo "DONE")))))
 
   ;; org-clock persistence 설정. 컴퓨터 꺼도 emacs 시계는 굴러간다.
   ;; https://writequit.org/denver-emacs/presentations/2017-04-11-time-clocking-with-org.html
