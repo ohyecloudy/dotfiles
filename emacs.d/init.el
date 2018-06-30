@@ -569,7 +569,7 @@
                         t)))
   ;; Make RET also indent
   ;; https://github.com/pkkm/.emacs.d/blob/master/conf/mode-specific/org.el
-  (bind-key [remap org-return] #'org-return-indent org-mode-map)
+  (define-key org-mode-map [remap org-return] 'org-return-indent)
 
   (setq org-todo-keywords
         '((sequence "TODO" "STARTED" "|" "DONE")))
