@@ -70,7 +70,7 @@
                                  (plist-get mr :author)
                                  :assignee
                                  (plist-get mr :assignee)))))))
-      (reverse mrs)))
+      mrs))
 
   (defun name (plist)
     (if (eq plist nil)
@@ -124,7 +124,7 @@
                                  (plist-get commit :message)
                                  :author_name
                                  (plist-get commit :author_name)))))))
-      (reverse commits)))
+      commits))
 
   (defun my/merge-request-url-from-commit (commit-id)
     (format "%s/repository/commits/%s/merge_requests?private_token=%s"
