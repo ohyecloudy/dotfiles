@@ -635,6 +635,9 @@
                         (:endgroup . nil)
                         (:startgroup . nil)
                         ("til" . ?l)
+                        (:endgroup . nil)
+                        (:startgroup . nil)
+                        ("followup" . ?u)
                         (:endgroup . nil)))
 
   ;; capture
