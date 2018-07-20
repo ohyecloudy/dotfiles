@@ -394,20 +394,6 @@
 
   (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes"))
 
-;;; https://github.com/anildigital/mix-format.el
-(progn
-  (el-get-bundle anildigital/mix-format.el
-    (require 'mix-format))
-
-  (when windows?
-    (setq mixfmt-mix "c:/Program Files (x86)/Elixir/bin/mix"))
-
-  (when mac?
-    (setq mixfmt-mix "/usr/local/bin/mix"))
-
-  (add-hook 'elixir-mode-hook
-            (lambda () (add-hook 'before-save-hook 'mix-format-before-save))))
-
 (setq show-paren-display 0)
 (show-paren-mode t)
 
@@ -686,7 +672,11 @@
 (use-package clojure-mode :ensure t)
 
 ;;; https://github.com/elixir-editors/emacs-elixir
-(use-package elixir-mode :ensure t)
+(use-package elixir-mode
+  :ensure t
+  :config
+  (add-hook 'elixir-mode-hook
+            (lambda () (add-hook 'before-save-hook 'elixir-format nil t))))
 
 ;;; https://github.com/tonini/alchemist.el
 (use-package alchemist
