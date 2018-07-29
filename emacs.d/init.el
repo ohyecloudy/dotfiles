@@ -321,6 +321,8 @@
 ;;; https://github.com/bbatsov/projectile
 (use-package projectile
   :ensure t
+  :init
+  (setq projectile-keymap-prefix (kbd "C-c p"))
   :config
   (projectile-mode)
   (setq projectile-enable-caching t)
