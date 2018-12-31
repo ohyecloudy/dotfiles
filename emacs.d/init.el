@@ -636,7 +636,7 @@
         '(("j"
            "Journal"
            entry
-           (file+datetree+prompt "~/journal/journal.org")
+           (file+datetree+prompt "~/journal/2019.org")
            "* %?")))
 
   (org-babel-do-load-languages
