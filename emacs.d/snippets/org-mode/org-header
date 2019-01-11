@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: org header
-# key: orgheader
+# key: <header
 # --
 # -*- mode: org -*-
 # -*- coding: utf-8 -*-
