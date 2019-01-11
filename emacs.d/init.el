@@ -526,7 +526,7 @@
 
 (use-package org
   :pin org
-  :ensure org-plus-contrib
+  :ensure t
   :bind (("C-c c" . org-capture)
          :map
          org-mode-map
