@@ -739,6 +739,14 @@
 ;;; https://github.com/spotify/dockerfile-mode
 (use-package dockerfile-mode :ensure t)
 
+;;; https://github.com/mooz/js2-mode
+(use-package js2-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  ;; Better imenu
+  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))
+
 ;;; cc-mode
 (setq-default c-default-style "bsd"
               c-basic-offset 4)
