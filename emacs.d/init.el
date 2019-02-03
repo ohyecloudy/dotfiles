@@ -642,6 +642,7 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
+     (js . t)
      (plantuml . t)
      (python . t)
      (elixir . t)
