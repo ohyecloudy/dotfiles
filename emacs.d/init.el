@@ -506,6 +506,9 @@
 ;;; compose-mail 바인딩 키 제거
 (global-set-key (kbd "C-x m") nil)
 
+;;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Matching.html
+(electric-pair-mode 1)
+
 ;;; https://github.com/AndreaCrotti/yasnippet-snippets
 (use-package yasnippet-snippets :ensure t)
 
