@@ -72,6 +72,46 @@
                                  (plist-get mr :assignee)))))))
       mrs))
 
+  (defun my/mr-commits (mr-iid)
+    (let ((commits '())
+          (json-array-type 'list)
+          (json-object-type 'plist)
+          (json-key-type 'keyword)
+          (url (format "%s/merge_requests/%s/commits?private_token=%s"
+                       gitlab-api-base-url
+                       mr-iid
+                       gitlab-private-key)))
+      (with-temp-buffer
+        (url-insert-file-contents url)
+        (let ((content (json-read)))
+          (dolist (c content)
+            (add-to-list 'commits
+                         (list :id
+                               (plist-get c :id)
+                               :title
+                               (plist-get c :title)
+                               :author_name
+                               (plist-get c :author_name)
+                               :message
+                               (plist-get c :message))))))
+      commits))
+
+  (defun insert-mr-commits (mr-iid)
+    (interactive "nmerge request id: ")
+    (let ((commits (my/mr-commits mr-iid)))
+      (dolist (c commits)
+        (insert (format "**** [[%s/merge_requests/%s/diffs?commit_id=%s][%s]] [%s] %s"
+                        gitlab-base-url
+                        mr-iid
+                        (plist-get c :id)
+                        (substring (plist-get c :id) 0 10)
+                        (plist-get c :author_name)
+                        (plist-get c :title)))
+        (insert "\n")
+        (insert "     #+BEGIN_QUOTE\n")
+        (insert (replace-regexp-in-string "^.*?" "     " (plist-get c :message)))
+        (insert "#+END_QUOTE\n"))))
+
   (defun name (plist)
     (if (eq plist nil)
         "none"
@@ -87,7 +127,8 @@
                         (name (plist-get mr :assignee))
                         (plist-get mr :target_branch)
                         (plist-get mr :title)))
-        (insert "\n"))))
+        (insert "\n")
+        (insert-mr-commits (plist-get mr :iid)))))
 
   (defun insert-gitlab-mrs-range ()
     (interactive)
