@@ -44,10 +44,6 @@
 (setq initial-scratch-message nil)
 ;; 선택 텍스트를 타이핑할 때, 삭제
 (delete-selection-mode t)
-;; 라인 넘버 보기
-(global-linum-mode t)
-;; 컬럼 넘버 보기
-(setq column-number-mode t)
 ;; word-wrap
 (global-visual-line-mode t)
 ;; syntax highlighting on
