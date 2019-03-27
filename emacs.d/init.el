@@ -74,9 +74,6 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/")
              t)
-(add-to-list 'package-archives
-             '("org" . "http://orgmode.org/elpa/")
-             t)
 (package-initialize)
 (when (not (package-installed-p 'use-package))
   (package-refresh-contents)
@@ -524,7 +521,6 @@
 (use-package ob-elixir :ensure t)
 
 (use-package org
-  :pin org
   :ensure t
   :bind (("C-c c" . org-capture)
          :map
