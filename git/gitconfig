@@ -5,6 +5,7 @@
 	excludesfile = ~/.gitignore_global
 	commentchar = $
 	editor = ec-wait
+	precomposeunicode = true
 [alias]
 	co = checkout
 	cp = cherry-pick -x
