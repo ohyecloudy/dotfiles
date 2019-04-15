@@ -20,6 +20,7 @@
 /emacs.d/server/*
 /emacs.d/url/*
 /emacs.d/el-get/*
+/emacs.d/transient/*
 /emacs.d/ido.last
 /emacs.d/recentf
 /emacs.d/NUL
