@@ -8,6 +8,9 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH="$HOME/bin.local:$HOME/bin:$PATH";
 fi
 
+export VISUAL=ec-wait
+export EDITOR=ec-wait
+
 source ~/.dotfiles/git/git-prompt.sh
 source ~/.dotfiles/git/git-completion.bash
 
