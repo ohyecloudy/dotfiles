@@ -760,6 +760,8 @@
 ;;; local package
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (require 'my-ox-confluence)
+(require 'my-ox-taskjuggler)
+(progn (setq org-taskjuggler-reports-directory "~/taskjuggler"))
 
 ;; C-u 키바인딩을 evil에게 양보하고 가장 그럴듯한 키바인딩을 사용
 (global-set-key (kbd "C-a") 'universal-argument)
