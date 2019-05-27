@@ -72,6 +72,7 @@
 ;;; packages
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 (when (not (package-installed-p 'use-package))
   (package-refresh-contents)
@@ -516,7 +517,9 @@
 (use-package ob-elixir :ensure t)
 
 (use-package org
-  :ensure t
+  :pin org
+  :ensure org-plus-contrib
+  :defer t
   :bind (("C-c c" . org-capture)
          :map
          org-mode-map
@@ -641,8 +644,9 @@
 
   ;; <h가 #+BEGIN_HTML #+END_HTML에서 #+BEGIN_EXPORT html #+END_EXPORT로 변경됨
   ;; jekyll-org가 지원 안해서 예전으로 되돌림
-  (add-to-list 'org-structure-template-alist
-               '("h" "#+BEGIN_HTML\n?\n#+END_HTML"))
+  (setq org-structure-template-alist
+        (delete '("h" . "export html") org-structure-template-alist))
+  (add-to-list 'org-structure-template-alist '("h" . "html"))
 
   ;; plantuml
   (setq org-confirm-babel-evaluate nil)
@@ -653,7 +657,14 @@
               (when org-inline-image-overlays
                 (org-redisplay-inline-images))))
   (add-to-list 'org-structure-template-alist
-               '("u" "#+BEGIN_SRC plantuml :file ?.png\nskinparam monochrome true\n#+END_SRC")))
+               '("u" . "src plantuml :file ?.png\nskinparam monochrome true"))
+
+  ;; org-mode 9.2에서 삭제된 < 키로 시작하는 template 삽입 기능을 되살리고자.
+  ;; 예) <h TAB 입력시 #+BEGIN_HTML ... #+END_HTML 입력
+  (require 'org-tempo)
+  ;; <h TAB 눌렀을 때, org-tempo-keywords-alist가 우선권을 가져서 제거한다
+  ;; 원했던 #+begin_html 대신 #+html: 가 나오는 문제 해결하려고
+  (setq org-tempo-keywords-alist (delete '("H" . "html") org-tempo-keywords-alist)))
 
 ;;; https://github.com/krisajenkins/ob-translate
 (use-package ob-translate
