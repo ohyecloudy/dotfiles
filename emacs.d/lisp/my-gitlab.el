@@ -38,6 +38,17 @@
                        gitlab-private-key)))
       (insert (format " %s" (parse-title url)))))
 
+  (defun insert-gitlab-issue-heading (id)
+    (interactive "nissue id: ")
+    (let ((request-url (format "%s/issues/%d?private_token=%s"
+                       gitlab-api-base-url
+                       id
+                       gitlab-private-key))
+          (url (format "%s/issues/%d" gitlab-base-url id)))
+      (org-insert-heading)
+      (insert (format "#%d %s" id (parse-title request-url)))
+      (org-set-property "Url" url)))
+
   (defun my/mrs-url (begin-date end-date page)
     (let ((before (format "%sT00:00:00.000%%2B09:00" end-date))
           (after (format "%sT00:00:00.000%%2B09:00" begin-date))
