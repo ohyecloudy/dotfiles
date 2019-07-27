@@ -689,6 +689,24 @@
 ;;; https://github.com/clojure-emacs/clojure-mode
 (use-package clojure-mode :ensure t)
 
+;;; https://github.com/emacs-lsp/lsp-mode
+(use-package lsp-mode
+  :ensure t
+  :init
+  (setq lsp-log-io t)
+  :hook (elixir-mode . lsp)
+  :config
+  ;; 문서에 있는대로 map 이름을 lsp-mode-map 이렇게 그냥 쓰면 안 됨.
+  ;; https://github.com/noctuid/evil-guide#why-dont-keys-defined-with-evil-define-key-work-immediately
+  ;; 글을 참고해 lsp-mode-map 대신 'lsp-mode-map을 사용
+  (evil-define-key 'motion 'lsp-mode-map (kbd "g r") 'lsp-find-references)
+  :commands lsp)
+
+(use-package lsp-ui :ensure t :commands lsp-ui-mode)
+(use-package company-lsp :ensure t :commands company-lsp)
+(use-package helm-lsp :ensure t :commands helm-lsp-workspace-symbol)
+(use-package lsp-treemacs :ensure t :commands lsp-treemacs-errors-list)
+
 ;;; https://github.com/elixir-editors/emacs-elixir
 (use-package elixir-mode
   :ensure t
@@ -700,11 +718,6 @@
 (use-package alchemist
   :ensure t
   :config
-  (add-hook 'alchemist-mode-hook
-            (lambda ()
-              (when alchemist-mode
-                (define-key evil-motion-state-local-map
-                  (kbd "g d") 'alchemist-goto-definition-at-point))))
   (add-hook 'alchemist-iex-mode-hook
             (lambda ()
               ;; evil-scroll-up과 충돌
