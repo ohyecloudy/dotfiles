@@ -137,6 +137,7 @@
   (evil-set-initial-state 'alchemist-hex-mode 'emacs)
   (evil-set-initial-state 'alchemist-help-minor-mode 'emacs)
   (evil-set-initial-state 'alchemist-test-report-mode 'emacs)
+  (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
   (setq-default evil-symbol-word-search t)
 
   (progn
