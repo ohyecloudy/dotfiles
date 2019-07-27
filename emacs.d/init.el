@@ -213,6 +213,12 @@
   (add-to-list 'rm-blacklist " alchemist" t)
   (add-to-list 'rm-blacklist " Wrap" t))
 
+;;; https://github.com/purcell/exec-path-from-shell
+;;; emacs를 GUI로 실행했을 때, shell의 PATH 환경 변수가 적용 안 되는 문제를 해결하려고
+(when mac?
+  (use-package exec-path-from-shell :ensure t)
+  (exec-path-from-shell-initialize))
+
 ;;; https://github.com/ralesi/ranger.el
 (use-package ranger
   :ensure t
