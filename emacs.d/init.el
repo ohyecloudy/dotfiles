@@ -8,6 +8,12 @@
 
 (defun available-font? (font) (member font (font-family-list)))
 
+;;
+;; macbook pro에서 full height에 스크린 width 반정도 차지하게 세팅
+;;
+(when mac?
+  (setq default-frame-alist '((left . 0) (width . 100) (fullscreen . fullheight))))
+
 ;; | 12345678 |   |
 ;; |----------+---|
 ;; | 일이삼사 |   |
