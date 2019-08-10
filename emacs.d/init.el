@@ -206,19 +206,14 @@
   :ensure t
   :config (elpy-enable))
 
-;;; https://github.com/Malabarba/smart-mode-line
-(use-package smart-mode-line
+;;;
+;;; doom-modeline
+;;; - https://github.com/seagle0128/doom-modeline
+;;; - 폰트가 이상하게 나오면 M-x all-the-icons-install-fonts 실행
+;;;
+(use-package doom-modeline
   :ensure t
-  :config
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/show-eol t) ;; show end-of-line. ex) CRLF(dos)
-  (setq sml/theme 'respectful)
-  (sml/setup)
-  (add-to-list 'sml/replacer-regexp-list '("^c:/work/" ":Dev:") t)
-  (add-to-list 'rm-blacklist " WS" t)
-  (add-to-list 'rm-blacklist " Undo-Tree" t)
-  (add-to-list 'rm-blacklist " alchemist" t)
-  (add-to-list 'rm-blacklist " Wrap" t))
+  :hook (after-init . doom-modeline-mode))
 
 ;;; https://github.com/purcell/exec-path-from-shell
 ;;; emacs를 GUI로 실행했을 때, shell의 PATH 환경 변수가 적용 안 되는 문제를 해결하려고
