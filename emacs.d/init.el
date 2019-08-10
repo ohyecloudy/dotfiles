@@ -84,33 +84,24 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;;; https://github.com/bbatsov/solarized-emacs
-(use-package solarized-theme
+;;;
+;;; doom-themes
+;;; - https://github.com/hlissner/emacs-doom-themes
+;;;
+(use-package doom-themes
   :ensure t
   :init
-  ;; org에서 커진 한글 폰트가 너무 안 예뻐서
-  (setq solarized-height-minus-1 1.0)
-  (setq solarized-height-plus-1 1.0)
-  (setq solarized-height-plus-2 1.0)
-  (setq solarized-height-plus-3 1.0)
-  (setq solarized-height-plus-4 1.0)
+  (setq doom-themes-enable-bold nil
+        doom-themes-enable-italic nil)
   :config
-  (load-theme 'solarized-light 'NO-CONFIRM))
+  (load-theme 'doom-one t)
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
-(defconst my/solarized-light-red "#FF6E64")
-(defconst my/solarized-light-green "#B4C342")
-(defconst my/solarized-light-orange "#F2804F")
-(defconst my/solarized-base2 "#EEE8D5")
-(defconst my/solarized-hl "#EEEED5")
-
-(progn
-  ;; 커서가 있는 라인 하이라이트
-  (global-hl-line-mode t)
-
-  (custom-theme-set-faces
-   'solarized-light
-   `(hl-line
-     ((t (:background ,my/solarized-hl))))))
+;; 커서가 있는 라인 하이라이트
+(global-hl-line-mode t)
 
 ;;; flymake
 (global-set-key (kbd "C-S-p") 'flymake-goto-prev-error)
@@ -145,14 +136,6 @@
   (evil-set-initial-state 'alchemist-test-report-mode 'emacs)
   (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
   (setq-default evil-symbol-word-search t)
-
-  (progn
-    (setq evil-emacs-state-cursor (list my/solarized-light-red 'box))
-    (setq evil-normal-state-cursor (list my/solarized-light-green 'box))
-    (setq evil-visual-state-cursor (list my/solarized-light-orange 'box))
-    (setq evil-insert-state-cursor (list my/solarized-light-red 'bar))
-    (setq evil-replace-state-cursor (list my/solarized-light-red 'bar))
-    (setq evil-operator-state-cursor (list my/solarized-light-red 'hollow)))
 
   (add-hook 'emacs-lisp-mode-hook
             #'(lambda ()
@@ -541,15 +524,7 @@
     ;; syntax highlighting이 들어가니 가독성이 떨어져 org block에서는 끈다
     (setq org-src-fontify-natively nil)
     ;; fontify를 켜줘야 quote와 verse block도 배경 색상을 바꿀 수 있다
-    (setq org-fontify-quote-and-verse-blocks t)
-    (custom-theme-set-faces
-     'solarized-light
-     `(org-block
-       ((t (:background ,my/solarized-base2))))
-     `(org-block-begin-line
-       ((t (:background ,my/solarized-base2))))
-     `(org-block-end-line
-       ((t (:background ,my/solarized-base2))))))
+    (setq org-fontify-quote-and-verse-blocks t))
 
   (setq org-startup-with-inline-images t)
   ;; org keyword를 company 모드 completion에 추가함
