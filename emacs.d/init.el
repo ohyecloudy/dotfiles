@@ -609,7 +609,13 @@
                         (:endgroup . nil)
                         (:startgroup . nil)
                         ("followup" . ?u)
-                        (:endgroup . nil)))
+                        (:endgroup . nil)
+                        (:startgroup . nil)
+                        ("taskjuggler_project" . ?j)
+                        ("taskjuggler_resource" . ?r)
+                        (:endgroup . nil)
+                        )
+        )
 
   ;; capture
   (setq org-capture-templates
@@ -761,7 +767,12 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (require 'my-ox-confluence)
 (require 'my-ox-taskjuggler)
-(progn (setq org-taskjuggler-reports-directory "~/taskjuggler"))
+(progn
+  (load-file  "~/.emacs.d/lisp/taskjuggler-setting.el")
+  (setq org-taskjuggler-reports-directory "~/taskjuggler")
+  ;; 넉넉하게 잡아놔서 Error: Some tasks did not fit into the project time frame. 에러가 안 뜨게 한다
+  (setq org-taskjuggler-default-project-duration 999)
+  )
 
 ;; C-u 키바인딩을 evil에게 양보하고 가장 그럴듯한 키바인딩을 사용
 (global-set-key (kbd "C-a") 'universal-argument)

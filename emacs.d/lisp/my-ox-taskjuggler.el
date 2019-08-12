@@ -1006,10 +1006,13 @@ Return a list of reports."
 	   "%o" (shell-quote-argument out-dir)
 	   org-taskjuggler-process-command t t) t t) outbuf)
 	;; Collect standard errors from output buffer.
-	(setq errors (org-taskjuggler--collect-errors outbuf)))
-      (if (not errors)
-	  (message "Process completed.")
-	(error (format "TaskJuggler failed with errors: %s" errors))))
+        (setq errors (org-taskjuggler--collect-errors outbuf)))
+      (message errors)
+      (message "Process completed."))
+    ;; HOTFIX[ohyecloudy]: warning 메시지도 모두 에러로 잡아내서 주석처리
+    ;; (if (not errors)
+    ;;     (message "Process completed.")
+    ;;   (error (format "TaskJuggler failed with errors: %s" errors))))
     (file-expand-wildcards (format "%s/*.html" out-dir))))
 
 (defun org-taskjuggler--collect-errors (buffer)
