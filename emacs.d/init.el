@@ -135,6 +135,7 @@
   (evil-set-initial-state 'alchemist-help-minor-mode 'emacs)
   (evil-set-initial-state 'alchemist-test-report-mode 'emacs)
   (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
+  (evil-set-initial-state 'tabulated-list-mode 'emacs)
   (setq-default evil-symbol-word-search t)
 
   (add-hook 'emacs-lisp-mode-hook
@@ -759,6 +760,11 @@
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   ;; Better imenu
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))
+
+;;; https://github.com/flycheck/flycheck
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 
 ;;; cc-mode
 (setq-default c-default-style "bsd"
