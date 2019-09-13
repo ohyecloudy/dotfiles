@@ -682,6 +682,7 @@
   ;; 문서에 있는대로 map 이름을 lsp-mode-map 이렇게 그냥 쓰면 안 됨.
   ;; https://github.com/noctuid/evil-guide#why-dont-keys-defined-with-evil-define-key-work-immediately
   ;; 글을 참고해 lsp-mode-map 대신 'lsp-mode-map을 사용
+  (evil-define-key 'motion 'lsp-mode-map (kbd "g d") 'lsp-find-definition)
   (evil-define-key 'motion 'lsp-mode-map (kbd "g r") 'lsp-find-references)
   :commands lsp)
 
