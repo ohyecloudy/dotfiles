@@ -539,6 +539,9 @@
   ;; export시 underscore를 <sub></sub> subscripts로 변경하지 않게 한다
   (setq org-export-with-sub-superscripts nil)
 
+  ;; 순서 없는 목록(unordered list)에서 bullet으로 들여쓰기를 할 때마다 +, -를 번갈아 사용한다
+  (setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+")))
+
   (setq org-todo-keywords
         '((sequence "TODO" "STARTED" "|" "DONE")))
 
