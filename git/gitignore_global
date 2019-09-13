@@ -13,6 +13,9 @@ tramp
 .org-id-locations
 *_archive
 
+# lsp-mode
+.elixir_ls
+
 ### vim ###
 .*.s[a-w][a-z]
 *.un~
