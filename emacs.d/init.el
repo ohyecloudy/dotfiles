@@ -665,10 +665,6 @@
 ;;; https://github.com/larstvei/ox-gfm
 (use-package ox-gfm :ensure t)
 
-;;; flymake
-(global-set-key (kbd "C-S-p") 'flymake-goto-prev-error)
-(global-set-key (kbd "C-S-n") 'flymake-goto-next-error)
-
 ;;; https://github.com/clojure-emacs/clojure-mode
 (use-package clojure-mode :ensure t)
 
