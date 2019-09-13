@@ -103,10 +103,6 @@
 ;; 커서가 있는 라인 하이라이트
 (global-hl-line-mode t)
 
-;;; flymake
-(global-set-key (kbd "C-S-p") 'flymake-goto-prev-error)
-(global-set-key (kbd "C-S-n") 'flymake-goto-next-error)
-
 ;;; evil
 ;;; https://www.emacswiki.org/emacs/Evil
 (setq evil-want-C-u-scroll t) ;; :init에 넣어도 동작 안 함 Evil version 1.2.12
