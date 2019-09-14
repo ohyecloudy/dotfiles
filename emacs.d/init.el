@@ -676,7 +676,9 @@
   :ensure t
   :init
   (setq lsp-log-io t
-        lsp-ui-doc-enable nil)
+        lsp-ui-doc-enable nil
+        ;; flymake 대신 flycheck를 사용한다
+        lsp-prefer-flymake nil)
   :hook (elixir-mode . lsp)
   :config
   ;; 문서에 있는대로 map 이름을 lsp-mode-map 이렇게 그냥 쓰면 안 됨.
