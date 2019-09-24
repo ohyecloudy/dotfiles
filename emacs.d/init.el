@@ -540,6 +540,12 @@
   ;; export시 underscore를 <sub></sub> subscripts로 변경하지 않게 한다
   (setq org-export-with-sub-superscripts nil)
 
+  ;; 접혀서 안 보이는 영역을 편집하려고 하면 펼치고 에러를 보여준다
+  (setq org-catch-invisible-edits 'show-and-error)
+
+  ;; 트리를 접을 때, heading 사이에 빈 라인을 없앤다
+  (setq org-cycle-separator-lines 0)
+
   ;; 순서 없는 목록(unordered list)에서 bullet으로 들여쓰기를 할 때마다 +, -를 번갈아 사용한다
   (setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+")))
 
