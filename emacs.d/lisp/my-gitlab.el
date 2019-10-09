@@ -38,6 +38,14 @@
                        gitlab-private-key)))
       (insert (format " %s" (parse-title url)))))
 
+  (defun insert-gitlab-issue-plain (id)
+    (interactive "nissue id: ")
+    (let ((url (format "%s/issues/%d?private_token=%s"
+                       gitlab-api-base-url
+                       id
+                       gitlab-private-key)))
+      (insert (format "#%d %s" id (parse-title url)))))
+
   (defun insert-gitlab-issue-heading (id)
     (interactive "nissue id: ")
     (let ((request-url (format "%s/issues/%d?private_token=%s"
