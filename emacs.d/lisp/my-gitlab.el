@@ -137,7 +137,8 @@
       (plist-get plist :name)))
 
   (defun my/insert-gitlab-mrs (begin-date end-date)
-    (let ((mrs (my/mrs begin-date end-date)))
+    (let* ((mrs (my/mrs begin-date end-date))
+           (mrs (seq-filter (lambda (x) (string= (plist-get x :target_branch) "master")) mrs)))
       (dolist (mr mrs)
         (let ((id (plist-get mr :iid)))
           (insert "*** TODO ")
