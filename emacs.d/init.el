@@ -80,6 +80,8 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
+
+(setq use-package-always-ensure t) ; Auto-download package if not exists
 (when (not (package-installed-p 'use-package))
   (package-refresh-contents)
   (package-install 'use-package))
@@ -89,7 +91,6 @@
 ;;; - https://github.com/hlissner/emacs-doom-themes
 ;;;
 (use-package doom-themes
-  :ensure t
   :init
   (setq doom-themes-enable-bold nil
         doom-themes-enable-italic nil)
@@ -108,7 +109,6 @@
 (setq evil-want-C-u-scroll t) ;; :init에 넣어도 동작 안 함 Evil version 1.2.12
 (setq evil-want-C-w-in-emacs-state t) ;; :init에 넣어도 동작 안 함
 (use-package evil
-  :ensure t
   ;; 쓰지 않는 키바인딩. alchemist-mode에서 사용하려고 unbinding
   :bind (:map
          evil-normal-state-map
@@ -160,20 +160,17 @@
 ;;; evil-matchit
 ;;; https://github.com/redguardtoo/evil-matchit
 (use-package evil-matchit
-  :ensure t
   :config
   (global-evil-matchit-mode t))
 
 ;;; evil-visualstar
 ;;; https://github.com/bling/evil-visualstar
 (use-package evil-visualstar
-  :ensure t
   :config
   (global-evil-visualstar-mode t))
 
 ;;; http://jblevins.org/projects/markdown-mode/
 (use-package markdown-mode
-  :ensure t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
@@ -183,7 +180,6 @@
 ;;; Elpy, the Emacs Lisp Python Environment
 ;;; elpy https://github.com/jorgenschaefer/elpy
 (use-package elpy
-  :ensure t
   :config (elpy-enable))
 
 ;;;
@@ -192,26 +188,23 @@
 ;;; - 폰트가 이상하게 나오면 M-x all-the-icons-install-fonts 실행
 ;;;
 (use-package doom-modeline
-  :ensure t
   :hook (after-init . doom-modeline-mode))
 
 ;;; https://github.com/purcell/exec-path-from-shell
 ;;; emacs를 GUI로 실행했을 때, shell의 PATH 환경 변수가 적용 안 되는 문제를 해결하려고
 (when mac?
-  (use-package exec-path-from-shell :ensure t)
+  (use-package exec-path-from-shell)
   (exec-path-from-shell-initialize))
 
 ;;; https://github.com/ralesi/ranger.el
 (use-package ranger
-  :ensure t
   :config (ranger-override-dired-mode t))
 
 ;;; https://github.com/yoshiki/yaml-mode
-(use-package yaml-mode :ensure t)
+(use-package yaml-mode)
 
 ;;; https://github.com/magit/magit
 (use-package magit
-  :ensure t
   :bind ("C-x g" . magit-status)
   :config
   ;; (evil-set-initial-state 'magit-blame-mode 'emacs) 동작을 안 해서
@@ -229,7 +222,6 @@
 
 ;;; https://github.com/emacs-helm/helm
 (use-package helm
-  :ensure t
   :diminish helm-mode
   :bind (("M-x" . helm-M-x)
          ("C-x C-m" . helm-M-x)
@@ -257,7 +249,6 @@
 
 ;;; https://github.com/syohex/emacs-helm-ag
 (use-package helm-ag
-  :ensure t
   :config
 
   ;; windows에서만 문제가 발생
@@ -292,7 +283,6 @@
 
 ;;; https://github.com/ShingoFukuyama/helm-swoop
 (use-package helm-swoop
-  :ensure t
   :bind
   (("M-i" . helm-swoop)
    ("M-I" . helm-swoop-back-to-last-point)
@@ -305,7 +295,6 @@
 
 ;;; https://github.com/bbatsov/projectile
 (use-package projectile
-  :ensure t
   :init
   (setq projectile-keymap-prefix (kbd "C-c p"))
   :config
@@ -318,7 +307,6 @@
 
 ;;; https://github.com/bbatsov/helm-projectile
 (use-package helm-projectile
-  :ensure t
   :config
   (helm-projectile-on)
 
@@ -336,7 +324,6 @@
 
 ;;; http://company-mode.github.io/
 (use-package company
-  :ensure t
   :init
   (add-hook 'after-init-hook 'global-company-mode)
   :config
@@ -362,7 +349,6 @@
 
 ;;; https://github.com/manuel-uberti/helm-company
 (use-package helm-company
-  :ensure t
   :config
   (eval-after-load 'company
     '(progn
@@ -370,7 +356,7 @@
        (define-key company-active-map (kbd "C-:") 'helm-company))))
 
 ;;; https://github.com/Kitware/CMake
-(use-package cmake-mode :ensure t)
+(use-package cmake-mode)
 
 ;;; https://github.com/dimitri/el-get
 (progn
@@ -492,22 +478,21 @@
 (global-set-key (kbd "C-x m") nil)
 
 ;;; https://github.com/AndreaCrotti/yasnippet-snippets
-(use-package yasnippet-snippets :ensure t)
+(use-package yasnippet-snippets)
 
 ;;; https://github.com/joaotavora/yasnippet
 (use-package yasnippet
-  :ensure t
   :config
   (yas-global-mode 1))
 
 ;;; https://github.com/pashky/restclient.el
-(use-package restclient :ensure t)
+(use-package restclient)
 
 ;;; https://github.com/alf/ob-restclient.el
-(use-package ob-restclient :ensure t)
+(use-package ob-restclient)
 
 ;;; https://github.com/zweifisch/ob-elixir
-(use-package ob-elixir :ensure t)
+(use-package ob-elixir)
 
 (use-package org
   :pin org
@@ -668,19 +653,17 @@
 
 ;;; https://github.com/krisajenkins/ob-translate
 (use-package ob-translate
-  :ensure t
   :config
   (setq ob-translate:default-dest "ko"))
 
 ;;; https://github.com/larstvei/ox-gfm
-(use-package ox-gfm :ensure t)
+(use-package ox-gfm)
 
 ;;; https://github.com/clojure-emacs/clojure-mode
-(use-package clojure-mode :ensure t)
+(use-package clojure-mode)
 
 ;;; https://github.com/emacs-lsp/lsp-mode
 (use-package lsp-mode
-  :ensure t
   :init
   (setq lsp-log-io t
         lsp-ui-doc-enable nil
@@ -695,21 +678,19 @@
   (evil-define-key 'motion 'lsp-mode-map (kbd "g r") 'lsp-find-references)
   :commands lsp)
 
-(use-package lsp-ui :ensure t :commands lsp-ui-mode)
-(use-package company-lsp :ensure t :commands company-lsp)
-(use-package helm-lsp :ensure t :commands helm-lsp-workspace-symbol)
-(use-package lsp-treemacs :ensure t :commands lsp-treemacs-errors-list)
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package company-lsp :commands company-lsp)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 ;;; https://github.com/elixir-editors/emacs-elixir
 (use-package elixir-mode
-  :ensure t
   :config
   (add-hook 'elixir-mode-hook
             (lambda () (add-hook 'before-save-hook 'elixir-format nil t))))
 
 ;;; https://github.com/tonini/alchemist.el
 (use-package alchemist
-  :ensure t
   :config
   (add-hook 'alchemist-iex-mode-hook
             (lambda ()
@@ -717,14 +698,13 @@
               (define-key alchemist-iex-mode-map "\C-d" nil))))
 
 ;;; https://github.com/rejeep/el-mock.el
-(use-package el-mock :ensure t)
+(use-package el-mock)
 
 ;;; https://github.com/joshwnj/json-mode
-(use-package json-mode :ensure t)
+(use-package json-mode)
 
 ;;; https://github.com/OmniSharp/omnisharp-emacs
 (use-package omnisharp
-  :ensure t
   :config
   (add-hook 'csharp-mode-hook 'omnisharp-mode)
   (eval-after-load 'company '(add-to-list 'company-backends 'company-omnisharp))
@@ -756,11 +736,10 @@
   (evil-define-key 'normal omnisharp-mode-map (kbd ",rl") 'recompile))
 
 ;;; https://github.com/spotify/dockerfile-mode
-(use-package dockerfile-mode :ensure t)
+(use-package dockerfile-mode)
 
 ;;; https://github.com/mooz/js2-mode
 (use-package js2-mode
-  :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   ;; Better imenu
@@ -768,7 +747,6 @@
 
 ;;; https://github.com/flycheck/flycheck
 (use-package flycheck
-  :ensure t
   :init (global-flycheck-mode))
 
 ;;; cc-mode
