@@ -81,7 +81,8 @@
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 
-(setq use-package-always-ensure t) ; Auto-download package if not exists
+(setq use-package-always-ensure t ; Auto-download package if not exists
+      use-package-enable-imenu-support t) ; Let imenu finds use-package definitions
 (when (not (package-installed-p 'use-package))
   (package-refresh-contents)
   (package-install 'use-package))
