@@ -234,7 +234,6 @@
     (interactive)
     (let ((begin-date (org-read-date))
           (end-date (org-read-date)))
-      (my/insert-gitlab-mrs begin-date end-date)
-      (my/insert-gitlab-commits-without-mr begin-date end-date)))
+      (my/insert-gitlab-mrs begin-date end-date)))
 
   (message "define gitlab related functions"))
