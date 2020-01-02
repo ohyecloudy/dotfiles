@@ -9,6 +9,48 @@
     (interactive "nissue id: ")
     (insert (format "[[%s/issues/%d][#%d]]" gitlab-base-url id id)))
 
+  (defun insert-gitlab-milestone-team-issues ()
+    (interactive)
+    (let ((usernames gitlab-team))
+      (dolist (u usernames)
+        (insert-gitlab-milestone-issues u))))
+
+  (defun insert-gitlab-milestone-issues (username)
+    (let* ((url (milestore-issues-url gitlab-milestone username))
+           (issues (get-issues url)))
+      (org-insert-heading-after-current)
+      (insert username)
+      (dolist (i issues)
+        (org-insert-heading-after-current)
+        (insert (format "#%s %s" (plist-get i :iid) (plist-get i :title)))
+        (org-set-property "Url" (format "%s/issues/%d" gitlab-base-url (plist-get i :iid))))))
+
+  (defun milestore-issues-url (milestone username)
+    (format "%s/issues?milestone=%s&assignee_username=%s&state=opened&private_token=%s"
+            gitlab-api-base-url
+            milestone
+            username
+            gitlab-private-key))
+
+  (defun get-issues (url)
+    (let ((issues '())
+          (json-array-type 'list)
+          (json-object-type 'plist)
+          (json-key-type 'keyword))
+      (message (format "load - %s" url))
+      (with-temp-buffer
+        (url-insert-file-contents url)
+        (let ((content (json-read)))
+          (dolist (i content)
+            (add-to-list 'issues
+                         (list :iid
+                               (plist-get i :iid)
+                               :title
+                               (plist-get i :title)
+                               :labels
+                               (plist-get i :labels))))))
+      issues))
+
   (defun parse-title (url)
     (let ((title ""))
       (with-temp-buffer
@@ -49,9 +91,9 @@
   (defun insert-gitlab-issue-heading (id)
     (interactive "nissue id: ")
     (let ((request-url (format "%s/issues/%d?private_token=%s"
-                       gitlab-api-base-url
-                       id
-                       gitlab-private-key))
+                               gitlab-api-base-url
+                               id
+                               gitlab-private-key))
           (url (format "%s/issues/%d" gitlab-base-url id)))
       (org-insert-heading)
       (insert (format "#%d %s" id (parse-title request-url)))
