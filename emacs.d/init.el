@@ -253,16 +253,11 @@
 ;;; https://github.com/syohex/emacs-helm-ag
 (use-package helm-ag
   :config
+  ;; helm-rg 패키지는 문제가 많아서 helm-ag 패키지에서 ripgrep을 사용한다
+  (setq helm-ag-base-command "rg -i --no-heading --vimgrep")
 
   ;; windows에서만 문제가 발생
   (when windows?
-    ;; mingw64/mingw-w64-x86_64-ag 2.0.0.r1912.ccdbe93-1 사용시
-    ;; 한글 검색이 안 된다. grep, rip 모두 잘 되는 걸로 봐서는 패키지를 의심
-    ;; helm-ag 패키지로도 사용할 수 있는 ripgrep을 사용한다.
-    ;; https://github.com/BurntSushi/ripgrep
-    ;; macOS에서도 ag 대신 ripgrep을 사용할지는 고민 중.
-    (setq helm-ag-base-command "rg -i --no-heading --vimgrep")
-
     ;; helm-do-ag 처럼 process로 한글 인자를 넘길 때, encoding 문제를 해결하기 위해
     ;; 내부 동작을 정확히 파악하지 못했다.
     ;;
