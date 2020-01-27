@@ -1,4 +1,5 @@
-(defconst local-init-el-path "~/.emacs.d/init.el.local")
+(defconst local-init-el-path
+  (expand-file-name "init.el.local" user-emacs-directory)
 (when (file-exists-p local-init-el-path)
   (message (format "load local init el - %s" local-init-el-path))
   (load-file local-init-el-path))
@@ -742,11 +743,12 @@
               c-basic-offset 4)
 
 ;;; local package
-(add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path
+             (expand-file-name "lisp" user-emacs-directory))
 (require 'my-ox-confluence)
 (require 'my-ox-taskjuggler)
 (progn
-  (load-file  "~/.emacs.d/lisp/taskjuggler-setting.el")
+  (load-file (expand-file-name "lisp/taskjuggler-setting.el" user-emacs-directory))
   (setq org-taskjuggler-reports-directory "~/taskjuggler")
   ;; 넉넉하게 잡아놔서 Error: Some tasks did not fit into the project time frame. 에러가 안 뜨게 한다
   (setq org-taskjuggler-default-project-duration 999)
@@ -785,7 +787,8 @@
     (kill-new name)
     (message "Copied default image name '%s' to the clipboard." name)))
 
-(load-file "~/.emacs.d/lisp/my-gitlab.el")
+(load-file
+ (expand-file-name "lisp/my-gitlab.el" user-emacs-directory))
 
 (defun toggle-camelcase-underscores ()
   "Toggle between camelcase and underscore notation for the symbol at point."
