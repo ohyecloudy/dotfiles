@@ -355,15 +355,6 @@
 ;;; https://github.com/Kitware/CMake
 (use-package cmake-mode)
 
-;;; https://github.com/dimitri/el-get
-(progn
-  (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-  (unless (require 'el-get nil 'noerror)
-    (package-install 'el-get)
-    (require 'el-get))
-
-  (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes"))
-
 (setq show-paren-display 0)
 (show-paren-mode t)
 
