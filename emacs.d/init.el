@@ -1,5 +1,5 @@
 (defconst local-init-el-path
-  (expand-file-name "init.el.local" user-emacs-directory)
+  (expand-file-name "init.el.local" user-emacs-directory))
 (when (file-exists-p local-init-el-path)
   (message (format "load local init el - %s" local-init-el-path))
   (load-file local-init-el-path))
