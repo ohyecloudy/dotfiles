@@ -788,7 +788,7 @@
     (message "Copied default image name '%s' to the clipboard." name)))
 
 (load-file
- (expand-file-name "lisp/my-gitlab.el" user-emacs-directory))
+ (expand-file-name "lisp/legacy-gitlab.el" user-emacs-directory))
 
 (defun toggle-camelcase-underscores ()
   "Toggle between camelcase and underscore notation for the symbol at point."
