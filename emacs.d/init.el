@@ -747,6 +747,7 @@
              (expand-file-name "lisp" user-emacs-directory))
 (require 'my-ox-confluence)
 (require 'my-ox-taskjuggler)
+(require 'my-gitlab)
 (progn
   (load-file (expand-file-name "lisp/taskjuggler-setting.el" user-emacs-directory))
   (setq org-taskjuggler-reports-directory "~/taskjuggler")
@@ -806,6 +807,3 @@
             (downcase-region start (1+ start)))
         (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ start) end)
         (downcase-region start (cdr (bounds-of-thing-at-point 'symbol)))))))
-
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-(require 'my-gitlab)
