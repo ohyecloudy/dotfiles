@@ -15,18 +15,17 @@
   (when (not (boundp 'gitlab-team-members)) (throw 'gitlab-team-members "not bound"))
   (switch-to-buffer (make-temp-name "gitlab error issues"))
   (org-mode)
-  (my-gitlab--insert-issues-by '("assignee_id" "None"))
+  (my-gitlab--insert-issues-by (list '("labels" "에러") '("assignee_id" "None")))
   (dolist (elt gitlab-team-members)
     (message elt)
-    (my-gitlab--insert-issues-by `("assignee_username" ,elt))))
+    (my-gitlab--insert-issues-by (list '("labels" "에러") (list "assignee_username" elt)))))
 
-(defun my-gitlab--insert-issues-by (assignee)
+(defun my-gitlab--insert-issues-by (params)
   (let ((issues (my-gitlab--request-get
                  (my-gitlab--build-request gitlab-api-project-url
                                            "issues"
-                                           (cons assignee
-                                                 '(("state" "opened")
-                                                   ("labels" "에러")))))))
+                                           (append params
+                                                   '(("state" "opened")))))))
     (dolist (elt issues)
       (org-meta-return)
       (my-gitlab--insert-issues elt))))
