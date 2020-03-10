@@ -21,14 +21,17 @@
     (my-gitlab--insert-issues-by (list '("labels" "에러") (list "assignee_username" elt)))))
 
 (defun my-gitlab--insert-issues-by (params)
-  (let ((issues (my-gitlab--request-get
-                 (my-gitlab--build-request gitlab-api-project-url
-                                           "issues"
-                                           (append params
-                                                   '(("state" "opened")))))))
+  (let ((issues (my-gitlab--issues params)))
     (dolist (elt issues)
       (org-meta-return)
       (my-gitlab--insert-issues elt))))
+
+(defun my-gitlab--issues (params)
+  (my-gitlab--request-get
+   (my-gitlab--build-request gitlab-api-project-url
+                             "issues"
+                             (append params
+                                     '(("state" "opened"))))))
 
 (defun my-gitlab--build-request (api-url page properties)
   (when (not (boundp 'gitlab-private-key)) (throw 'gitlab-private-key "not bound"))
