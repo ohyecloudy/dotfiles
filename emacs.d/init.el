@@ -739,9 +739,11 @@
   :init (global-flycheck-mode))
 
 ;;; https://github.com/szermatt/emacs-bash-completion
-(use-package bash-completion
-  :config
-  (bash-completion-setup))
+(when mac?
+  ;; windows에서는 completion 할 때, 프리징이 된다. 문제를 해결하기 전까지는 mac만 사용
+  (use-package bash-completion
+    :config
+    (bash-completion-setup)))
 
 ;;; cc-mode
 (setq-default c-default-style "bsd"
