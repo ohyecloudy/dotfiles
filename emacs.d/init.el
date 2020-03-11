@@ -738,6 +738,11 @@
 (use-package flycheck
   :init (global-flycheck-mode))
 
+;;; https://github.com/szermatt/emacs-bash-completion
+(use-package bash-completion
+  :config
+  (bash-completion-setup))
+
 ;;; cc-mode
 (setq-default c-default-style "bsd"
               c-basic-offset 4)
