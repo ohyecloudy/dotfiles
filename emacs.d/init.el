@@ -633,6 +633,12 @@
   (add-to-list 'org-structure-template-alist
                '("u" . "src plantuml :file ?.png\nskinparam monochrome true"))
 
+  ;; column view with visual line mode
+  (defun org-columns-with-visual-line-mode ()
+    (interactive)
+    (org-columns)
+    (visual-line-mode))
+
   ;; org-mode 9.2에서 삭제된 < 키로 시작하는 template 삽입 기능을 되살리고자.
   ;; 예) <h TAB 입력시 #+BEGIN_HTML ... #+END_HTML 입력
   (require 'org-tempo)
