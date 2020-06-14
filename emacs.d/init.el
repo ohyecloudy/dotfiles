@@ -758,6 +758,10 @@
     :config
     (bash-completion-setup)))
 
+;;; https://github.com/erlang/otp
+(use-package erlang
+  :config (require 'erlang-start))
+
 ;;; cc-mode
 (setq-default c-default-style "bsd"
               c-basic-offset 4)
