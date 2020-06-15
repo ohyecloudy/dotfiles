@@ -29,6 +29,7 @@
 /emacs.d/projectile.cache
 /emacs.d/bookmarks
 /emacs.d/init.el.local
+/emacs.d/flycheck_init.el
 
 # ac-nrepl 임시 파일
 ac-comphist.dat
