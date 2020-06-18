@@ -749,7 +749,10 @@
 
 ;;; https://github.com/flycheck/flycheck
 (use-package flycheck
-  :init (global-flycheck-mode))
+  :init
+  ;; erlang은 flycheck에서 제외
+  (mapc (lambda (x) (setq flycheck-checkers (delete x flycheck-checkers))) '(erlang-rebar3 erlang))
+  (global-flycheck-mode))
 
 ;;; https://github.com/szermatt/emacs-bash-completion
 (when mac?
