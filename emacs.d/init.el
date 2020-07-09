@@ -667,10 +667,14 @@
 ;;; https://github.com/emacs-lsp/lsp-mode
 (use-package lsp-mode
   :init
-  (setq lsp-log-io t
-        lsp-ui-doc-enable nil
-        ;; flymake 대신 flycheck를 사용한다
-        lsp-prefer-flymake nil)
+  (setq lsp-keymap-prefix "C-c l"
+        lsp-log-io t
+        lsp-enable-snippet t
+        lsp-enable-completion-at-point t
+        lsp-enable-indentation t
+        lsp-enable-on-type-formatting t
+        lsp-enable-imenu t
+        lsp-diagnostic-package :flymake)
   :hook (elixir-mode . lsp)
   :config
   ;; 문서에 있는대로 map 이름을 lsp-mode-map 이렇게 그냥 쓰면 안 됨.
@@ -681,9 +685,9 @@
   :commands lsp)
 
 (use-package lsp-ui :commands lsp-ui-mode)
-(use-package company-lsp :commands company-lsp)
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package which-key :config (which-key-mode))
 
 ;;; https://github.com/elixir-editors/emacs-elixir
 (use-package elixir-mode
