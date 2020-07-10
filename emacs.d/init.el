@@ -243,10 +243,10 @@
 
   (setq helm-split-window-inside-p t
         helm-move-to-line-cycle-in-source t
-        helm-M-x-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-recentf-fuzzy-match t
-        helm-apropos-fuzzy-match t)
+        helm-completion-style 'emacs
+        ;; emacs-26에서는 '(helm-flex), emacs-27에서는 '(flex)
+        completion-styles '(helm-flex))
+
   (helm-autoresize-mode 1)
 
   (helm-mode 1))
