@@ -21,7 +21,7 @@
 (when mac?
   ;; font
   (when (available-font? "Consolas")
-    (set-frame-font "Consolas-15" nil t)
+    (set-frame-font "Consolas-14" nil t)
     (set-fontset-font t 'hangul (font-spec :name "PCMyungjo-16"))
     (setq-default line-spacing 2))
 
