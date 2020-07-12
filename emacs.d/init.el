@@ -99,7 +99,7 @@
   (setq doom-themes-enable-bold nil
         doom-themes-enable-italic nil)
   :config
-  (load-theme 'doom-vibrant t)
+  (load-theme 'doom-one t)
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Corrects (and improves) org-mode's native fontification.
