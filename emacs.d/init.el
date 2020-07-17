@@ -244,8 +244,10 @@
   (setq helm-split-window-inside-p t
         helm-move-to-line-cycle-in-source t
         helm-completion-style 'emacs
-        ;; emacs-26에서는 '(helm-flex), emacs-27에서는 '(flex)
-        completion-styles '(helm-flex))
+        completion-styles `(basic
+                            partial-completion
+                            emacs22
+                            ,(if (version<= emacs-version "27.0") 'helm-flex 'flex)))
 
   (helm-autoresize-mode 1)
 
