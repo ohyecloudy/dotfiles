@@ -677,6 +677,11 @@
         lsp-enable-on-type-formatting t
         lsp-enable-imenu t
         lsp-diagnostic-package :flymake)
+
+  ;; elixir-ls가 지원 안 한다. 혹시나 싶어 windows에서만 끈다
+  (when windows?
+    (setq lsp-enable-file-watchers nil))
+
   :hook (elixir-mode . lsp)
   :config
   ;; 문서에 있는대로 map 이름을 lsp-mode-map 이렇게 그냥 쓰면 안 됨.
