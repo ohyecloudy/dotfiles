@@ -676,7 +676,7 @@
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
         lsp-enable-imenu t
-        lsp-diagnostic-package :flymake)
+        lsp-diagnostic-package :flycheck)
 
   ;; elixir-ls가 지원 안 한다. 혹시나 싶어 windows에서만 끈다
   (when windows?
