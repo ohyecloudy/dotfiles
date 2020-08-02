@@ -21,8 +21,8 @@
 (when mac?
   ;; font
   (when (available-font? "Consolas")
-    (set-frame-font "Consolas-14" nil t)
-    (set-fontset-font t 'hangul (font-spec :name "PCMyungjo-16"))
+    (set-frame-font "Consolas-16" nil t)
+    (set-fontset-font t 'hangul (font-spec :name "PCMyungjo-18"))
     (setq-default line-spacing 2))
 
   ;; keybinding
