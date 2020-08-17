@@ -358,8 +358,43 @@
 ;;; https://github.com/Kitware/CMake
 (use-package cmake-mode)
 
-(setq show-paren-display 0)
-(show-paren-mode t)
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Matching.html
+;; 괄호, 구분자(delimiter) 쌍 강조
+(progn
+  (show-paren-mode t)
+  (setq
+   ;; 괄호만 강조
+   show-paren-style 'parenthesis
+   ;; 괄호 강조를 즉시 보여준다
+   show-paren-display 0
+   ;; 괄호 입력 후 내용 입력시 괄호를 강조
+   show-paren-when-point-inside-paren t
+   )
+  )
+
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Matching.html
+;; 괄호, 구분자(delimiter) 자동 쌍 맞추기
+(progn
+  (electric-pair-mode 1)
+  (setq electric-pair-pairs '((?{ . ?})
+                              (?( . ?))
+                              (?[ . ?])
+                              (?" . ?")))
+  )
+
+;; tab으로 electic pair 밖으로 나올 수 있게 한다
+;; https://www.reddit.com/r/emacs/comments/3n1j4x/anyway_to_tab_out_of_parentheses/
+(progn
+  (defun smart-tab-jump-out-or-indent (&optional arg)
+    (interactive "P")
+    (let ((closings (mapcar #'cdr electric-pair-pairs))
+          (after (char-after)))
+      (if (member after closings)
+          (forward-char 1)
+        (indent-for-tab-command arg))))
+
+  (global-set-key [remap indent-for-tab-command] 'smart-tab-jump-out-or-indent)
+  )
 
 ;;; emacs-server
 (require 'server)
