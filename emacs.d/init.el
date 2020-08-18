@@ -173,6 +173,11 @@
   :config
   (global-evil-visualstar-mode t))
 
+;;; https://github.com/emacs-evil/evil-surround
+(use-package evil-surround
+  :config
+  (global-evil-surround-mode t))
+
 ;;; http://jblevins.org/projects/markdown-mode/
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
