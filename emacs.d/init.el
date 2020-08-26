@@ -249,6 +249,9 @@
   (setq helm-split-window-inside-p t
         helm-move-to-line-cycle-in-source t
         helm-completion-style 'emacs
+        ;; 같은 명령 히스토리가 연속으로 쌓이지 않게 한다
+        history-delete-duplicates t
+        history-length 10
         completion-styles `(basic
                             partial-completion
                             emacs22
