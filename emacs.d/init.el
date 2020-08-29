@@ -552,6 +552,13 @@
                         'pcomplete-completions-at-point
                         nil
                         t)))
+
+  ;; < 문자를 입력했을 때, 자동으로 > 문자가 입력되는 걸 방지
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (modify-syntax-entry ?< "_")
+              (modify-syntax-entry ?> "_")))
+
   ;; Make RET also indent
   ;; https://github.com/pkkm/.emacs.d/blob/master/conf/mode-specific/org.el
   (define-key org-mode-map [remap org-return] 'org-return-indent)
