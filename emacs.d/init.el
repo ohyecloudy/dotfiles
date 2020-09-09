@@ -827,6 +827,9 @@
 (use-package erlang
   :config (require 'erlang-start))
 
+;;; https://github.com/wakatime/wakatime-mode
+(when mac? (use-package wakatime-mode :init (global-wakatime-mode)))
+
 ;;; cc-mode
 (setq-default c-default-style "bsd"
               c-basic-offset 4)
