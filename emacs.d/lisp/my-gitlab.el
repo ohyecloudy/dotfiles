@@ -6,7 +6,7 @@
   (let ((todos (my-gitlab--request-get (my-gitlab--build-request
                                         gitlab-api-url
                                         "todos"
-                                        '(("per_page" 10))))))
+                                        '(("per_page" 50))))))
     (dolist (elt todos)
       (browse-url (plist-get elt :target_url)))))
 
