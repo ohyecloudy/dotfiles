@@ -79,6 +79,9 @@
 
 ;;; packages
 (require 'package)
+;; Error (use-package): Failed to install lsp-mode: Failed to verify signature: "spinner-1.7.3.el.sig"
+;; 이런 에러 때문에 끈다
+(setq package-check-signature nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (package-initialize)
