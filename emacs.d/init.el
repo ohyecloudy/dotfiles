@@ -22,7 +22,7 @@
   ;; font
   (when (available-font? "Consolas")
     (set-frame-font "Consolas-14" nil t)
-    (set-fontset-font t 'hangul (font-spec :name "PCMyungjo-16"))
+    (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
     (setq-default line-spacing 2))
 
   ;; keybinding
