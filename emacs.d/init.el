@@ -36,7 +36,7 @@
   (when (available-font? "Consolas")
     (set-frame-font "Consolas-11" nil t)
     ;; (set-fontset-font t 'hangul (font-spec :name "Batangche-12"))
-    (set-fontset-font t 'hangul (font-spec :name "D2Coding-12"))
+    (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
     (setq-default line-spacing 3)))
 
 ;; 한글
