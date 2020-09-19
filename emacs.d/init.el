@@ -570,13 +570,6 @@
   ;; export시 underscore를 <sub></sub> subscripts로 변경하지 않게 한다
   (setq org-export-with-sub-superscripts nil)
 
-  ;; org 9.3에서 org-edit-src-code 호출 시 이전 window 구성을 유지 안 하게 변경됐음
-  ;; Change in behavior on exit from an Org edit buffer
-  ;; Org will no longer attempt to restore the window configuration in the frame to which the user returns after editing a source block with org-edit-src-code. Instead, the window configuration will remain as it is.
-  ;; C-c ' 로 블록 소스를 편집하고 C-c ' 키로 돌아올 때마다 vertical로 구분한 버퍼 구성이 깨져서 짜증.
-  ;; 그래서 default인 reorganize-frame 대신 다른 옵션을 사용함
-  (setq org-src-window-setup 'other-window)
-
   ;; 접혀서 안 보이는 영역을 편집하려고 하면 펼치고 에러를 보여준다
   (setq org-catch-invisible-edits 'show-and-error)
 
