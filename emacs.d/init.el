@@ -563,6 +563,10 @@
               (modify-syntax-entry ?< "_")
               (modify-syntax-entry ?> "_")))
 
+  ;; Make RET also indent
+  ;; https://github.com/pkkm/.emacs.d/blob/master/conf/mode-specific/org.el
+  (define-key org-mode-map [remap org-return] 'org-return-indent)
+
   ;; export시 underscore를 <sub></sub> subscripts로 변경하지 않게 한다
   (setq org-export-with-sub-superscripts nil)
 
