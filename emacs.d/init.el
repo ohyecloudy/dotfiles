@@ -704,7 +704,12 @@
   (require 'org-tempo)
   ;; <h TAB 눌렀을 때, org-tempo-keywords-alist가 우선권을 가져서 제거한다
   ;; 원했던 #+begin_html 대신 #+html: 가 나오는 문제 해결하려고
-  (setq org-tempo-keywords-alist (delete '("H" . "html") org-tempo-keywords-alist)))
+  (setq org-tempo-keywords-alist (delete '("H" . "html") org-tempo-keywords-alist))
+
+  ;; 쓴 시간이 effort를 넘었을 때, 나오는 desktop notification을 끈다
+  ;; Task 'some tasks' should be finished by now. (1:00)
+  (setq org-show-notification-handler (lambda (notification) (message notification)))
+  )
 
 ;;; https://github.com/krisajenkins/ob-translate
 (use-package ob-translate
