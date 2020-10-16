@@ -695,6 +695,10 @@
     (org-columns)
     (visual-line-mode))
 
+  ;; #+STARTUP: fold 를 기본값으로 한다.
+  ;; org 파일을 열었을 때, overview를 가장 먼저 보고 싶기 때문
+  (setq org-startup-folded t)
+
   ;; org-mode 9.2에서 삭제된 < 키로 시작하는 template 삽입 기능을 되살리고자.
   ;; 예) <h TAB 입력시 #+BEGIN_HTML ... #+END_HTML 입력
   (require 'org-tempo)
