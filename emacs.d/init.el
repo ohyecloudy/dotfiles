@@ -727,8 +727,13 @@
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
         lsp-enable-imenu t
-        lsp-ui-doc-delay 2.0
-        lsp-diagnostic-package :flycheck)
+        lsp-eldoc-render-all t
+        lsp-headerline-breadcrumb-enable t
+        lsp-semantic-highlighting t
+        lsp-diagnostic-package :flycheck
+        lsp-ui-doc-enable nil
+        lsp-ui-sideline-show-diagnostics t
+        )
 
   ;; elixir-ls가 지원 안 한다. 혹시나 싶어 windows에서만 끈다
   (when windows?
