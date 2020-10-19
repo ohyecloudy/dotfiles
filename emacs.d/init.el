@@ -910,3 +910,20 @@
             (downcase-region start (1+ start)))
         (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ start) end)
         (downcase-region start (cdr (bounds-of-thing-at-point 'symbol)))))))
+
+(require 'subr-x)
+(defun open-issue-page ()
+  (interactive)
+  (when (not (boundp 'issue-base-page)) (throw 'issue-base-page "not bound"))
+  (let* ((line (thing-at-point 'line))
+         ;; issue number를 못 찾았을 때, number가 nil이 되야 하는데, 공백 문자가 들어간다
+         ;; 원인을 못 찾아서 string trim을 한 후 길이를 재서 검사한다.
+         (number (find-issue-number line)))
+    (if (> (length (string-trim number)) 0)
+        (browse-url (format "%s/%s" issue-base-page number))
+      (message "failed find issue number - %s" line))))
+
+(defun find-issue-number (line)
+  (save-match-data
+    (string-match "#\\([0-9]+\\)" line)
+    (match-string 1 line)))
