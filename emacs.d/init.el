@@ -117,6 +117,7 @@
 (setq evil-want-C-u-scroll t) ;; :init에 넣어도 동작 안 함 Evil version 1.2.12
 (setq evil-want-C-w-in-emacs-state t) ;; :init에 넣어도 동작 안 함
 (use-package evil
+  :ensure undo-fu
   ;; 쓰지 않는 키바인딩. alchemist-mode에서 사용하려고 unbinding
   :bind (:map
          evil-normal-state-map
@@ -163,7 +164,10 @@
     (set-syntax-table (let* ((table (make-syntax-table)))
                         (modify-syntax-entry ?/ "." table)
                         table)))
-  (add-hook 'minibuffer-inactive-mode-hook 'minibuffer-inactive-mode-hook-setup))
+  (add-hook 'minibuffer-inactive-mode-hook 'minibuffer-inactive-mode-hook-setup)
+
+  (evil-set-undo-system 'undo-fu)
+  )
 
 ;;; evil-matchit
 ;;; https://github.com/redguardtoo/evil-matchit
