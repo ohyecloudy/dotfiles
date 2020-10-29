@@ -9,6 +9,12 @@
 
 (defun available-font? (font) (member font (font-family-list)))
 
+;; performace
+(progn
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+  )
+
 ;;
 ;; macbook pro에서 full height에 스크린 width 반정도 차지하게 세팅
 ;;
@@ -742,6 +748,8 @@
         lsp-diagnostic-package :flycheck
         lsp-ui-doc-enable nil
         lsp-ui-sideline-show-diagnostics t
+        lsp-completion-provider :capf
+        lsp-idle-delay 0.500
         )
 
   ;; elixir-ls가 지원 안 한다. 혹시나 싶어 windows에서만 끈다
