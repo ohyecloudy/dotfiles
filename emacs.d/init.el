@@ -742,7 +742,6 @@
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
         lsp-enable-imenu t
-        lsp-eldoc-render-all t
         lsp-headerline-breadcrumb-enable t
         lsp-semantic-highlighting t
         lsp-diagnostic-package :flycheck
