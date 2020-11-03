@@ -96,7 +96,8 @@
                                gitlab-private-key))
           (url (format "%s/issues/%d" gitlab-base-url id)))
       (org-insert-heading)
-      (insert (format "#%d %s" id (parse-title request-url)))
+      (insert (format "#%d %s [/]" id (parse-title request-url)))
+      (org-update-statistics-cookies nil)
       (org-set-property "Url" url)))
 
   (defun my/mrs-url (begin-date end-date page)
