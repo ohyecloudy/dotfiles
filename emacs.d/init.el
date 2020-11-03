@@ -213,6 +213,10 @@
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode))
 
+;;; https://github.com/emacsorphanage/git-gutter
+(use-package git-gutter
+  :init (global-git-gutter-mode t))
+
 ;;; https://github.com/purcell/exec-path-from-shell
 ;;; emacs를 GUI로 실행했을 때, shell의 PATH 환경 변수가 적용 안 되는 문제를 해결하려고
 (when mac?
