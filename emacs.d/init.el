@@ -234,6 +234,8 @@
 (use-package magit
   :bind ("C-x g" . magit-status)
   :config
+  ;; magit status를 열 때, 저장 안 한 버퍼가 있으면 물어보지 않고 저장한다
+  (setq magit-save-repository-buffers 'dontask)
   ;; (evil-set-initial-state 'magit-blame-mode 'emacs) 동작을 안 해서
   ;; 원인은 모름
   ;; Magit 20170322.1550, Git 2.11.0.windows.1, Emacs 24.4.1, windows-nt
