@@ -863,6 +863,9 @@
 (use-package erlang
   :config (require 'erlang-start))
 
+;;; https://github.com/immerrr/lua-mode
+(use-package lua-mode)
+
 ;;; https://github.com/wakatime/wakatime-mode
 (when mac? (use-package wakatime-mode :init (global-wakatime-mode)))
 
