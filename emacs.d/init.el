@@ -560,11 +560,16 @@
          org-mode-map
          ("C-a" . nil)) ; universal-argument 키바인딩 때문
   :config
-  (progn
+  (setq
     ;; syntax highlighting이 들어가니 가독성이 떨어져 org block에서는 끈다
-    (setq org-src-fontify-natively nil)
-    ;; fontify를 켜줘야 quote와 verse block도 배경 색상을 바꿀 수 있다
-    (setq org-fontify-quote-and-verse-blocks t))
+   org-src-fontify-natively nil
+    ;; quote와 verse block도 배경 색상을 바꾼다
+   org-fontify-quote-and-verse-blocks t
+   ;; heading *를 한 개만 보여준다.
+   org-hide-leading-stars t
+   ;; done 해드라인 폰트 변경을 하지 않는다. 색상 때문에 doom theme 변경시 제대로 안 보임
+   org-fontify-done-headline nil
+   )
 
   (setq org-startup-with-inline-images t)
   ;; org keyword를 company 모드 completion에 추가함
