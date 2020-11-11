@@ -31,6 +31,7 @@
 /emacs.d/init.el.local
 /emacs.d/flycheck_init.el
 /emacs.d/.cache
+/emacs.d/request
 
 # ac-nrepl 임시 파일
 ac-comphist.dat

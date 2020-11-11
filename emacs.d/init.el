@@ -100,6 +100,9 @@
 (eval-when-compile
   (require 'use-package))
 
+;;; https://github.com/tkf/emacs-request
+(use-package request)
+
 ;;;
 ;;; doom-themes
 ;;; - https://github.com/hlissner/emacs-doom-themes

@@ -20,6 +20,32 @@
     (message elt)
     (my-gitlab--insert-issues-by (list '("labels" "에러") (list "assignee_username" elt)))))
 
+(defun my-gitlab-status-vacation ()
+  (interactive)
+  (my-gitlab--set-status "palm_tree" "휴가")
+  )
+
+(defun my-gitlab-status-clear ()
+  (interactive)
+  (my-gitlab--set-status "" "")
+  )
+
+(defun my-gitlab--set-status (emoji message)
+  (when (not (boundp 'gitlab-api-url)) (throw 'gitlab-api-url "not bound"))
+  (when (not (boundp 'gitlab-private-key)) (throw 'gitlab-private-key "not bound"))
+  (request
+    (format "%s/user/status?private_token=%s" gitlab-api-url gitlab-private-key)
+    :type "PUT"
+    :data (json-encode `(("emoji" . ,emoji) ("message" . ,message)))
+    :headers '(("Content-Type" . "application/json"))
+    :sync t
+    :parser 'json-read
+    :encoding 'utf-8
+    :complete (cl-function
+               (lambda (&key response &allow-other-keys)
+                 (message "Done: %s" (request-response-status-code response)))))
+  )
+
 (defun my-gitlab-open-issue-milestone (milestones)
   (when (not (boundp 'gitlab-team-members)) (throw 'gitlab-team-members "not bound"))
   (switch-to-buffer (make-temp-name "gitlab milestone issues"))
