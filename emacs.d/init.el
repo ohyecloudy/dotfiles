@@ -332,7 +332,7 @@
   :config
   (projectile-mode)
   (setq projectile-enable-caching t)
-  (setq projectile-indexing-method 'alien)
+  (setq projectile-indexing-method 'hybrid)
   (setq projectile-globally-ignored-file-suffixes
         '(".psd" ".png" ".fbx" ".anim" ".mat" ".meta" ".prefab" ".asset"
           ".controller")))
