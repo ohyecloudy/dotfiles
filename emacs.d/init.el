@@ -763,11 +763,9 @@
         lsp-ui-sideline-show-diagnostics t
         lsp-completion-provider :capf
         lsp-idle-delay 0.500
+        ;; elixir-ls가 지원하지 않아서 disable
+        lsp-enable-file-watchers nil
         )
-
-  ;; elixir-ls가 지원 안 한다. 혹시나 싶어 windows에서만 끈다
-  (when windows?
-    (setq lsp-enable-file-watchers nil))
 
   :hook (elixir-mode . lsp)
   :config
