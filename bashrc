@@ -7,7 +7,7 @@ if [[ "$MSYSTEM" == "MSYS" ]] || [[ "$MSYSTEM" == "MINGW"* ]]; then
     # ln 명령어가 full copy가 아닌 symbol link 생성으로 동작하게 한다.
     export MSYS=winsymlinks:nativestrict
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    export PATH="$HOME/bin.local:$HOME/bin:/usr/local/opt/python@3.8/libexec/bin:$PATH";
+    export PATH="$HOME/bin.local:$HOME/bin:/usr/local/opt/python@3.8/libexec/bin:$HOME/developer/flutter/bin:$PATH";
 fi
 
 export VISUAL=ec-wait
