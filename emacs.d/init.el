@@ -416,10 +416,10 @@
 ;; 괄호, 구분자(delimiter) 자동 쌍 맞추기
 (progn
   (electric-pair-mode 1)
-  (setq electric-pair-pairs '((?{ . ?})
-                              (?( . ?))
-                              (?[ . ?])
-                              (?" . ?")))
+  (setq electric-pair-pairs '((?\{ . ?\})
+                              (?\( . ?\))
+                              (?\[ . ?\])
+                              (?\" . ?\")))
   )
 
 ;; tab으로 electic pair 밖으로 나올 수 있게 한다
