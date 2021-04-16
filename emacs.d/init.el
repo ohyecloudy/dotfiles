@@ -15,21 +15,6 @@
   (setq read-process-output-max (* 1024 1024)) ;; 1mb
   )
 
-;;
-;; macbook pro에서 full height에 스크린 width 반정도 차지하게 세팅
-;;
-;; 가끔 깜빡이는 문제가 있어서 inhibit-double-buffering 옵션을 추가함
-;; https://www.reddit.com/r/emacs/comments/ecctcp/how_to_debug_emacs_flickering_issue/
-(when mac?
-  (setq default-frame-alist
-        '(
-          (left . 0) (width . 100)
-          (fullscreen . fullheight)
-          (inhibit-double-buffering . t)
-          )
-        )
-  )
-
 ;; | 12345678 |   |
 ;; |----------+---|
 ;; | 일이삼사 |   |
