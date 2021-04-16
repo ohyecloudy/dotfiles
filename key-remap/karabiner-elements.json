@@ -8,7 +8,7 @@
                     "conditions": [
                         {
                             "bundle_identifiers": [
-                                "^org.gnu.Emacs"
+                                "^org\\.gnu\\.Emacs"
                             ],
                             "type": "frontmost_application_unless"
                         }
