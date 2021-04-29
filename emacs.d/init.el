@@ -565,7 +565,9 @@
    org-fontify-done-headline nil
    )
 
-  (setq org-startup-with-inline-images t)
+  ;; 큰 이미지가 inline됐을 때, resize가 잘 안 되서 끈다
+  ;; 필요하면 C-c C-o 로 열어서 보는 게 편하다
+  (setq org-startup-with-inline-images nil)
   ;; org keyword를 company 모드 completion에 추가함
   ;; https://emacs.stackexchange.com/a/21173
   (add-hook 'org-mode-hook
