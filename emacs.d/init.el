@@ -352,8 +352,11 @@
   :init
   (add-hook 'after-init-hook 'global-company-mode)
   :config
-  (setq company-idle-delay 0)
-  (setq company-show-numbers "on"))
+  (setq company-idle-delay 0
+        company-show-numbers "on"
+        company-dabbrev-downcase nil ; 소문자로 변경하는 기능을 비활성화
+        )
+  )
 
 ;;; org-mode에서 #+ 다음에 completion cadidates가 나오도록
 ;;; https://emacs.stackexchange.com/a/30691
