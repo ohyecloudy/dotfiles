@@ -265,7 +265,10 @@
 
   (setq helm-split-window-inside-p t
         helm-move-to-line-cycle-in-source t
-        helm-completion-style 'emacs
+        ;; 'emacs를 권고하나 elixir lsp에서 C-M-i 키로 completion-at-point 함수를 호출해서
+        ;; helm 창이 열렸을 때, fuzzy matching이 제대로 되지 않는다. matching이 안 된 후보도 계속 남아있다.
+        ;; 그래서 잘 동작하는 helm-fuzzy로 변경
+        helm-completion-style 'helm-fuzzy
         ;; 같은 명령 히스토리가 연속으로 쌓이지 않게 한다
         history-delete-duplicates t
         history-length 10
