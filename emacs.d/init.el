@@ -955,3 +955,10 @@
   (save-match-data
     (string-match "#\\([0-9]+\\)" line)
     (match-string 1 line)))
+
+(defun search-elixir-doc (search-terms)
+  (interactive "sEnter your search terms: ")
+  (let* ((base-url "https://hexdocs.pm/elixir/search.html")
+         (query-string (url-build-query-string `(("q" ,search-terms))))
+         (url (format "%s?%s" base-url query-string)))
+    (browse-url url)))
