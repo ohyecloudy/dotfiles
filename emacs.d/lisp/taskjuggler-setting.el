@@ -1,4 +1,3 @@
-;; report 항목에 priority 추가
 (setq org-taskjuggler-default-reports
   '("textreport report \"Plan\" {
   formats html
@@ -18,7 +17,7 @@
 # A traditional Gantt chart with a project overview.
 taskreport plan \"\" {
   headline \"Project Plan\"
-  columns bsi, name, start, end, priority, effort, chart
+  columns name, start, end, effort, effortleft, complete, chart {scale day}
   loadunit shortauto
   hideresource 1
 }
