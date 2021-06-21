@@ -851,7 +851,9 @@
 (use-package flycheck
   :init
   ;; erlang은 flycheck에서 제외
-  (mapc (lambda (x) (setq flycheck-checkers (delete x flycheck-checkers))) '(erlang-rebar3 erlang))
+  ;; init.el 파일에서 free variable 오탐이 많아서 emacs lisp 제외
+  (mapc (lambda (x) (setq flycheck-checkers (delete x flycheck-checkers)))
+        '(erlang-rebar3 erlang emacs-lisp emacs-lisp-checkdoc))
   (global-flycheck-mode))
 
 ;;; https://github.com/szermatt/emacs-bash-completion
