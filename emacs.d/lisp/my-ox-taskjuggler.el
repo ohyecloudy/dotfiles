@@ -992,6 +992,10 @@ Return a list of reports."
 	 (out-dir
 	  (expand-file-name
 	   org-taskjuggler-reports-directory (file-name-directory file)))
+         ;; windows git bash에서 code page가 UTF-8이 아니라서 taskjuggler compile에 오류가 생김
+         ;; taskjuggler Error: UTF-8 encoding error
+         ;; 그래서 windows일 때만 UTF-8로 변경하는 chcp 65001 명령을 실행
+         (code-page-change-cmd (if (eq system-type 'windows-nt) "chcp.com 65001;" ""))
 	 errors)
     (message (format "Processing TaskJuggler file %s..." file))
     (save-window-excursion
@@ -1000,11 +1004,13 @@ Return a list of reports."
 	  (make-directory out-dir t))
 	(with-current-buffer outbuf (erase-buffer))
 	(shell-command
-	 (replace-regexp-in-string
-	  "%f" (shell-quote-argument full-name)
-	  (replace-regexp-in-string
-	   "%o" (shell-quote-argument out-dir)
-	   org-taskjuggler-process-command t t) t t) outbuf)
+         (format "%s%s"
+                 code-page-change-cmd
+                 (replace-regexp-in-string
+                  "%f" (shell-quote-argument full-name)
+                  (replace-regexp-in-string
+                   "%o" (shell-quote-argument out-dir)
+                   org-taskjuggler-process-command t t) t t)) outbuf)
 	;; Collect standard errors from output buffer.
         (setq errors (org-taskjuggler--collect-errors outbuf)))
       (message errors)
