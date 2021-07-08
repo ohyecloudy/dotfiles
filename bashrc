@@ -10,6 +10,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH="$HOME/bin.local:$HOME/bin:/usr/local/opt/python@3.8/libexec/bin:$HOME/developer/flutter/bin:$PATH";
 fi
 
+if [[ "$OS" == "Windows_NT" ]]; then
+    # UTF-8
+    chcp.com 65001 >/dev/null
+fi
+
 export VISUAL=ec-wait
 export EDITOR=ec-wait
 

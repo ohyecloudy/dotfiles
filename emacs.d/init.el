@@ -74,6 +74,18 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'sh 'shell)
 
+;; windows에서 shell을 사용할 때, windows에서 사용하는 code page도 UTF-8로 변경한다
+;; 그렇게 하려고 -l 옵션을 붙여서 로그인을 한다. 그 결과 interactive 모드로 셸을 실행한다
+;; interactive 모드로 실행해서 ~/.bashrc 셸 스크립트 파일을 실행하게 한다.
+;; ~/.bashrc 파일에서 windows일 때, chcp.com 65001 명령을 실행해서 code page도 UTF-8로 변경한다.
+;;
+;; -i 옵션은 job control 생성을 못해서 대신 -l 옵션을 사용했다.
+;; bash: cannot set terminal process group (-1): Inappropriate ioctl for device
+;; bash: no job control in this shell
+(when windows?
+  (setq shell-command-switch "-lc")
+  )
+
 ;;; emacs가 init.el에 추가하는 설정 방지
 ;;; (custom-set-variables ...
 ;;; https://jamiecollinson.com/blog/my-emacs-config/
