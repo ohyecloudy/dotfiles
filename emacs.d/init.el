@@ -311,27 +311,13 @@
 ;;; https://github.com/syohex/emacs-helm-ag
 (use-package helm-ag
   :config
-  ;; helm-rg 패키지는 문제가 많아서 helm-ag 패키지에서 ripgrep을 사용한다
-  (setq helm-ag-base-command "rg -i --no-heading --vimgrep")
-
-  ;; windows에서만 문제가 발생
+  ;; windows에서 process coding system을 utf-8로 통일하는 게 뜻대로 되지 않는다.
+  ;; ag 결과를 볼 때만 cp949로 변경한다
   (when windows?
-    ;; helm-do-ag 처럼 process로 한글 인자를 넘길 때, encoding 문제를 해결하기 위해
-    ;; 내부 동작을 정확히 파악하지 못했다.
-    ;;
-    ;; cp949일 때
-    ;; - (korean-iso-8bit-dos . korean-iso-8bit-unix)
-    ;; - 출력은 깨지지만 입력은 process로 제대로 전달된다.
-    ;; utf-8일 때
-    ;; - (utf-8-dos . utf-8-unix)
-    ;; - 입력은 깨지지만 출력은 제대로 된다.
-    ;;
-    ;; 둘을 조합했다.
-    ;; 다른 건 utf-8로 잘 동작하니 helm-do-ag 실행할 때만 프로세스 인코딩을 변경한다
     (advice-add 'helm-do-ag
                 :before (lambda (&rest _)
                           (setq default-process-coding-system
-                                '(utf-8-dos . korean-iso-8bit-unix))))
+                                '(cp949 . cp949))))
     (advice-add 'helm-do-ag
                 :after (lambda (&rest _)
                          (setq default-process-coding-system
@@ -365,17 +351,7 @@
 (use-package helm-projectile
   :config
   (helm-projectile-on)
-
-  ;; ag대신 ripgrep을 사용.
-  ;; --ignore 옵션이 하드코딩돼서 ripgrep을 사용 못함
-  ;; projectile 0.14.0
-  (advice-add 'helm-do-ag
-              :before (lambda (&rest _)
-                        (setq helm-ag-base-command
-                              (replace-regexp-in-string
-                               "--ignore.*"
-                               ""
-                               helm-ag-base-command)))))
+  )
 
 ;;; http://company-mode.github.io/
 (use-package company
