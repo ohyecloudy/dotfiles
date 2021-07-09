@@ -39,14 +39,23 @@
     (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
     (setq-default line-spacing 3)))
 
-;; 한글
-(set-language-environment "Korean")
-;; 한글 환경에서는 cp949 인코딩이 디폴트이기 때문.
-(prefer-coding-system 'utf-8)
-;; 날짜 표시를 영어로한다. org mode에서 time stamp 날짜에 영향을 준다.
-(setq system-time-locale "C")
-(setenv "LANG" "en_US.UTF-8")
-(setenv "LC_ALL" "en_US.UTF-8")
+;; 한글과 UTF-8
+(progn
+  ;; input method도 엮여 있어서 Korean으로 설정 후 utf-8 개별 세팅이 편한다
+  (set-language-environment "Korean")
+  ;; 한글 환경에서는 cp949 인코딩이 디폴트이기 때문에 utf-8로 세팅
+  (prefer-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (setq-default buffer-file-coding-system 'utf-8)
+  (when windows?
+    (w32-set-system-coding-system 'utf-8))
+  ;; 날짜 표시를 영어로한다. org mode에서 time stamp 날짜에 영향을 준다.
+  (setq system-time-locale "C")
+  (setenv "LANG" "en_US.UTF-8")
+  (setenv "LC_ALL" "en_US.UTF-8")
+  )
 
 ;; startup-message 안 보기
 (setq inhibit-startup-message t)
