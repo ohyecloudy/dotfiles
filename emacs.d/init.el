@@ -168,6 +168,10 @@
   (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
   (evil-set-initial-state 'tabulated-list-mode 'emacs)
   (setq-default evil-symbol-word-search t)
+  ;; GUI가 아니면 TAB키가 동작하지 않는다. 대신 C-i 키가 똑같은 역할은 한다.
+  ;; 이것때문에 C-i 키를 바인딩하면 TAB키가 같이 바인딩된다.
+  ;; C-i 키를 잘 쓰고 있기 때문에 바인딩을 유지하고 org mode에서만 org-cycle 함수로 바인딩한다.
+  (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
 
   (add-hook 'emacs-lisp-mode-hook
             #'(lambda ()
