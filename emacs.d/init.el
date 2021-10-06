@@ -596,6 +596,8 @@
    org-hide-leading-stars t
    ;; done 해드라인 폰트 변경을 하지 않는다. 색상 때문에 doom theme 변경시 제대로 안 보임
    org-fontify-done-headline nil
+   ;; 9.5부터 default 값이 바뀜
+   org-adapt-indentation t
    )
 
   ;; 큰 이미지가 inline됐을 때, resize가 잘 안 되서 끈다
