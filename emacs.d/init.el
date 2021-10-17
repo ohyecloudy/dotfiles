@@ -993,3 +993,9 @@
          (query-string (url-build-query-string `(("q" ,search-terms))))
          (url (format "%s?%s" base-url query-string)))
     (browse-url url)))
+
+(defun unevernotify ()
+  (interactive)
+  (while (re-search-forward "\u00a0" nil t)
+    (replace-match " "))
+  )
