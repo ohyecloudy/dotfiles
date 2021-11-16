@@ -19,6 +19,8 @@ set laststatus=2 " vim-powerline이 꾸며주는 상태바를 항상 출력하�
 " When off a buffer is unloaded when it is abandoned.
 " argdo 명령으로 여러 파일을 변경할 수 있게
 set hidden
+" OS 클립보드를 같이 사용한다
+set clipboard=unnamed
 
 " sound, visual bell 둘 다 비활성화.
 set noerrorbells visualbell t_vb=
