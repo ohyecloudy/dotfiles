@@ -8,7 +8,7 @@ if [[ "$MSYSTEM" == "MSYS" ]] || [[ "$MSYSTEM" == "MINGW"* ]]; then
     export MSYS=winsymlinks:nativestrict
     export ELIXIR_EDITOR="ec.bat +__LINE__ __FILE__"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    export PATH="$HOME/bin.local:$HOME/bin:/usr/local/opt/python@3.8/libexec/bin:$HOME/developer/flutter/bin:$PATH";
+    export PATH="/opt/homebrew/bin:$HOME/bin.local:$HOME/bin:/usr/local/opt/python@3.8/libexec/bin:$HOME/developer/flutter/bin:$PATH";
     export ELIXIR_EDITOR="ec +__LINE__ __FILE__"
 fi
 
