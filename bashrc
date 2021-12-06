@@ -6,8 +6,10 @@ if [[ "$MSYSTEM" == "MSYS" ]] || [[ "$MSYSTEM" == "MINGW"* ]]; then
     export LC_ALL=en_US.UTF-8
     # ln 명령어가 full copy가 아닌 symbol link 생성으로 동작하게 한다.
     export MSYS=winsymlinks:nativestrict
+    export ELIXIR_EDITOR="ec.bat +__LINE__ __FILE__"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH="$HOME/bin.local:$HOME/bin:/usr/local/opt/python@3.8/libexec/bin:$HOME/developer/flutter/bin:$PATH";
+    export ELIXIR_EDITOR="ec +__LINE__ __FILE__"
 fi
 
 if [[ "$OS" == "Windows_NT" ]]; then
