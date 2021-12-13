@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: org roam daily
+# key: <rt
+# --
+
+** 주간 계획 외 할 일
+
+   - [ ] $0
+
+** 회고
