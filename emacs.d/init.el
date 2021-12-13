@@ -167,6 +167,7 @@
   (evil-set-initial-state 'alchemist-test-report-mode 'emacs)
   (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
   (evil-set-initial-state 'tabulated-list-mode 'emacs)
+  (evil-set-initial-state 'org-roam-mode 'emacs)
   (setq-default evil-symbol-word-search t)
   ;; GUI가 아니면 TAB키가 동작하지 않는다. 대신 C-i 키가 똑같은 역할은 한다.
   ;; 이것때문에 C-i 키를 바인딩하면 TAB키가 같이 바인딩된다.
@@ -764,6 +765,29 @@
   ;; 쓴 시간이 effort를 넘었을 때, 나오는 desktop notification을 끈다
   ;; Task 'some tasks' should be finished by now. (1:00)
   (setq org-show-notification-handler (lambda (notification) (message notification)))
+  )
+
+(use-package org-roam
+  :custom
+  (org-roam-directory (file-truename "~/org_roam"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :init
+  (setq org-roam-v2-ack t)
+  :config
+  (org-roam-db-autosync-mode)
+  (setq org-roam-mode-section-functions
+        (list #'org-roam-backlinks-section
+              #'org-roam-reflinks-section
+              ;; #'org-roam-unlinked-references-section
+              ))
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol)
   )
 
 ;;; https://github.com/krisajenkins/ob-translate
