@@ -784,7 +784,7 @@
   (setq org-roam-mode-section-functions
         (list #'org-roam-backlinks-section
               #'org-roam-reflinks-section
-              ;; #'org-roam-unlinked-references-section
+              #'org-roam-unlinked-references-section
               ))
   ;; If using org-roam-protocol
   (require 'org-roam-protocol)
