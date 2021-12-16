@@ -57,6 +57,10 @@
   (setenv "LC_ALL" "en_US.UTF-8")
   )
 
+;; Creating pipe: Too many open files 에러를 피하기 위해 버퍼 사이즈를 늘린다
+(when windows?
+  (setq w32-pipe-buffer-size (* 64 1024)))
+
 ;; startup-message 안 보기
 (setq inhibit-startup-message t)
 ;; *scratch* 버퍼 깨끗하게 시작하기
