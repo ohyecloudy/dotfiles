@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: org roam publish
-# key: <rt
-# --
-
-- 블로깅 날짜 ::
-- 블로그 URL ::
-
-$0
