@@ -110,7 +110,6 @@
 ;; 이런 에러 때문에 끈다
 (setq package-check-signature nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (package-initialize)
 
 (setq use-package-always-ensure t ; Auto-download package if not exists
@@ -584,9 +583,6 @@
 (use-package ob-elixir)
 
 (use-package org
-  :pin org
-  :ensure org-plus-contrib
-  :defer t
   :bind (("C-c c" . org-capture)
          :map
          org-mode-map
