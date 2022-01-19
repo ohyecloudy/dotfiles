@@ -10,6 +10,12 @@ if [[ "$MSYSTEM" == "MSYS" ]] || [[ "$MSYSTEM" == "MINGW"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH="/opt/homebrew/bin:$HOME/.local/bin:$HOME/bin.local:$HOME/bin:/usr/local/opt/python@3.8/libexec/bin:$HOME/developer/flutter/bin:$PATH";
     export ELIXIR_EDITOR="ec +__LINE__ __FILE__"
+
+    # pyenv
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
 fi
 
 if [[ "$OS" == "Windows_NT" ]]; then
