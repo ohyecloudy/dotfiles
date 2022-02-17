@@ -83,6 +83,8 @@
 
 ;; 거슬리는 경고 소리를 끈다.
 (setq ring-bell-function 'ignore)
+;; 최대 화면으로 시작
+(setq initial-frame-alist '((fullscreen . maximized)))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'sh 'shell)
