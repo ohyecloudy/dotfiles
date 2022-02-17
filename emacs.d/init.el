@@ -728,7 +728,8 @@
      (python . t)
      (elixir . t)
      (restclient . t)
-     (C . t)))
+     (C . t)
+     (calc . t)))
 
   ;; <h가 #+BEGIN_HTML #+END_HTML에서 #+BEGIN_EXPORT html #+END_EXPORT로 변경됨
   ;; jekyll-org가 지원 안해서 예전으로 되돌림
