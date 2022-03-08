@@ -924,6 +924,9 @@
 ;;; https://github.com/immerrr/lua-mode
 (use-package lua-mode)
 
+;;; https://github.com/rexim/org-cliplink
+(use-package org-cliplink)
+
 ;;; https://github.com/wakatime/wakatime-mode
 (when mac? (use-package wakatime-mode :init (global-wakatime-mode)))
 
@@ -1026,3 +1029,25 @@
   (while (re-search-forward "\u00a0" nil t)
     (replace-match " "))
   )
+
+(defun my-org-cliplink ()
+  (interactive)
+  (org-cliplink-insert-transformed-title
+   (org-cliplink-clipboard-content)     ;take the URL from the CLIPBOARD
+   (lambda (url title)
+     (let* ((parsed-url (url-generic-parse-url url)) ;parse the url
+            (host-url (replace-regexp-in-string "^www\\." "" (url-host parsed-url)))
+            (clean-title
+             (cond
+              ;; if the host is github.com, cleanup the title
+              ((string= (url-host parsed-url) "github.com")
+               (replace-regexp-in-string "^/" ""
+                                         (car (url-path-and-query parsed-url))))
+              ;; (replace-regexp-in-string "GitHub - .*: \\(.*\\)" "\\1" title))
+              ((string= (url-host parsed-url) "www.youtube.com")
+               (replace-regexp-in-string "\\(.*\\) - Youtube" "\\1" title))
+              ;; otherwise keep the original title
+              (t title)))
+            (title-with-url (format "%s - %s" clean-title host-url)))
+       ;; forward the title to the default org-cliplink transformer
+       (org-cliplink-org-mode-link-transformer url title-with-url)))))
