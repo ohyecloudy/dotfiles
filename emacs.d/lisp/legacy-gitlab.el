@@ -101,14 +101,12 @@
       (org-set-property "Url" url)))
 
   (defun my/mrs-url (begin-date end-date page)
-    (let ((before (format "%sT00:00:00.000%%2B09:00" end-date))
-          (after (format "%sT00:00:00.000%%2B09:00" begin-date))
-          (options (format "order_by=updated_at&state=merged&scope=all&per_page=100&page=%d" page)))
+    (let ((options (format "order_by=updated_at&state=merged&scope=all&per_page=100&page=%d" page)))
       (format "%s/merge_requests?%s&updated_after=%s&updated_before=%s&private_token=%s"
               gitlab-api-base-url
               options
-              after
-              before
+              begin-date
+              end-date
               gitlab-private-key)))
 
   (defun my/mrs (begin-date end-date)
@@ -131,7 +129,10 @@
                                  :author
                                  (plist-get mr :author)
                                  :assignee
-                                 (plist-get mr :assignee)))))))
+                                 (plist-get mr :assignee)
+                                 :merged_at
+                                 (plist-get mr :merged_at)
+                                 ))))))
       mrs))
 
   (defun my/mr-commits (mr-iid)
@@ -180,20 +181,32 @@
       (plist-get plist :name)))
 
   (defun my/insert-gitlab-mrs (begin-date end-date)
-    (let* ((mrs (my/mrs begin-date end-date))
-           (mrs (seq-filter (lambda (x) (string= (plist-get x :target_branch) "master")) mrs)))
+    (let* ((begin-date (format "%sT00:00:00.000+09:00" begin-date))
+           (end-date (format "%sT00:00:00.000+09:00" end-date))
+           (mrs (my/mrs begin-date end-date))
+           (mrs (seq-filter (lambda (x)
+                              (and
+                               (string= (plist-get x :target_branch) "master")
+                               (between-date-p begin-date end-date (plist-get x :merged_at))))
+                            mrs)))
       (dolist (mr mrs)
         (let ((id (plist-get mr :iid)))
           (insert "*** TODO ")
           (insert (format "!%d" id))
-          (insert (format " [%s - %s][%s] %s"
+          (insert (format " [%s - %s] %s"
                           (name (plist-get mr :author))
                           (name (plist-get mr :assignee))
-                          (plist-get mr :target_branch)
                           (plist-get mr :title)))
           (org-return)
           (org-set-property "Url" (format "%s/merge_requests/%d" gitlab-base-url id))
           (insert-mr-commits (plist-get mr :iid))))))
+
+  (defun between-date-p (begin end target)
+    (let ((begin (parse-iso8601-time-string begin))
+          (end (parse-iso8601-time-string end))
+          (target (parse-iso8601-time-string target)))
+      (and (>= (time-subtract target begin) 0)
+           (>= (time-subtract end target) 0))))
 
   (defun insert-gitlab-mrs-range ()
     (interactive)
