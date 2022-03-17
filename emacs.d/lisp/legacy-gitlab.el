@@ -5,9 +5,14 @@
     (interactive "nmerge request id: ")
     (insert (format "[[%s/merge_requests/%d][!%d]]" gitlab-base-url id id)))
 
-  (defun insert-gitlab-issue-link (id)
-    (interactive "nissue id: ")
-    (insert (format "[[%s/issues/%d][#%d]]" gitlab-base-url id id)))
+  (defun insert-gitlab-issue-link (project id)
+    (interactive
+     (list
+      (completing-read "project: " (mapcar 'car gitlab-projects))
+      (read-number "issue id: ")))
+    (let* ((project-property (cdr (assoc project gitlab-projects)))
+           (base-url (plist-get project-property :url)))
+      (insert (format "[[%s/issues/%d][%s#%d]]" base-url id project id))))
 
   (defun insert-gitlab-milestone-issues (milestone username)
     (let* ((url (milestore-issues-url milestone username))
@@ -71,13 +76,18 @@
                        gitlab-private-key)))
       (insert (format " %s" (parse-title url)))))
 
-  (defun insert-gitlab-issue (id)
-    (interactive "nissue id: ")
-    (insert-gitlab-issue-link id)
-    (let ((url (format "%s/issues/%d?private_token=%s"
-                       gitlab-api-base-url
-                       id
-                       gitlab-private-key)))
+  (defun insert-gitlab-issue (project id)
+    (interactive
+     (list
+      (completing-read "project: " (mapcar 'car gitlab-projects))
+      (read-number "issue id: ")))
+    (insert-gitlab-issue-link project id)
+    (let* ((project-property (cdr (assoc project gitlab-projects)))
+           (api-url (plist-get project-property :api-url))
+           (url (format "%s/issues/%d?private_token=%s"
+                        api-url
+                        id
+                        gitlab-private-key)))
       (insert (format " %s" (parse-title url)))))
 
   (defun insert-gitlab-issue-plain (id)
@@ -88,15 +98,21 @@
                        gitlab-private-key)))
       (insert (format "#%d %s" id (parse-title url)))))
 
-  (defun insert-gitlab-issue-heading (id)
-    (interactive "nissue id: ")
-    (let ((request-url (format "%s/issues/%d?private_token=%s"
-                               gitlab-api-base-url
-                               id
-                               gitlab-private-key))
-          (url (format "%s/issues/%d" gitlab-base-url id)))
+  (defun insert-gitlab-issue-heading (project id)
+    (interactive
+     (list
+      (completing-read "project: " (mapcar 'car gitlab-projects))
+      (read-number "issue id: ")))
+    (let* ((project-property (cdr (assoc project gitlab-projects)))
+           (api-url (plist-get project-property :api-url))
+           (base-url (plist-get project-property :url))
+           (request-url (format "%s/issues/%d?private_token=%s"
+                                api-url
+                                id
+                                gitlab-private-key))
+           (url (format "%s/issues/%d" base-url id)))
       (org-insert-heading)
-      (insert (format "#%d %s [/]" id (parse-title request-url)))
+      (insert (format "%s#%d %s [/]" project id (parse-title request-url)))
       (org-update-statistics-cookies nil)
       (org-set-property "Url" url)))
 
