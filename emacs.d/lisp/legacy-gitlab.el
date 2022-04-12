@@ -116,23 +116,25 @@
       (org-update-statistics-cookies nil)
       (org-set-property "Url" url)))
 
-  (defun my/mrs-url (begin-date end-date page)
-    (let ((options (format "order_by=updated_at&state=merged&scope=all&per_page=100&page=%d" page)))
+  (defun my/mrs-url (project begin-date end-date page)
+    (let* ((project-property (cdr (assoc project gitlab-projects)))
+           (api-url (plist-get project-property :api-url))
+           (options (format "order_by=updated_at&state=merged&scope=all&per_page=100&page=%d" page)))
       (format "%s/merge_requests?%s&updated_after=%s&updated_before=%s&private_token=%s"
-              gitlab-api-base-url
+              api-url
               options
               begin-date
               end-date
               gitlab-private-key)))
 
-  (defun my/mrs (begin-date end-date)
+  (defun my/mrs (project begin-date end-date)
     (let ((mrs '())
           (json-array-type 'list)
           (json-object-type 'plist)
           (json-key-type 'keyword))
       (dotimes (page 10) ;; 현명하게 그만둘 수 있는 방법이 있을텐데. 무식하게 10번 돈다 고고
         (with-temp-buffer
-          (url-insert-file-contents (my/mrs-url begin-date end-date (+ page 1)))
+          (url-insert-file-contents (my/mrs-url project begin-date end-date (+ page 1)))
           (let ((content (json-read)))
             (dolist (mr content)
               (add-to-list 'mrs
@@ -148,18 +150,21 @@
                                  (plist-get mr :assignee)
                                  :merged_at
                                  (plist-get mr :merged_at)
+                                 :web_url
+                                 (plist-get mr :web_url)
                                  ))))))
       mrs))
 
-  (defun my/mr-commits (mr-iid)
-    (let ((commits '())
-          (json-array-type 'list)
-          (json-object-type 'plist)
-          (json-key-type 'keyword)
-          (url (format "%s/merge_requests/%s/commits?private_token=%s"
-                       gitlab-api-base-url
-                       mr-iid
-                       gitlab-private-key)))
+  (defun my/mr-commits (project mr-iid)
+    (let* ((project-property (cdr (assoc project gitlab-projects)))
+           (api-url (plist-get project-property :api-url))(commits '())
+           (json-array-type 'list)
+           (json-object-type 'plist)
+           (json-key-type 'keyword)
+           (url (format "%s/merge_requests/%s/commits?private_token=%s"
+                        api-url
+                        mr-iid
+                        gitlab-private-key)))
       (with-temp-buffer
         (url-insert-file-contents url)
         (let ((content (json-read)))
@@ -175,12 +180,13 @@
                                (plist-get c :message))))))
       commits))
 
-  (defun insert-mr-commits (mr-iid)
-    (interactive "nmerge request id: ")
-    (let ((commits (my/mr-commits mr-iid)))
+  (defun insert-mr-commits (project mr-iid)
+    (let* ((project-property (cdr (assoc project gitlab-projects)))
+           (base-url (plist-get project-property :url))(commits '())
+           (commits (my/mr-commits project mr-iid)))
       (dolist (c commits)
         (insert (format "**** [[%s/merge_requests/%s/diffs?commit_id=%s][%s]] [%s] %s"
-                        gitlab-base-url
+                        base-url
                         mr-iid
                         (plist-get c :id)
                         (substring (plist-get c :id) 0 10)
@@ -196,10 +202,10 @@
         "none"
       (plist-get plist :name)))
 
-  (defun my/insert-gitlab-mrs (begin-date end-date)
+  (defun my/insert-gitlab-mrs (project begin-date end-date)
     (let* ((begin-date (format "%sT00:00:00.000+09:00" begin-date))
            (end-date (format "%sT00:00:00.000+09:00" end-date))
-           (mrs (my/mrs begin-date end-date))
+           (mrs (my/mrs project begin-date end-date))
            (mrs (seq-filter (lambda (x)
                               (and
                                (string= (plist-get x :target_branch) "master")
@@ -214,8 +220,8 @@
                           (name (plist-get mr :assignee))
                           (plist-get mr :title)))
           (org-return)
-          (org-set-property "Url" (format "%s/merge_requests/%d" gitlab-base-url id))
-          (insert-mr-commits (plist-get mr :iid))))))
+          (org-set-property "Url" (plist-get mr :web_url))
+          (insert-mr-commits project (plist-get mr :iid))))))
 
   (defun between-date-p (begin end target)
     (let ((begin (parse-iso8601-time-string begin))
@@ -223,12 +229,6 @@
           (target (parse-iso8601-time-string target)))
       (and (>= (time-subtract target begin) 0)
            (>= (time-subtract end target) 0))))
-
-  (defun insert-gitlab-mrs-range ()
-    (interactive)
-    (let ((begin-date (org-read-date))
-          (end-date (org-read-date)))
-      (my/insert-gitlab-mrs begin-date end-date)))
 
   (defun my/commits-url (begin-date end-date page)
     (let ((before (format "%sT00:00:00.000%%2B09:00" end-date))
@@ -302,10 +302,12 @@
           (end-date (org-read-date)))
       (my/insert-gitlab-commits-without-mr begin-date end-date)))
 
-  (defun insert-gitlab-todo-codereview ()
-    (interactive)
+  (defun insert-gitlab-todo-codereview (project)
+    (interactive
+     (list
+      (completing-read "project: " (mapcar 'car gitlab-projects))))
     (let ((begin-date (org-read-date))
           (end-date (org-read-date)))
-      (my/insert-gitlab-mrs begin-date end-date)))
+      (my/insert-gitlab-mrs project begin-date end-date)))
 
   (message "define gitlab related functions"))
