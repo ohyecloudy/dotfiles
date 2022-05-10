@@ -35,6 +35,7 @@
 /emacs.d/request
 /emacs.d/org-roam.db
 /emacs.d/network-security.data
+/emacs.d/projects
 
 # ac-nrepl 임시 파일
 ac-comphist.dat
