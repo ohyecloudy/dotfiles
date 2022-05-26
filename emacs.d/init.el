@@ -1027,6 +1027,13 @@
          (url (format "%s?%s" base-url query-string)))
     (browse-url url)))
 
+(defun search-flutter-doc (search-terms)
+  (interactive "sEnter your search terms: ")
+  (let* ((base-url "https://docs.flutter.dev/search")
+         (query-string (url-build-query-string `(("q" ,search-terms))))
+         (url (format "%s?%s" base-url query-string)))
+    (browse-url url)))
+
 (defun unevernotify ()
   (interactive)
   (while (re-search-forward "\u00a0" nil t)
