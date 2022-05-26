@@ -927,6 +927,9 @@
 ;;; https://github.com/rexim/org-cliplink
 (use-package org-cliplink)
 
+;;; https://github.com/bradyt/dart-mode
+(use-package dart-mode)
+
 ;;; https://github.com/wakatime/wakatime-mode
 (when mac? (use-package wakatime-mode :init (global-wakatime-mode)))
 
