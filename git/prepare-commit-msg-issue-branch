@@ -2,9 +2,12 @@
 
 branchname=`git rev-parse --abbrev-ref HEAD`
 issuetag="\${issue}"
+prefixtag="\${prefix}"
 if [ "$branchname" = "master" ]; then
     sed -i "s/$issuetag//" "$1"
+    sed -i "s/$prefixtag//" "$1"
 else
     issue_num=`echo $branchname | sed -E 's/([[:digit:]]+).*/\1/'`
     sed -i "s/$issuetag/$issue_num/" "$1"
+    sed -i "s/$prefixtag//" "$1"
 fi
