@@ -173,6 +173,7 @@
   (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
   (evil-set-initial-state 'tabulated-list-mode 'emacs)
   (evil-set-initial-state 'org-roam-mode 'emacs)
+  (evil-set-initial-state 'magit-mode 'emacs)
   (setq-default evil-symbol-word-search t)
   ;; GUI가 아니면 TAB키가 동작하지 않는다. 대신 C-i 키가 똑같은 역할은 한다.
   ;; 이것때문에 C-i 키를 바인딩하면 TAB키가 같이 바인딩된다.
@@ -278,6 +279,37 @@
   ;; commit message 편집하는 버퍼가 열리면 evil-emacs-state로 켜짐
   ;; Magit 20171031.1141, Git 2.14.1.windows.1, Emacs 25.2.1, windows-nt
   (add-hook 'git-commit-setup-hook (lambda () (evil-normal-state 1))))
+
+;;; https://github.com/magit/forge
+(use-package forge
+  :after magit
+  :config
+  ;; HTTP 셀프 호스팅 서비스를 위한 클래스 정의
+  ;; https://github.com/magit/forge/wiki/Tips-and-Tricks#accessing-private-gitlab-instances-via-http
+  (defclass forge-gitlab-http-repository (forge-gitlab-repository)
+    ((issues-url-format         :initform "http://%h/%o/%n/issues")
+     (issue-url-format          :initform "http://%h/%o/%n/issues/%i")
+     (issue-post-url-format     :initform "http://%h/%o/%n/issues/%i#note_%I")
+     (pullreqs-url-format       :initform "http://%h/%o/%n/merge_requests")
+     (pullreq-url-format        :initform "http://%h/%o/%n/merge_requests/%i")
+     (pullreq-post-url-format   :initform "http://%h/%o/%n/merge_requests/%i#note_%I")
+     (commit-url-format         :initform "http://%h/%o/%n/commit/%r")
+     (branch-url-format         :initform "http://%h/%o/%n/commits/%r")
+     (remote-url-format         :initform "http://%h/%o/%n")
+     (create-issue-url-format   :initform "http://%h/%o/%n/issues/new")
+     (create-pullreq-url-format :initform "http://%h/%o/%n/merge_requests/new")
+     (pullreq-refspec :initform "+refs/merge-requests/*/head:refs/pullreqs/*")))
+
+  ;; init.el.local 파일에 다음과 같이 정의해서 사용
+  ;; (with-eval-after-load 'forge
+  ;;   (add-to-list 'forge-alist
+  ;;                '("mycompany.com"
+  ;;                  "mycompany.com/api/v4"
+  ;;                  "mycompany.com"
+  ;;                  forge-gitlab-http-repository))
+  ;;   (add-to-list 'ghub-insecure-hosts "mycompany.com/api/v4")
+  ;;   )
+  )
 
 ;;; https://github.com/emacs-helm/helm
 (use-package helm
@@ -591,9 +623,9 @@
          ("C-a" . nil)) ; universal-argument 키바인딩 때문
   :config
   (setq
-    ;; syntax highlighting이 들어가니 가독성이 떨어져 org block에서는 끈다
+   ;; syntax highlighting이 들어가니 가독성이 떨어져 org block에서는 끈다
    org-src-fontify-natively nil
-    ;; quote와 verse block도 배경 색상을 바꾼다
+   ;; quote와 verse block도 배경 색상을 바꾼다
    org-fontify-quote-and-verse-blocks t
    ;; heading *를 한 개만 보여준다.
    org-hide-leading-stars t

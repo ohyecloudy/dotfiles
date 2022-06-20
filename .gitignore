@@ -56,3 +56,6 @@ tramp
 # Org-mode
 .org-id-locations
 *_archive
+
+## forge
+forge-database.sqlite
