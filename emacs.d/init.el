@@ -635,6 +635,9 @@
    org-adapt-indentation t
    )
 
+  ;; C-c ' 로 소스 코드를 편집할 때, 아래에 새로운 창을 연다
+  (setq org-src-window-setup 'split-window-below)
+
   ;; 큰 이미지가 inline됐을 때, resize가 잘 안 되서 끈다
   ;; 필요하면 C-c C-o 로 열어서 보는 게 편하다
   (setq org-startup-with-inline-images nil)
