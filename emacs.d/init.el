@@ -932,6 +932,9 @@
 ;;; https://github.com/bradyt/dart-mode
 (use-package dart-mode)
 
+;;; https://github.com/zweifisch/ob-http
+(use-package ob-http)
+
 ;;; https://github.com/wakatime/wakatime-mode
 (when mac? (use-package wakatime-mode :init (global-wakatime-mode)))
 
