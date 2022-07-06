@@ -803,6 +803,13 @@
   ;; 쓴 시간이 effort를 넘었을 때, 나오는 desktop notification을 끈다
   ;; Task 'some tasks' should be finished by now. (1:00)
   (setq org-show-notification-handler (lambda (notification) (message notification)))
+
+  (defun o/org-open-at-point-current-buffer ()
+    "open file in current buffer"
+    (interactive)
+    (let ((org-link-frame-setup (cons (cons 'file 'find-file) org-link-frame-setup)))
+      (org-open-at-point)))
+  (define-key org-mode-map (kbd "C-c <C-return>") #'o/org-open-at-point-current-buffer)
   )
 
 (use-package org-roam
