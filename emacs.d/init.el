@@ -349,31 +349,22 @@
 ;;; https://github.com/syohex/emacs-helm-ag
 (use-package helm-ag
   :config
-  ;; helm-rg 패키지는 문제가 많아서 helm-ag 패키지에서 ripgrep을 사용한다
-  (setq helm-ag-base-command "rg -i --no-heading --vimgrep")
-
   ;; windows에서만 문제가 발생
   (when windows?
-    ;; helm-do-ag 처럼 process로 한글 인자를 넘길 때, encoding 문제를 해결하기 위해
-    ;; 내부 동작을 정확히 파악하지 못했다.
-    ;;
-    ;; cp949일 때
-    ;; - (korean-iso-8bit-dos . korean-iso-8bit-unix)
-    ;; - 출력은 깨지지만 입력은 process로 제대로 전달된다.
-    ;; utf-8일 때
-    ;; - (utf-8-dos . utf-8-unix)
-    ;; - 입력은 깨지지만 출력은 제대로 된다.
-    ;;
-    ;; 둘을 조합했다.
-    ;; 다른 건 utf-8로 잘 동작하니 helm-do-ag 실행할 때만 프로세스 인코딩을 변경한다
+    (setq original-default-process-coding-system default-process-coding-system)
+    ;; the silver searcher(ag)는 cp949로 동작한다.
+    ;; windows에서 실행하는 bash의 codepage를 65001로 변경하지 않았기 때문
+    ;; 그래서 ag를 실행할 때만 cp949로 변경하고 끝나면 원래 process coding system 값으로 돌린다
     (advice-add 'helm-do-ag
                 :before (lambda (&rest _)
                           (setq default-process-coding-system
-                                '(utf-8-dos . korean-iso-8bit-unix))))
+                                '(korean-iso-8bit-dos . korean-iso-8bit-unix))))
     (advice-add 'helm-do-ag
                 :after (lambda (&rest _)
                          (setq default-process-coding-system
-                               '(utf-8-dos . utf-8-unix))))))
+                               original-default-process-coding-system)))
+    )
+  )
 
 ;;; https://github.com/ShingoFukuyama/helm-swoop
 (use-package helm-swoop
