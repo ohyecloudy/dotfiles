@@ -241,6 +241,8 @@
 ;;; - https://github.com/seagle0128/doom-modeline
 ;;; - 폰트가 이상하게 나오면 M-x all-the-icons-install-fonts 실행
 ;;;
+(use-package all-the-icons)
+
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode))
 
