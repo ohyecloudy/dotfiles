@@ -175,10 +175,12 @@
   (evil-set-initial-state 'org-roam-mode 'emacs)
   (evil-set-initial-state 'magit-mode 'emacs)
   (setq-default evil-symbol-word-search t)
-  ;; GUI가 아니면 TAB키가 동작하지 않는다. 대신 C-i 키가 똑같은 역할은 한다.
-  ;; 이것때문에 C-i 키를 바인딩하면 TAB키가 같이 바인딩된다.
-  ;; C-i 키를 잘 쓰고 있기 때문에 바인딩을 유지하고 org mode에서만 org-cycle 함수로 바인딩한다.
-  (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
+  ;; https://github.com/noctuid/evil-guide 참고해서 키 바인딩
+  ;; TAB만 했는데, >, < 키도 org 함수에 바인딩한다.
+  (evil-define-key 'normal org-mode-map
+    (kbd "TAB") 'org-cycle
+    ">" 'org-shiftmetaright
+    "<" 'org-shiftmetaleft)
 
   (add-hook 'emacs-lisp-mode-hook
             #'(lambda ()
