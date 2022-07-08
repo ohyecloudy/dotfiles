@@ -244,6 +244,16 @@
 (use-package all-the-icons)
 
 (use-package doom-modeline
+  :init
+  (setq
+   ;; 현재 위치를 쬐깐하게 보여준다
+   doom-modeline-hud t
+   ;; 버퍼가 몇 개의 word로 되어 있는지 보여준다
+   doom-modeline-enable-word-count t
+   ;; 경로가 아니라 파일 이름만 모드라인에 보여준다. 'auto는 경로를 출력한다
+   ;; tramp로 원격 파일 편집시 느려지는 경험을 완화해준다고 한다
+   doom-modeline-buffer-file-name-style 'file-name
+   )
   :hook (after-init . doom-modeline-mode))
 
 ;;; https://github.com/emacsorphanage/git-gutter
