@@ -626,6 +626,8 @@
    org-fontify-done-headline nil
    ;; 9.5부터 default 값이 바뀜
    org-adapt-indentation t
+   ;; modeline에 보이는 org clock 정보가 너무 길어서 줄임
+   org-clock-string-limit 30
    )
 
   ;; C-c ' 로 소스 코드를 편집할 때, 아래에 새로운 창을 연다
