@@ -944,6 +944,16 @@
 ;;; https://github.com/zweifisch/ob-http
 (use-package ob-http)
 
+;;; https://gitlab.com/Titan-C/org-cv
+(let ((path "manual-packages/org-cv"))
+  (when (file-directory-p path)
+      (use-package ox-moderncv
+        :load-path "manual-packages/org-cv"
+        :init (require 'ox-moderncv))
+      (message "loaded org-cv")
+    )
+  )
+
 ;;; https://github.com/wakatime/wakatime-mode
 (when mac? (use-package wakatime-mode :init (global-wakatime-mode)))
 
