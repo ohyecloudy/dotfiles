@@ -945,13 +945,11 @@
 (use-package ob-http)
 
 ;;; https://gitlab.com/Titan-C/org-cv
-(let ((path "manual-packages/org-cv"))
-  (when (file-directory-p path)
-      (use-package ox-moderncv
-        :load-path "manual-packages/org-cv"
-        :init (require 'ox-moderncv))
-      (message "loaded org-cv")
-    )
+(when (file-directory-p (expand-file-name "manual-packages/org-cv" user-emacs-directory))
+  (use-package ox-moderncv
+    :load-path "manual-packages/org-cv"
+    :init (require 'ox-moderncv))
+  (message "loaded org-cv")
   )
 
 ;;; https://github.com/wakatime/wakatime-mode
