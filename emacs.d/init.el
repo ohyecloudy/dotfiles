@@ -573,6 +573,9 @@
 
 ;;; backup
 (add-to-list 'backup-directory-alist '("." . "~/.emacs-saves"))
+;;; 옛날 백업 파일을 묻지 않고 삭제하게 함
+;;; Delete excess backup versions of {FILE} 메시지가 계속 뜬다.
+(setq delete-old-versions t)
 
 ;; whitespace mode
 (custom-set-faces
