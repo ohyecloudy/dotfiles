@@ -1,131 +1,214 @@
 {
-    "title": "terraforming",
-    "rules": [
+  "title":"terraforming",
+  "rules":[
+    {
+      "description":"emacs - friendly input method",
+      "manipulators":[
         {
-            "description": "emacs - friendly input method",
-            "manipulators": [
-                {
-                    "conditions": [
-                        {
-                            "bundle_identifiers": [
-                                "^org\\.gnu\\.Emacs"
-                            ],
-                            "type": "frontmost_application_unless"
-                        }
-                    ],
-                    "from": {
-                        "key_code": "spacebar",
-                        "modifiers": {
-                            "mandatory": [
-                                "left_shift"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "spacebar",
-                            "modifiers": [
-                                "left_control",
-                                "left_shift"
-                            ]
-                        }
-                    ],
-                    "type": "basic"
-                }
-            ]
+          "conditions":[
+            {
+              "bundle_identifiers":[
+                "^org\\.gnu\\.Emacs"
+              ],
+              "type":"frontmost_application_unless"
+            }
+          ],
+          "from":{
+            "key_code":"spacebar",
+            "modifiers":{
+              "mandatory":[
+                "left_shift"
+              ]
+            }
+          },
+          "to":[
+            {
+              "key_code":"spacebar",
+              "modifiers":[
+                "left_control",
+                "left_shift"
+              ]
+            }
+          ],
+          "type":"basic"
         },
         {
-            "description": "swap command and option - remote desktop",
-            "manipulators": [
-                {
-                    "conditions": [
-                        {
-                            "type": "frontmost_application_if",
-                            "bundle_identifiers": [
-                                "^com\\.microsoft\\.rdc.*"
-                            ]
-                        }
-                    ],
-                    "type": "basic",
-                    "from": {
-                        "key_code": "left_command",
-                        "modifiers": {
-                            "optional": [
-                                "any"
-                            ]
-                        }
-                    },
-                    "to": [{
-                        "key_code": "left_option"
-                    }]
-                },
-                {
-                    "conditions": [
-                        {
-                            "type": "frontmost_application_if",
-                            "bundle_identifiers": [
-                                "^com\\.microsoft\\.rdc.*"
-                            ]
-                        }
-                    ],
-                    "type": "basic",
-                    "from": {
-                        "key_code": "left_option",
-                        "modifiers": {
-                            "optional": [
-                                "any"
-                            ]
-                        }
-                    },
-                    "to": [{
-                        "key_code": "left_command"
-                    }]
-                },
-                {
-                    "conditions": [
-                        {
-                            "type": "frontmost_application_if",
-                            "bundle_identifiers": [
-                                "^com\\.microsoft\\.rdc.*"
-                            ]
-                        }
-                    ],
-                    "type": "basic",
-                    "from": {
-                        "key_code": "right_command",
-                        "modifiers": {
-                            "optional": [
-                                "any"
-                            ]
-                        }
-                    },
-                    "to": [{
-                        "key_code": "right_option"
-                    }]
-                },
-                {
-                    "conditions": [
-                        {
-                            "type": "frontmost_application_if",
-                            "bundle_identifiers": [
-                                "^com\\.microsoft\\.rdc.*"
-                            ]
-                        }
-                    ],
-                    "type": "basic",
-                    "from": {
-                        "key_code": "right_option",
-                        "modifiers": {
-                            "optional": [
-                                "any"
-                            ]
-                        }
-                    },
-                    "to": [{
-                        "key_code": "right_command"
-                    }]
-                }
-            ]
+          "conditions":[
+            {
+              "type":"frontmost_application_if",
+              "bundle_identifiers":[
+                "^org\\.gnu\\.Emacs"
+              ]
+            }
+          ],
+          "type":"basic",
+          "from":{
+            "key_code":"tab",
+            "modifiers":{
+              "mandatory":[
+                "left_option"
+              ]
+            }
+          },
+          "to":[
+            {
+              "key_code":"tab",
+              "modifiers":[
+                "right_command"
+              ]
+            }
+          ]
+        },
+        {
+          "conditions":[
+            {
+              "type":"frontmost_application_if",
+              "bundle_identifiers":[
+                "^org\\.gnu\\.Emacs"
+              ]
+            }
+          ],
+          "type":"basic",
+          "from":{
+            "key_code":"left_command",
+            "modifiers":{
+              "optional":[
+                "any"
+              ]
+            }
+          },
+          "to":[
+            {
+              "key_code":"left_option"
+            }
+          ]
+        },
+        {
+          "conditions":[
+            {
+              "type":"frontmost_application_if",
+              "bundle_identifiers":[
+                "^org\\.gnu\\.Emacs"
+              ]
+            }
+          ],
+          "type":"basic",
+          "from":{
+            "key_code":"left_option",
+            "modifiers":{
+              "optional":[
+                "any"
+              ]
+            }
+          },
+          "to":[
+            {
+              "key_code":"left_command"
+            }
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "description":"swap command and option - remote desktop",
+      "manipulators":[
+        {
+          "conditions":[
+            {
+              "type":"frontmost_application_if",
+              "bundle_identifiers":[
+                "^com\\.microsoft\\.rdc.*"
+              ]
+            }
+          ],
+          "type":"basic",
+          "from":{
+            "key_code":"left_command",
+            "modifiers":{
+              "optional":[
+                "any"
+              ]
+            }
+          },
+          "to":[
+            {
+              "key_code":"left_option"
+            }
+          ]
+        },
+        {
+          "conditions":[
+            {
+              "type":"frontmost_application_if",
+              "bundle_identifiers":[
+                "^com\\.microsoft\\.rdc.*"
+              ]
+            }
+          ],
+          "type":"basic",
+          "from":{
+            "key_code":"left_option",
+            "modifiers":{
+              "optional":[
+                "any"
+              ]
+            }
+          },
+          "to":[
+            {
+              "key_code":"left_command"
+            }
+          ]
+        },
+        {
+          "conditions":[
+            {
+              "type":"frontmost_application_if",
+              "bundle_identifiers":[
+                "^com\\.microsoft\\.rdc.*"
+              ]
+            }
+          ],
+          "type":"basic",
+          "from":{
+            "key_code":"right_command",
+            "modifiers":{
+              "optional":[
+                "any"
+              ]
+            }
+          },
+          "to":[
+            {
+              "key_code":"right_option"
+            }
+          ]
+        },
+        {
+          "conditions":[
+            {
+              "type":"frontmost_application_if",
+              "bundle_identifiers":[
+                "^com\\.microsoft\\.rdc.*"
+              ]
+            }
+          ],
+          "type":"basic",
+          "from":{
+            "key_code":"right_option",
+            "modifiers":{
+              "optional":[
+                "any"
+              ]
+            }
+          },
+          "to":[
+            {
+              "key_code":"right_command"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
