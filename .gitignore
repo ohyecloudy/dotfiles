@@ -38,6 +38,10 @@
 /emacs.d/projects
 /emacs.d/manual-packages
 
+## doom emacs
+
+/doom.d/config.el
+
 # ac-nrepl 임시 파일
 ac-comphist.dat
 
