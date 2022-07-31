@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: org roam book notes
+# key: <rt
+# --
+
+- ISBN ::
+- 저자 ::
+- 책 링크 ::
+- 관련 책 ::
+
+** 이 책을 어떻게 알게 됐나?
+
+** 독후감
+
+$0
