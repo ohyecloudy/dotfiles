@@ -41,6 +41,7 @@
 ## doom emacs
 
 /doom.d/config.el
+/doom.d/packages.el
 
 # ac-nrepl 임시 파일
 ac-comphist.dat

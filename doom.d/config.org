@@ -139,838 +139,485 @@
 
   =M-x= 키가 =alt= 키를 눌러야 해서 불편하다. =C-x C-m= 키로도 호출할 수 있게 변경
 
-* org-roam
-
-  #+begin_src elisp
-    (setq org-roam-directory (file-truename "~/org_roam"))
-  #+end_src
-
 * tab -> space
 
   #+begin_src elisp
     (setq indent-tabs-mode nil)
   #+end_src
 
-* doom theme
+* cc-mode
 
-  #+begin_src elisp
-    (setq
-     doom-theme 'doom-vibrant
-     doom-themes-enable-bold nil
-     doom-themes-enable-italic nil)
-  #+end_src
-
-  한글이 많은 경우 bold, italic 시인성이 별로라서 꺼놓는다.
-
-  #+begin_src elisp
-    (doom-themes-visual-bell-config)
-  #+end_src
-
-  modeline에 visual bell을 표시한다. 시인성이 좋음.
-
-* org
-
-  #+begin_src elisp
-    (after! org
-      (setq
-       ;; quote와 verse block도 배경 색상을 바꾼다
-       org-fontify-quote-and-verse-blocks t
-       ;; heading *를 한 개만 보여준다.
-       org-hide-leading-stars t
-       ;; done 해드라인 폰트 변경을 하지 않는다. 색상 때문에 doom theme 변경시 제대로 안 보임
-       org-fontify-done-headline nil
-       ;; 9.5부터 default 값이 바뀜
-       org-adapt-indentation t
-       ;; modeline에 보이는 org clock 정보가 너무 길어서 줄임
-       org-clock-string-limit 30
-       ;; 트리를 접을 때, heading 사이에 빈 라인을 없앤다
-       org-cycle-separator-lines 0
-       ;; 순서 없는 목록(unordered list)에서 bullet으로 들여쓰기를 할 때마다 +, -를 번갈아 사용한다
-       org-list-demote-modify-bullet '(("+" . "-") ("-" . "+"))
-       ;; #+STARTUP: fold 를 기본값으로 한다. org 파일을 열었을 때, overview를 가장 먼저 보고 싶기 때문
-       org-startup-folded t
-       )
-      )
-  #+end_src
-
-  ui 관련 설정들
-
-  #+begin_src elisp
-    (after! org
-      (setq
-       org-startup-indented nil
-       org-src-preserve-indentation nil
-       )
-      )
-  #+end_src
-
-  emacs에서 org mode일 때, indentation을 적용하는 기능을 끈다. 이 기능을 끄면 emacs가 아닌 다른 에디터로 org 파일을 볼 때도 space로 indentation을 적용한 상태이다.
-
-  이 상태에서 =org-src-preserve-indentation= 심볼에 nil이 아닌 값이 바인딩되었다면 소스 코드 블럭이 heading 본문 indentation과 상관없이 라인 앞에 붙어 있다. 원래 소스 코드의 indentation을 유지하기 때문이다. 소스 코드 블럭도 똑같이 indentation을 지키도록 =nil= 값을 바인딩한다.
-
-  #+begin_src elisp
-    (after! org
-      (setq org-todo-keywords
-            '((sequence
-               "TODO"
-               "STARTED"
-               "|"
-               "DONE"))
-            org-todo-keyword-faces
-            '(("STARTED" . +org-todo-active)))
-      )
-  #+end_src
-
-  org 모듈에서 정의한 =+org-todo-active= 페이스를 사용하기에 org 모듈을 로드한 후에 실행해야 한다.
-
-  #+begin_src elisp
-    (after! org
-      (setq org-blank-before-new-entry
-            '((heading . t) (plain-list-item . nil))
-            )
-      )
-  #+end_src
-
-  heading 사이에는 반드시 빈 줄이 들어가게 한다. plan list item 사이에는 무조건 제거한다.
-
-  #+begin_src elisp
-    (after! evil-org
-      (map! :map evil-org-mode-map
-            :ni [C-return]   #'org-insert-heading-respect-content
-            :ni [C-S-return] #'org-insert-todo-heading-respect-content
-            )
-      )
-  #+end_src
-
-  doom에서 =C-RET= 키는 아래에 추가 =C-S-RET= 키는 위로 추가로 바인딩을 변경한다. 새로 함수를 추가해서 해당 함수에 바인딩하는데, 해당 함수에 =org-blank-before-new-entry= 심볼 값이 반영이 안 되어 있어서 org mode의 디폴트 함수로 바인딩을 했다.
-
-  =evil-org= 모드 맵도 똑같이 수정한다.
-
-  #+begin_src elisp
-    (defun my-org-clock-in-if-starting ()
-      "Clock in when the task is marked STARTED."
-      (when (and (string= org-state "STARTED")
-                 (not (string= org-last-state org-state)))
-        (org-clock-in)))
-    (add-hook 'org-after-todo-state-change-hook
-              'my-org-clock-in-if-starting)
-    (advice-add 'org-clock-in
-                :after (lambda (&rest _)
-                         (org-todo "STARTED")))
-    ;; 다른 org-clock 시작으로 clock-out 됐을 때, todo도 바꿔준다
-    (add-hook 'org-clock-out-hook
-              (lambda ()
-                (when (and (boundp 'org-state)
-                           (string= org-state "STARTED"))
-                  (org-todo "DONE"))))
-  #+end_src
-
-  =STARTED= 키워드로 변경하면 =org-clock= 을 시작한다. =TODO= 상태에서 =STARTED= 상태로 변경되면 자동으로 시간 기록이 되게 하려고 추가한 기능. [[http://ohyecloudy.com/emacsian/2017/07/01/org-clocking-time-with-emacs-todo-state/][#orgmode TODO 상태와 org-clock은 같이 움직인다 - ohyecloudy.com]] 참고
-
-  #+begin_src elisp
-    (after! org-clock
-      (setq org-clock-persist-query-resume nil)
-      )
-  #+end_src
-
-  active clock이 있을 때, 물어보지 않고 재개한다. [[http://ohyecloudy.com/emacsian/2017/10/14/org-clock-persistence/][#orgmode emacs를 꺼도 org-clock은 굴러간다 - ohyecloudy.com]] 참고
-
-  #+begin_src elisp
-    (after! org-clock
-      (setq org-clock-idle-time 15)
-      )
-  #+end_src
-
-  15분을 자리비움 감지 기준으로 설정. [[http://ohyecloudy.com/emacsian/2017/11/04/org-dealing-with-idle-time/][#orgmode idle 시간 다루기 - ohyecloudy.com]] 참고
-
-  #+begin_src elisp
-    (after! org
-      ;; org-set-effort 함수 실행 시 나오는 preset 리스트
-      (setq org-global-properties
-            '(("Effort_ALL" .
-               "1:00 2:00 3:00 4:00 8:00 16:00 24:00 32:00 40:00 0:30")))
-      ;; hotkey 1    2    3    4    5    6     7     8     9     0
-
-      ;; org-columns에서 effort를 볼 수 있게 추가
-      (setq org-columns-default-format "%50ITEM(Task) %10Effort{:} %10CLOCKSUM")
-
-      ;; org-clock-report 기본 프로퍼티
-      (setq org-clock-clocktable-default-properties
-            '(:maxlevel 2 :scope file :narrow 30! :properties ("effort")))
-
-      )
-  #+end_src
-
-  추정 시간에 관련된 설정. 추정 시간 입력시 preset 리스트를 추가하고 =org-columns= 명령과 =org-clock-report= 명령에서 추정 시간을 볼 수 있게 세팅. [[http://ohyecloudy.com/emacsian/2017/09/09/org-effort-estimates/][#orgmode 추정(estimate) 작업 시간 기록 - ohyecloudy.com]] 참고
-
-  #+begin_src elisp
-    (after! org
-      (setq org-duration-format (quote h:mm))
-      )
-  #+end_src
-
-  기간 포맷으로 시간:분 사용. 24시가 넘어갈 때, 1d로 표현하는 게 보기 싫어서 세팅. [[http://ohyecloudy.com/emacsian/2017/11/25/org-duration-format/][#orgmode 하루가 넘어가도 clock table 기간 필드에 시간과 분으로만 표시 - ohyecloudy.com]] 참고
-
-  #+begin_src elisp
-    (after! org
-      (defun org-columns-with-visual-line-mode ()
-        (interactive)
-        (org-columns)
-        (visual-line-mode))
-      )
-  #+end_src
-
-  =org-columns= 모드를 켤 때, 자동 줄바꿈을 해주는 =visual-line-mode= 를 활성화한다. [[http://ohyecloudy.com/emacsian/2020/03/15/org-column-view-with-visual-line-mode/][#orgmode column view를 활성화하면 꺼지는 줄 바꿈(word wrap)을 켜는 방법 - ohyecloudy.com]] 참고
-
-  #+begin_src elisp
-    (after! org
-      (setq org-show-notification-handler (lambda (notification) (message notification)))
-      )
-  #+end_src
-
-  쓴 시간이 effort를 넘었을 때, 나오는 desktop notification을 끈다. Task 'some tasks' should be finished by now. (1:00)
-
-  #+begin_src elisp
-    (after! org
-      (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
-      )
-
-    (defun my-org-open-at-point-current-buffer ()
-      "open file in current buffer"
-      (interactive)
-      (let ((org-link-frame-setup (cons (cons 'file 'find-file) org-link-frame-setup)))
-        (org-open-at-point)))
-
-    (after! evil-org
-      (map! :map evil-org-mode-map
-            :ni "C-c C-RET"      #'my-org-open-at-point-current-buffer
-            :ni "C-c C-<return>" #'my-org-open-at-point-current-buffer
-            )
-      )
-  #+end_src
-
-  org에서 link를 다른 윈도를 사용해서 열게 한다. 이건 기본 동작으로 돌린다. =C-c C-o= 는 다른 윈도에서 링크를 열게 하고 =C-c C-RET= 은 현재 윈도에서 열게 한다.
-
-* org-cliplink
-
-  #+begin_src elisp
-    (defun my-org-cliplink ()
-      (interactive)
-      (org-cliplink-insert-transformed-title
-       (org-cliplink-clipboard-content)     ;take the URL from the CLIPBOARD
-       #'my-org-link-transformer))
-
-    (defun my-org-link-transformer (url title)
-      (let* ((parsed-url (url-generic-parse-url url)) ;parse the url
-             (host-url (replace-regexp-in-string "^www\\." "" (url-host parsed-url)))
-             (clean-title
-              (cond
-               ;; if the host is github.com, cleanup the title
-               ((string= (url-host parsed-url) "github.com")
-                (replace-regexp-in-string "^/" ""
-                                          (car (url-path-and-query parsed-url))))
-               ;; (replace-regexp-in-string "GitHub - .*: \\(.*\\)" "\\1" title))
-               ((string= (url-host parsed-url) "www.youtube.com")
-                (replace-regexp-in-string "\\(.*\\) - Youtube" "\\1" title))
-               ;; otherwise keep the original title
-               (t title)))
-             (title-with-url (format "%s - %s" clean-title host-url)))
-        ;; forward the title to the default org-cliplink transformer
-        (org-cliplink-org-mode-link-transformer url title-with-url)))
-  #+end_src
-
-  마지막에 host를 붙이고 싶어서 link transformer 함수를 짰다. =title - ohyecloudy.com= 식으로 org link를 만든다.
-
-  #+begin_src elisp
-    (after! org
-      (define-key org-mode-map [remap org-cliplink] 'my-org-cliplink)
-      )
-  #+end_src
-
-  =org-clinklink= 함수에 바인딩된 키를 =my-org-cliplink= 로 바인딩한다
-
-* doom-modeline
-
-  #+begin_src elisp
-    (after! doom-modeline
-      (setq
-       ;; 현재 위치를 쬐깐하게 보여준다
-       doom-modeline-hud t
-       ;; 경로가 아니라 파일 이름만 모드라인에 보여준다. 'auto는 경로를 출력한다
-       ;; tramp로 원격 파일 편집시 느려지는 경험을 완화해준다고 한다
-       doom-modeline-buffer-file-name-style 'file-name
-       )
-      )
-  #+end_src
-
-  doom-modeline 추가 설정
-
-* TODO 설정
-
-  #+begin_src elisp :tangle no
-    (defconst local-init-el-path
-      (expand-file-name "init.el.local" user-emacs-directory))
-    (when (file-exists-p local-init-el-path)
-      (message (format "load local init el - %s" local-init-el-path))
-      (load-file local-init-el-path))
-
-    (setq windows? (eq system-type 'windows-nt))
-    (setq mac? (eq system-type 'darwin))
-
-    ;; 선택 텍스트를 타이핑할 때, 삭제
-    (delete-selection-mode t)
-    ;; word-wrap
-    (global-visual-line-mode t)
-    ;; syntax highlighting on
-    (global-font-lock-mode t)
-
-    (global-auto-revert-mode 1)
-
-    ;; tab -> space
-    (setq indent-tabs-mode nil)
-
-    (defalias 'yes-or-no-p 'y-or-n-p)
-    (defalias 'sh 'shell)
-
-    ;; windows에서 shell을 사용할 때, windows에서 사용하는 code page도 UTF-8로 변경한다
-    ;; 그렇게 하려고 -l 옵션을 붙여서 로그인을 한다. 그 결과 interactive 모드로 셸을 실행한다
-    ;; interactive 모드로 실행해서 ~/.bashrc 셸 스크립트 파일을 실행하게 한다.
-    ;; ~/.bashrc 파일에서 windows일 때, chcp.com 65001 명령을 실행해서 code page도 UTF-8로 변경한다.
-    ;;
-    ;; -i 옵션은 job control 생성을 못해서 대신 -l 옵션을 사용했다.
-    ;; bash: cannot set terminal process group (-1): Inappropriate ioctl for device
-    ;; bash: no job control in this shell
-    (when windows?
-      (setq shell-command-switch "-lc")
-      )
-
-    ;;; emacs가 init.el에 추가하는 설정 방지
-    ;;; (custom-set-variables ...
-    ;;; https://jamiecollinson.com/blog/my-emacs-config/
-    (setq custom-file (make-temp-file "emacs-custom"))
-
-    ;;; https://github.com/tkf/emacs-request
-    (use-package request)
-
-    ;;; https://github.com/emacsorphanage/git-gutter
-    (use-package git-gutter
-      :init (global-git-gutter-mode t))
-
-    ;;; https://github.com/purcell/exec-path-from-shell
-    ;;; emacs를 GUI로 실행했을 때, shell의 PATH 환경 변수가 적용 안 되는 문제를 해결하려고
-    (when mac?
-      (use-package exec-path-from-shell)
-      (exec-path-from-shell-initialize))
-
-    ;;; https://github.com/ralesi/ranger.el
-    (use-package ranger
-      :config (ranger-override-dired-mode t))
-
-    ;;; https://github.com/yoshiki/yaml-mode
-    (use-package yaml-mode)
-
-    ;;; https://github.com/magit/magit
-    (use-package magit
-      :bind ("C-x g" . magit-status)
-      :config
-      ;; magit status를 열 때, 저장 안 한 버퍼가 있으면 물어보지 않고 저장한다
-      (setq magit-save-repository-buffers 'dontask)
-      ;; (evil-set-initial-state 'magit-blame-mode 'emacs) 동작을 안 해서
-      ;; 원인은 모름
-      ;; Magit 20170322.1550, Git 2.11.0.windows.1, Emacs 24.4.1, windows-nt
-      ;; Evil version 1.2.12
-      (add-hook 'magit-blame-mode-hook
-                (lambda ()
-                  (if magit-blame-mode
-                      (evil-emacs-state 1)
-                    (evil-normal-state 1))))
-      ;; commit message 편집하는 버퍼가 열리면 evil-emacs-state로 켜짐
-      ;; Magit 20171031.1141, Git 2.14.1.windows.1, Emacs 25.2.1, windows-nt
-      (add-hook 'git-commit-setup-hook (lambda () (evil-normal-state 1))))
-
-    ;;; https://github.com/magit/forge
-    (use-package forge
-      :after magit
-      :config
-      ;; HTTP 셀프 호스팅 서비스를 위한 클래스 정의
-      ;; https://github.com/magit/forge/wiki/Tips-and-Tricks#accessing-private-gitlab-instances-via-http
-      (defclass forge-gitlab-http-repository (forge-gitlab-repository)
-        ((issues-url-format         :initform "http://%h/%o/%n/issues")
-         (issue-url-format          :initform "http://%h/%o/%n/issues/%i")
-         (issue-post-url-format     :initform "http://%h/%o/%n/issues/%i#note_%I")
-         (pullreqs-url-format       :initform "http://%h/%o/%n/merge_requests")
-         (pullreq-url-format        :initform "http://%h/%o/%n/merge_requests/%i")
-         (pullreq-post-url-format   :initform "http://%h/%o/%n/merge_requests/%i#note_%I")
-         (commit-url-format         :initform "http://%h/%o/%n/commit/%r")
-         (branch-url-format         :initform "http://%h/%o/%n/commits/%r")
-         (remote-url-format         :initform "http://%h/%o/%n")
-         (create-issue-url-format   :initform "http://%h/%o/%n/issues/new")
-         (create-pullreq-url-format :initform "http://%h/%o/%n/merge_requests/new")
-         (pullreq-refspec :initform "+refs/merge-requests/*/head:refs/pullreqs/*")))
-
-      ;; init.el.local 파일에 다음과 같이 정의해서 사용
-      ;; (with-eval-after-load 'forge
-      ;;   (add-to-list 'forge-alist
-      ;;                '("mycompany.com"
-      ;;                  "mycompany.com/api/v4"
-      ;;                  "mycompany.com"
-      ;;                  forge-gitlab-http-repository))
-      ;;   (add-to-list 'ghub-insecure-hosts "mycompany.com/api/v4")
-      ;;   )
-      )
-
-    ;;; https://github.com/emacs-helm/helm
-    (use-package helm
-      :diminish helm-mode
-      :bind (("M-x" . helm-M-x)
-             ("C-x C-m" . helm-M-x)
-             ("C-x b" . helm-mini)
-             ("C-x C-f" . helm-find-files))
-      :config
-      (require 'helm-config)
-      ;; http://tuhdo.github.io/helm-intro.html 권고에 따라 키 바꿈 C-x C-c 실수에 동의
-      (progn
-        (global-set-key (kbd "C-c h") 'helm-command-prefix)
-        (global-unset-key (kbd "C-x c")))
-      (progn
-        (global-set-key (kbd "C-c h s") 'helm-do-ag)
-        (global-set-key (kbd "C-c h o") 'helm-occur))
-
-      (setq helm-split-window-inside-p t
-            helm-move-to-line-cycle-in-source t
-            ;; 'emacs를 권고하나 elixir lsp에서 C-M-i 키로 completion-at-point 함수를 호출해서
-            ;; helm 창이 열렸을 때, fuzzy matching이 제대로 되지 않는다. matching이 안 된 후보도 계속 남아있다.
-            ;; 그래서 잘 동작하는 helm-fuzzy로 변경
-            helm-completion-style 'helm-fuzzy
-            ;; 같은 명령 히스토리가 연속으로 쌓이지 않게 한다
-            history-delete-duplicates t
-            history-length 10
-            completion-styles `(basic
-                                partial-completion
-                                emacs22
-                                ,(if (version<= emacs-version "27.0") 'helm-flex 'flex)))
-
-      (helm-autoresize-mode 1)
-
-      (helm-mode 1))
-
-    ;;; https://github.com/syohex/emacs-helm-ag
-    (use-package helm-ag
-      :config
-      ;; windows에서만 문제가 발생
-      (when windows?
-        (setq original-default-process-coding-system default-process-coding-system)
-        ;; the silver searcher(ag)는 cp949로 동작한다.
-        ;; windows에서 실행하는 bash의 codepage를 65001로 변경하지 않았기 때문
-        ;; 그래서 ag를 실행할 때만 cp949로 변경하고 끝나면 원래 process coding system 값으로 돌린다
-        (advice-add 'helm-do-ag
-                    :before (lambda (&rest _)
-                              (setq default-process-coding-system
-                                    '(korean-iso-8bit-dos . korean-iso-8bit-unix))))
-        (advice-add 'helm-do-ag
-                    :after (lambda (&rest _)
-                             (setq default-process-coding-system
-                                   original-default-process-coding-system)))
-        )
-      )
-
-    ;;; https://github.com/ShingoFukuyama/helm-swoop
-    (use-package helm-swoop
-      :bind
-      (("M-i" . helm-swoop)
-       ("M-I" . helm-swoop-back-to-last-point)
-       ("C-c M-i" . helm-multi-swoop)
-       ("C-x M-i" . helm-multi-swoop-all)
-       :map
-       helm-swoop-map
-       ("M-i" . helm-multi-swoop-all-from-helm-swoop)
-       ("M-m" . helm-multi-swoop-current-mode-from-helm-swoop)))
-
-    ;;; https://github.com/bbatsov/projectile
-    (use-package projectile
-      :init
-      (setq projectile-keymap-prefix (kbd "C-c p"))
-      :config
-      (projectile-mode)
-      (setq projectile-enable-caching t)
-      (setq projectile-indexing-method 'hybrid)
-      (setq projectile-globally-ignored-file-suffixes
-            '(".psd" ".png" ".fbx" ".anim" ".mat" ".meta" ".prefab" ".asset"
-              ".controller")))
-
-    ;;; https://github.com/bbatsov/helm-projectile
-    (use-package helm-projectile
-      :config
-      (helm-projectile-on)
-
-      ;; ag대신 ripgrep을 사용.
-      ;; --ignore 옵션이 하드코딩돼서 ripgrep을 사용 못함
-      ;; projectile 0.14.0
-      (advice-add 'helm-do-ag
-                  :before (lambda (&rest _)
-                            (setq helm-ag-base-command
-                                  (replace-regexp-in-string
-                                   "--ignore.*"
-                                   ""
-                                   helm-ag-base-command)))))
-
-    ;;; http://company-mode.github.io/
-    (use-package company
-      :init
-      (add-hook 'after-init-hook 'global-company-mode)
-      :config
-      (setq company-idle-delay 0
-            company-show-numbers "on"
-            company-dabbrev-downcase nil ; 소문자로 변경하는 기능을 비활성화
-            )
-      )
-
-    ;;; org-mode에서 #+ 다음에 completion cadidates가 나오도록
-    ;;; https://emacs.stackexchange.com/a/30691
-    (defun org-keyword-backend (command &optional arg &rest ignored)
-      (interactive (list 'interactive))
-      (cl-case command
-        (interactive (company-begin-backend 'org-keyword-backend))
-        (prefix (and (eq major-mode 'org-mode)
-                     (cons (company-grab-line "^#\\+\\(\\w*\\)" 1)
-                           t)))
-        (candidates (mapcar #'upcase
-                            (cl-remove-if-not
-                             (lambda (c) (string-prefix-p arg c))
-                             (pcomplete-completions))))
-        (ignore-case t)
-        (duplicates t)))
-    (add-to-list 'company-backends 'org-keyword-backend)
-
-    ;;; https://github.com/manuel-uberti/helm-company
-    (use-package helm-company
-      :config
-      (eval-after-load 'company
-        '(progn
-           (define-key company-mode-map (kbd "C-:") 'helm-company)
-           (define-key company-active-map (kbd "C-:") 'helm-company))))
-
-    ;;; https://github.com/Kitware/CMake
-    (use-package cmake-mode)
-
-    ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Matching.html
-    ;; 괄호, 구분자(delimiter) 쌍 강조
-    (progn
-      (show-paren-mode t)
-      (setq
-       ;; 괄호만 강조
-       show-paren-style 'parenthesis
-       ;; 괄호 강조를 즉시 보여준다
-       show-paren-display 0
-       ;; 괄호 입력 후 내용 입력시 괄호를 강조
-       show-paren-when-point-inside-paren t
-       )
-      )
-
-    ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Matching.html
-    ;; 괄호, 구분자(delimiter) 자동 쌍 맞추기
-    (progn
-      (electric-pair-mode 1)
-      (setq electric-pair-pairs '((?\{ . ?\})
-                                  (?\( . ?\))
-                                  (?\[ . ?\])
-                                  (?\" . ?\")))
-      )
-
-    ;; tab으로 electic pair 밖으로 나올 수 있게 한다
-    ;; https://www.reddit.com/r/emacs/comments/3n1j4x/anyway_to_tab_out_of_parentheses/
-    (progn
-      (defun smart-tab-jump-out-or-indent (&optional arg)
-        (interactive "P")
-        (let ((closings (mapcar #'cdr electric-pair-pairs))
-              (after (char-after)))
-          (if (member after closings)
-              (forward-char 1)
-            (indent-for-tab-command arg))))
-
-      (global-set-key [remap indent-for-tab-command] 'smart-tab-jump-out-or-indent)
-      )
-
-    ;;; emacs-server
-    (require 'server)
-    (server-start)
-
-    ;;; emacs-lisp-mode
-    (add-hook 'emacs-lisp-mode-hook
-              (lambda ()
-                ;; clojure cider mode에서 쓰는 키와 맞춘다. C-M-x는 입력이 괴로움
-                (define-key emacs-lisp-mode-map "\C-c\C-c" 'eval-defun)))
-
-    ;;; lisp-interaction-mode
-    (add-hook 'lisp-interaction-mode-hook
-              (lambda ()
-                ;; clojure cider mode에서 쓰는 키와 맞춘다. C-M-x는 입력이 괴로움
-                (define-key lisp-interaction-mode-map "\C-c\C-c" 'eval-defun)))
-
-    ;;; shell
-    (when windows?
-      (let* ((combine-path (lambda (dir dir-or-file)
-                             (concat (file-name-as-directory dir) dir-or-file)))
-             (base-dir "C:/git-sdk-64")
-             (mingw64-bin-dir (funcall combine-path base-dir "mingw64/bin"))
-             (msys2-bin-dir (funcall combine-path base-dir "usr/bin"))
-             (bash-path (funcall combine-path msys2-bin-dir "bash.exe")))
-        (add-to-list 'exec-path msys2-bin-dir)
-        (add-to-list 'exec-path mingw64-bin-dir)
-        (setq explicit-shell-file-name bash-path)
-        (setq shell-file-name bash-path)
-        (setenv "SHELL" bash-path)
-        (setq explicit-bash.exe-args '("--noediting" "--login" "-i"))
-        (setenv "PATH" (concat mingw64-bin-dir path-separator
-                               (concat msys2-bin-dir path-separator
-                                       (getenv "PATH"))))))
-
-    ;; shell mode hook
-    (add-hook 'shell-mode-hook
-              (lambda ()
-                ;; evil-scroll-up과 충돌
-                (define-key shell-mode-map "\C-d" nil)))
-
-    ;;; http://robots.thoughtbot.com/no-newline-at-end-of-file
-    (setq require-final-newline t)
-
-    ;;; title bar
-    (setq frame-title-format "%b")
-
-    ;;; prettify-symbols-mode
-    (add-hook 'prog-mode-hook 'prettify-symbols-mode)
-
-    ;;; ibuffer-mode
-    (defalias 'list-buffers 'ibuffer)
-    (setq ibuffer-expert t)
-    (setq ibuffer-default-sorting-mode 'major-mode)
-    (add-hook 'ibuffer-mode-hook
-              '(lambda ()
-                 (ibuffer-auto-mode 1)
-                 (add-to-list 'ibuffer-never-show-predicates "^\\*")))
-
-    ;;; grep
-    (setq grep-command "grep -nH -i -r ")
-    ;; grep: warning: GREP_OPTIONS is deprecated; please use an alias or script
-    ;; grep-highlight-matches 변수를 세팅하니 경고 메시지 작렬
-    ;; 그래서 고쳐지기 전까지는 --color 옵션을 직접 세팅해준다.
-    (setq grep-template "grep <X> --color=always <C> -nH <R> <F>")
-    (setq grep-find-template
-          "find . <X> -type f <F> -exec grep --color=always <C> -nH <R> {} \\;")
-
-    ;;; PATH env
-    (setq mac? (eq system-type 'darwin))
-    (when mac?
-      (let ((usr-local "/usr/local/bin"))
-        (add-to-list 'exec-path usr-local)
-        (setenv "PATH" (concat usr-local path-separator (getenv "PATH")))))
-
-    ;;; backup
-    (add-to-list 'backup-directory-alist '("." . "~/.emacs-saves"))
-
-    ;; whitespace mode
-    (custom-set-faces
-     ;; custom-set-faces was added by Custom.
-     ;; If you edit it by hand, you could mess it up, so be careful.
-     ;; Your init file should contain only one such instance.
-     ;; If there is more than one, they won't work right.
-     '(whitespace-line ((nil (:bold t :background "yellow"))))
-     '(whitespace-tab ((nil (:bold t :background "linen"))))
-     '(whitespace-trailing ((nil (:bold t :background "red1")))))
-
-    (global-whitespace-mode t)
-
-    (add-hook
-     'after-change-major-mode-hook
-     '(lambda ()
-        (setq whitespace-line-column nil
-              whitespace-style '(face trailing))))
-
-    ;; disable tabs mode
-    (setq-default indent-tabs-mode nil)
-
-    (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-    ;;; compose-mail 바인딩 키 제거
-    (global-set-key (kbd "C-x m") nil)
-
-    ;;; https://github.com/AndreaCrotti/yasnippet-snippets
-    (use-package yasnippet-snippets)
-
-    ;;; https://github.com/joaotavora/yasnippet
-    (use-package yasnippet
-      :config
-      (yas-global-mode 1))
-
-    ;;; https://github.com/pashky/restclient.el
-    (use-package restclient)
-
-    ;;; https://github.com/alf/ob-restclient.el
-    (use-package ob-restclient)
-
-    ;;; https://github.com/zweifisch/ob-elixir
-    (use-package ob-elixir)
-
-    (use-package org-roam
-      :custom
-      (org-roam-directory (file-truename "~/org_roam"))
-      :bind (("C-c n l" . org-roam-buffer-toggle)
-             ("C-c n f" . org-roam-node-find)
-             ("C-c n g" . org-roam-graph)
-             ("C-c n i" . org-roam-node-insert)
-             ("C-c n c" . org-roam-capture)
-             ;; Dailies
-             ("C-c n j" . org-roam-dailies-capture-today))
-      :init
-      (setq org-roam-v2-ack t)
-      :config
-      (org-roam-db-autosync-mode)
-      (setq org-roam-mode-section-functions
-            (list #'org-roam-backlinks-section
-                  #'org-roam-reflinks-section
-                  ))
-      ;; If using org-roam-protocol
-      (require 'org-roam-protocol)
-      )
-
-    ;;; https://github.com/krisajenkins/ob-translate
-    (use-package ob-translate
-      :config
-      (setq ob-translate:default-dest "ko"))
-
-    ;;; https://github.com/larstvei/ox-gfm
-    (use-package ox-gfm)
-
-    ;;; https://github.com/clojure-emacs/clojure-mode
-    (use-package clojure-mode)
-
-    ;;; https://github.com/emacs-lsp/lsp-mode
-    (use-package lsp-mode
-      :init
-      (setq lsp-keymap-prefix "C-c l"
-            lsp-log-io t
-            lsp-enable-snippet t
-            lsp-enable-completion-at-point t
-            lsp-enable-indentation t
-            lsp-enable-on-type-formatting t
-            lsp-enable-imenu t
-            lsp-headerline-breadcrumb-enable t
-            lsp-semantic-highlighting t
-            lsp-diagnostic-package :flycheck
-            lsp-ui-doc-enable nil
-            lsp-ui-sideline-show-diagnostics t
-            lsp-completion-provider :capf
-            lsp-idle-delay 0.500
-            ;; elixir-ls가 지원하지 않아서 disable
-            lsp-enable-file-watchers nil
-            )
-
-      :hook (elixir-mode . lsp)
-      :config
-      ;; 문서에 있는대로 map 이름을 lsp-mode-map 이렇게 그냥 쓰면 안 됨.
-      ;; https://github.com/noctuid/evil-guide#why-dont-keys-defined-with-evil-define-key-work-immediately
-      ;; 글을 참고해 lsp-mode-map 대신 'lsp-mode-map을 사용
-      (evil-define-key 'motion 'lsp-mode-map (kbd "g d") 'lsp-find-definition)
-      (evil-define-key 'motion 'lsp-mode-map (kbd "g r") 'lsp-find-references)
-      :commands lsp)
-
-    (use-package lsp-ui :commands lsp-ui-mode)
-    (use-package helm-lsp :commands helm-lsp-workspace-symbol)
-    (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-    (use-package which-key :config (which-key-mode))
-
-    ;;; https://github.com/elixir-editors/emacs-elixir
-    (use-package elixir-mode
-      :config
-      (add-hook 'elixir-mode-hook
-                (lambda () (add-hook 'before-save-hook 'elixir-format nil t))))
-
-    ;;; https://github.com/tonini/alchemist.el
-    (use-package alchemist
-      :config
-      (add-hook 'alchemist-iex-mode-hook
-                (lambda ()
-                  ;; evil-scroll-up과 충돌
-                  (define-key alchemist-iex-mode-map "\C-d" nil))))
-
-    ;;; https://github.com/rejeep/el-mock.el
-    (use-package el-mock)
-
-    ;;; https://github.com/joshwnj/json-mode
-    (use-package json-mode)
-
-    ;;; https://github.com/spotify/dockerfile-mode
-    (use-package dockerfile-mode)
-
-    ;;; https://github.com/mooz/js2-mode
-    (use-package js2-mode
-      :config
-      (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-      ;; Better imenu
-      (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))
-
-    ;;; https://github.com/flycheck/flycheck
-    (use-package flycheck
-      :init
-      ;; erlang은 flycheck에서 제외
-      ;; init.el 파일에서 free variable 오탐이 많아서 emacs lisp 제외
-      (setq flycheck-disabled-checkers '(erlang-rebar3 erlang emacs-lisp emacs-lisp-checkdoc))
-      (global-flycheck-mode))
-
-    ;;; https://github.com/szermatt/emacs-bash-completion
-    (when mac?
-      ;; windows에서는 completion 할 때, 프리징이 된다. 문제를 해결하기 전까지는 mac만 사용
-      (use-package bash-completion
-        :config
-        (bash-completion-setup)))
-
-    ;;; https://github.com/erlang/otp
-    (use-package erlang
-      :config (require 'erlang-start))
-
-    ;;; https://github.com/immerrr/lua-mode
-    (use-package lua-mode)
-
-    ;;; https://github.com/rexim/org-cliplink
-    (use-package org-cliplink)
-
-    ;;; https://github.com/bradyt/dart-mode
-    (use-package dart-mode)
-
-    ;;; https://github.com/zweifisch/ob-http
-    (use-package ob-http)
-
-    ;;; https://gitlab.com/Titan-C/org-cv
-    (when (file-directory-p (expand-file-name "manual-packages/org-cv" user-emacs-directory))
-      (use-package ox-moderncv
-        :load-path "manual-packages/org-cv"
-        :init (require 'ox-moderncv))
-      (message "loaded org-cv")
-      )
-
-    ;;; https://github.com/wakatime/wakatime-mode
-    (when mac? (use-package wakatime-mode :init (global-wakatime-mode)))
-
-    ;;; cc-mode
+  #+begin_src emacs-lisp
     (setq-default c-default-style "bsd"
                   c-basic-offset 4)
+  #+end_src
 
-    ;;; local package
-    (add-to-list 'load-path
-                 (expand-file-name "lisp" user-emacs-directory))
+* packages
+
+** doom theme
+
+   #+begin_src elisp
+     (setq
+      doom-theme 'doom-vibrant
+      doom-themes-enable-bold nil
+      doom-themes-enable-italic nil)
+   #+end_src
+
+   한글이 많은 경우 bold, italic 시인성이 별로라서 꺼놓는다.
+
+   #+begin_src elisp
+     (doom-themes-visual-bell-config)
+   #+end_src
+
+   modeline에 visual bell을 표시한다. 시인성이 좋음.
+
+** org
+
+*** org-roam
+
+    #+begin_src elisp
+      (setq org-roam-directory (file-truename "~/org_roam"))
+    #+end_src
+
+*** org settings
+
+    #+begin_src elisp
+      (after! org
+        (setq
+         ;; quote와 verse block도 배경 색상을 바꾼다
+         org-fontify-quote-and-verse-blocks t
+         ;; heading *를 한 개만 보여준다.
+         org-hide-leading-stars t
+         ;; done 해드라인 폰트 변경을 하지 않는다. 색상 때문에 doom theme 변경시 제대로 안 보임
+         org-fontify-done-headline nil
+         ;; 9.5부터 default 값이 바뀜
+         org-adapt-indentation t
+         ;; modeline에 보이는 org clock 정보가 너무 길어서 줄임
+         org-clock-string-limit 30
+         ;; 트리를 접을 때, heading 사이에 빈 라인을 없앤다
+         org-cycle-separator-lines 0
+         ;; 순서 없는 목록(unordered list)에서 bullet으로 들여쓰기를 할 때마다 +, -를 번갈아 사용한다
+         org-list-demote-modify-bullet '(("+" . "-") ("-" . "+"))
+         ;; #+STARTUP: fold 를 기본값으로 한다. org 파일을 열었을 때, overview를 가장 먼저 보고 싶기 때문
+         org-startup-folded t
+         )
+        )
+    #+end_src
+
+    ui 관련 설정들
+
+    #+begin_src elisp
+      (after! org
+        (setq
+         org-startup-indented nil
+         org-src-preserve-indentation nil
+         )
+        )
+    #+end_src
+
+    emacs에서 org mode일 때, indentation을 적용하는 기능을 끈다. 이 기능을 끄면 emacs가 아닌 다른 에디터로 org 파일을 볼 때도 space로 indentation을 적용한 상태이다.
+
+    이 상태에서 =org-src-preserve-indentation= 심볼에 nil이 아닌 값이 바인딩되었다면 소스 코드 블럭이 heading 본문 indentation과 상관없이 라인 앞에 붙어 있다. 원래 소스 코드의 indentation을 유지하기 때문이다. 소스 코드 블럭도 똑같이 indentation을 지키도록 =nil= 값을 바인딩한다.
+
+    #+begin_src elisp
+      (after! org
+        (setq org-todo-keywords
+              '((sequence
+                 "TODO"
+                 "STARTED"
+                 "|"
+                 "DONE"))
+              org-todo-keyword-faces
+              '(("STARTED" . +org-todo-active)))
+        )
+    #+end_src
+
+    org 모듈에서 정의한 =+org-todo-active= 페이스를 사용하기에 org 모듈을 로드한 후에 실행해야 한다.
+
+    #+begin_src elisp
+      (after! org
+        (setq org-blank-before-new-entry
+              '((heading . t) (plain-list-item . nil))
+              )
+        )
+    #+end_src
+
+    heading 사이에는 반드시 빈 줄이 들어가게 한다. plan list item 사이에는 무조건 제거한다.
+
+    #+begin_src elisp
+      (after! evil-org
+        (map! :map evil-org-mode-map
+              :ni [C-return]   #'org-insert-heading-respect-content
+              :ni [C-S-return] #'org-insert-todo-heading-respect-content
+              )
+        )
+    #+end_src
+
+    doom에서 =C-RET= 키는 아래에 추가 =C-S-RET= 키는 위로 추가로 바인딩을 변경한다. 새로 함수를 추가해서 해당 함수에 바인딩하는데, 해당 함수에 =org-blank-before-new-entry= 심볼 값이 반영이 안 되어 있어서 org mode의 디폴트 함수로 바인딩을 했다.
+
+    =evil-org= 모드 맵도 똑같이 수정한다.
+
+    #+begin_src elisp
+      (defun my-org-clock-in-if-starting ()
+        "Clock in when the task is marked STARTED."
+        (when (and (string= org-state "STARTED")
+                   (not (string= org-last-state org-state)))
+          (org-clock-in)))
+      (add-hook 'org-after-todo-state-change-hook
+                'my-org-clock-in-if-starting)
+      (advice-add 'org-clock-in
+                  :after (lambda (&rest _)
+                           (org-todo "STARTED")))
+      ;; 다른 org-clock 시작으로 clock-out 됐을 때, todo도 바꿔준다
+      (add-hook 'org-clock-out-hook
+                (lambda ()
+                  (when (and (boundp 'org-state)
+                             (string= org-state "STARTED"))
+                    (org-todo "DONE"))))
+    #+end_src
+
+    =STARTED= 키워드로 변경하면 =org-clock= 을 시작한다. =TODO= 상태에서 =STARTED= 상태로 변경되면 자동으로 시간 기록이 되게 하려고 추가한 기능. [[http://ohyecloudy.com/emacsian/2017/07/01/org-clocking-time-with-emacs-todo-state/][#orgmode TODO 상태와 org-clock은 같이 움직인다 - ohyecloudy.com]] 참고
+
+    #+begin_src elisp
+      (after! org-clock
+        (setq org-clock-persist-query-resume nil)
+        )
+    #+end_src
+
+    active clock이 있을 때, 물어보지 않고 재개한다. [[http://ohyecloudy.com/emacsian/2017/10/14/org-clock-persistence/][#orgmode emacs를 꺼도 org-clock은 굴러간다 - ohyecloudy.com]] 참고
+
+    #+begin_src elisp
+      (after! org-clock
+        (setq org-clock-idle-time 15)
+        )
+    #+end_src
+
+    15분을 자리비움 감지 기준으로 설정. [[http://ohyecloudy.com/emacsian/2017/11/04/org-dealing-with-idle-time/][#orgmode idle 시간 다루기 - ohyecloudy.com]] 참고
+
+    #+begin_src elisp
+      (after! org
+        ;; org-set-effort 함수 실행 시 나오는 preset 리스트
+        (setq org-global-properties
+              '(("Effort_ALL" .
+                 "1:00 2:00 3:00 4:00 8:00 16:00 24:00 32:00 40:00 0:30")))
+        ;; hotkey 1    2    3    4    5    6     7     8     9     0
+
+        ;; org-columns에서 effort를 볼 수 있게 추가
+        (setq org-columns-default-format "%50ITEM(Task) %10Effort{:} %10CLOCKSUM")
+
+        ;; org-clock-report 기본 프로퍼티
+        (setq org-clock-clocktable-default-properties
+              '(:maxlevel 2 :scope file :narrow 30! :properties ("effort")))
+
+        )
+    #+end_src
+
+    추정 시간에 관련된 설정. 추정 시간 입력시 preset 리스트를 추가하고 =org-columns= 명령과 =org-clock-report= 명령에서 추정 시간을 볼 수 있게 세팅. [[http://ohyecloudy.com/emacsian/2017/09/09/org-effort-estimates/][#orgmode 추정(estimate) 작업 시간 기록 - ohyecloudy.com]] 참고
+
+    #+begin_src elisp
+      (after! org
+        (setq org-duration-format (quote h:mm))
+        )
+    #+end_src
+
+    기간 포맷으로 시간:분 사용. 24시가 넘어갈 때, 1d로 표현하는 게 보기 싫어서 세팅. [[http://ohyecloudy.com/emacsian/2017/11/25/org-duration-format/][#orgmode 하루가 넘어가도 clock table 기간 필드에 시간과 분으로만 표시 - ohyecloudy.com]] 참고
+
+    #+begin_src elisp
+      (after! org
+        (defun org-columns-with-visual-line-mode ()
+          (interactive)
+          (org-columns)
+          (visual-line-mode))
+        )
+    #+end_src
+
+    =org-columns= 모드를 켤 때, 자동 줄바꿈을 해주는 =visual-line-mode= 를 활성화한다. [[http://ohyecloudy.com/emacsian/2020/03/15/org-column-view-with-visual-line-mode/][#orgmode column view를 활성화하면 꺼지는 줄 바꿈(word wrap)을 켜는 방법 - ohyecloudy.com]] 참고
+
+    #+begin_src elisp
+      (after! org
+        (setq org-show-notification-handler (lambda (notification) (message notification)))
+        )
+    #+end_src
+
+    쓴 시간이 effort를 넘었을 때, 나오는 desktop notification을 끈다. Task 'some tasks' should be finished by now. (1:00)
+
+    #+begin_src elisp
+      (after! org
+        (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
+        )
+
+      (defun my-org-open-at-point-current-buffer ()
+        "open file in current buffer"
+        (interactive)
+        (let ((org-link-frame-setup (cons (cons 'file 'find-file) org-link-frame-setup)))
+          (org-open-at-point)))
+
+      (after! evil-org
+        (map! :map evil-org-mode-map
+              :ni "C-c C-RET"      #'my-org-open-at-point-current-buffer
+              :ni "C-c C-<return>" #'my-org-open-at-point-current-buffer
+              )
+        )
+    #+end_src
+
+    org에서 link를 다른 윈도를 사용해서 열게 한다. 이건 기본 동작으로 돌린다. =C-c C-o= 는 다른 윈도에서 링크를 열게 하고 =C-c C-RET= 은 현재 윈도에서 열게 한다.
+
+*** org-cliplink
+
+    #+begin_src elisp
+      (defun my-org-cliplink ()
+        (interactive)
+        (org-cliplink-insert-transformed-title
+         (org-cliplink-clipboard-content)     ;take the URL from the CLIPBOARD
+         #'my-org-link-transformer))
+
+      (defun my-org-link-transformer (url title)
+        (let* ((parsed-url (url-generic-parse-url url)) ;parse the url
+               (host-url (replace-regexp-in-string "^www\\." "" (url-host parsed-url)))
+               (clean-title
+                (cond
+                 ;; if the host is github.com, cleanup the title
+                 ((string= (url-host parsed-url) "github.com")
+                  (replace-regexp-in-string "^/" ""
+                                            (car (url-path-and-query parsed-url))))
+                 ;; (replace-regexp-in-string "GitHub - .*: \\(.*\\)" "\\1" title))
+                 ((string= (url-host parsed-url) "www.youtube.com")
+                  (replace-regexp-in-string "\\(.*\\) - Youtube" "\\1" title))
+                 ;; otherwise keep the original title
+                 (t title)))
+               (title-with-url (format "%s - %s" clean-title host-url)))
+          ;; forward the title to the default org-cliplink transformer
+          (org-cliplink-org-mode-link-transformer url title-with-url)))
+    #+end_src
+
+    마지막에 host를 붙이고 싶어서 link transformer 함수를 짰다. =title - ohyecloudy.com= 식으로 org link를 만든다.
+
+    #+begin_src elisp
+      (after! org
+        (define-key org-mode-map [remap org-cliplink] 'my-org-cliplink)
+        )
+    #+end_src
+
+    =org-clinklink= 함수에 바인딩된 키를 =my-org-cliplink= 로 바인딩한다
+
+*** ox-gfm
+
+    #+begin_src emacs-lisp :tangle packages.el
+      (package! ox-gfm)
+    #+end_src
+
+    =C-c C-e= 키로 =org-export-dispatch= 함수를 호출하면 Github Flavored Markdown으로 export할 수 있다
+
+    [[https://github.com/larstvei/ox-gfm][larstvei/ox-gfm - github.com]]
+
+*** org babel
+
+**** ob-translate
+
+     #+begin_src emacs-lisp :tangle packages.el
+       (package! ob-translate)
+     #+end_src
+
+     #+begin_src emacs-lisp
+       (setq ob-translate:default-dest "ko")
+     #+end_src
+
+     #+RESULTS:
+     : ko
+
+     #+begin_src translate :src en :dest ko :tangle no
+       Doom is a configuration framework for GNU Emacs tailored for Emacs bankruptcy veterans who want less framework in their frameworks, a modicum of stability (and reproducibility) from their package manager, and the performance of a hand rolled config (or better). It can be a foundation for your own config or a resource for Emacs enthusiasts to learn more about our favorite operating system.
+     #+end_src
+
+     #+RESULTS:
+     : Doom은 프레임워크의 프레임워크가 적고 패키지 관리자의 약간의 안정성(및 재현성)과 수동 구성(또는 그 이상)의 성능을 원하는 Emacs 파산 베테랑을 위해 맞춤화된 GNU Emacs용 구성 프레임워크입니다. Emacs 애호가가 선호하는 운영 체제에 대해 자세히 알아볼 수 있는 자체 구성 또는 리소스의 기초가 될 수 있습니다.
+
+     [[https://github.com/krisajenkins/ob-translate][krisajenkins/ob-translate - github.com]]
+
+     #+begin_example
+       google-translate--search-tkk: Search failed: ",tkk:'"
+     #+end_example
+
+     이런 에러 메시지가 뜬다.
+
+     #+begin_src emacs-lisp
+       (defun google-translate--search-tkk ()
+         "Search TKK."
+         (list 430675 2721866130))
+     #+end_src
+
+     [[https://github.com/atykhonov/google-translate/issues/137][atykhonov/google-translate/issues/137 - github.com]] 글을 참고해서 =google-translate--search-tkk= 함수를 재정의함
+
+**** ob-http
+
+     #+begin_src emacs-lisp :tangle packages.el
+       (package! ob-http)
+     #+end_src
+
+     #+begin_src emacs-lisp
+       (org-babel-do-load-languages 'org-babel-load-languages
+                                    (append org-babel-load-languages
+                                            '((http . t)))
+                                    )
+     #+end_src
+
+     [[https://github.com/zweifisch/ob-http][zweifisch/ob-http - github.com]]
+
+     src 블럭으로 http 응답을 사용할 수 있다.
+
+     #+begin_src http :pretty :tangle no
+       GET https://api.github.com/repos/ohyecloudy/dotfiles/languages
+     #+end_src
+
+     #+RESULTS:
+     #+begin_example
+     {
+       "Emacs Lisp": 126668,
+       "Shell": 90476,
+       "YASnippet": 9424,
+       "Batchfile": 3991,
+       "Vim script": 2181,
+       "Python": 945,
+       "JavaScript": 719,
+       "AutoHotkey": 405
+     }
+     #+end_example
+
+*** org-cv
+
+    #+begin_src elisp :tangle no
+      ;;; https://gitlab.com/Titan-C/org-cv
+      (when (file-directory-p (expand-file-name "manual-packages/org-cv" user-emacs-directory))
+        (use-package ox-moderncv
+          :load-path "manual-packages/org-cv"
+          :init (require 'ox-moderncv))
+        (message "loaded org-cv")
+        )
+    #+end_src
+
+    나중에 쓸 일 있으면 다시 살린다.
+
+** doom-modeline
+
+   #+begin_src elisp
+     (after! doom-modeline
+       (setq
+        ;; 현재 위치를 쬐깐하게 보여준다
+        doom-modeline-hud t
+        ;; 경로가 아니라 파일 이름만 모드라인에 보여준다. 'auto는 경로를 출력한다
+        ;; tramp로 원격 파일 편집시 느려지는 경험을 완화해준다고 한다
+        doom-modeline-buffer-file-name-style 'file-name
+        )
+       )
+   #+end_src
+
+   doom-modeline 추가 설정
+
+** magit
+
+   #+begin_src elisp
+     (after! magit
+       (setq magit-save-repository-buffers 'dontask)
+       )
+   #+end_src
+
+   magit status를 실행하면 묻지 않고 수정한 버퍼를 저장한다
+
+** projectile
+
+   #+begin_src emacs-lisp
+     (after! projectile
+       (setq projectile-indexing-method 'hybrid)
+       )
+   #+end_src
+
+   =.git= 디렉터리를 같이 사용하는 인덱싱
+
+** helm
+
+   #+begin_src elisp
+     (after! helm
+       (setq helm-move-to-line-cycle-in-source t
+             ;; 같은 명령 히스토리가 연속으로 쌓이지 않게 한다
+             history-delete-duplicates t
+             history-length 10
+             )
+       )
+   #+end_src
+
+   =helm-move-to-line-cycle-in-source= 변수를 세팅했기 때문에 다른 소스로 넘어가려면 =C-o= 키를 누르면 된다.
+
+** company
+
+   #+begin_src emacs-lisp
+     (after! company
+       (setq company-show-quick-access t)
+       )
+   #+end_src
+
+   =M-1=, =M-0= 까지 숫자로 빠르게 삽입할 수 있는데, 그 숫자를 옆에 출력하게 한다.
+
+** request
+
+   #+begin_src elisp :tangle packages.el
+     (package! request)
+   #+end_src
+
+   http를 쉽게 사용할 수 있는 request 패키지
+   [[https://github.com/tkf/emacs-request][tkf/emacs-request - github.com]]
+
+** restclient
+
+   #+begin_src emacs-lisp :tangle packages.el
+     (package! restclient)
+     (package! ob-restclient)
+   #+end_src
+
+   [[https://github.com/pashky/restclient.el][pashky/restclient.el - github.com]]
+
+   HTTP REST 웹서비스를 쉽게 테스트할 수 있는 모드
+
+* my packages
+
+  #+begin_src emacs-lisp
+    (add-load-path! "lisp")
+  #+end_src
+
+  #+begin_src emacs-lisp
+    (require 'build-link-section)
+  #+end_src
+
+  =M-x my/build-link-section= 함수로 본문에 있는 링크를 수집해서 링크 org heading을 만들어준다.
+
+  참고: [[http://ohyecloudy.com/emacsian/2022/05/28/create-link-section-by-scraping-links-from-current-org-docs/][org 문서에서 링크를 긁어서 링크 섹션을 만들기 - ohyecloudy.com]]
+
+  #+begin_src emacs-lisp
     (require 'my-ox-confluence)
+  #+end_src
+
+  [[https://github.com/aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el][aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el - github.com]] 파일을 가져와서 조금 고친 패키지. confluence 마크업으로 익스포트를 지원한다.
+
+  #+begin_src emacs-lisp :tangle no
     (require 'my-ox-taskjuggler)
-    (require 'my-gitlab)
     (progn
       (load-file (expand-file-name "lisp/taskjuggler-setting.el" user-emacs-directory))
       (setq org-taskjuggler-reports-directory "~/taskjuggler")
       ;; 넉넉하게 잡아놔서 Error: Some tasks did not fit into the project time frame. 에러가 안 뜨게 한다
       (setq org-taskjuggler-default-project-duration 999)
       )
+  #+end_src
 
-    ;; C-u 키바인딩을 evil에게 양보하고 가장 그럴듯한 키바인딩을 사용
-    (global-set-key (kbd "C-a") 'universal-argument)
+  org 문서를 [[https://taskjuggler.org/][taskjuggler]]로 익스포트 해주는 패키지. 파일을 가져와서 조금 고쳤다. 현재는 사용하지 않아서 사용할 일이 생기면 활성화할 계획이다.
 
+  #+begin_src emacs-lisp
+    (require 'my-gitlab)
+  #+end_src
+
+  gitlab을 사용하면서 만들어놓은 함수
+
+* my functions
+
+  #+begin_src emacs-lisp
     ;;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
     (defun copy-file-name-to-clipboard ()
       "Copy the current buffer file name to the clipboard."
@@ -981,18 +628,6 @@
         (when filename
           (kill-new filename)
           (message "Copied buffer file name '%s' to the clipboard." filename))))
-
-    (defun unity-open-editor-log ()
-      (interactive)
-      (let ((path (format "C:/Users/%s/AppData/Local/Unity/Editor/Editor.log"
-                          (getenv "USERNAME"))))
-        (if (file-exists-p path)
-            (progn
-              (find-file path)
-              (auto-revert-tail-mode 1)
-              (read-only-mode 1)
-              (goto-char (point-max)))
-          (message (concat "log file not found - " path)))))
 
     (defun jekyll-default-image ()
       (interactive)
@@ -1057,44 +692,96 @@
       (while (re-search-forward "\u00a0" nil t)
         (replace-match " "))
       )
+  #+end_src
 
-    (defun my-org-build-link-section ()
-      (interactive)
-      (let ((links (sort
-                    (delete-dups (my-org-extract-urls (org-element-parse-buffer)))
-                    'string<)))
-        (org-insert-heading-after-current)
-        (insert "링크")
-        (org-return t)
-        (org-return t)
-        (seq-map-indexed (lambda (elt idx)
-                           (message (format "processing - %s" elt))
-                           (let* ((url (url-encode-url elt))
-                                  (title (or (org-cliplink-retrieve-title-synchronously url)
-                                             "nil"))
-                                  (link-elt (my-org-link-transformer url title)))
-                             ;; 첫번째 요소는 직접 정렬되지 않은 목록 아이템을 넣어준다
-                             (if (= idx 0)
-                                 (progn
-                                   (insert (format "- %s" link-elt))
-                                   (org-return t))
-                               ;; 두번째 요소 부터는 org-insert-item 함수를 호출해
-                               ;; 이전 목록 아이템을 참고해 자동으로 넣는다
-                               (progn
-                                 (org-insert-item)
-                                 (insert link-elt)
-                                 (org-return t)))))
-                         links)))
+* TODO windows 특수 설정
 
-    (defun my-org-extract-urls (org-elements)
-      ;; link 타입 org element만 map
-      (org-element-map org-elements 'link
-        (lambda (link)
-          (let* ((link-part (nth 1 link))
-                 (type (plist-get link-part :type))
-                 (path (url-unhex-string (plist-get link-part :raw-link))))
-            ;; "https", "http"로 시작하는 link만 골라낸다
-            (if (or (string= type "https") (string= type "http"))
-                ;; "https://...", "http://..." 같은 전체 주소
-                path)))))
+  #+begin_src emacs-lisp :tangle no
+    ;; windows에서 shell을 사용할 때, windows에서 사용하는 code page도 UTF-8로 변경한다
+    ;; 그렇게 하려고 -l 옵션을 붙여서 로그인을 한다. 그 결과 interactive 모드로 셸을 실행한다
+    ;; interactive 모드로 실행해서 ~/.bashrc 셸 스크립트 파일을 실행하게 한다.
+    ;; ~/.bashrc 파일에서 windows일 때, chcp.com 65001 명령을 실행해서 code page도 UTF-8로 변경한다.
+    ;;
+    ;; -i 옵션은 job control 생성을 못해서 대신 -l 옵션을 사용했다.
+    ;; bash: cannot set terminal process group (-1): Inappropriate ioctl for device
+    ;; bash: no job control in this shell
+    (when windows?
+      (setq shell-command-switch "-lc")
+      )
+
+    ;;; https://github.com/syohex/emacs-helm-ag
+    (use-package helm-ag
+      :config
+      ;; windows에서만 문제가 발생
+      (when windows?
+        (setq original-default-process-coding-system default-process-coding-system)
+        ;; the silver searcher(ag)는 cp949로 동작한다.
+        ;; windows에서 실행하는 bash의 codepage를 65001로 변경하지 않았기 때문
+        ;; 그래서 ag를 실행할 때만 cp949로 변경하고 끝나면 원래 process coding system 값으로 돌린다
+        (advice-add 'helm-do-ag
+                    :before (lambda (&rest _)
+                              (setq default-process-coding-system
+                                    '(korean-iso-8bit-dos . korean-iso-8bit-unix))))
+        (advice-add 'helm-do-ag
+                    :after (lambda (&rest _)
+                             (setq default-process-coding-system
+                                   original-default-process-coding-system)))
+        )
+      )
+
+    ;;; shell
+    (when windows?
+      (let* ((combine-path (lambda (dir dir-or-file)
+                             (concat (file-name-as-directory dir) dir-or-file)))
+             (base-dir "C:/git-sdk-64")
+             (mingw64-bin-dir (funcall combine-path base-dir "mingw64/bin"))
+             (msys2-bin-dir (funcall combine-path base-dir "usr/bin"))
+             (bash-path (funcall combine-path msys2-bin-dir "bash.exe")))
+        (add-to-list 'exec-path msys2-bin-dir)
+        (add-to-list 'exec-path mingw64-bin-dir)
+        (setq explicit-shell-file-name bash-path)
+        (setq shell-file-name bash-path)
+        (setenv "SHELL" bash-path)
+        (setq explicit-bash.exe-args '("--noediting" "--login" "-i"))
+        (setenv "PATH" (concat mingw64-bin-dir path-separator
+                               (concat msys2-bin-dir path-separator
+                                       (getenv "PATH"))))))
+  #+end_src
+
+  windows에 설치해봐야 잘 되는지 알겠다.
+
+* TODO mac 특수 설정
+
+  #+begin_src emacs-lisp :tangle no
+    ;;; https://github.com/purcell/exec-path-from-shell
+    ;;; emacs를 GUI로 실행했을 때, shell의 PATH 환경 변수가 적용 안 되는 문제를 해결하려고
+    (when
+        mac?
+      (use-package exec-path-from-shell)
+      (exec-path-from-shell-initialize))
+
+    (when mac?
+      (let ((usr-local "/usr/local/bin"))
+        (add-to-list 'exec-path usr-local)
+        (setenv "PATH" (concat usr-local path-separator (getenv "PATH")))))
+  #+end_src
+
+  없어도 잘 돌아간다. 나중에 문제 생기면 처리하려고
+
+* TODO 설정
+
+  #+begin_src elisp :tangle no
+    ;; tab으로 electic pair 밖으로 나올 수 있게 한다
+    ;; https://www.reddit.com/r/emacs/comments/3n1j4x/anyway_to_tab_out_of_parentheses/
+    (progn
+      (defun smart-tab-jump-out-or-indent (&optional arg)
+        (interactive "P")
+        (let ((closings (mapcar #'cdr electric-pair-pairs))
+              (after (char-after)))
+          (if (member after closings)
+              (forward-char 1)
+            (indent-for-tab-command arg))))
+
+      (global-set-key [remap indent-for-tab-command] 'smart-tab-jump-out-or-indent)
+      )
   #+end_src
