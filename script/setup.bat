@@ -16,7 +16,7 @@ mklink %hpath%\.vimrc %dotpath%\vim\vimrc || goto :finally
 mklink %hpath%\.bashrc %dotpath%\bashrc || goto :finally
 mklink %hpath%\.bash_profile %dotpath%\bash_profile || goto :finally
 
-mklink /J %hpath%\.emacs.d %dotpath%\emacs.d || goto :finally
+mklink /J %hpath%\.doom.d %dotpath%\doom.d || goto :finally
 mklink /J %hpath%\bin %dotpath%\bin || goto :finally
 mklink /J %hpath%\bin.local %dotpath%\bin.local || goto :finally
 
