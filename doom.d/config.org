@@ -611,6 +611,7 @@
 
   #+begin_src emacs-lisp
     (require 'my-gitlab)
+    (require 'legacy-gitlab)
   #+end_src
 
   gitlab을 사용하면서 만들어놓은 함수
@@ -635,9 +636,6 @@
                           (file-name-base (buffer-file-name)))))
         (kill-new name)
         (message "Copied default image name '%s' to the clipboard." name)))
-
-    (load-file
-     (expand-file-name "lisp/legacy-gitlab.el" user-emacs-directory))
 
     (defun toggle-camelcase-underscores ()
       "Toggle between camelcase and underscore notation for the symbol at point."
