@@ -68,6 +68,14 @@
     ;; they are implemented.
   #+end_src
 
+* look
+
+  #+begin_src emacs-lisp
+    (setq frame-title-format "%b")
+  #+end_src
+
+  버퍼 파일 이름을 타이틀바로 표시한다
+
 * hangul
 
   #+begin_src elisp
