@@ -585,6 +585,16 @@
 
    HTTP REST 웹서비스를 쉽게 테스트할 수 있는 모드
 
+* repin packages
+
+** lsp
+
+   #+begin_src elisp :tangle packages.el
+     (package! lsp-mode :pin "a0e1210f626cb7b5db16a9454d3bf61322d299df")
+   #+end_src
+
+   [[https://github.com/emacs-lsp/lsp-mode/commit/866e9a3ccb1b615b2b624499e8fc1ef8a0a80614][emacs-lsp/lsp-mode/commit/866e9a3ccb1b615b2b624499e8fc1ef8a0a80614 - github.com]] 커밋에서 .NET 6을 사용할 수 있는 omnisharp를 사용하게 변경됐다.
+
 * my packages
 
   #+begin_src emacs-lisp
