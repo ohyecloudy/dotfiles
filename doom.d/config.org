@@ -585,6 +585,26 @@
 
    HTTP REST 웹서비스를 쉽게 테스트할 수 있는 모드
 
+** mermaid
+
+   #+begin_src emacs-lisp :tangle packages.el
+     (package! mermaid-mode)
+     (package! ob-mermaid)
+   #+end_src
+
+   mermaid 구문 강조와 들여쓰기 등을 지원하는 [[https://github.com/abrochard/mermaid-mode][abrochard/mermaid-mode]]를 설치한다. 그리고 org mode에서 mermaid 소스 코드 블럭을 사용할 수 있게 하는 [[https://github.com/arnm/ob-mermaid][arnm/ob-mermaid]]도 추가로 설치한다.
+
+   #+begin_src emacs-lisp
+     (after! ob-mermaid
+       (org-babel-do-load-languages 'org-babel-load-languages
+                                    (append org-babel-load-languages
+                                            '((mermaid . t)))
+                                    )
+       )
+   #+end_src
+
+   org-babel 언어로 =mermaid= 를 추가해서 소스 코드 블럭 컴파일을 할 수 있게 한다.
+
 * repin packages
 
 ** lsp
