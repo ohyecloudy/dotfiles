@@ -87,7 +87,7 @@
     (set-terminal-coding-system 'utf-8)
     (set-keyboard-coding-system 'utf-8)
     (setq-default buffer-file-coding-system 'utf-8)
-    (if (boundp 'w32-set-system-coding-system)
+    (if (fboundp 'w32-set-system-coding-system)
         (w32-set-system-coding-system 'utf-8))
     ;; 날짜 표시를 영어로한다. org mode에서 time stamp 날짜에 영향을 준다.
     (setq system-time-locale "C")
@@ -729,6 +729,16 @@
         (replace-match " "))
       )
   #+end_src
+
+* windows coding system
+
+  #+begin_src elisp
+    (when IS-WINDOWS
+      (setq default-process-coding-system '(utf-8 . cp949))
+      )
+  #+end_src
+
+  windows에서는 프로세스로 보내는 coding system을 cp949로 고정한다. =bashrc= 에서 =chcp.com 65001= 을 실행하게 해도 =rg.exe= 파일을 실행하는 프로세스에 =utf-8= 인코딩으로 보내면 동작하지 않는다. 정확한 원인은 찾지 못했다.
 
 * TODO windows 특수 설정
 
