@@ -266,6 +266,12 @@
     =evil-org= 모드 맵도 똑같이 수정한다.
 
     #+begin_src elisp
+      (setq! evil-want-C-w-delete nil)
+    #+end_src
+
+    =insert mode= 에서 =C-w= 키를 입력할 때, back word를 지우는 기능을 끈다. 창 전환 키랑 헷갈려서 실수로 단어를 지우는 경우가 많았다.
+
+    #+begin_src elisp
       (defun my-org-clock-in-if-starting ()
         "Clock in when the task is marked STARTED."
         (when (and (string= org-state "STARTED")
