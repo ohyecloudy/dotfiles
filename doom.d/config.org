@@ -621,6 +621,20 @@
 
    [[https://github.com/emacs-lsp/lsp-mode/commit/866e9a3ccb1b615b2b624499e8fc1ef8a0a80614][emacs-lsp/lsp-mode/commit/866e9a3ccb1b615b2b624499e8fc1ef8a0a80614 - github.com]] 커밋에서 .NET 6을 사용할 수 있는 omnisharp를 사용하게 변경됐다.
 
+   #+begin_src emacs-lisp
+     (when IS-WINDOWS
+       (after! lsp-mode
+         (setq lsp-csharp-omnisharp-roslyn-download-url
+               (concat "https://github.com/omnisharp/omnisharp-roslyn/releases/latest/download/"
+                       "omnisharp-win-x64-net6.0.zip"
+                       )
+               )
+         )
+       )
+   #+end_src
+
+   windows에서는 =omnisharp-win-x64.zip= 파일을 다운로드 받고 있어서 직접 지정
+
 * my packages
 
   #+begin_src emacs-lisp
