@@ -11,11 +11,19 @@
 
 (function() {
     'use strict';
-    // recommended videos
-    waitForKeyElements(
-        "#secondary",
-        removeElement
-    );
+    if (window.location.href == "https://www.youtube.com/") {
+        // youtube main recommended videos
+        waitForKeyElements(
+            "#primary",
+            removeElement
+        );
+    } else {
+        // recommended videos
+        waitForKeyElements(
+            "#secondary",
+            removeElement
+        );
+    }
 })();
 
 function removeElement(elem) {
