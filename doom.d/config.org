@@ -674,6 +674,33 @@
 
   gitlab을 사용하면서 만들어놓은 함수
 
+**** ob-csharp
+
+     #+begin_src emacs-lisp
+       (require 'ob-cs)
+
+       (org-babel-do-load-languages 'org-babel-load-languages
+                                    (append org-babel-load-languages
+                                            '((cs . t)))
+                                    )
+
+       (after! org
+         (add-to-list 'org-src-lang-modes '("cs" . "csharp"))
+         )
+     #+end_src
+
+     [[https://github.com/thomas-villagers/ob-csharp][ob-csharp]]에 [[https://github.com/dotnet-script/dotnet-script ][dotnet-script]]를 사용한 [[https://github.com/thomas-villagers/ob-csharp/pull/2][PR]]을 적용했다.
+
+     doom emacs에서 org-contrib를 로드할 때, ob-csharp을 로드한다. 이걸 갈아치는 방법을 못 찾아서 이름을 바꿔서 적용한다.
+
+     #+begin_src org :tangle no
+       ,#+begin_src cs
+         Console.WriteLine("hello org babel")
+       ,#+end_src
+     #+end_src
+
+     source code 이름은 =cs= 를 사용한다.
+
 * my functions
 
   #+begin_src emacs-lisp
