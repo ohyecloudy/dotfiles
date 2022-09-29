@@ -216,10 +216,9 @@
 
     #+begin_src elisp
       (after! org
-        (setq
-         org-startup-indented nil
-         org-src-preserve-indentation nil
-         )
+        (setq org-startup-indented nil
+              org-src-preserve-indentation nil
+              )
         )
     #+end_src
 
