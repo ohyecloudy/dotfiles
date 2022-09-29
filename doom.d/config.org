@@ -265,12 +265,6 @@
     =evil-org= 모드 맵도 똑같이 수정한다.
 
     #+begin_src elisp
-      (setq! evil-want-C-w-delete nil)
-    #+end_src
-
-    =insert mode= 에서 =C-w= 키를 입력할 때, back word를 지우는 기능을 끈다. 창 전환 키랑 헷갈려서 실수로 단어를 지우는 경우가 많았다.
-
-    #+begin_src elisp
       (after! org
         (setq org-M-RET-may-split-line '((default . t)))
         )
@@ -617,6 +611,14 @@
    #+end_src
 
    org-babel 언어로 =mermaid= 를 추가해서 소스 코드 블럭 컴파일을 할 수 있게 한다.
+
+** evil
+
+   #+begin_src elisp
+     (setq! evil-want-C-w-delete nil)
+   #+end_src
+
+   =insert mode= 에서 =C-w= 키를 입력할 때, back word를 지우는 기능을 끈다. 창 전환 키랑 헷갈려서 실수로 단어를 지우는 경우가 많았다.
 
 * repin packages
 
