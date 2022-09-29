@@ -272,6 +272,14 @@
     =insert mode= 에서 =C-w= 키를 입력할 때, back word를 지우는 기능을 끈다. 창 전환 키랑 헷갈려서 실수로 단어를 지우는 경우가 많았다.
 
     #+begin_src elisp
+      (after! org
+        (setq org-M-RET-may-split-line '((default . t)))
+        )
+    #+end_src
+
+    =M-RET= 키로 라인을 분리할 수 있게 한다. org module에서 nil 값을 바인딩한 걸 디폴트 값으로 돌림.
+
+    #+begin_src elisp
       (defun my-org-clock-in-if-starting ()
         "Clock in when the task is marked STARTED."
         (when (and (string= org-state "STARTED")
