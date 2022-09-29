@@ -620,6 +620,13 @@
 
    =insert mode= 에서 =C-w= 키를 입력할 때, back word를 지우는 기능을 끈다. 창 전환 키랑 헷갈려서 실수로 단어를 지우는 경우가 많았다.
 
+   #+begin_src elisp
+     (after! evil
+       (evil-select-search-module 'evil-search-module 'isearch))
+   #+end_src
+
+   folded 컨텐츠 검색이 안 되서 workaround 적용. [[https://github.com/doomemacs/doomemacs/issues/6478][doomemacs/doomemacs/issues/6478 - github.com]] 참고
+
 * repin packages
 
 ** lsp
