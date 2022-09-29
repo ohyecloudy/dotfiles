@@ -377,6 +377,13 @@
 
     org에서 link를 다른 윈도를 사용해서 열게 한다. 이건 기본 동작으로 돌린다. =C-c C-o= 는 다른 윈도에서 링크를 열게 하고 =C-c C-RET= 은 현재 윈도에서 열게 한다.
 
+    #+begin_src elisp
+      (after! org
+        (setq org-enforce-todo-dependencies nil))
+    #+end_src
+
+    자식 todo가 완료되어야만 부모 heading을 done으로 바꿀 수 있는 제한을 푼다. org clock out을 DONE 상태와 연동해서 사용하기 때문.
+
 *** org-cliplink
 
     #+begin_src elisp
