@@ -384,6 +384,17 @@
 
     자식 todo가 완료되어야만 부모 heading을 done으로 바꿀 수 있는 제한을 푼다. org clock out을 DONE 상태와 연동해서 사용하기 때문.
 
+    #+begin_src elisp
+      (after! org
+        (setq org-tag-alist '((:startgroup . nil)
+                              ("blogging" . ?b)
+                              (:endgroup . nil))
+              )
+        )
+    #+end_src
+
+    미리 정의된 tag를 설정
+
 *** org-cliplink
 
     #+begin_src elisp
