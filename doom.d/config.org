@@ -669,6 +669,24 @@
 
    windows에서는 =omnisharp-win-x64.zip= 파일을 다운로드 받고 있어서 직접 지정
 
+* syntax
+
+  #+begin_src elisp
+    (add-hook! 'emacs-lisp-mode-hook
+               #'(lambda ()
+                   (modify-syntax-entry ?_ "w")
+                   (modify-syntax-entry ?- "w")))
+    (add-hook! 'c-mode-common-hook
+               #'(lambda () (modify-syntax-entry ?_ "w")))
+    (add-hook! 'elixir-mode-hook
+               #'(lambda ()
+                   (modify-syntax-entry ?_ "w")
+                   (modify-syntax-entry ?: ".")
+                   (modify-syntax-entry ?% ".")))
+  #+end_src
+
+  =kebab-case=, =snake_case= 처리 친화적으로 문자를 word로 추가한다. [[http://ohyecloudy.com/emacsian/2017/12/16/evil-syntax-table-kebab-case-snake-case-friendly/][#evilmode kebab-case, snake_case 처리 친화적으로 - '_' 문자나 '-' 문자를 word 취급]] 참고
+
 * my packages
 
   #+begin_src emacs-lisp
