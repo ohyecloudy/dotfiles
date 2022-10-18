@@ -518,17 +518,16 @@
 
 *** org-cv
 
-    #+begin_src elisp :tangle no
-      ;;; https://gitlab.com/Titan-C/org-cv
-      (when (file-directory-p (expand-file-name "manual-packages/org-cv" user-emacs-directory))
-        (use-package ox-moderncv
-          :load-path "manual-packages/org-cv"
-          :init (require 'ox-moderncv))
-        (message "loaded org-cv")
-        )
+    #+begin_src elisp :tangle packages.el
+      (package! ox-moderncv
+        :recipe (:host github :repo "ohyecloudy/org-cv"))
     #+end_src
 
-    나중에 쓸 일 있으면 다시 살린다.
+    #+begin_src elisp
+      (require 'ox-moderncv)
+    #+end_src
+
+    org 문서를 moderncv로 export하는 패키지를 설치한다.
 
 ** doom-modeline
 
