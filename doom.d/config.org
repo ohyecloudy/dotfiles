@@ -638,6 +638,18 @@
 
    org-babel 언어로 =mermaid= 를 추가해서 소스 코드 블럭 컴파일을 할 수 있게 한다.
 
+   #+begin_src elisp
+     (when IS-WINDOWS
+       (setq mermaid-mmdc-location "~/bin.local/mermaid-cli/node_modules/.bin/mmdc.cmd"))
+   #+end_src
+
+   #+begin_src elisp
+     (when IS-WINDOWS
+       (setq ob-mermaid-cli-path "~/bin.local/mermaid-cli/node_modules/.bin/mmdc.cmd"))
+   #+end_src
+
+   windows에서는 직접 설치하고 경로를 지정한다.
+
 ** evil
 
    #+begin_src elisp
