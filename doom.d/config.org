@@ -68,6 +68,15 @@
     ;; they are implemented.
   #+end_src
 
+* emacs-server
+
+  #+begin_src elisp
+    (require 'server)
+    (server-start)
+  #+end_src
+
+  외부에서 파일을 =emacsclientw.exe= 파일을 사용해 현재 열려있는 emacs 인스턴스에 열도록 지원한다
+
 * look
 
   #+begin_src emacs-lisp
