@@ -351,14 +351,10 @@
     쓴 시간이 effort를 넘었을 때, 나오는 desktop notification을 끈다. Task 'some tasks' should be finished by now. (1:00)
 
     #+begin_src elisp
-      (after! org
-        (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
-        )
-
       (defun my-org-open-at-point-current-buffer ()
         "open file in current buffer"
         (interactive)
-        (let ((org-link-frame-setup (cons (cons 'file 'find-file) org-link-frame-setup)))
+        (let ((org-link-frame-setup (cons (cons 'file 'find-file-other-window) org-link-frame-setup)))
           (org-open-at-point)))
 
       (after! evil-org
@@ -369,7 +365,7 @@
         )
     #+end_src
 
-    org에서 link를 다른 윈도를 사용해서 열게 한다. 이건 기본 동작으로 돌린다. =C-c C-o= 는 다른 윈도에서 링크를 열게 하고 =C-c C-RET= 은 현재 윈도에서 열게 한다.
+    현재 윈도우에서 파일을 여는 게 기본 동작이다. 기본 동작을 유지하고 =C-c C-RET= 키로는 다른 윈도로 링크를 열게 한다.
 
     #+begin_src elisp
       (after! org
