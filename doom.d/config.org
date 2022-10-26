@@ -654,6 +654,18 @@
 
    현재 버퍼를 대상으로 완성(completion) 후보를 추린다. 기본값은 열려 있는 전체 버퍼 대상. =C-n=, =C-p= 키 바인딩에서 사용한다.
 
+** lsp
+
+   #+begin_src elisp
+     (after! lsp-mode
+       (setq lsp-pwsh-code-formatting-preset "Allman")
+       )
+   #+end_src
+
+   [[https://en.wikipedia.org/wiki/Indentation_style#Allman_style][Allman]] 스타일로 포맷팅한다.
+
+   참고: [[https://emacs-lsp.github.io/lsp-mode/page/lsp-pwsh/][Powershell - LSP Mode - LSP support for Emacs - emacs-lsp.github.io]]
+
 * repin packages
 
 ** lsp
