@@ -664,6 +664,14 @@
 
    [[https://en.wikipedia.org/wiki/Indentation_style#Allman_style][Allman]] 스타일로 포맷팅한다.
 
+   #+begin_src elisp
+     (after! lsp-mode
+       (setq lsp-pwsh-code-formatting-pipeline-indentation-style "IncreaseIndentationForFirstPipeline")
+       )
+   #+end_src
+
+   파이프라인 들여쓰기를 해서 더 보기 좋게 한다.
+
    참고: [[https://emacs-lsp.github.io/lsp-mode/page/lsp-pwsh/][Powershell - LSP Mode - LSP support for Emacs - emacs-lsp.github.io]]
 
 * repin packages
