@@ -646,6 +646,14 @@
 
    folded 컨텐츠 검색이 안 되서 workaround 적용. [[https://github.com/doomemacs/doomemacs/issues/6478][doomemacs/doomemacs/issues/6478 - github.com]] 참고
 
+   #+begin_src elisp
+     (after! evil
+       (setq evil-complete-all-buffers nil)
+       )
+   #+end_src
+
+   현재 버퍼를 대상으로 완성(completion) 후보를 추린다. 기본값은 열려 있는 전체 버퍼 대상. =C-n=, =C-p= 키 바인딩에서 사용한다.
+
 * repin packages
 
 ** lsp
