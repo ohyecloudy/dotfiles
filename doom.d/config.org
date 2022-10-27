@@ -674,6 +674,18 @@
 
    참고: [[https://emacs-lsp.github.io/lsp-mode/page/lsp-pwsh/][Powershell - LSP Mode - LSP support for Emacs - emacs-lsp.github.io]]
 
+** consult
+
+   #+begin_src elisp
+     (when IS-WINDOWS
+       (after! consult
+         (setq consult-locate-args "es")
+         )
+       )
+   #+end_src
+
+   [[https://github.com/git-for-windows/build-extra][Git for Windows SDK]]로 설치한 =locate= 프로그램이 제대로 동작하지 않는다. windows에서 더 최적화된 [[https://www.voidtools.com/ko-kr/][Everything]]을 파일 찾기에 사용한다.
+
 * repin packages
 
 ** lsp
