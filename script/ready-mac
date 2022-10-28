@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -e
-
-brew install --with-cocoa emacs
-ln -s /usr/local/Cellar/emacs/24.5/Emacs.app /Applications

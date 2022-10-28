@@ -20,3 +20,6 @@ ln -s $root_path/bashrc ~/.bashrc
 ln -s $root_path/doom.d ~/.doom.d
 ln -s $root_path/bin ~/bin
 ln -s $root_path/bin.local ~/bin.local
+
+# finder에서 숨김 파일을 보게 한다
+defaults write com.apple.finder AppleShowAllFiles -bool true;killall Finder
