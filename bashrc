@@ -8,14 +8,8 @@ if [[ "$MSYSTEM" == "MSYS" ]] || [[ "$MSYSTEM" == "MINGW"* ]]; then
     export MSYS=winsymlinks:nativestrict
     export ELIXIR_EDITOR="ec.bat +__LINE__ __FILE__"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:$HOME/.local/bin:$HOME/bin.local:$HOME/bin:/usr/local/opt/python@3.8/libexec/bin:$HOME/developer/flutter/bin:$HOME/.emacs.d/bin:$PATH";
+    export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:$HOME/.local/bin:$HOME/bin.local:$HOME/bin:$HOME/developer/flutter/bin:$HOME/.emacs.d/bin:$PATH";
     export ELIXIR_EDITOR="ec +__LINE__ __FILE__"
-
-    # pyenv
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init --path)"
-    eval "$(pyenv init -)"
 fi
 
 if [[ "$OS" == "Windows_NT" ]]; then
