@@ -1,9 +1,10 @@
 # -*- mode: sh -*-
 
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
 if [[ "$MSYSTEM" == "MSYS" ]] || [[ "$MSYSTEM" == "MINGW"* ]]; then
     export PATH=/c/Users/ohyecloudy/bin:/mingw64/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:$ORIGINAL_PATH
-    export LANG=en_US.UTF-8
-    export LC_ALL=en_US.UTF-8
     # ln 명령어가 full copy가 아닌 symbol link 생성으로 동작하게 한다.
     export MSYS=winsymlinks:nativestrict
     export ELIXIR_EDITOR="ec.bat +__LINE__ __FILE__"
