@@ -23,3 +23,5 @@ ln -s $root_path/bin.local ~/bin.local
 
 # finder에서 숨김 파일을 보게 한다
 defaults write com.apple.finder AppleShowAllFiles -bool true;killall Finder
+# 키 반복 입력 활성화
+defaults write -g ApplePressAndHoldEnabled -bool false
