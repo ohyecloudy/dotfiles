@@ -736,70 +736,74 @@
 
   =c44bc81a05= commit id에서 =9d4d5b756a= commit id로 업데이트한 이후로 =(add-load-path! "lisp")= 가 동작하지 않는다. =load-path= 변수를 확인해본 결과 =.doom.d= 디렉터리가 아니라 =.emacs.d= 디렉터리를 기준으로 =lisp= 디렉터리가 =load-path= 로 추가된 걸 확인했다. 그래서 =doom-user-dir= 을 기준으로 한 load path를 계산해 명시적으로 할당한다.
 
-*** build-link-section
+** build-link-section
 
-    #+begin_src emacs-lisp
-      (require 'build-link-section)
-    #+end_src
+   #+begin_src emacs-lisp
+     (require 'build-link-section)
+   #+end_src
 
-    =M-x my/build-link-section= 함수로 본문에 있는 링크를 수집해서 링크 org heading을 만들어준다.
+   =M-x my/build-link-section= 함수로 본문에 있는 링크를 수집해서 링크 org heading을 만들어준다.
 
-    참고: [[http://ohyecloudy.com/emacsian/2022/05/28/create-link-section-by-scraping-links-from-current-org-docs/][org 문서에서 링크를 긁어서 링크 섹션을 만들기 - ohyecloudy.com]]
+   참고: [[http://ohyecloudy.com/emacsian/2022/05/28/create-link-section-by-scraping-links-from-current-org-docs/][org 문서에서 링크를 긁어서 링크 섹션을 만들기 - ohyecloudy.com]]
 
-*** ox-confluence
+** ox-confluence
 
-    #+begin_src emacs-lisp
-      (require 'my-ox-confluence)
-    #+end_src
+   #+begin_src emacs-lisp
+     (require 'my-ox-confluence)
+   #+end_src
 
-    [[https://github.com/aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el][aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el - github.com]] 파일을 가져와서 조금 고친 패키지. confluence 마크업으로 익스포트를 지원한다.
+   [[https://github.com/aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el][aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el - github.com]] 파일을 가져와서 조금 고친 패키지. confluence 마크업으로 익스포트를 지원한다.
 
-*** ox-taskjuggler
+** ox-taskjuggler
 
-    #+begin_src emacs-lisp :tangle no
-      (require 'my-ox-taskjuggler)
-      (progn
-        (load-file (expand-file-name "lisp/taskjuggler-setting.el" user-emacs-directory))
-        (setq org-taskjuggler-reports-directory "~/taskjuggler")
-        ;; 넉넉하게 잡아놔서 Error: Some tasks did not fit into the project time frame. 에러가 안 뜨게 한다
-        (setq org-taskjuggler-default-project-duration 999)
-        )
-    #+end_src
+   #+begin_src emacs-lisp :tangle no
+     (require 'my-ox-taskjuggler)
+     (progn
+       (load-file (expand-file-name "lisp/taskjuggler-setting.el" user-emacs-directory))
+       (setq org-taskjuggler-reports-directory "~/taskjuggler")
+       ;; 넉넉하게 잡아놔서 Error: Some tasks did not fit into the project time frame. 에러가 안 뜨게 한다
+       (setq org-taskjuggler-default-project-duration 999)
+       )
+   #+end_src
 
-    org 문서를 [[https://taskjuggler.org/][taskjuggler]]로 익스포트 해주는 패키지. 파일을 가져와서 조금 고쳤다. 현재는 사용하지 않아서 사용할 일이 생기면 활성화할 계획이다.
+   org 문서를 [[https://taskjuggler.org/][taskjuggler]]로 익스포트 해주는 패키지. 파일을 가져와서 조금 고쳤다. 현재는 사용하지 않아서 사용할 일이 생기면 활성화할 계획이다.
 
-*** gitlab
+** gitlab
 
-    #+begin_src emacs-lisp
-      (require 'my-gitlab)
-      (require 'legacy-gitlab)
-    #+end_src
+   #+begin_src emacs-lisp
+     (require 'my-gitlab)
+     (require 'legacy-gitlab)
+   #+end_src
 
-    gitlab을 사용하면서 만들어놓은 함수
+   gitlab을 사용하면서 만들어놓은 함수
 
-*** ob-csharp
+** ob-csharp
 
-    #+begin_src emacs-lisp
-      (require 'ob-cs)
+   #+begin_src emacs-lisp
+     (require 'ob-cs)
 
-      (org-babel-do-load-languages 'org-babel-load-languages
-                                   (append org-babel-load-languages
-                                           '((cs . t)))
-                                   )
+     (org-babel-do-load-languages 'org-babel-load-languages
+                                  (append org-babel-load-languages
+                                          '((cs . t)))
+                                  )
 
-      (after! org
-        (add-to-list 'org-src-lang-modes '("cs" . "csharp"))
-        )
-    #+end_src
+     (after! org
+       (add-to-list 'org-src-lang-modes '("cs" . "csharp"))
+       )
+   #+end_src
 
-    [[https://github.com/thomas-villagers/ob-csharp][ob-csharp]]에 [[https://github.com/dotnet-script/dotnet-script ][dotnet-script]]를 사용한 [[https://github.com/thomas-villagers/ob-csharp/pull/2][PR]]을 적용했다.
+   [[https://github.com/thomas-villagers/ob-csharp][ob-csharp]]에 [[https://github.com/dotnet-script/dotnet-script ][dotnet-script]]를 사용한 [[https://github.com/thomas-villagers/ob-csharp/pull/2][PR]]을 적용했다.
 
-    doom emacs에서 org-contrib를 로드할 때, ob-csharp을 로드한다. 이걸 갈아치는 방법을 못 찾아서 이름을 바꿔서 적용한다.
+   doom emacs에서 org-contrib를 로드할 때, ob-csharp을 로드한다. 이걸 갈아치는 방법을 못 찾아서 이름을 바꿔서 적용한다.
 
-    #+begin_src org :tangle no
-      ,#+begin_src cs
-        Console.WriteLine("hello org babel")
-      ,#+end_src
+   #+begin_src org :tangle no
+     ,#+begin_src cs
+       Console.WriteLine("hello org babel")
+     ,#+end_src
+   #+end_src
+
+   source code 이름은 =cs= 를 사용한다.
+
     #+end_src
 
     source code 이름은 =cs= 를 사용한다.
