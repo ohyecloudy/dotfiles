@@ -950,24 +950,6 @@
 
   windows에 설치해봐야 잘 되는지 알겠다.
 
-* TODO mac 특수 설정
-
-  #+begin_src elisp :tangle no
-    ;;; https://github.com/purcell/exec-path-from-shell
-    ;;; emacs를 GUI로 실행했을 때, shell의 PATH 환경 변수가 적용 안 되는 문제를 해결하려고
-    (when
-        mac?
-      (use-package exec-path-from-shell)
-      (exec-path-from-shell-initialize))
-
-    (when mac?
-      (let ((usr-local "/usr/local/bin"))
-        (add-to-list 'exec-path usr-local)
-        (setenv "PATH" (concat usr-local path-separator (getenv "PATH")))))
-  #+end_src
-
-  없어도 잘 돌아간다. 나중에 문제 생기면 처리하려고
-
 * TODO 설정
 
   #+begin_src elisp :tangle no
