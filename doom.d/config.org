@@ -814,9 +814,30 @@
 
    source code 이름은 =cs= 를 사용한다.
 
-    #+end_src
+** my-search
 
-    source code 이름은 =cs= 를 사용한다.
+   #+begin_src elisp
+     (require 'my-search)
+   #+end_src
+
+   emacs에서 편하게 웹페이지를 열 수 있는 함수를 모아둔 패키지. [[http://ohyecloudy.com/emacsian/2021/06/20/interactive-function-that-opens-in-a-web-browser/][원하는 URL을 조합해 웹브라우저로 여는 대화형 함수 만들기 - elixir 문서 편하게 검색 - ohyecloudy.com]] 참고.
+
+   #+begin_src elisp
+     (map! :leader
+           (:prefix-map ("S" . "custom search")
+            :desc "google"           "g"     #'my/search-google
+            :desc "naver"            "n"     #'my/search-naver
+            :desc "dotnet"           "d"     #'my/search-dotnet
+            :desc "dict"             "D"     #'my/search-dict
+            :desc "thesaurus"        "t"     #'my/search-thesaurus
+            :desc "elixir"           "e"     #'my/search-elixir
+            :desc "flutter"          "f"     #'my/search-flutter
+            :desc "my blogs"         "b"     #'my/search-blogs
+            )
+           )
+   #+end_src
+
+   검색 함수를 키에 바인딩함
 
 * my functions
 
@@ -873,20 +894,6 @@
         (string-match "#\\([0-9]+\\)" line)
         (match-string 1 line)))
 
-    (defun search-elixir-doc (search-terms)
-      (interactive "sEnter your search terms: ")
-      (let* ((base-url "https://hexdocs.pm/elixir/search.html")
-             (query-string (url-build-query-string `(("q" ,search-terms))))
-             (url (format "%s?%s" base-url query-string)))
-        (browse-url url)))
-
-    (defun search-flutter-doc (search-terms)
-      (interactive "sEnter your search terms: ")
-      (let* ((base-url "https://docs.flutter.dev/search")
-             (query-string (url-build-query-string `(("q" ,search-terms))))
-             (url (format "%s?%s" base-url query-string)))
-        (browse-url url)))
-
     (defun unevernotify ()
       (interactive)
       (while (re-search-forward "\u00a0" nil t)
@@ -903,6 +910,19 @@
   #+end_src
 
   windows에서는 프로세스로 보내는 coding system을 cp949로 고정한다. =bashrc= 에서 =chcp.com 65001= 을 실행하게 해도 =rg.exe= 파일을 실행하는 프로세스에 =utf-8= 인코딩으로 보내면 동작하지 않는다. 정확한 원인은 찾지 못했다.
+
+* =browse-url= 에서 사용하는 프로그램을 =chrome= 으로 변경
+
+  #+begin_src elisp
+    (when IS-WINDOWS
+      (setq browse-url-chrome-program "run-chrome.bat")
+      (setq browse-url-browser-function
+            '(("nexon.com" . browse-url-default-browser)
+              ("." . browse-url-chrome)))
+      )
+  #+end_src
+
+  윈도우에서는 기본 브라우저를 =chrome= 이 아닌 다른 프로그램으로 설정할 때가 많아서 emacs에서 url로 열 때는 =chrome= 으로 고정. 이후 macOS에도 일괄 적용.
 
 * TODO windows 특수 설정
 
