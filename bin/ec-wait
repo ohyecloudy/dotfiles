@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "OS" = "Windows_NT" ]
+if [ "$OS" = "Windows_NT" ]
 then
     emacsclientw --alternate-editor=runemacs "$@"
 else
