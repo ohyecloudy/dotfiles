@@ -58,7 +58,7 @@
 
 * look
 
-  #+begin_src emacs-lisp
+  #+begin_src elisp
     (setq frame-title-format "%b")
   #+end_src
 
@@ -149,7 +149,7 @@
 
 * cc-mode
 
-  #+begin_src emacs-lisp
+  #+begin_src elisp
     (setq-default c-default-style "bsd"
                   c-basic-offset 4)
   #+end_src
@@ -425,7 +425,7 @@
 
 *** ox-gfm
 
-    #+begin_src emacs-lisp :tangle packages.el
+    #+begin_src elisp :tangle packages.el
       (package! ox-gfm)
     #+end_src
 
@@ -437,11 +437,11 @@
 
 **** ob-translate
 
-     #+begin_src emacs-lisp :tangle packages.el
+     #+begin_src elisp :tangle packages.el
        (package! ob-translate)
      #+end_src
 
-     #+begin_src emacs-lisp
+     #+begin_src elisp
        (setq ob-translate:default-dest "ko")
      #+end_src
 
@@ -463,7 +463,7 @@
 
      이런 에러 메시지가 뜬다.
 
-     #+begin_src emacs-lisp
+     #+begin_src elisp
        (defun google-translate--search-tkk ()
          "Search TKK."
          (list 430675 2721866130))
@@ -473,11 +473,11 @@
 
 **** ob-http
 
-     #+begin_src emacs-lisp :tangle packages.el
+     #+begin_src elisp :tangle packages.el
        (package! ob-http)
      #+end_src
 
-     #+begin_src emacs-lisp
+     #+begin_src elisp
        (org-babel-do-load-languages 'org-babel-load-languages
                                     (append org-babel-load-languages
                                             '((http . t)))
@@ -547,7 +547,7 @@
 
 ** projectile
 
-   #+begin_src emacs-lisp
+   #+begin_src elisp
      (after! projectile
        (setq projectile-indexing-method 'hybrid)
        )
@@ -571,7 +571,7 @@
 
 ** company
 
-   #+begin_src emacs-lisp
+   #+begin_src elisp
      (after! company
        (setq company-show-quick-access t)
        )
@@ -590,7 +590,7 @@
 
 ** restclient
 
-   #+begin_src emacs-lisp :tangle packages.el
+   #+begin_src elisp :tangle packages.el
      (package! restclient)
      (package! ob-restclient)
    #+end_src
@@ -601,14 +601,14 @@
 
 ** mermaid
 
-   #+begin_src emacs-lisp :tangle packages.el
+   #+begin_src elisp :tangle packages.el
      (package! mermaid-mode)
      (package! ob-mermaid)
    #+end_src
 
    mermaid 구문 강조와 들여쓰기 등을 지원하는 [[https://github.com/abrochard/mermaid-mode][abrochard/mermaid-mode]]를 설치한다. 그리고 org mode에서 mermaid 소스 코드 블럭을 사용할 수 있게 하는 [[https://github.com/arnm/ob-mermaid][arnm/ob-mermaid]]도 추가로 설치한다.
 
-   #+begin_src emacs-lisp
+   #+begin_src elisp
      (after! ob-mermaid
        (org-babel-do-load-languages 'org-babel-load-languages
                                     (append org-babel-load-languages
@@ -696,7 +696,7 @@
 
    [[https://github.com/emacs-lsp/lsp-mode/commit/866e9a3ccb1b615b2b624499e8fc1ef8a0a80614][emacs-lsp/lsp-mode/commit/866e9a3ccb1b615b2b624499e8fc1ef8a0a80614 - github.com]] 커밋에서 .NET 6을 사용할 수 있는 omnisharp를 사용하게 변경됐다.
 
-   #+begin_src emacs-lisp
+   #+begin_src elisp
      (when IS-WINDOWS
        (after! lsp-mode
          (setq lsp-csharp-omnisharp-roslyn-download-url
@@ -730,7 +730,7 @@
 
 * my packages
 
-  #+begin_src emacs-lisp
+  #+begin_src elisp
     (add-load-path! (expand-file-name "lisp/" doom-user-dir))
   #+end_src
 
@@ -738,7 +738,7 @@
 
 ** build-link-section
 
-   #+begin_src emacs-lisp
+   #+begin_src elisp
      (require 'build-link-section)
    #+end_src
 
@@ -748,7 +748,7 @@
 
 ** ox-confluence
 
-   #+begin_src emacs-lisp
+   #+begin_src elisp
      (require 'my-ox-confluence)
    #+end_src
 
@@ -756,7 +756,7 @@
 
 ** ox-taskjuggler
 
-   #+begin_src emacs-lisp :tangle no
+   #+begin_src elisp :tangle no
      (require 'my-ox-taskjuggler)
      (progn
        (load-file (expand-file-name "lisp/taskjuggler-setting.el" user-emacs-directory))
@@ -770,7 +770,7 @@
 
 ** gitlab
 
-   #+begin_src emacs-lisp
+   #+begin_src elisp
      (require 'my-gitlab)
      (require 'legacy-gitlab)
    #+end_src
@@ -779,7 +779,7 @@
 
 ** ob-csharp
 
-   #+begin_src emacs-lisp
+   #+begin_src elisp
      (require 'ob-cs)
 
      (org-babel-do-load-languages 'org-babel-load-languages
@@ -810,7 +810,7 @@
 
 * my functions
 
-  #+begin_src emacs-lisp
+  #+begin_src elisp
     ;;; http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
     (defun copy-file-name-to-clipboard ()
       "Copy the current buffer file name to the clipboard."
@@ -896,7 +896,7 @@
 
 * TODO windows 특수 설정
 
-  #+begin_src emacs-lisp :tangle no
+  #+begin_src elisp :tangle no
     ;; windows에서 shell을 사용할 때, windows에서 사용하는 code page도 UTF-8로 변경한다
     ;; 그렇게 하려고 -l 옵션을 붙여서 로그인을 한다. 그 결과 interactive 모드로 셸을 실행한다
     ;; interactive 모드로 실행해서 ~/.bashrc 셸 스크립트 파일을 실행하게 한다.
@@ -952,7 +952,7 @@
 
 * TODO mac 특수 설정
 
-  #+begin_src emacs-lisp :tangle no
+  #+begin_src elisp :tangle no
     ;;; https://github.com/purcell/exec-path-from-shell
     ;;; emacs를 GUI로 실행했을 때, shell의 PATH 환경 변수가 적용 안 되는 문제를 해결하려고
     (when
