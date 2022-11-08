@@ -916,7 +916,7 @@
   #+begin_src elisp
     (when IS-WINDOWS
       (setq browse-url-chrome-program "run-chrome.bat")
-      (setq browse-url-browser-function
+      (setq browse-url-handlers
             '(("nexon.com" . browse-url-default-browser)
               ("." . browse-url-chrome)))
       )
