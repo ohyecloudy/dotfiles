@@ -691,28 +691,6 @@
 
    참고: [[https://emacs-lsp.github.io/lsp-mode/page/lsp-pwsh/][Powershell - LSP Mode - LSP support for Emacs - emacs-lsp.github.io]]
 
-** consult
-
-   #+begin_src elisp
-     (when IS-WINDOWS
-       (after! consult
-         (setq consult-locate-args "es")
-         )
-       )
-   #+end_src
-
-   [[https://github.com/git-for-windows/build-extra][Git for Windows SDK]]로 설치한 =locate= 프로그램이 제대로 동작하지 않는다. windows에서 더 최적화된 [[https://www.voidtools.com/ko-kr/][Everything]]을 파일 찾기에 사용한다.
-
-* repin packages
-
-** lsp
-
-   #+begin_src elisp :tangle packages.el
-     (package! lsp-mode :pin "a0e1210f626cb7b5db16a9454d3bf61322d299df")
-   #+end_src
-
-   [[https://github.com/emacs-lsp/lsp-mode/commit/866e9a3ccb1b615b2b624499e8fc1ef8a0a80614][emacs-lsp/lsp-mode/commit/866e9a3ccb1b615b2b624499e8fc1ef8a0a80614 - github.com]] 커밋에서 .NET 6을 사용할 수 있는 omnisharp를 사용하게 변경됐다.
-
    #+begin_src elisp
      (when IS-WINDOWS
        (after! lsp-mode
@@ -726,6 +704,18 @@
    #+end_src
 
    windows에서는 =omnisharp-win-x64.zip= 파일을 다운로드 받고 있어서 직접 지정
+
+** consult
+
+   #+begin_src elisp
+     (when IS-WINDOWS
+       (after! consult
+         (setq consult-locate-args "es")
+         )
+       )
+   #+end_src
+
+   [[https://github.com/git-for-windows/build-extra][Git for Windows SDK]]로 설치한 =locate= 프로그램이 제대로 동작하지 않는다. windows에서 더 최적화된 [[https://www.voidtools.com/ko-kr/][Everything]]을 파일 찾기에 사용한다.
 
 * syntax
 
