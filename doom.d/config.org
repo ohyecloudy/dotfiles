@@ -89,6 +89,13 @@
     (setenv "LC_ALL" "en_US.UTF-8")
   #+end_src
 
+  #+begin_src elisp
+    (when IS-WINDOWS
+      (set-clipboard-coding-system 'cp949))
+  #+end_src
+
+  윈도에서는 클립보드 코딩 시스템을 시스템에 맞춰 =cp949= 로 세팅한다.
+
 * font
 
   #+begin_src org :tangle no
