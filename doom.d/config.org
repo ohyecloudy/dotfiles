@@ -595,17 +595,6 @@
    http를 쉽게 사용할 수 있는 request 패키지
    [[https://github.com/tkf/emacs-request][tkf/emacs-request - github.com]]
 
-** restclient
-
-   #+begin_src elisp :tangle packages.el
-     (package! restclient)
-     (package! ob-restclient)
-   #+end_src
-
-   [[https://github.com/pashky/restclient.el][pashky/restclient.el - github.com]]
-
-   HTTP REST 웹서비스를 쉽게 테스트할 수 있는 모드
-
 ** mermaid
 
    #+begin_src elisp :tangle packages.el
