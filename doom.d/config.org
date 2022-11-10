@@ -155,6 +155,14 @@
                   c-basic-offset 4)
   #+end_src
 
+* input
+
+  #+begin_src elisp
+    (setq +default-want-RET-continue-comments nil)
+  #+end_src
+
+  =RET= 키를 눌렀을 때, 코멘트가 연결되는 기능을 끈다. 한 줄 코멘트가 많아 오히려 번거롭다.
+
 * packages
 
 ** doom theme
@@ -653,6 +661,12 @@
    #+end_src
 
    편집 모드를 나갈 때, 입력기(input method)를 초기화 시킨다. 편집 모드로 들어갈 때, 무조건 영문을 기본으로 해서 이전 편집 모드에서 한글을 입력하던 중이었는지 영문을 입력하던 중이었는지 생각할 필요가 없게 한다. 편집 모드로 들어갈 때, 이전 상태를 기억 못하거나 모드 라인(mode line)에 표시된 입력기 상태를 못 봐서 잘못 입력하는 실수를 줄이려고 통일한다.
+
+   #+begin_src elisp
+     (setq +evil-want-o/O-to-continue-comments nil)
+   #+end_src
+
+   주석을 연속해서 쓰는 경우가 적어서 오히려 불편하다
 
 ** lsp
 
