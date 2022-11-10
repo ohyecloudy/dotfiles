@@ -807,8 +807,8 @@
            (:prefix-map ("S" . "custom search")
             :desc "google"           "g"     #'my/search-google
             :desc "naver"            "n"     #'my/search-naver
-            :desc "dotnet"           "d"     #'my/search-dotnet
-            :desc "dict"             "D"     #'my/search-dict
+            :desc "dict"             "d"     #'my/search-dict
+            :desc "dotnet"           "D"     #'my/search-dotnet
             :desc "thesaurus"        "t"     #'my/search-thesaurus
             :desc "elixir"           "e"     #'my/search-elixir
             :desc "flutter"          "f"     #'my/search-flutter
