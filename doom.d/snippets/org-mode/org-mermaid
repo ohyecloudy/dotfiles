@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: org mermaid
+# key: <m
+# --
+
+#+begin_src mermaid :file tryout.png
+$1
+#+end_src
