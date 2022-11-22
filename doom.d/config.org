@@ -823,8 +823,9 @@
             :desc "naver"            "n"     #'my/search-naver
             :desc "dict"             "d"     #'my/search-dict
             :desc "dotnet"           "D"     #'my/search-dotnet
+            :desc "onelook"          "e"     #'my/search-onelook
             :desc "thesaurus"        "t"     #'my/search-thesaurus
-            :desc "elixir"           "e"     #'my/search-elixir
+            :desc "elixir"           "x"     #'my/search-elixir
             :desc "flutter"          "f"     #'my/search-flutter
             :desc "my blogs"         "b"     #'my/search-blogs
             )

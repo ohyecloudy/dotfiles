@@ -58,6 +58,14 @@
     )
   )
 
+(defun my/search-onelook ()
+  (interactive)
+  (let ((search-terms (my/search--use-region-or-read-user-input)))
+    (my/search--browse "https://onelook.com"
+                       `(("w" ,search-terms)))
+    )
+  )
+
 (defun my/search-thesaurus ()
   (interactive)
   (let* ((search-terms (my/search--use-region-or-read-user-input))
