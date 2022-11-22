@@ -66,6 +66,14 @@
     )
   )
 
+(defun my/search-core-dictionary ()
+  (interactive)
+  (let ((search-terms (my/search--use-region-or-read-user-input)))
+    (my/search--browse "http://www.coredictionary.com/core"
+                       `(("w" ,search-terms)))
+    )
+  )
+
 (defun my/search-thesaurus ()
   (interactive)
   (let* ((search-terms (my/search--use-region-or-read-user-input))
