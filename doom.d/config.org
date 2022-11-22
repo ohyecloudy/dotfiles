@@ -360,16 +360,15 @@
     쓴 시간이 effort를 넘었을 때, 나오는 desktop notification을 끈다. Task 'some tasks' should be finished by now. (1:00)
 
     #+begin_src elisp
-      (defun my-org-open-at-point-current-buffer ()
-        "open file in current buffer"
+      (defun my/org-open-at-point-other-window ()
         (interactive)
         (let ((org-link-frame-setup (cons (cons 'file 'find-file-other-window) org-link-frame-setup)))
           (org-open-at-point)))
 
       (after! evil-org
         (map! :map evil-org-mode-map
-              :ni "C-c C-RET"      #'my-org-open-at-point-current-buffer
-              :ni "C-c C-<return>" #'my-org-open-at-point-current-buffer
+              :ni "C-c C-RET"      #'my/org-open-at-point-other-window
+              :ni "C-c C-<return>" #'my/org-open-at-point-other-window
               )
         )
     #+end_src
