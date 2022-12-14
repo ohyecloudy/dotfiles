@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: org source elisp
+# key: <elisp
+# condition: t
+# --
+#+begin_src elisp :exports both
+$0
+#+end_src
