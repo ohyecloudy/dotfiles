@@ -1,0 +1,5 @@
+set incsearch " incremental search
+set hlsearch " 검색 결과 강조
+set ignorecase " 대소문자 무시 검색
+set smartcase " 대문자가 검색 문자열에 있을때는 noignorecase
+set clipboard=unnamed " OS clipboard를 같이 사용

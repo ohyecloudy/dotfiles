@@ -14,6 +14,7 @@ root_path=${script_path%/*}
 ln -s $root_path/git/gitignore_global ~/.gitignore_global
 ln -s $root_path/git/gitconfig ~/.gitconfig
 ln -s $root_path/vim/vimrc ~/.vimrc
+ln -s $root_path/vim/ideavimrc ~/.ideavimrc
 ln -s $root_path/bash_profile ~/.bash_profile
 ln -s $root_path/bashrc ~/.bashrc
 
