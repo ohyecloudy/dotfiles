@@ -723,6 +723,41 @@
 
    [[https://github.com/git-for-windows/build-extra][Git for Windows SDK]]로 설치한 =locate= 프로그램이 제대로 동작하지 않는다. windows에서 더 최적화된 [[https://www.voidtools.com/ko-kr/][Everything]]을 파일 찾기에 사용한다.
 
+** vertico
+
+   #+begin_src elisp :exports both
+     (after! vertico
+       (defun my/vertico-setup-then-remove-post-command-hook (&rest args)
+         "vertico--setup 함수에서 추가하는 post-command-hook을 제거한다.
+
+     입력 조합으로 표현하는 한글 입력시 post-command-hook이 입력되지 않는다.
+     한글 증분 완성을 위해 timer로 호출하기 때문에 제거한다"
+         (remove-hook 'post-command-hook #'vertico--exhibit 'local))
+
+       (defun my/vertico-exhibit-with-timer (&rest args)
+         "타이머를 넣어 타이머 이벤트 발생시 vertico--exhibit을 호출해 미니버퍼 완성(completion) 후보 리스트를 갱신한다
+
+     post-command-hook이 발동하지 않는 한글 입력시에도 한글 증분 완성을 하기 위해 timer를 사용한다"
+         (let (timer)
+           (unwind-protect
+               (progn
+                 (setq timer (run-with-idle-timer
+                              0.01
+                              'repeat
+                              (lambda ()
+                                (with-selected-window (or (active-minibuffer-window)
+                                                          (minibuffer-window))
+                                  (vertico--exhibit))
+                                )))
+                 (apply args))
+             (when timer (cancel-timer timer)))))
+
+       (advice-add #'vertico--setup :after #'my/vertico-setup-then-remove-post-command-hook)
+       (advice-add #'vertico--advice :around #'my/vertico-exhibit-with-timer))
+   #+end_src
+
+   vertico는 =post-command-hook= 을 사용해서 증분 완성(incremental completion)을 수행한다. 영문 입력시 =post-command-hook= 이 잘 발동하지만 조합해서 입력하는 한글은 =post-command-hook= 이 호출되지 않는다. helm 동작 방법을 참고해 timer를 돌려서 해결했다.
+
 * syntax
 
   #+begin_src elisp
