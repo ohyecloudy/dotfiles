@@ -879,6 +879,32 @@
 
    검색 함수를 키에 바인딩함
 
+** my-source-mine
+
+   #+begin_src elisp
+     (require 'my-source-mine)
+   #+end_src
+
+   언어별 참고할만한 코드베이스를 저장한 디렉터리에서 바로 검색하는 패키지. 소스 광산(source mine)이라고 부르자. doom emacs의 함수를 사용해서 구현했다.
+
+   #+begin_src elisp
+     (map! :leader
+           (:prefix-map ("S" . "custom search")
+                        (:prefix-map ("m" . "source mine")
+                         :desc "csharp" "c" #'my/source-mine-csharp
+                         :desc "elixir" "x" #'my/source-mine-elixir
+                         )))
+   #+end_src
+
+   elixir 소스 광산을 검색하려면 =SPC S m x= 키를 누르면 된다.
+
+   #+begin_example
+     machine source_mine login csharp password ~/source_mine/csharp
+     machine source_mine login elixir password ~/source_mine/elixir
+   #+end_example
+
+   소스 광산 디렉터리는 auth-source 패키지를 사용한다. 이런 식으로 =~/.authinfo= 에 저장하면 된다.
+
 ** my-jira
 
    #+begin_src elisp
