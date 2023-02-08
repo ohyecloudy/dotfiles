@@ -28,6 +28,7 @@
 		}; f"
 	stsh = stash --keep-index
 	staash = stash --include-untracked
+	p4 = "!python.exe 'c:\\git-sdk-64\\mingw64\\libexec\\git-core\\git-p4'"
 [pull]
 	rebase = true
 [push]
