@@ -43,7 +43,5 @@
 	required = true
 	clean = git-lfs clean -- %f
 [gc]
-    # 자동으로 gc가 도는 걸 끈다.
-	# git p4를 사용해 perforce에 억지로 엉겨붙어 작업할 때, gc auto가 자주 호출돼 작업이 괴롭다.
-	# 끄고 느려졌다 싶으면 수동으로 git gc --aggresive를 호출하는 걸로 극복한다.
-	auto = 0
+        # windows에서 magit 속도 향상 https://magit.vc/manual/magit/Microsoft-Windows-Performance.html
+	auto = 256
