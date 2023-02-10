@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if [[ $# -ne 2 ]]; then
+    echo 'usage: git-truncate-history remote_branch new_root_commit_id'
+    exit 1
+fi
+
+remote_branch=$1
+new_root=$2
+
+echo "remote_branch: $remote_branch"
+echo "new_root: $new_root"
+
+if [[ $(git branch | wc -l) -ne 1 ]]; then
+    echo "only master branch should exist"
+    exit 1
+fi
+
+if [[ $(git rev-parse $remote_branch) != $(git rev-parse master) ]]; then
+    echo "the '$remote_branch' branch's ref and the master branch's ref must be same"
+    exit 1
+fi
+
+# https://stackoverflow.com/questions/4515580/how-do-i-remove-the-old-history-from-a-git-repository 참고
+git checkout --orphan temp $new_root # create a new branch without parent history
+git commit --allow-empty -m "Truncated history" # create a first commit on this branch
+git rebase --onto temp $new_root master # now rebase the part of master branch that we want to keep onto this branch
+git branch -D temp # delete the temp branch
