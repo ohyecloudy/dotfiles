@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# https://stackoverflow.com/questions/4515580/how-do-i-remove-the-old-history-from-a-git-repository 참고
+git reflog expire --expire-unreachable=now --all
+git prune --progress # delete all the objects w/o references
+git gc --aggressive --prune=all # aggressively collect garbage; may take a lot of time on large repos
