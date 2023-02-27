@@ -421,14 +421,24 @@
                  ((string= (url-host parsed-url) "github.com")
                   (replace-regexp-in-string "^/" ""
                                             (car (url-path-and-query parsed-url))))
-                 ;; (replace-regexp-in-string "GitHub - .*: \\(.*\\)" "\\1" title))
-                 ((string= (url-host parsed-url) "www.youtube.com")
-                  (replace-regexp-in-string "\\(.*\\) - Youtube" "\\1" title))
                  ;; otherwise keep the original title
-                 (t title)))
+                 (t (my-org-cliplink--cleansing-site-title title))))
                (title-with-url (format "%s - %s" clean-title host-url)))
           ;; forward the title to the default org-cliplink transformer
           (org-cliplink-org-mode-link-transformer url title-with-url)))
+
+      (defun my-org-cliplink--cleansing-site-title (title)
+        (let ((result title)
+              (target-site-titles '(" - 위키백과, 우리 모두의 백과사전"
+                                    " - PUBLY"
+                                    " - YES24"
+                                    "알라딘: "
+                                    " - Youtube")))
+          (dolist (elem target-site-titles)
+            (if (string-match elem title)
+                (setq result (string-replace elem "" title))
+              result))
+          result))
     #+end_src
 
     마지막에 host를 붙이고 싶어서 link transformer 함수를 짰다. =title - ohyecloudy.com= 식으로 org link를 만든다.
