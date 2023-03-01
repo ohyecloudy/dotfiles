@@ -433,6 +433,7 @@
                                     " - PUBLY"
                                     " - YES24"
                                     "알라딘: "
+                                    " : 클리앙"
                                     " - Youtube")))
           (dolist (elem target-site-titles)
             (if (string-match elem title)
