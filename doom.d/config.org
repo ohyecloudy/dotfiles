@@ -548,6 +548,29 @@
 
     org 문서를 moderncv로 export하는 패키지를 설치한다.
 
+*** org copy link
+
+    #+begin_src elisp
+      (defun my/org-copy-link-at-point ()
+        (interactive)
+        (let ((link (org-element-property :raw-link (org-element-context))))
+          (when link
+            (kill-new link))
+          ))
+    #+end_src
+
+    커서가 위치한 org element에 link 프로퍼티가 있으면 클립보드로 복사하는 함수.
+
+    #+begin_src elisp
+      (after! org
+        (map! :map org-mode-map
+              :localleader
+              (:prefix ("l" . "links")
+                       "y" #'my/org-copy-link-at-point)))
+    #+end_src
+
+    org mode에서 =SPC m l y= 키에 바인딩.
+
 ** doom-modeline
 
    #+begin_src elisp
