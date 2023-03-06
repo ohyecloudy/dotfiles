@@ -956,6 +956,23 @@
 
    이런식으로 =~/.authinfo= 파일에 저장하면 된다.
 
+** my-swarm
+
+   #+begin_src elisp
+     (require 'my-swarm)
+   #+end_src
+
+   api base 주소, project 이름, username, p4 ticket은 auth-source를 사용해서 접근한다. p4 ticket만 넣으려고 했는데, 귀찮아서 로컬에서 저장하는 걸 싹다 넣음
+
+   #+begin_example
+     machine myswarm login username password MYUSERNAME
+     machine myswarm login ticket password SUPERSECRET
+     machine myswarm login host password https://helixswarm.com
+     machine myswarm login project password AWESOME_PROJECT
+   #+end_example
+
+   이런식으로 =~/.authinfo= 파일에 저장하면 된다.
+
 * my functions
 
   #+begin_src elisp
