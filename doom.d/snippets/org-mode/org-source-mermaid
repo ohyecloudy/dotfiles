@@ -1,8 +1,8 @@
 # -*- mode: snippet -*-
-# name: org mermaid
-# key: <m
+# name: org source mermaid
+# key: <S
+# condition: t
 # --
-
 #+begin_src mermaid :file tryout.png
-$1
+$0
 #+end_src
