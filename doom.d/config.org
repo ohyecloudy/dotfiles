@@ -435,6 +435,7 @@
                                     " - YES24"
                                     "알라딘: "
                                     " : 클리앙"
+                                    " - YouTube"
                                     " - Youtube")))
           (dolist (elem target-site-titles)
             (if (string-match elem title)
