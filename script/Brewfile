@@ -1,0 +1,25 @@
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/core"
+tap "railwaycat/emacsmacport"
+
+brew "coreutils"
+brew "asdf"
+brew "fd"
+brew "fontconfig"
+brew "git"
+brew "git-lfs"
+brew "grep"
+brew "mas"
+brew "node"
+brew "mermaid-cli"
+brew "ripgrep"
+brew "yt-dlp"
+brew "railwaycat/emacsmacport/emacs-mac"
+
+cask "alt-tab"
+
+mas "Amphetamine", id: 937984704
+mas "Microsoft Remote Desktop", id: 1295203466
+mas "Tailscale", id: 1475387142
+mas "Xcode", id: 497799835

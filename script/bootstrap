@@ -51,3 +51,14 @@ log_info "=> set macOS defaults "
 defaults write com.apple.finder AppleShowAllFiles -bool true;killall Finder
 # 키 반복 입력 활성화
 defaults write -g ApplePressAndHoldEnabled -bool false
+
+log_info "=> homebrew"
+if ! command -v brew > /dev/null; then
+    log_info "=> => homebrew: installing..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+    log_info "=> => homebrew: already installed."
+fi
+
+log_info "=> => install bundle."
+brew bundle --file $root_path/script/Brewfile
