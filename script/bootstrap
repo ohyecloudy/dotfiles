@@ -2,6 +2,14 @@
 
 set -e
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NO_COLOR='\033[0m'
+CLEAR_LINE='\r\033[K'
+
+function log_info { printf "${GREEN}[INFO] $1${NO_COLOR}\n"; }
+function log_error { printf "${RED}[ERRO] $1${NO_COLOR}\n"; }
+
 # 실행되는 쉘 절대 경로 구하기
 # http://kldp.org/node/119861
 cd ${0%/*} 2>/dev/null
@@ -11,16 +19,33 @@ shell_path=$PWD/${0##*/}
 script_path=${shell_path%/*}
 root_path=${script_path%/*}
 
-ln -s $root_path/git/gitignore_global ~/.gitignore_global
-ln -s $root_path/git/gitconfig ~/.gitconfig
-ln -s $root_path/vim/vimrc ~/.vimrc
-ln -s $root_path/vim/ideavimrc ~/.ideavimrc
-ln -s $root_path/bash_profile ~/.bash_profile
-ln -s $root_path/bashrc ~/.bashrc
+log_info "=> make symbolic links"
 
-ln -s $root_path/doom.d ~/.doom.d
-ln -s $root_path/bin ~/bin
-ln -s $root_path/bin.local ~/bin.local
+function safe_make_symbol_link {
+    source=$1
+    target=$2
+
+    log_info "=> => make a symbol link: $source -> $target"
+
+    if ! [ -e "$target" ]; then
+        log_info "=> => => link"
+        ln -s $source $target
+    else
+        log_error "=> => => skip: already exist $2"
+    fi
+}
+
+safe_make_symbol_link $root_path/git/gitignore_global ~/.gitignore_global
+safe_make_symbol_link $root_path/git/gitconfig ~/.gitconfig
+safe_make_symbol_link $root_path/vim/vimrc ~/.vimrc
+safe_make_symbol_link $root_path/vim/ideavimrc ~/.ideavimrc
+safe_make_symbol_link $root_path/bash_profile ~/.bash_profile
+safe_make_symbol_link $root_path/bashrc ~/.bashrc
+safe_make_symbol_link $root_path/doom.d ~/.doom.d
+safe_make_symbol_link $root_path/bin ~/bin
+safe_make_symbol_link $root_path/bin.local ~/bin.local
+
+log_info "=> set macOS defaults "
 
 # finder에서 숨김 파일을 보게 한다
 defaults write com.apple.finder AppleShowAllFiles -bool true;killall Finder
