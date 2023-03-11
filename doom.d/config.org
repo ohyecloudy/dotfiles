@@ -435,11 +435,10 @@
                                     " - YES24"
                                     "알라딘: "
                                     " : 클리앙"
-                                    " - YouTube"
-                                    " - Youtube")))
+                                    " - YouTube")))
           (dolist (elem target-site-titles)
-            (if (string-match elem title)
-                (setq result (string-replace elem "" title))
+            (if (string-match elem result)
+                (setq result (string-replace elem "" result))
               result))
           result))
     #+end_src
