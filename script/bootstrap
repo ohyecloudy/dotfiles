@@ -56,6 +56,7 @@ log_info "=> homebrew"
 if ! command -v brew > /dev/null; then
     log_info "=> => homebrew: installing..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 else
     log_info "=> => homebrew: already installed."
 fi
