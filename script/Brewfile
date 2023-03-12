@@ -22,4 +22,6 @@ cask "alt-tab"
 mas "Amphetamine", id: 937984704
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Tailscale", id: 1475387142
+mas "Spark – Email App by Readdle", id: 1176895641
+mas "Kindle", id: 405399194
 mas "Xcode", id: 497799835
