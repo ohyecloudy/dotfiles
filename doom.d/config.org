@@ -1094,6 +1094,19 @@
 
   windows에서 git sdk를 깔 때, 설치한 bash를 shell로 설정한다.
 
+* macOS compile options
+
+  #+begin_src elisp :exports both
+    (when IS-MAC
+      (customize-set-variable 'native-comp-driver-options '("-Wl,-w")))
+  #+end_src
+
+  #+begin_example
+    ld: warning: -undefined dynamic_lookup may not work with chained fixups
+  #+end_example
+
+  이런 에러가 보이는 걸 발견. '[[https://www.reddit.com/r/emacs/comments/xfhnzz/weird_errors_with_latest_build_of_emacs/][Reddit - Dive into anything - reddit.com]]' 에서 해결 방법을 찾음
+
 * TODO 설정
 
   #+begin_src elisp :tangle no
