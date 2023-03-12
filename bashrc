@@ -9,7 +9,15 @@ if [[ "$MSYSTEM" == "MSYS" ]] || [[ "$MSYSTEM" == "MINGW"* ]]; then
     export MSYS=winsymlinks:nativestrict
     export ELIXIR_EDITOR="ec.bat +__LINE__ __FILE__"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:$HOME/.local/bin:$HOME/bin.local:$HOME/bin:$HOME/developer/flutter/bin:$HOME/.emacs.d/bin:$PATH";
+    # /opt/homebrew/bin/brew shellenv
+    export HOMEBREW_PREFIX="/opt/homebrew";
+    export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+    export HOMEBREW_REPOSITORY="/opt/homebrew";
+    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
+    export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+    export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+
+    export PATH="$HOME/.local/bin:$HOME/bin.local:$HOME/bin:$HOME/developer/flutter/bin:$HOME/.emacs.d/bin:$PATH";
     export ELIXIR_EDITOR="ec +__LINE__ __FILE__"
 fi
 
