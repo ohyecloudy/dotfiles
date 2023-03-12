@@ -65,3 +65,6 @@ tramp
 
 ## forge
 forge-database.sqlite
+
+# brew
+Brewfile.lock.json
