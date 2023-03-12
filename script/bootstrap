@@ -63,3 +63,8 @@ fi
 
 log_info "=> => install bundle."
 brew bundle --file $root_path/script/Brewfile
+
+log_info "=> => create an emacs symbolic link in applications"
+safe_make_symbol_link /opt/homebrew/opt/emacs-mac/Emacs.app /Applications/Emacs.app
+
+
