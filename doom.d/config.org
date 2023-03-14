@@ -793,6 +793,20 @@
 
    vertico는 =post-command-hook= 을 사용해서 증분 완성(incremental completion)을 수행한다. 영문 입력시 =post-command-hook= 이 잘 발동하지만 조합해서 입력하는 한글은 =post-command-hook= 이 호출되지 않는다. helm 동작 방법을 참고해 timer를 돌려서 해결했다.
 
+** atomic-chrome
+
+    #+begin_src elisp :tangle packages.el
+      (package! atomic-chrome)
+    #+end_src
+
+    #+begin_src elisp :exports both
+      (atomic-chrome-start-server)
+    #+end_src
+
+    웹브라우저 textarea를 emacs로 편집할 수 있게 해준다. [[https://chrome.google.com/webstore/detail/ghosttext/godiecgffnchndlihlpaajjcplehddca/related][GhostText 크롬 확장]]을 설치해야 한다. 크롬뿐만 아니라 거의 대부분의 웹브라우저를 다 지원한다. 웹브라우저 확장과 통신할 [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]] 패키지를 설치한다.
+
+    GhostText 홈페이지: [[https://ghosttext.fregante.com/][GhostText — Use your text editor in the browser - ghosttext.fregante.com]]
+
 * syntax
 
   #+begin_src elisp
