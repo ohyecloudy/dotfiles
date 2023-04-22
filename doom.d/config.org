@@ -51,8 +51,7 @@
 
   #+begin_src elisp
     (after! doom-themes
-      (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
-      )
+      (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc")))
   #+end_src
 
   디폴트값으로 돌림
@@ -117,9 +116,7 @@
        (when IS-MAC
          (set-frame-font "Consolas-14" nil t)
          (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
-         (setq-default line-spacing 3)
-         )
-       )
+         (setq-default line-spacing 3)))
    #+end_src
 
    =doom-font= 심볼에 폰트를 바인딩하면 한글 폰트만 D2Coding으로 변경하는 설정이 제대로 동작하지 않는다. 그래서 무식하게 세팅한다.
@@ -131,9 +128,7 @@
        (when IS-WINDOWS
          (set-frame-font "Consolas-11" nil t)
          (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
-         (setq-default line-spacing 3)
-         )
-       )
+         (setq-default line-spacing 3)))
    #+end_src
 
 * startup
@@ -220,9 +215,7 @@
          ;; 순서 없는 목록(unordered list)에서 bullet으로 들여쓰기를 할 때마다 +, -를 번갈아 사용한다
          org-list-demote-modify-bullet '(("+" . "-") ("-" . "+"))
          ;; #+STARTUP: fold 를 기본값으로 한다. org 파일을 열었을 때, overview를 가장 먼저 보고 싶기 때문
-         org-startup-folded t
-         )
-        )
+         org-startup-folded t))
     #+end_src
 
     ui 관련 설정들
@@ -230,9 +223,7 @@
     #+begin_src elisp
       (after! org
         (setq org-startup-indented nil
-              org-src-preserve-indentation nil
-              )
-        )
+              org-src-preserve-indentation nil))
     #+end_src
 
     emacs에서 org mode일 때, indentation을 적용하는 기능을 끈다. 이 기능을 끄면 emacs가 아닌 다른 에디터로 org 파일을 볼 때도 space로 indentation을 적용한 상태이다.
@@ -248,8 +239,7 @@
                  "|"
                  "DONE"))
               org-todo-keyword-faces
-              '(("STARTED" . +org-todo-active)))
-        )
+              '(("STARTED" . +org-todo-active))))
     #+end_src
 
     org 모듈에서 정의한 =+org-todo-active= 페이스를 사용하기에 org 모듈을 로드한 후에 실행해야 한다.
@@ -257,9 +247,7 @@
     #+begin_src elisp
       (after! org
         (setq org-blank-before-new-entry
-              '((heading . t) (plain-list-item . nil))
-              )
-        )
+              '((heading . t) (plain-list-item . nil))))
     #+end_src
 
     heading 사이에는 반드시 빈 줄이 들어가게 한다. plan list item 사이에는 무조건 제거한다.
@@ -268,9 +256,7 @@
       (after! evil-org
         (map! :map evil-org-mode-map
               :ni [C-return]   #'org-insert-heading-respect-content
-              :ni [C-S-return] #'org-insert-todo-heading-respect-content
-              )
-        )
+              :ni [C-S-return] #'org-insert-todo-heading-respect-content))
     #+end_src
 
     doom에서 =C-RET= 키는 아래에 추가 =C-S-RET= 키는 위로 추가로 바인딩을 변경한다. 새로 함수를 추가해서 해당 함수에 바인딩하는데, 해당 함수에 =org-blank-before-new-entry= 심볼 값이 반영이 안 되어 있어서 org mode의 디폴트 함수로 바인딩을 했다.
@@ -279,8 +265,7 @@
 
     #+begin_src elisp
       (after! org
-        (setq org-M-RET-may-split-line '((default . t)))
-        )
+        (setq org-M-RET-may-split-line '((default . t))))
     #+end_src
 
     =M-RET= 키로 라인을 분리할 수 있게 한다. org module에서 nil 값을 바인딩한 걸 디폴트 값으로 돌림.
@@ -292,7 +277,7 @@
                    (not (string= org-last-state org-state)))
           (org-clock-in)))
       (add-hook 'org-after-todo-state-change-hook
-                'my-org-clock-in-if-starting)
+                #'my-org-clock-in-if-starting)
       (advice-add 'org-clock-in
                   :after (lambda (&rest _)
                            (org-todo "STARTED")))
@@ -308,16 +293,14 @@
 
     #+begin_src elisp
       (after! org-clock
-        (setq org-clock-persist-query-resume nil)
-        )
+        (setq org-clock-persist-query-resume nil))
     #+end_src
 
     active clock이 있을 때, 물어보지 않고 재개한다. [[http://ohyecloudy.com/emacsian/2017/10/14/org-clock-persistence/][#orgmode emacs를 꺼도 org-clock은 굴러간다 - ohyecloudy.com]] 참고
 
     #+begin_src elisp
       (after! org-clock
-        (setq org-clock-idle-time 15)
-        )
+        (setq org-clock-idle-time 15))
     #+end_src
 
     15분을 자리비움 감지 기준으로 설정. [[http://ohyecloudy.com/emacsian/2017/11/04/org-dealing-with-idle-time/][#orgmode idle 시간 다루기 - ohyecloudy.com]] 참고
@@ -335,17 +318,14 @@
 
         ;; org-clock-report 기본 프로퍼티
         (setq org-clock-clocktable-default-properties
-              '(:maxlevel 2 :scope file :narrow 30! :properties ("effort") :link t))
-
-        )
+              '(:maxlevel 2 :scope file :narrow 30! :properties ("effort") :link t)))
     #+end_src
 
     추정 시간에 관련된 설정. 추정 시간 입력시 preset 리스트를 추가하고 =org-columns= 명령과 =org-clock-report= 명령에서 추정 시간을 볼 수 있게 세팅. [[http://ohyecloudy.com/emacsian/2017/09/09/org-effort-estimates/][#orgmode 추정(estimate) 작업 시간 기록 - ohyecloudy.com]] 참고
 
     #+begin_src elisp
       (after! org
-        (setq org-duration-format (quote h:mm))
-        )
+        (setq org-duration-format (quote h:mm)))
     #+end_src
 
     기간 포맷으로 시간:분 사용. 24시가 넘어갈 때, 1d로 표현하는 게 보기 싫어서 세팅. [[http://ohyecloudy.com/emacsian/2017/11/25/org-duration-format/][#orgmode 하루가 넘어가도 clock table 기간 필드에 시간과 분으로만 표시 - ohyecloudy.com]] 참고
@@ -355,16 +335,14 @@
         (defun org-columns-with-visual-line-mode ()
           (interactive)
           (org-columns)
-          (visual-line-mode))
-        )
+          (visual-line-mode)))
     #+end_src
 
     =org-columns= 모드를 켤 때, 자동 줄바꿈을 해주는 =visual-line-mode= 를 활성화한다. [[http://ohyecloudy.com/emacsian/2020/03/15/org-column-view-with-visual-line-mode/][#orgmode column view를 활성화하면 꺼지는 줄 바꿈(word wrap)을 켜는 방법 - ohyecloudy.com]] 참고
 
     #+begin_src elisp
       (after! org
-        (setq org-show-notification-handler (lambda (notification) (message notification)))
-        )
+        (setq org-show-notification-handler (lambda (notification) (message notification))))
     #+end_src
 
     쓴 시간이 effort를 넘었을 때, 나오는 desktop notification을 끈다. Task 'some tasks' should be finished by now. (1:00)
@@ -378,9 +356,7 @@
       (after! evil-org
         (map! :map evil-org-mode-map
               :ni "C-c C-RET"      #'my/org-open-at-point-other-window
-              :ni "C-c C-<return>" #'my/org-open-at-point-other-window
-              )
-        )
+              :ni "C-c C-<return>" #'my/org-open-at-point-other-window))
     #+end_src
 
     현재 윈도우에서 파일을 여는 게 기본 동작이다. 기본 동작을 유지하고 =C-c C-RET= 키로는 다른 윈도로 링크를 열게 한다.
@@ -396,9 +372,7 @@
       (after! org
         (setq org-tag-alist '((:startgroup . nil)
                               ("blogging" . ?b)
-                              (:endgroup . nil))
-              )
-        )
+                              (:endgroup . nil))))
     #+end_src
 
     미리 정의된 tag를 설정
@@ -447,8 +421,7 @@
 
     #+begin_src elisp
       (after! org
-        (define-key org-mode-map [remap org-cliplink] 'my-org-cliplink)
-        )
+        (define-key org-mode-map [remap org-cliplink] 'my-org-cliplink))
     #+end_src
 
     =org-clinklink= 함수에 바인딩된 키를 =my-org-cliplink= 로 바인딩한다
@@ -510,8 +483,7 @@
      #+begin_src elisp
        (org-babel-do-load-languages 'org-babel-load-languages
                                     (append org-babel-load-languages
-                                            '((http . t)))
-                                    )
+                                            '((http . t))))
      #+end_src
 
      [[https://github.com/zweifisch/ob-http][zweifisch/ob-http - github.com]]
@@ -556,8 +528,7 @@
         (interactive)
         (let ((link (org-element-property :raw-link (org-element-context))))
           (when link
-            (kill-new link))
-          ))
+            (kill-new link))))
     #+end_src
 
     커서가 위치한 org element에 link 프로퍼티가 있으면 클립보드로 복사하는 함수.
@@ -581,9 +552,7 @@
         doom-modeline-hud t
         ;; 경로가 아니라 파일 이름만 모드라인에 보여준다. 'auto는 경로를 출력한다
         ;; tramp로 원격 파일 편집시 느려지는 경험을 완화해준다고 한다
-        doom-modeline-buffer-file-name-style 'file-name
-        )
-       )
+        doom-modeline-buffer-file-name-style 'file-name))
    #+end_src
 
    doom-modeline 추가 설정
@@ -592,8 +561,7 @@
 
    #+begin_src elisp
      (after! magit
-       (setq magit-save-repository-buffers 'dontask)
-       )
+       (setq magit-save-repository-buffers 'dontask))
    #+end_src
 
    magit status를 실행하면 묻지 않고 수정한 버퍼를 저장한다
@@ -602,8 +570,7 @@
 
    #+begin_src elisp
      (after! projectile
-       (setq projectile-indexing-method 'hybrid)
-       )
+       (setq projectile-indexing-method 'hybrid))
    #+end_src
 
    =.git= 디렉터리를 같이 사용하는 인덱싱
@@ -615,9 +582,7 @@
        (setq helm-move-to-line-cycle-in-source t
              ;; 같은 명령 히스토리가 연속으로 쌓이지 않게 한다
              history-delete-duplicates t
-             history-length 10
-             )
-       )
+             history-length 10))
    #+end_src
 
    =helm-move-to-line-cycle-in-source= 변수를 세팅했기 때문에 다른 소스로 넘어가려면 =C-o= 키를 누르면 된다.
@@ -626,8 +591,7 @@
 
    #+begin_src elisp
      (after! company
-       (setq company-show-quick-access t)
-       )
+       (setq company-show-quick-access t))
    #+end_src
 
    =M-1=, =M-0= 까지 숫자로 빠르게 삽입할 수 있는데, 그 숫자를 옆에 출력하게 한다.
@@ -654,9 +618,7 @@
      (after! ob-mermaid
        (org-babel-do-load-languages 'org-babel-load-languages
                                     (append org-babel-load-languages
-                                            '((mermaid . t)))
-                                    )
-       )
+                                            '((mermaid . t)))))
    #+end_src
 
    org-babel 언어로 =mermaid= 를 추가해서 소스 코드 블럭 컴파일을 할 수 있게 한다.
@@ -690,8 +652,7 @@
 
    #+begin_src elisp
      (after! evil
-       (setq evil-complete-all-buffers nil)
-       )
+       (setq evil-complete-all-buffers nil))
    #+end_src
 
    현재 버퍼를 대상으로 완성(completion) 후보를 추린다. 기본값은 열려 있는 전체 버퍼 대상. =C-n=, =C-p= 키 바인딩에서 사용한다.
@@ -700,8 +661,7 @@
      (after! evil
        (add-hook 'evil-insert-state-exit-hook
                  (lambda ()
-                   (setq evil-input-method nil)))
-       )
+                   (setq evil-input-method nil))))
    #+end_src
 
    편집 모드를 나갈 때, 입력기(input method)를 초기화 시킨다. 편집 모드로 들어갈 때, 무조건 영문을 기본으로 해서 이전 편집 모드에서 한글을 입력하던 중이었는지 영문을 입력하던 중이었는지 생각할 필요가 없게 한다. 편집 모드로 들어갈 때, 이전 상태를 기억 못하거나 모드 라인(mode line)에 표시된 입력기 상태를 못 봐서 잘못 입력하는 실수를 줄이려고 통일한다.
@@ -716,16 +676,14 @@
 
    #+begin_src elisp
      (after! lsp-mode
-       (setq lsp-pwsh-code-formatting-preset "Allman")
-       )
+       (setq lsp-pwsh-code-formatting-preset "Allman"))
    #+end_src
 
    [[https://en.wikipedia.org/wiki/Indentation_style#Allman_style][Allman]] 스타일로 포맷팅한다.
 
    #+begin_src elisp
      (after! lsp-mode
-       (setq lsp-pwsh-code-formatting-pipeline-indentation-style "IncreaseIndentationForFirstPipeline")
-       )
+       (setq lsp-pwsh-code-formatting-pipeline-indentation-style "IncreaseIndentationForFirstPipeline"))
    #+end_src
 
    파이프라인 들여쓰기를 해서 더 보기 좋게 한다.
@@ -737,11 +695,7 @@
        (after! lsp-mode
          (setq lsp-csharp-omnisharp-roslyn-download-url
                (concat "https://github.com/omnisharp/omnisharp-roslyn/releases/latest/download/"
-                       "omnisharp-win-x64-net6.0.zip"
-                       )
-               )
-         )
-       )
+                       "omnisharp-win-x64-net6.0.zip"))))
    #+end_src
 
    windows에서는 =omnisharp-win-x64.zip= 파일을 다운로드 받고 있어서 직접 지정
@@ -859,8 +813,7 @@
        (load-file (expand-file-name "lisp/taskjuggler-setting.el" user-emacs-directory))
        (setq org-taskjuggler-reports-directory "~/taskjuggler")
        ;; 넉넉하게 잡아놔서 Error: Some tasks did not fit into the project time frame. 에러가 안 뜨게 한다
-       (setq org-taskjuggler-default-project-duration 999)
-       )
+       (setq org-taskjuggler-default-project-duration 999))
    #+end_src
 
    org 문서를 [[https://taskjuggler.org/][taskjuggler]]로 익스포트 해주는 패키지. 파일을 가져와서 조금 고쳤다. 현재는 사용하지 않아서 사용할 일이 생기면 활성화할 계획이다.
@@ -881,12 +834,10 @@
 
      (org-babel-do-load-languages 'org-babel-load-languages
                                   (append org-babel-load-languages
-                                          '((cs . t)))
-                                  )
+                                          '((cs . t))))
 
      (after! org
-       (add-to-list 'org-src-lang-modes '("cs" . "csharp"))
-       )
+       (add-to-list 'org-src-lang-modes '("cs" . "csharp")))
    #+end_src
 
    [[https://github.com/thomas-villagers/ob-csharp][ob-csharp]]에 [[https://github.com/dotnet-script/dotnet-script ][dotnet-script]]를 사용한 [[https://github.com/thomas-villagers/ob-csharp/pull/2][PR]]을 적용했다.
@@ -921,9 +872,7 @@
             :desc "thesaurus"        "t"     #'my/search-thesaurus
             :desc "elixir"           "x"     #'my/search-elixir
             :desc "flutter"          "f"     #'my/search-flutter
-            :desc "my blogs"         "b"     #'my/search-blogs
-            )
-           )
+            :desc "my blogs"         "b"     #'my/search-blogs))
    #+end_src
 
    검색 함수를 키에 바인딩함
@@ -941,8 +890,7 @@
            (:prefix-map ("S" . "custom search")
                         (:prefix-map ("m" . "source mine")
                          :desc "csharp" "c" #'my/source-mine-csharp
-                         :desc "elixir" "x" #'my/source-mine-elixir
-                         )))
+                         :desc "elixir" "x" #'my/source-mine-elixir)))
    #+end_src
 
    elixir 소스 광산을 검색하려면 =SPC S m x= 키를 누르면 된다.
@@ -1045,16 +993,14 @@
     (defun unevernotify ()
       (interactive)
       (while (re-search-forward "\u00a0" nil t)
-        (replace-match " "))
-      )
+        (replace-match " ")))
   #+end_src
 
 * windows coding system
 
   #+begin_src elisp
     (when IS-WINDOWS
-      (setq default-process-coding-system '(utf-8 . cp949))
-      )
+      (setq default-process-coding-system '(utf-8 . cp949)))
   #+end_src
 
   windows에서는 프로세스로 보내는 coding system을 cp949로 고정한다. =bashrc= 에서 =chcp.com 65001= 을 실행하게 해도 =rg.exe= 파일을 실행하는 프로세스에 =utf-8= 인코딩으로 보내면 동작하지 않는다. 정확한 원인은 찾지 못했다.
@@ -1066,8 +1012,7 @@
       (setq browse-url-chrome-program "run-chrome.bat")
       (setq browse-url-handlers
             '(("nexon.com" . browse-url-default-browser)
-              ("." . browse-url-chrome)))
-      )
+              ("." . browse-url-chrome))))
   #+end_src
 
   윈도우에서는 기본 브라우저를 =chrome= 이 아닌 다른 프로그램으로 설정할 때가 많아서 emacs에서 url로 열 때는 =chrome= 으로 고정. 이후 macOS에도 일괄 적용.
@@ -1084,8 +1029,7 @@
     ;; bash: cannot set terminal process group (-1): Inappropriate ioctl for device
     ;; bash: no job control in this shell
     (when IS-WINDOWS
-      (setq shell-command-switch "-lc")
-      )
+      (setq shell-command-switch "-lc"))
 
     ;;; shell
     (when IS-WINDOWS
@@ -1135,6 +1079,5 @@
               (forward-char 1)
             (indent-for-tab-command arg))))
 
-      (global-set-key [remap indent-for-tab-command] 'smart-tab-jump-out-or-indent)
-      )
+      (global-set-key [remap indent-for-tab-command] #'smart-tab-jump-out-or-indent))
   #+end_src
