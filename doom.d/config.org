@@ -867,7 +867,6 @@
             :desc "naver"            "n"     #'my/search-naver
             :desc "dict"             "d"     #'my/search-dict
             :desc "dotnet"           "D"     #'my/search-dotnet
-            :desc "core dict"        "c"     #'my/search-core-dictionary
             :desc "onelook"          "e"     #'my/search-onelook
             :desc "thesaurus"        "t"     #'my/search-thesaurus
             :desc "elixir"           "x"     #'my/search-elixir
