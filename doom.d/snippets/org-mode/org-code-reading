@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: code reading
+# key: <codereading
+# --
+
+* 배경(Context)
+
+* 문제(Problem)
+
+* 개요(Overview)
+
+* 구현 세부사항(Implementation details)
+
+* 테스트(Testing)
+
+* 관찰(Observations)
+
+* 관련 사항(Related)
+
+* 참고(References)
+
+* 저작권 안내(Copyright notice)
