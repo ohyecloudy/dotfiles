@@ -888,14 +888,12 @@
      (map! :leader
            (:prefix-map ("S" . "custom search")
                         (:prefix-map ("m" . "source mine")
-                         :desc "csharp" "c" #'my/source-mine-csharp
                          :desc "elixir" "x" #'my/source-mine-elixir)))
    #+end_src
 
    elixir 소스 광산을 검색하려면 =SPC S m x= 키를 누르면 된다.
 
    #+begin_example
-     machine source_mine login csharp password ~/source_mine/csharp
      machine source_mine login elixir password ~/source_mine/elixir
    #+end_example
 
