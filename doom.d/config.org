@@ -763,6 +763,32 @@
 
     GhostText 홈페이지: [[https://ghosttext.fregante.com/][GhostText — Use your text editor in the browser - ghosttext.fregante.com]]
 
+** org-ai
+
+   #+begin_src elisp :tangle packages.el
+     (package! org-ai)
+   #+end_src
+
+   #+begin_src elisp
+     (use-package! org-ai
+       :commands (org-ai-mode
+                  org-ai-global-mode)
+       :init
+       (add-hook 'org-mode-hook #'org-ai-mode) ; enable org-ai in org-mode
+       (org-ai-global-mode) ; installs global keybindings on C-c M-a
+       :config
+       (setq org-ai-default-chat-model "gpt-3.5-turbo")
+       (org-ai-install-yasnippets)) ; if you are using yasnippet and want `ai` snippets
+   #+end_src
+
+   OpenAI API key는 =~/.authinfo.gpg= 파일에 다음과 같은 형식으로 기록한다
+
+   #+begin_example
+     machine api.openai.com login org-ai password <your-api-key>
+   #+end_example
+
+   [[https://github.com/rksm/org-ai][rksm/org-ai - github.com]]
+
 * syntax
 
   #+begin_src elisp
