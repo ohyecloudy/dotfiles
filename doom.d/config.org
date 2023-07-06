@@ -377,6 +377,20 @@
 
     미리 정의된 tag를 설정
 
+    #+begin_src elisp
+      (setq org-element-use-cache nil)
+    #+end_src
+
+    #+begin_example
+       Please report this to Org mode mailing list (M-x org-submit-bug-report). Disable showing Disable logging
+      Warning (org-element-cache): org-element--cache: Org parser error in *org-ai-on-region*::2016. Resetting.
+       The error was: (error "Invalid search bound (wrong side of point)")
+       Backtrace:
+      nil
+    #+end_example
+
+    이런 에러가 간간히 발생해서 cache를 끈다.
+
 *** org-cliplink
 
     #+begin_src elisp
