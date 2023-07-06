@@ -589,18 +589,6 @@
 
    =.git= 디렉터리를 같이 사용하는 인덱싱
 
-** helm
-
-   #+begin_src elisp
-     (after! helm
-       (setq helm-move-to-line-cycle-in-source t
-             ;; 같은 명령 히스토리가 연속으로 쌓이지 않게 한다
-             history-delete-duplicates t
-             history-length 10))
-   #+end_src
-
-   =helm-move-to-line-cycle-in-source= 변수를 세팅했기 때문에 다른 소스로 넘어가려면 =C-o= 키를 누르면 된다.
-
 ** company
 
    #+begin_src elisp
