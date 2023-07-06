@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: org-ai-block
+# key: <ai
+# --
+#+begin_ai :temperature 1
+${1:[SYS]: ${2:You are a helpful assistant. Please write in Korean language.}
+
+}[ME]: $0
+#+end_ai
