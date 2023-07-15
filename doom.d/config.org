@@ -702,6 +702,18 @@
 
    windows에서는 =omnisharp-win-x64.zip= 파일을 다운로드 받고 있어서 직접 지정
 
+   #+begin_src elisp
+     (after! lsp-mode
+       (setq lsp-elixir-ls-version "v0.15.1")
+       (setq lsp-elixir-ls-download-url
+             (format "https://github.com/elixir-lsp/elixir-ls/releases/download/%s/elixir-ls-%s.zip"
+                     lsp-elixir-ls-version
+                     lsp-elixir-ls-version))
+       )
+   #+end_src
+
+   default [[https://github.com/elixir-lsp/elixir-ls][elixir-ls]] 버전이 낮아서 최신 버전을 지정
+
 ** consult
 
    #+begin_src elisp
