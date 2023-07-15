@@ -7,4 +7,9 @@ test -f ~/.bashrc && . ~/.bashrc
 if [[ "$OSTYPE" == "darwin"* ]]; then
     . /opt/homebrew/opt/asdf/libexec/asdf.sh
     . /opt/homebrew/opt/asdf/etc/bash_completion.d/asdf.bash
+
+    # pyenv
+    export PYENV_ROOT="$HOME/.pyenv"
+    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    command -v pyenv >/dev/null || eval "$(pyenv init -)"
 fi
