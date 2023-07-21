@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: org source translate(ko -> en)
+# key: <S
+# condition: t
+# --
+#+begin_src translate :src ko :dest en
+$0
+#+end_src
