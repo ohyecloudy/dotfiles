@@ -446,6 +446,11 @@
       (package! ox-gfm)
     #+end_src
 
+    #+begin_src elisp
+      (eval-after-load "org"
+        '(require 'ox-gfm nil t))
+    #+end_src
+
     =C-c C-e= 키로 =org-export-dispatch= 함수를 호출하면 Github Flavored Markdown으로 export할 수 있다
 
     [[https://github.com/larstvei/ox-gfm][larstvei/ox-gfm - github.com]]
