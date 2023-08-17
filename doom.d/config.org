@@ -316,8 +316,7 @@
         ;; org-set-effort 함수 실행 시 나오는 preset 리스트
         (setq org-global-properties
               '(("Effort_ALL" .
-                 "1:00 2:00 3:00 4:00 8:00 16:00 24:00 32:00 40:00 0:30")))
-        ;; hotkey 1    2    3    4    5    6     7     8     9     0
+                 "1h 2h 3h 4h 8h 16h 24h 32h 40h 30m")))
 
         ;; org-columns에서 effort를 볼 수 있게 추가
         (setq org-columns-default-format "%50ITEM(Task) %10Effort{:} %10CLOCKSUM")
