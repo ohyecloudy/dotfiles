@@ -857,16 +857,16 @@
 
 ** ox-taskjuggler
 
-   #+begin_src elisp :tangle no
-     (require 'my-ox-taskjuggler)
+   #+begin_src elisp
+     (require 'ox-taskjuggler)
      (progn
-       (load-file (expand-file-name "lisp/taskjuggler-setting.el" user-emacs-directory))
+       (load-file (expand-file-name "lisp/taskjuggler-setting.el" doom-user-dir))
        (setq org-taskjuggler-reports-directory "~/taskjuggler")
        ;; 넉넉하게 잡아놔서 Error: Some tasks did not fit into the project time frame. 에러가 안 뜨게 한다
        (setq org-taskjuggler-default-project-duration 999))
    #+end_src
 
-   org 문서를 [[https://taskjuggler.org/][taskjuggler]]로 익스포트 해주는 패키지. 파일을 가져와서 조금 고쳤다. 현재는 사용하지 않아서 사용할 일이 생기면 활성화할 계획이다.
+   [[https://taskjuggler.org/][taskjuggler]] 라이브러리를 exporter로 사용하는 [[https://orgmode.org/worg/exporters/taskjuggler/ox-taskjuggler.html][ox-taskjuggler]] 세팅
 
 ** gitlab
 
