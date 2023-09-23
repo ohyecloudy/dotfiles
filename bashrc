@@ -3,12 +3,12 @@
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-if [ "$MSYSTEM" == "MSYS" ] || [ "$MSYSTEM" == "MINGW"* ]; then
+if [[ "$MSYSTEM" == "MSYS" ]] || [[ "$MSYSTEM" == "MINGW"* ]]; then
     export PATH=/c/Users/ohyecloudy/bin:/mingw64/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:$ORIGINAL_PATH
     # ln 명령어가 full copy가 아닌 symbol link 생성으로 동작하게 한다.
     export MSYS=winsymlinks:nativestrict
     export ELIXIR_EDITOR="ec.bat +__LINE__ __FILE__"
-elif [ "$OSTYPE" == "darwin"* ]; then
+elif [[ "$OSTYPE" == "darwin"* ]]; then
     # /opt/homebrew/bin/brew shellenv
     export HOMEBREW_PREFIX="/opt/homebrew";
     export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
@@ -21,7 +21,7 @@ elif [ "$OSTYPE" == "darwin"* ]; then
     export ELIXIR_EDITOR="ec +__LINE__ __FILE__"
 fi
 
-if [ "$OS" == "Windows_NT" ]; then
+if [[ "$OS" == "Windows_NT" ]]; then
     # UTF-8
     chcp.com 65001 >/dev/null
 fi
