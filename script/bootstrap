@@ -45,6 +45,17 @@ safe_make_symbol_link $root_path/doom.d ~/.doom.d
 safe_make_symbol_link $root_path/bin ~/bin
 safe_make_symbol_link $root_path/bin.local ~/bin.local
 
+log_info "=> install Oh My Zsh"
+
+if [ -z "${ZSH}" ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    # zsh installer makes default .zshrc
+    rm ~/.zshrc
+    safe_make_symbol_link $root_path/zshrc ~/.zshrc
+else
+    log_info "=> => skip: already exist"
+fi
+
 log_info "=> set macOS defaults "
 
 # finder에서 숨김 파일을 보게 한다
