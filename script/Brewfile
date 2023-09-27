@@ -26,6 +26,7 @@ brew "railwaycat/emacsmacport/emacs-mac@28",
 
 cask "alt-tab"
 cask "iterm2"
+cask "rectangle"
 
 mas "Amphetamine", id: 937984704
 mas "Tailscale", id: 1475387142
