@@ -74,10 +74,10 @@
   버퍼 파일 이름을 타이틀바로 표시한다
 
   #+begin_src elisp
-    (setq display-line-numbers-type 'relative)
+    (setq display-line-numbers-type nil)
   #+end_src
 
-  evil 활용도를 높이기위해 상대 라인 넘버를 출력함
+  속도가 느려져서 line number 표시를 안 함
 
 * hangul
 
