@@ -63,7 +63,7 @@ else
     log_info "=> => skip: already exist"
 fi
 
-if [ "$machine" == "Mac" ]; do
+if [ "$machine" == "Mac" ]; then
     log_info "=> set macOS defaults "
 
     # finder에서 숨김 파일을 보게 한다
