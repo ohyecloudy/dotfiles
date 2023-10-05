@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NO_COLOR='\033[0m'
+CLEAR_LINE='\r\033[K'
+
+function log_info { printf "${GREEN}[INFO] $1${NO_COLOR}\n"; }
+function log_error { printf "${RED}[ERRO] $1${NO_COLOR}\n"; }
+
+function safe_make_symbol_link {
+    source=$1
+    target=$2
+
+    log_info "=> => make a symbol link: $source -> $target"
+
+    if ! [ -e "$target" ]; then
+        log_info "=> => => link"
+        ln -s $source $target
+    else
+        log_error "=> => => skip: already exist $2"
+    fi
+}
