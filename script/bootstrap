@@ -35,7 +35,19 @@ safe_make_symbol_link $root_path/bin.local ~/bin.local
 
 if [ "$machine" == "Linux" ]; then
     sudo apt update
-    sudo apt install -y zsh
+    # simulate enter press
+    #
+    # Configuration file '/etc/zsh/zprofile'
+    #  ==> File on system created by you or by a script.
+    #  ==> File also in package provided by package maintainer.
+    #    What would you like to do about it ?  Your options are:
+    #     Y or I  : install the package maintainer's version
+    #     N or O  : keep your currently-installed version
+    #       D     : show the differences between the versions
+    #       Z     : start a shell to examine the situation
+    #  The default action is to keep your current version.
+    # *** zprofile (Y/I/N/O/D/Z) [default=N] ?
+    echo | sudo apt install -y zsh
 fi
 
 log_info "=> install Oh My Zsh"
