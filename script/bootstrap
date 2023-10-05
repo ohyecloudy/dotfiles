@@ -13,8 +13,16 @@ root_path=${script_path%/*}
 
 source $root_path/script/util
 
-log_info "=> make symbolic links"
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    *)          echo "NOT SUPPORTED:${unameOut}";exit 1
+esac
 
+log_info "=> machine ${machine}"
+
+log_info "=> make symbolic links"
 safe_make_symbol_link $root_path/git/gitignore_global ~/.gitignore_global
 safe_make_symbol_link $root_path/git/gitconfig ~/.gitconfig
 safe_make_symbol_link $root_path/vim/vimrc ~/.vimrc
@@ -24,6 +32,11 @@ safe_make_symbol_link $root_path/bashrc ~/.bashrc
 safe_make_symbol_link $root_path/doom.d ~/.doom.d
 safe_make_symbol_link $root_path/bin ~/bin
 safe_make_symbol_link $root_path/bin.local ~/bin.local
+
+if [ "$machine" == "Linux" ]; do
+    sudo apt update
+    sudo apt install -y zsh
+fi
 
 log_info "=> install Oh My Zsh"
 
@@ -38,24 +51,26 @@ else
     log_info "=> => skip: already exist"
 fi
 
-log_info "=> set macOS defaults "
+if [ "$machine" == "Mac" ]; do
+    log_info "=> set macOS defaults "
 
-# finder에서 숨김 파일을 보게 한다
-defaults write com.apple.finder AppleShowAllFiles -bool true;killall Finder
-# 키 반복 입력 활성화
-defaults write -g ApplePressAndHoldEnabled -bool false
+    # finder에서 숨김 파일을 보게 한다
+    defaults write com.apple.finder AppleShowAllFiles -bool true;killall Finder
+    # 키 반복 입력 활성화
+    defaults write -g ApplePressAndHoldEnabled -bool false
 
-log_info "=> homebrew"
-if ! command -v brew > /dev/null; then
-    log_info "=> => homebrew: installing..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-else
-    log_info "=> => homebrew: already installed."
+    log_info "=> homebrew"
+    if ! command -v brew > /dev/null; then
+        log_info "=> => homebrew: installing..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+        log_info "=> => homebrew: already installed."
+    fi
+
+    log_info "=> => install bundle."
+    brew bundle --file $root_path/script/Brewfile
+
+    log_info "=> => create an emacs symbolic link in applications"
+    safe_make_symbol_link /opt/homebrew/opt/emacs-mac@28/Emacs.app /Applications/Emacs.app
 fi
-
-log_info "=> => install bundle."
-brew bundle --file $root_path/script/Brewfile
-
-log_info "=> => create an emacs symbolic link in applications"
-safe_make_symbol_link /opt/homebrew/opt/emacs-mac@28/Emacs.app /Applications/Emacs.app
