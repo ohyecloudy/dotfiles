@@ -33,7 +33,7 @@ safe_make_symbol_link $root_path/doom.d ~/.doom.d
 safe_make_symbol_link $root_path/bin ~/bin
 safe_make_symbol_link $root_path/bin.local ~/bin.local
 
-if [ "$machine" == "Linux" ]; do
+if [ "$machine" == "Linux" ]; then
     sudo apt update
     sudo apt install -y zsh
 fi
