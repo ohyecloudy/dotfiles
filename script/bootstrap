@@ -35,6 +35,7 @@ safe_make_symbol_link $root_path/bin.local ~/bin.local
 
 if [ "$machine" == "Linux" ]; then
     sudo apt update
+    export DEBIAN_FRONTEND=noninteractive
     sudo apt install -y zsh
 fi
 
