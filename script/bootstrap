@@ -23,8 +23,6 @@ esac
 log_info "=> machine ${machine}"
 
 log_info "=> make symbolic links"
-safe_make_symbol_link $root_path/git/gitignore_global ~/.gitignore_global
-safe_make_symbol_link $root_path/git/gitconfig ~/.gitconfig
 safe_make_symbol_link $root_path/vim/vimrc ~/.vimrc
 safe_make_symbol_link $root_path/vim/ideavimrc ~/.ideavimrc
 safe_make_symbol_link $root_path/bash_profile ~/.bash_profile
@@ -32,6 +30,9 @@ safe_make_symbol_link $root_path/bashrc ~/.bashrc
 safe_make_symbol_link $root_path/doom.d ~/.doom.d
 safe_make_symbol_link $root_path/bin ~/bin
 safe_make_symbol_link $root_path/bin.local ~/bin.local
+
+make_symbol_link_with_backup $root_path/git/gitconfig ~/.gitconfig
+make_symbol_link_with_backup $root_path/git/gitignore_global ~/.gitignore_global
 
 if [ "$machine" == "Linux" ]; then
     sudo apt update
