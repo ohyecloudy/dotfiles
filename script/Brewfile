@@ -21,7 +21,7 @@ brew "mas"
 brew "node"
 brew "ripgrep"
 brew "yt-dlp"
-brew "railwaycat/emacsmacport/emacs-mac@28",
+brew "railwaycat/emacsmacport/emacs-mac",
      args: ["with-modules", "with-native-compilation", "with-mac-metal"]
 
 cask "alt-tab"
