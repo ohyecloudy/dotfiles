@@ -30,5 +30,5 @@ cask "rectangle"
 
 mas "Amphetamine", id: 937984704
 mas "Tailscale", id: 1475387142
-mas "Amazon Kindle", id: 302584613
+mas "Kindle Classic", id: 405399194
 mas "Xcode", id: 497799835
