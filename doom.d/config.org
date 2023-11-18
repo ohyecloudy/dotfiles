@@ -820,6 +820,7 @@
 
    #+begin_src elisp
      (require 'ox-jekyll-lite)
+     (setq org-jekyll-lite-include-yaml-front-matter nil)
    #+end_src
 
    org 파일을 jekyll markdown으로 export하는 라이브러리
