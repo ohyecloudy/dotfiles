@@ -811,6 +811,21 @@
 
    [[https://github.com/rksm/org-ai][rksm/org-ai - github.com]]
 
+** ox-jekyll-lite
+
+   #+begin_src elisp :tangle packages.el
+     (package! example
+       :recipe (:host github :repo "ohyecloudy/ox-jekyll-lite"))
+   #+end_src
+
+   #+begin_src elisp
+     (require 'ox-jekyll-lite)
+   #+end_src
+
+   org 파일을 jekyll markdown으로 export하는 라이브러리
+
+   참고: [[https://www.pwills.com/post/2019/09/24/blogging-in-org.html][Blogging in Org Mode - pwills.com - pwills.com]]
+
 * syntax
 
   #+begin_src elisp
