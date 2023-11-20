@@ -79,6 +79,12 @@
 
   속도가 느려져서 line number 표시를 안 함
 
+  #+begin_src elisp
+    (add-hook 'doom-after-init-hook (lambda () (tool-bar-mode 1) (tool-bar-mode 0)))
+  #+end_src
+
+  macOS Sonoma에서 타이틀바가 너무 크다. [[https://github.com/doomemacs/doomemacs/issues/7532][Large title bar on macOS Sonoma when using railwaycat/homebrew-emacsmacport and Doom Emacs #7532]] 글을 보고 workaround 적용
+
 * hangul
 
   #+begin_src elisp
