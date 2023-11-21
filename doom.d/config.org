@@ -720,7 +720,7 @@
 
    #+begin_src elisp
      (after! lsp-mode
-       (setq lsp-elixir-ls-version "v0.15.1")
+       (setq lsp-elixir-ls-version "v0.17.10")
        (setq lsp-elixir-ls-download-url
              (format "https://github.com/elixir-lsp/elixir-ls/releases/download/%s/elixir-ls-%s.zip"
                      lsp-elixir-ls-version
