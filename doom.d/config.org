@@ -573,6 +573,15 @@
 
     org mode에서 =SPC m l y= 키에 바인딩.
 
+*** org export
+
+    #+begin_src elisp
+      (after! org
+        (setq org-export-with-sub-superscripts nil))
+    #+end_src
+
+    [[http://ohyecloudy.com/emacsian/2019/01/12/org-export-with-sub-superscripts/][#orgmode 익스포트 할 때, underscore가 subscripts로 바뀌는 걸 억제 - ohyecloudy.com]]
+
 ** doom-modeline
 
    #+begin_src elisp
