@@ -2,6 +2,6 @@
 # name: org source
 # key: <S
 # --
-#+begin_src $1
+#+begin_src $1 :exports both
 $0
 #+end_src
