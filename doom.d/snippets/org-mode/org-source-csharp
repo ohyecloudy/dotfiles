@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: org source csharp
-# key: <S
-# condition: t
-# --
-#+begin_src csharp
-$0
-#+end_src
