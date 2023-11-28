@@ -106,6 +106,8 @@ export PAGER=""
 #     instead of interpreting them.
 export LESS="-F -X -R"
 
+# Podman is the new Docker
+command -v podman >/dev/null && alias docker=podman
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
