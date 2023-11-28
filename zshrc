@@ -91,6 +91,22 @@ export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 command -v pyenv >/dev/null && eval "$(pyenv init -)"
 
+# dont use zsh default PAGER, LESS options
+# export PAGER='less'
+# export LESS='-R'
+
+# Don't use less as PAGER
+export PAGER=""
+
+# -F: Causes less to exit if the entire file can be displayed on one screen.
+# -X: Disables screen clearing between screens of output, which removes the
+#     screen clearing message usually displayed.
+# -R: Displays raw control characters (like ANSI color escape sequences) in
+#     their original form, allowing them to be displayed as part of the text
+#     instead of interpreting them.
+export LESS="-F -X -R"
+
+
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
