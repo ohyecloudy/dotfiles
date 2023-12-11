@@ -142,6 +142,10 @@ if [ "$INSIDE_EMACS" = "vterm" ]; then
         done
         vterm_printf "51;E$vterm_elisp"
     }
+
+    find_file() {
+        vterm_cmd find-file "$(realpath "${@:-.}")"
+    }
 fi
 ################################################################################
 
