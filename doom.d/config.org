@@ -428,17 +428,20 @@
 
       (defun my-org-cliplink--cleansing-site-title (title)
         (let ((result title)
-              (target-site-titles '(" - 위키백과, 우리 모두의 백과사전"
-                                    " - Wikipedia"
-                                    " - PUBLY"
-                                    " - YES24"
-                                    "알라딘: "
-                                    " : 클리앙"
-                                    " - YouTube")))
-          (dolist (elem target-site-titles)
-            (if (string-match elem result)
-                (setq result (string-replace elem "" result))
-              result))
+              (from-to-titles '((" - 위키백과, 우리 모두의 백과사전" "")
+                                (" - Wikipedia" "")
+                                (" - PUBLY" "")
+                                (" - YES24" "")
+                                ("알라딘: " "")
+                                (" : 클리앙" "")
+                                (" - YouTube" "")
+                                ("|" "-"))))
+          (dolist (elem from-to-titles)
+            (let ((from (car elem))
+                  (to (cadr elem)))
+              (if (string-match from result)
+                  (setq result (string-replace from to result))
+                result)))
           result))
     #+end_src
 
