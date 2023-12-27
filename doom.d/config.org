@@ -329,7 +329,7 @@
 
         ;; org-clock-report 기본 프로퍼티
         (setq org-clock-clocktable-default-properties
-              '(:maxlevel 2 :scope file :narrow 30! :properties ("effort") :link t)))
+              '(:maxlevel 2 :scope file :narrow 30! :properties ("effort"))))
     #+end_src
 
     추정 시간에 관련된 설정. 추정 시간 입력시 preset 리스트를 추가하고 =org-columns= 명령과 =org-clock-report= 명령에서 추정 시간을 볼 수 있게 세팅. [[http://ohyecloudy.com/emacsian/2017/09/09/org-effort-estimates/][#orgmode 추정(estimate) 작업 시간 기록 - ohyecloudy.com]] 참고
