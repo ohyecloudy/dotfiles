@@ -544,12 +544,14 @@
 *** org-cv
 
     #+begin_src elisp :tangle packages.el
-      (package! ox-moderncv
-        :recipe (:host github :repo "ohyecloudy/org-cv"))
+      (when IS-MAC
+        (package! ox-moderncv
+          :recipe (:host github :repo "ohyecloudy/org-cv")))
     #+end_src
 
     #+begin_src elisp
-      (require 'ox-moderncv)
+      (when IS-MAC
+        (require 'ox-moderncv))
     #+end_src
 
     org 문서를 moderncv로 export하는 패키지를 설치한다.
@@ -792,11 +794,13 @@
 ** atomic-chrome
 
     #+begin_src elisp :tangle packages.el
-      (package! atomic-chrome)
+      (when IS-MAC
+        (package! atomic-chrome))
     #+end_src
 
     #+begin_src elisp :exports both
-      (atomic-chrome-start-server)
+      (when IS-MAC
+        (atomic-chrome-start-server))
     #+end_src
 
     웹브라우저 textarea를 emacs로 편집할 수 있게 해준다. [[https://chrome.google.com/webstore/detail/ghosttext/godiecgffnchndlihlpaajjcplehddca/related][GhostText 크롬 확장]]을 설치해야 한다. 크롬뿐만 아니라 거의 대부분의 웹브라우저를 다 지원한다. 웹브라우저 확장과 통신할 [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]] 패키지를 설치한다.
@@ -806,19 +810,22 @@
 ** org-ai
 
    #+begin_src elisp :tangle packages.el
-     (package! org-ai)
+     (when IS-MAC
+       (package! org-ai))
    #+end_src
 
    #+begin_src elisp
-     (use-package! org-ai
-       :commands (org-ai-mode
-                  org-ai-global-mode)
-       :init
-       (add-hook 'org-mode-hook #'org-ai-mode) ; enable org-ai in org-mode
-       (org-ai-global-mode) ; installs global keybindings on C-c M-a
-       :config
-       (setq org-ai-default-chat-model "gpt-3.5-turbo")
-       (org-ai-install-yasnippets)) ; if you are using yasnippet and want `ai` snippets
+     (when IS-MAC
+       (use-package! org-ai
+         :commands (org-ai-mode
+                    org-ai-global-mode)
+         :init
+         (add-hook 'org-mode-hook #'org-ai-mode) ; enable org-ai in org-mode
+         (org-ai-global-mode) ; installs global keybindings on C-c M-a
+         :config
+         (setq org-ai-default-chat-model "gpt-3.5-turbo")
+         (org-ai-install-yasnippets)) ; if you are using yasnippet and want `ai` snippets
+       )
    #+end_src
 
    OpenAI API key는 =~/.authinfo.gpg= 파일에 다음과 같은 형식으로 기록한다
@@ -832,13 +839,17 @@
 ** ox-jekyll-lite
 
    #+begin_src elisp :tangle packages.el
-     (package! example
-       :recipe (:host github :repo "ohyecloudy/ox-jekyll-lite"))
+     (when IS-MAC
+       (package! example
+         :recipe (:host github :repo "ohyecloudy/ox-jekyll-lite"))
+       )
    #+end_src
 
    #+begin_src elisp
-     (require 'ox-jekyll-lite)
-     (setq org-jekyll-lite-include-yaml-front-matter nil)
+     (when IS-MAC
+       (require 'ox-jekyll-lite)
+       (setq org-jekyll-lite-include-yaml-front-matter nil))
+
    #+end_src
 
    org 파일을 jekyll markdown으로 export하는 라이브러리
