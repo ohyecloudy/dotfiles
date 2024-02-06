@@ -29,6 +29,15 @@
 	stsh = stash --keep-index
 	staash = stash --include-untracked
 	p4 = "!python.exe 'c:\\git-sdk-64\\mingw64\\libexec\\git-core\\git-p4'"
+	# between tags
+	bt = "!f() { \
+	    end=$1; \
+		delta=${2:-1}; \
+		start=$((end-delta)); \
+		author=$(git config --get user.email); \
+	    set -x; \
+		git log dev-$start..dev-$end --author=$author; \
+	    }; f"
 [pull]
 	rebase = true
 [push]
