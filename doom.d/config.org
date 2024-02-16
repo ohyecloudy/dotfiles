@@ -875,23 +875,11 @@
                    ("C-<tab>" . 'copilot-accept-completion-by-word)))
    #+end_src
 
-   evil mode에서 TAB 키바인딩이 잘 동작을 안 할수도 있다고 해서 홈페이지 가이드에 따라 세팅
+   copilot에 elixir 가 없어서 추가
 
    #+begin_src elisp
-     (after! (evil copilot)
-       (add-to-list 'copilot-major-mode-alist '("elixir" . "elixir"))
-
-       ;; Define the custom function that either accepts the completion or does the default behavior
-       (defun my/copilot-tab-or-default ()
-         (interactive)
-         (if (and (bound-and-true-p copilot-mode)
-                  ;; Add any other conditions to check for active copilot suggestions if necessary
-                  )
-             (copilot-accept-completion)
-           (evil-insert 1))) ; Default action to insert a tab. Adjust as needed.
-
-       ;; Bind the custom function to <tab> in Evil's insert state
-       (evil-define-key 'insert 'global (kbd "<tab>") 'my/copilot-tab-or-default))
+     (after! copilot
+       (add-to-list 'copilot-major-mode-alist '("elixir" . "elixir")))
    #+end_src
 
 * syntax
