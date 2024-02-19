@@ -861,25 +861,28 @@
    [[https://github.com/copilot-emacs/copilot.el][copilot-emacs/copilot.el - github.com]]
 
    #+begin_src elisp :tangle packages.el
-     (package! copilot :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist")))
+     (when IS-MAC
+       (package! copilot :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist"))))
    #+end_src
 
    #+begin_src elisp
      ;; accept completion from copilot and fallback to company
-     (use-package! copilot
-       :hook (prog-mode . copilot-mode)
-       :bind (:map copilot-completion-map
-                   ("<tab>" . 'copilot-accept-completion)
-                   ("TAB" . 'copilot-accept-completion)
-                   ("C-TAB" . 'copilot-accept-completion-by-word)
-                   ("C-<tab>" . 'copilot-accept-completion-by-word)))
+     (when IS-MAC
+       (use-package! copilot
+         :hook (prog-mode . copilot-mode)
+         :bind (:map copilot-completion-map
+                     ("<tab>" . 'copilot-accept-completion)
+                     ("TAB" . 'copilot-accept-completion)
+                     ("C-TAB" . 'copilot-accept-completion-by-word)
+                     ("C-<tab>" . 'copilot-accept-completion-by-word))))
    #+end_src
 
    copilot에 elixir 가 없어서 추가
 
    #+begin_src elisp
-     (after! copilot
-       (add-to-list 'copilot-major-mode-alist '("elixir" . "elixir")))
+     (when IS-MAC
+       (after! copilot
+         (add-to-list 'copilot-major-mode-alist '("elixir" . "elixir"))))
    #+end_src
 
 * syntax
