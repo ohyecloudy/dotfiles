@@ -865,6 +865,8 @@
        (package! copilot :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist"))))
    #+end_src
 
+   단축키를 설정하고 copilot에서 indent 잘 추론해서 설정이 안 되어 있지만 그냥 warning을 무시함
+
    #+begin_src elisp
      ;; accept completion from copilot and fallback to company
      (when IS-MAC
@@ -874,7 +876,9 @@
                      ("<tab>" . 'copilot-accept-completion)
                      ("TAB" . 'copilot-accept-completion)
                      ("C-TAB" . 'copilot-accept-completion-by-word)
-                     ("C-<tab>" . 'copilot-accept-completion-by-word))))
+                     ("C-<tab>" . 'copilot-accept-completion-by-word))
+         :config
+         (setq copilot-indent-offset-warning-disable t)))
    #+end_src
 
    copilot에 elixir 가 없어서 추가
