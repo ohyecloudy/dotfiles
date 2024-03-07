@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: org source cpp runnable
+# key: <S
+# condition: t
+# --
+#+begin_src cpp :includes '("<algorithm>" "<vector>" "<iostream>" "<iterator>" "<sstream>" "<string>" "<deque>" "<queue>" "<stack>" "<map>") :flags "-std=c++17"
+$0
+#+end_src
