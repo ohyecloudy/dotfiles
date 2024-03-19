@@ -122,7 +122,7 @@
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        (csharp +dotnet +lsp) ; unity, .NET, and mono shenanigans
-       ;;data              ; config/data formats
+       data                ; config/data formats
        (dart +flutter +lsp) ; paint ui and not much else
        ;;dhall
        (elixir +lsp)       ; erlang done right
