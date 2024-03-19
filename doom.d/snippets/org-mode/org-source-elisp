@@ -3,6 +3,6 @@
 # key: <S
 # condition: t
 # --
-#+begin_src elisp
+#+begin_src elisp :lexical t
 $0
 #+end_src
