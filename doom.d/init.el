@@ -52,6 +52,21 @@
        workspaces        ; tab emulation, persistence & separate workspaces
        ;;zen               ; distraction-free coding or writing
 
+       :editor
+       (evil +everywhere); come to the dark side, we have cookies
+       ;; org-roam-node-insert 에서 발생하는 오류 때문에 주석 처리
+       ;;file-templates    ; auto-snippets for empty files
+       fold              ; (nigh) universal code folding
+       (format +onsave)  ; automated prettiness
+       ;;god               ; run Emacs commands without modifier keys
+       ;;lispy             ; vim for lisp, for people who don't like vim
+       ;;multiple-cursors  ; editing in many places at once
+       ;;objed             ; text object editing for the innocent
+       ;;parinfer          ; turn lisp into python, sort of
+       ;;rotate-text       ; cycle region at point between text candidates
+       snippets          ; my elves. They type so I don't have to
+       ;;word-wrap         ; soft wrapping with language-aware indent
+
        :emacs
        (dired +icons)    ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
@@ -177,23 +192,4 @@
 
        :config
        literate
-       (default +bindings +smartparens)
-
-       :editor
-       ;; org-roam-node-insert 에서 발생하는 오류 때문에 주석 처리
-       ;;file-templates    ; auto-snippets for empty files
-       fold              ; (nigh) universal code folding
-       (format +onsave)  ; automated prettiness
-       ;;god               ; run Emacs commands without modifier keys
-       ;;lispy             ; vim for lisp, for people who don't like vim
-       ;;multiple-cursors  ; editing in many places at once
-       ;;objed             ; text object editing for the innocent
-       ;;parinfer          ; turn lisp into python, sort of
-       ;;rotate-text       ; cycle region at point between text candidates
-       snippets            ; my elves. They type so I don't have to
-       ;;word-wrap         ; soft wrapping with language-aware indent
-       ;; windows 29 버전에서 evil keybinding이 안 잡히는 문제가 발생
-       ;; https://github.com/doomemacs/doomemacs/issues/6813 와 같은 현상이나 해결되지 않음
-       ;; evil 모듈을 가장 늦게 정의하면 해결됨
-       (evil +everywhere)  ; come to the dark side, we have cookies
-       )
+       (default +bindings +smartparens))
