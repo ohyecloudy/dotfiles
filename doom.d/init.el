@@ -53,7 +53,9 @@
        ;;zen               ; distraction-free coding or writing
 
        :editor
-       (evil +everywhere); come to the dark side, we have cookies
+       ;; Windows에서 evil binding이 설정 안 되는 문제가 있어서 제일 마지막으로 정의를 옮김
+       ;; macOS에서는 이렇게 하면 evil binding 설정이 안 돼서 Windows일때만 선택적으로 적용
+       (:unless IS-WINDOWS (evil +everywhere)) ; come to the dark side, we have cookies
        ;; org-roam-node-insert 에서 발생하는 오류 때문에 주석 처리
        ;;file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
@@ -192,4 +194,10 @@
 
        :config
        literate
-       (default +bindings +smartparens))
+       (default +bindings +smartparens)
+
+       ;; Windows에서 evil binding이 설정 안 되는 문제가 있어서 제일 마지막으로 정의를 옮김
+       ;; macOS에서는 이렇게 하면 evil binding 설정이 안 돼서 Windows일때만 선택적으로 적용
+       :editor
+       (:if IS-WINDOWS (evil +everywhere)) ; come to the dark side, we have cookies
+       )
