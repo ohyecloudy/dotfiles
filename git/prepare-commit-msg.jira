@@ -1,0 +1,7 @@
+#!/bin/sh
+
+branchname=`git rev-parse --abbrev-ref HEAD`
+# Extract jira-1234 from the branch name, such as jira-1234-5blahblah.
+# Then change it to upcase, like JIRA-1234.
+issue=`echo $branchname | sed -E 's/(^[^-]+-[[:digit:]]+).*/\1/' | awk '{print toupper($0)}'`
+sed -i "s/\${issue}/$issue/" "$1"
