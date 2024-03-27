@@ -1,7 +1,15 @@
+;;; my-build-link-section.el --- Collect weblinks from org documents to create link -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2024 Jongbin Oh
+
+;; Author: Jongbin Oh <ohyecloudy@gmail.com>
+
+(require 'my-org-cliplink)
+
 (defun my/build-link-section ()
   (interactive)
   (let ((links (sort
-                (delete-dups (build--extract-urls (org-element-parse-buffer)))
+                (delete-dups (my/build-link-section--extract-urls (org-element-parse-buffer)))
                 'string<)))
     (org-insert-heading-after-current)
     (insert "링크")
@@ -12,7 +20,7 @@
                        (let* ((url (url-encode-url elt))
                               (title (or (org-cliplink-retrieve-title-synchronously url)
                                          "nil"))
-                              (link-elt (my-org-link-transformer url title)))
+                              (link-elt (my/org-cliplink-link-transformer url title)))
                          ;; 첫번째 요소는 직접 정렬되지 않은 목록 아이템을 넣어준다
                          (if (= idx 0)
                              (progn
@@ -26,7 +34,7 @@
                              (org-return t)))))
                      links)))
 
-(defun build--extract-urls (org-elements)
+(defun my/build-link-section--extract-urls (org-elements)
   ;; link 타입 org element만 map
   (org-element-map org-elements 'link
     (lambda (link)
@@ -38,4 +46,5 @@
             ;; "https://...", "http://..." 같은 전체 주소
             path)))))
 
-(provide 'build-link-section)
+(provide 'my-build-link-section)
+;;; my-build-link-section.el ends here

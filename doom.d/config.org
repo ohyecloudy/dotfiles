@@ -863,10 +863,10 @@
 
   =c44bc81a05= commit id에서 =9d4d5b756a= commit id로 업데이트한 이후로 =(add-load-path! "lisp")= 가 동작하지 않는다. =load-path= 변수를 확인해본 결과 =.doom.d= 디렉터리가 아니라 =.emacs.d= 디렉터리를 기준으로 =lisp= 디렉터리가 =load-path= 로 추가된 걸 확인했다. 그래서 =doom-user-dir= 을 기준으로 한 load path를 계산해 명시적으로 할당한다.
 
-** build-link-section
+** my-build-link-section
 
    #+begin_src elisp
-     (require 'build-link-section)
+     (require 'my-build-link-section)
    #+end_src
 
    =M-x my/build-link-section= 함수로 본문에 있는 링크를 수집해서 링크 org heading을 만들어준다.
