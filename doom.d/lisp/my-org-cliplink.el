@@ -11,9 +11,9 @@
   (interactive)
   (org-cliplink-insert-transformed-title
    (org-cliplink-clipboard-content)     ;take the URL from the CLIPBOARD
-   #'my/org-cliplink--link-transformer))
+   #'my/org-cliplink-link-transformer))
 
-(defun my/org-cliplink--link-transformer (url title)
+(defun my/org-cliplink-link-transformer (url title)
   (let* ((parsed-url (url-generic-parse-url url)) ;parse the url
          (host-url (replace-regexp-in-string "^www\\." "" (url-host parsed-url)))
          (clean-title
