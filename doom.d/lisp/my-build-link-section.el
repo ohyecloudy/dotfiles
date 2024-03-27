@@ -6,33 +6,37 @@
 
 (require 'my-org-cliplink)
 
-(defun my/build-link-section ()
+(defun my/build-link-section (&optional link-inserter-func)
   (interactive)
   (let ((links (sort
                 (delete-dups (my/build-link-section--extract-urls (org-element-parse-buffer)))
-                'string<)))
-    (org-insert-heading-after-current)
-    (insert "링크")
-    (org-return t)
-    (org-return t)
-    (seq-map-indexed (lambda (elt idx)
-                       (message (format "processing - %s" elt))
-                       (let* ((url (url-encode-url elt))
-                              (title (or (org-cliplink-retrieve-title-synchronously url)
-                                         "nil"))
-                              (link-elt (my/org-cliplink-link-transformer url title)))
-                         ;; 첫번째 요소는 직접 정렬되지 않은 목록 아이템을 넣어준다
-                         (if (= idx 0)
-                             (progn
-                               (insert (format "- %s" link-elt))
-                               (org-return t))
-                           ;; 두번째 요소 부터는 org-insert-item 함수를 호출해
-                           ;; 이전 목록 아이템을 참고해 자동으로 넣는다
+                'string<))
+        (link-inserter-func (or link-inserter-func #'my/build-link-section--default-inserter)))
+    (funcall link-inserter-func links)))
+
+(defun my/build-link-section--default-inserter (links)
+  (org-insert-heading-after-current)
+  (insert "링크")
+  (org-return t)
+  (org-return t)
+  (seq-map-indexed (lambda (elt idx)
+                     (message (format "processing - %s" elt))
+                     (let* ((url (url-encode-url elt))
+                            (title (or (org-cliplink-retrieve-title-synchronously url)
+                                       "nil"))
+                            (link-elt (my/org-cliplink-link-transformer url title)))
+                       ;; 첫번째 요소는 직접 정렬되지 않은 목록 아이템을 넣어준다
+                       (if (= idx 0)
                            (progn
-                             (org-insert-item)
-                             (insert link-elt)
-                             (org-return t)))))
-                     links)))
+                             (insert (format "- %s" link-elt))
+                             (org-return t))
+                         ;; 두번째 요소 부터는 org-insert-item 함수를 호출해
+                         ;; 이전 목록 아이템을 참고해 자동으로 넣는다
+                         (progn
+                           (org-insert-item)
+                           (insert link-elt)
+                           (org-return t)))))
+                   links))
 
 (defun my/build-link-section--extract-urls (org-elements)
   ;; link 타입 org element만 map
