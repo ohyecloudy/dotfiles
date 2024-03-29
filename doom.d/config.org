@@ -388,7 +388,7 @@
     #+begin_src elisp
       (after! org
         (setq org-tag-alist '((:startgroup . nil)
-                              ("blogging" . ?b)
+                              ("blog" . ?b)
                               (:endgroup . nil))))
     #+end_src
 
