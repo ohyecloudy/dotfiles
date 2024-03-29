@@ -1,3 +1,9 @@
+* lexical binding
+
+  #+begin_src elisp
+    ;;; config.el -*- lexical-binding: t; -*-
+  #+end_src
+
 * name, email
 
   #+begin_src elisp
@@ -1021,6 +1027,58 @@
    #+begin_src elisp
      (after! org
        (define-key org-mode-map [remap org-cliplink] 'my/org-cliplink))
+   #+end_src
+
+** my-web-archive
+
+   [[https://web.archive.org/][Web Archive]] 서비스에 URL을 요청해 아카이브 URL을 가져오는 패키지를 로드한다. 아카이브 URL을 가져오는 함수를 적용할 패키지인 my-org-cliplink, my-build-link-section를 같이 로드한다.
+
+   #+begin_src elisp :lexical t
+     (require 'my-web-archive)
+     (require 'my-org-cliplink)
+     (require 'my-build-link-section)
+   #+end_src
+
+   =my-org-cliplink= 패키지를 사용해 아카이브 URL 뿐만 아니라 웹페이지 타이틀도 가져와서 링크를 만들게 한다.
+
+   #+begin_src elisp :lexical t
+     (defun my/web-archive-with-webpage-title (url archive-url)
+       (org-cliplink-retrieve-title
+        url
+        (lambda (url title)
+          (let* ((origin-org-link (my/org-cliplink-link-transformer url title))
+                 (archive-link (format "([[%s][archive]])" archive-url)))
+            (my/web-archive-write-line my/web-archive-result-buffer-name
+                                       (format "%s%s" origin-org-link archive-link))))))
+   #+end_src
+
+   클립보드 컨텐츠를 가져와 링크를 만드는 함수를 정의한다.
+
+   #+begin_src elisp :lexical t
+     (defun my/org-cliplink-with-archive-url ()
+       (interactive)
+       (my/web-archive-async (list (org-cliplink-clipboard-content))
+                             #'my/web-archive-with-webpage-title))
+   #+end_src
+
+   타이틀만 가져와서 링크를 만드는 키바인딩 =SPC m l c= 에서 c를 대문자로 입력하면 아카이브 URL도 같이 가져온다.
+
+   #+begin_src elisp :lexical t
+     (after! org
+       (map! :map org-mode-map
+             :localleader
+             (:prefix ("l" . "links")
+                      "C" #'my/org-cliplink-with-archive-url)))
+   #+end_src
+
+   org 문서에 있는 링크를 긁고 아카이브 URL도 같이 추가할 수 있게 =my/build-link-section= 패키지 함수를 확장.
+
+   #+begin_src elisp :lexical t
+     (defun my/build-link-section-with-archive-urls-async ()
+       (interactive)
+       (my/build-link-section (lambda (links)
+                                (my/web-archive-async links
+                                                      #'my/web-archive-with-webpage-title))))
    #+end_src
 
 * my functions
