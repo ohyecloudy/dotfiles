@@ -856,6 +856,45 @@
              eldoc-echo-area-use-multiline-p 4))
    #+end_src
 
+** flycheck
+
+   flycheck 메시지를 echo area만 보여주려고 popup tip으로 보여주는 [[https://github.com/flycheck/flycheck-popup-tip][flycheck-popup-tip]] 패키지 비활성화
+
+   #+begin_src elisp :tangle packages.el
+     (package! flycheck-popup-tip :disable t)
+   #+end_src
+
+   flycheck error를 eldoc 패키지로 출력한다. '[[https://www.masteringemacs.org/article/seamlessly-merge-multiple-documentation-sources-eldoc?utm_source=pocket_saves][Seamlessly Merge Multiple Documentation Sources with Eldoc - Mastering Emacs ...]]' 글에서 코드를 가져와 Doom Emacs에 맞게 변경함
+
+   #+begin_src elisp :lexical t
+     (after! flycheck
+       (defun my/flycheck-eldoc (callback &rest _ignored)
+         "Print flycheck messages at point by calling CALLBACK."
+         (when-let ((flycheck-errors (and flycheck-mode (flycheck-overlay-errors-at (point)))))
+           (mapc
+            (lambda (err)
+              (funcall callback
+                       (format "%s: %s"
+                               (let ((level (flycheck-error-level err)))
+                                 (pcase level
+                                   ('info (propertize "I" 'face 'flycheck-error-list-info))
+                                   ('error (propertize "E" 'face 'flycheck-error-list-error))
+                                   ('warning (propertize "W" 'face 'flycheck-error-list-warning))
+                                   (_ level)))
+                               (flycheck-error-message err))
+                       :thing (or (flycheck-error-id err)
+                                  (flycheck-error-group err))
+                       :face 'font-lock-doc-face))
+            flycheck-errors)))
+
+       (defun my/flycheck-prefer-eldoc ()
+         (add-hook 'eldoc-documentation-functions #'my/flycheck-eldoc nil t)
+         (setq flycheck-display-errors-function nil)
+         (setq flycheck-help-echo-function nil))
+
+       (add-hook! 'flycheck-mode-hook #'my/flycheck-prefer-eldoc))
+   #+end_src
+
 * syntax
 
   #+begin_src elisp
