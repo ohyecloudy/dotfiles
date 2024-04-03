@@ -843,6 +843,19 @@
          (add-to-list 'copilot-major-mode-alist '("elixir" . "elixir"))))
    #+end_src
 
+** eldoc
+
+   #+begin_src elisp :lexical t
+     (after! eldoc
+       ;; =M-x eldoc-doc-buffer= 함수 호출로 표시하는 buffer 크기 조절
+       (set-popup-rule! "^\\*eldoc for" :size 0.2 :vslot -1)
+
+       ;; eldoc을 여러 백엔드에서 수집해서 보여줄 수 있게 한다
+       (setq eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly
+             ;; echo area에 최대 4줄까지 보여주게 함
+             eldoc-echo-area-use-multiline-p 4))
+   #+end_src
+
 * syntax
 
   #+begin_src elisp
