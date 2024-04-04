@@ -1039,12 +1039,13 @@
      (require 'my-jira)
    #+end_src
 
-   api base 주소, 프로젝트, access key는 auth-source를 사용해서 접근한다. access key만 넣으려고 했는데, 귀찮아서 로컬에서 저장하는 걸 싹다 넣음
+   api base 주소, 프로젝트, HTTP basic authentication에 사용할 username과 password는 auth-source를 사용해서 접근한다. access key만 넣으려고 했는데, 귀찮아서 로컬에서 저장하는 걸 싹다 넣음
 
    #+begin_example
      machine myjira login api-base-url password https://myjira.com
      machine myjira login project password AWESOME
-     machine myjira login access-key password [SUPERSECRET KEY]
+     machine myjira login username password myname
+     machine myjira login password password [SUPERSECRET KEY]
    #+end_example
 
    이런식으로 =~/.authinfo= 파일에 저장하면 된다.
