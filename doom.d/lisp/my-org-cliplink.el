@@ -7,11 +7,25 @@
 
 (require 'org-cliplink)
 
+(defcustom my/org-cliplink-custom-retrieve-title-hook nil
+  "Used when retrieving the title using a method other
+than obtaining the title by visiting a web page.
+If nil is returned, the web page is visited and the title is obtained.
+
+e.g. A page that obtains the title using the API. jira, confluence."
+  :type 'hook
+  :group 'my/org-cliplink)
+
 (defun my/org-cliplink ()
   (interactive)
-  (org-cliplink-insert-transformed-title
-   (org-cliplink-clipboard-content)     ;take the URL from the CLIPBOARD
-   #'my/org-cliplink-link-transformer))
+  (let* ((url (org-cliplink-clipboard-content))
+         (title (when #'my/org-cliplink-custom-retrieve-title-hook
+                  (funcall my/org-cliplink-custom-retrieve-title-hook url))))
+    (if title
+        (insert (funcall #'my/org-cliplink-link-transformer url title))
+      (org-cliplink-insert-transformed-title
+       url
+       #'my/org-cliplink-link-transformer))))
 
 (defun my/org-cliplink-link-transformer (url title)
   (let* ((parsed-url (url-generic-parse-url url)) ;parse the url
