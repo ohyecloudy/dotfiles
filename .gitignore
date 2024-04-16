@@ -68,3 +68,6 @@ forge-database.sqlite
 
 # brew
 Brewfile.lock.json
+
+# local doom config file
+config.local.el

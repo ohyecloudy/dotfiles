@@ -1264,6 +1264,14 @@
 
   이런 에러가 보이는 걸 발견. '[[https://www.reddit.com/r/emacs/comments/xfhnzz/weird_errors_with_latest_build_of_emacs/][Reddit - Dive into anything - reddit.com]]' 에서 해결 방법을 찾음
 
+* load config.local.el
+
+  #+begin_src elisp :lexical t
+    (load! "config.local.el" doom-user-dir t)
+  #+end_src
+
+  버전 컨트롤하지 않고 로컬에만 담아둔 설정을 로드한다.
+
 * TODO 설정
 
   #+begin_src elisp :tangle no
