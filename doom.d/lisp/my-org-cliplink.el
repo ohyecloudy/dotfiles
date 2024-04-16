@@ -19,7 +19,7 @@ e.g. A page that obtains the title using the API. jira, confluence."
 (defun my/org-cliplink ()
   (interactive)
   (let* ((url (org-cliplink-clipboard-content))
-         (title (when #'my/org-cliplink-custom-retrieve-title-hook
+         (title (when my/org-cliplink-custom-retrieve-title-hook
                   (funcall my/org-cliplink-custom-retrieve-title-hook url))))
     (if title
         (insert (funcall #'my/org-cliplink-link-transformer url title))
