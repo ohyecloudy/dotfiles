@@ -550,7 +550,9 @@
         doom-modeline-hud t
         ;; 경로가 아니라 파일 이름만 모드라인에 보여준다. 'auto는 경로를 출력한다
         ;; tramp로 원격 파일 편집시 느려지는 경험을 완화해준다고 한다
-        doom-modeline-buffer-file-name-style 'file-name))
+        doom-modeline-buffer-file-name-style 'file-name
+        ;; evil mode indicator를 모드라인까지 보여줄 필요 없다. 커서 모양이랑 중복이다. 아껴쓰자.
+        doom-modeline-modal nil))
    #+end_src
 
    doom-modeline 추가 설정
