@@ -904,6 +904,15 @@
        (add-hook! 'flycheck-mode-hook #'my/flycheck-prefer-eldoc))
    #+end_src
 
+** which-key
+
+   #+begin_src elisp :lexical t
+     (after! which-key
+       (setq which-key-idle-delay 0.5))
+   #+end_src
+
+   나는 좀 더 빨리 도움이 필요함
+
 * syntax
 
   #+begin_src elisp
