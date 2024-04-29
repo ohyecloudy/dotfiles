@@ -1100,6 +1100,36 @@
        (define-key org-mode-map [remap org-cliplink] 'my/org-cliplink))
    #+end_src
 
+** my-org-cliplink-confluence
+
+   Confluence 페이지는 API를 사용해 정보를 가져와서 org-cliplink처럼 org-mode 링크 markup을 추가한다. 비공개 Confluence 페이지 정보 삽입도 지원한다.
+
+   Confluence 6.x 버전을 사용하고 있어서 현재 HTTP 기본 인증 방법만 지원한다.
+
+   [[http://ohyecloudy.com/emacsian/2023/04/22/auth-source-easypg/][auth-source]]에 다음과 같은 id, password 정보가 저장되어 있어야 한다.
+
+   #+begin_example
+     machine CONFLUENCE_HOST login ohyecloudy password SUPER_SECRET
+   #+end_example
+
+   host 정보와 API 주소 정보를 매칭하는 리스트를 정의한다. 모두 다 http를 사용해도 될 것 같지만 모두 세팅하는 사람에게 떠넘기기 위한 리스트다.
+
+   #+begin_src elisp :lexical t :tangle no
+     (add-to-list 'my/org-cliplink-confluence-host-api-urls '("CONFLUENCE_HOST" . "http://CONFLUENCE_HOST"))
+   #+end_src
+
+   #+begin_src elisp
+     (require 'my-org-cliplink)
+     (require 'my-org-cliplink-confluence)
+   #+end_src
+
+   Confluence API를 사용해서 페이지 정보를 가져올 수 있게 org-clip 커스텀 함수를 정의한다.
+
+   #+begin_src elisp :lexical t
+     (setq my/org-cliplink-custom-retrieve-title-hook
+           #'my/org-cliplink-confluence-title)
+   #+end_src
+
 ** my-web-archive
 
    [[https://web.archive.org/][Web Archive]] 서비스에 URL을 요청해 아카이브 URL을 가져오는 패키지를 로드한다. 아카이브 URL을 가져오는 함수를 적용할 패키지인 my-org-cliplink, my-build-link-section를 같이 로드한다.
