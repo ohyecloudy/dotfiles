@@ -98,7 +98,7 @@
 (defun insert-gitlab-issue-heading (project id)
   (interactive
    (list
-    (completing-read "project: " (mapcar 'car gitlab-projects))
+    (completing-read "project: " (mapcar #'car gitlab-projects))
     (read-number "issue id: ")))
   (let* ((project-property (cdr (assoc project gitlab-projects)))
          (api-url (plist-get project-property :api-url))
