@@ -10,7 +10,7 @@
     (org-insert-heading)
     (insert (format "%s %s [/]" issue-id summary))
     (org-update-statistics-cookies nil)
-    (org-set-property "Url" web-url)))
+    (org-set-property "URL" web-url)))
 
 (defun my/jira--get-secret (key)
   (funcall

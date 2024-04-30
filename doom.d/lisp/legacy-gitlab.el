@@ -25,7 +25,7 @@
         (org-insert-heading-after-current))
       (incf index)
       (insert (format "#%s %s" (plist-get i :iid) (plist-get i :title)))
-      (org-set-property "Url" (format "%s/issues/%d" gitlab-base-url (plist-get i :iid))))))
+      (org-set-property "URL" (format "%s/issues/%d" gitlab-base-url (plist-get i :iid))))))
 
 (defun milestore-issues-url (milestone username)
   (format "%s/issues?milestone=%s&assignee_username=%s&state=opened&private_token=%s"
@@ -111,7 +111,7 @@
     (org-insert-heading)
     (insert (format "%s#%d %s [/]" project id (parse-title request-url)))
     (org-update-statistics-cookies nil)
-    (org-set-property "Url" url)))
+    (org-set-property "URL" url)))
 
 (defun my/mrs-url (project begin-date end-date page)
   (let* ((project-property (cdr (assoc project gitlab-projects)))
@@ -217,7 +217,7 @@
                         (name (plist-get mr :assignee))
                         (plist-get mr :title)))
         (org-return)
-        (org-set-property "Url" (plist-get mr :web_url))
+        (org-set-property "URL" (plist-get mr :web_url))
         (insert-mr-commits project (plist-get mr :iid))))))
 
 (defun between-date-p (begin end target)

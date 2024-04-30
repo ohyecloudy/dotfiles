@@ -18,7 +18,7 @@
                         (plist-get r :author)
                         (plist-get r :title)))
         (org-return)
-        (org-set-property "Url" web-url)
+        (org-set-property "URL" web-url)
         (org-return)
         (insert "     #+BEGIN_QUOTE\n")
         (insert (replace-regexp-in-string "^.*?" "     " (plist-get r :description)))
