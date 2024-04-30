@@ -182,7 +182,8 @@
          (base-url (plist-get project-property :url))(commits '())
          (commits (my/mr-commits project mr-iid)))
     (dolist (c commits)
-      (insert (format "**** [[%s/merge_requests/%s/diffs?commit_id=%s][%s]] [%s] %s"
+      (org-return)
+      (insert (format "*** [[%s/merge_requests/%s/diffs?commit_id=%s][%s]] [%s] %s"
                       base-url
                       mr-iid
                       (plist-get c :id)
@@ -190,6 +191,7 @@
                       (plist-get c :author_name)
                       (plist-get c :title)))
       (insert "\n")
+      (org-return)
       (insert "     #+BEGIN_QUOTE\n")
       (insert (replace-regexp-in-string "^.*?" "     " (plist-get c :message)))
       (insert "#+END_QUOTE\n"))))
@@ -211,7 +213,8 @@
                           mrs)))
     (dolist (mr mrs)
       (let ((id (plist-get mr :iid)))
-        (insert "*** TODO ")
+        (org-return)
+        (insert "** TODO ")
         (insert (format "!%d" id))
         (insert (format " [%s - %s] %s"
                         (name (plist-get mr :author))
