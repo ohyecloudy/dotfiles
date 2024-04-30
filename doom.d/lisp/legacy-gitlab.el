@@ -205,7 +205,8 @@
          (mrs (my/mrs project begin-date end-date))
          (mrs (seq-filter (lambda (x)
                             (and
-                             (string= (plist-get x :target_branch) "master")
+                             (or (string= (plist-get x :target_branch) "main")
+                                 (string= (plist-get x :target_branch) "master"))
                              (between-date-p begin-date end-date (plist-get x :merged_at))))
                           mrs)))
     (dolist (mr mrs)
