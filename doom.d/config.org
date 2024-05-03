@@ -253,6 +253,40 @@
       (add-hook 'org-roam-find-file-hook #'org-roam-update-slug-on-save-h)
     #+end_src
 
+    org-roam capture template 설정
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (setq org-roam-capture-templates
+              `(("n" "note" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                 :target (file "note/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :unnarrowed t)
+                ("w" "work" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/work.org]" org-roam-directory)
+                 :target (file "work/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :unnarrowed t)
+                ("r" "weekly retrospective" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/retrospective-weekly.org]" org-roam-directory)
+                 :target (file "ret-weekly/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :unnarrowed t)
+                ("f" "ref" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/ref.org]" org-roam-directory)
+                 :target (file "ref/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :unnarrowed t)
+                ("c" "contact" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/contact.org]" org-roam-directory)
+                 :target (file "contact/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :unnarrowed t)
+                ("p" "project" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
+                 :target (file "project/%<%Y%m%d>-${slug}.org")
+                 :unnarrowed t))
+              org-roam-dailies-capture-templates
+              `(("d" "default" plain ""
+                 :target (file+head "%<%Y-%m-%d>.org" ,(format "%%[%s/template/journal.org]" org-roam-directory))))))
+    #+end_src
+
 *** org settings
 
     #+begin_src elisp
