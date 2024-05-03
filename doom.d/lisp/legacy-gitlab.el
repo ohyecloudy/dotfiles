@@ -116,7 +116,7 @@
 (defun my/mrs-url (project begin-date end-date page)
   (let* ((project-property (cdr (assoc project gitlab-projects)))
          (api-url (plist-get project-property :api-url))
-         (options (format "order_by=updated_at&state=merged&scope=all&per_page=100&page=%d" page)))
+         (options (format "order_by=created_at&state=all&scope=all&per_page=100&page=%d" page)))
     (format "%s/merge_requests?%s&updated_after=%s&updated_before=%s&private_token=%s"
             api-url
             options
@@ -204,21 +204,14 @@
 (defun my/insert-gitlab-mrs (project begin-date end-date)
   (let* ((begin-date (format "%sT00:00:00.000+09:00" begin-date))
          (end-date (format "%sT00:00:00.000+09:00" end-date))
-         (mrs (my/mrs project begin-date end-date))
-         (mrs (seq-filter (lambda (x)
-                            (and
-                             (or (string= (plist-get x :target_branch) "main")
-                                 (string= (plist-get x :target_branch) "master"))
-                             (between-date-p begin-date end-date (plist-get x :merged_at))))
-                          mrs)))
+         (mrs (my/mrs project begin-date end-date)))
     (dolist (mr mrs)
       (let ((id (plist-get mr :iid)))
         (org-return)
         (insert "** TODO ")
         (insert (format "!%d" id))
-        (insert (format " [%s - %s] %s"
+        (insert (format " [%s] %s"
                         (name (plist-get mr :author))
-                        (name (plist-get mr :assignee))
                         (plist-get mr :title)))
         (org-return)
         (org-set-property "URL" (plist-get mr :web_url))
