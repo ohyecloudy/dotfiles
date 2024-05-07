@@ -216,6 +216,8 @@
     title이 변경될 때, 파일 이름도 같이 바꾼다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
 
     #+begin_src elisp :lexical t
+      (defvar org-roam-old-slug nil)
+
       (defun org-roam-update-slug-on-save-h ()
         "Set up auto-updating for the current node's filename.
 
@@ -268,7 +270,11 @@
                  :unnarrowed t)
                 ("r" "weekly retrospective" plain
                  ,(format "#+title: ${title}\n%%[%s/template/retrospective-weekly.org]" org-roam-directory)
-                 :target (file "ret-weekly/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :unnarrowed t)
+                ("v" "retrospective" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/retrospective.org]" org-roam-directory)
+                 :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("f" "ref" plain
                  ,(format "#+title: ${title}\n%%[%s/template/ref.org]" org-roam-directory)
