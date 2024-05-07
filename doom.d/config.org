@@ -272,7 +272,7 @@
                  ,(format "#+title: ${title}\n%%[%s/template/retrospective-weekly.org]" org-roam-directory)
                  :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
-                ("v" "retrospective" plain
+                ("e" "retrospective" plain
                  ,(format "#+title: ${title}\n%%[%s/template/retrospective.org]" org-roam-directory)
                  :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
@@ -283,6 +283,14 @@
                 ("c" "contact" plain
                  ,(format "#+title: ${title}\n%%[%s/template/contact.org]" org-roam-directory)
                  :target (file "contact/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :unnarrowed t)
+                ("b" "book" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/book.org]" org-roam-directory)
+                 :target (file "book/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :unnarrowed t)
+                ("v" "video" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/video.org]" org-roam-directory)
+                 :target (file "video/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("p" "project" plain
                  ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
