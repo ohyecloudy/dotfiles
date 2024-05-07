@@ -183,7 +183,7 @@
          (commits (my/mr-commits project mr-iid)))
     (dolist (c commits)
       (org-return)
-      (insert (format "*** [[%s/merge_requests/%s/diffs?commit_id=%s][%s]] [%s] %s"
+      (insert (format "**** [[%s/merge_requests/%s/diffs?commit_id=%s][%s]] [%s] %s"
                       base-url
                       mr-iid
                       (plist-get c :id)
@@ -208,7 +208,7 @@
     (dolist (mr mrs)
       (let ((id (plist-get mr :iid)))
         (org-return)
-        (insert "** TODO ")
+        (insert "*** TODO ")
         (insert (format "!%d" id))
         (insert (format " [%s] %s"
                         (name (plist-get mr :author))
