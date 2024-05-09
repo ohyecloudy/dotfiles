@@ -207,11 +207,14 @@
 
 ** org
 
-*** org-roam
+   #+begin_src elisp :lexical t
+     (setq org-roam-directory (file-truename "~/org_roam")
+           org-directory org-roam-directory
+           ;; org-agenda-files (list org-directory) ;; agenda를 사용하면 파일이 많아서 로딩 시간이 너무 오래 걸림
+           )
+   #+end_src
 
-    #+begin_src elisp
-      (setq org-roam-directory (file-truename "~/org_roam"))
-    #+end_src
+*** org-roam
 
     title이 변경될 때, 파일 이름도 같이 바꾼다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
 
