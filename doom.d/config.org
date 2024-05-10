@@ -423,6 +423,37 @@
             ("work"          . "🏢"))))
     #+end_src
 
+    backlinks buffer 상단에 id, type, aliases 정보를 보여줌. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴.
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (defun org-roam-add-preamble-a (string)
+          (let ((node org-roam-buffer-current-node))
+            (insert
+             (format "%-10s %s\n" (propertize "ID:" 'face 'bold)
+                     (org-roam-node-id node))
+             (format "%-10s %s\n" (propertize "Type:" 'face 'bold)
+                     (if-let (type (org-roam-node-doom-type node))
+                         (format "%s%s%s" (org-roam-node-doom-icon node)
+                                 org-roam--spacer
+                                 (capitalize type))
+                       "-"))
+             (format "%-10s %s\n" (propertize "Tags:" 'face 'bold)
+                     (if-let (tags (org-roam-node-tags node))
+                         (mapconcat (lambda (tag)
+                                      (propertize (concat "#" tag) 'face 'org-tag))
+                                    tags " ")
+                       "-"))
+             (format "%-10s %s\n" (propertize "Aliases:" 'face 'bold)
+                     (if-let (aliases (org-roam-node-aliases node))
+                         (string-join aliases ", ")
+                       "-"))
+             ?\n)))
+
+        ;; Add ID, Type, Tags, and Aliases to top of backlinks buffer.
+        (advice-add #'org-roam-buffer-set-header-line-format :after #'org-roam-add-preamble-a))
+    #+end_src
+
 *** org settings
 
     #+begin_src elisp
