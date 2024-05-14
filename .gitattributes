@@ -5,3 +5,6 @@ commit_template_issue_branch text eol=lf
 *.md text
 vimrc text
 xvimrc text
+
+*.org diff=org
+*.el  diff=lisp
