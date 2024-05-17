@@ -1521,6 +1521,27 @@
 
   버전 컨트롤하지 않고 로컬에만 담아둔 설정을 로드한다.
 
+* find or browse dotfiles
+
+  =SPC f t=, =SPC f T= 로 dotfiles 디렉터리에서 find 하거나 browse 한다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
+
+  #+begin_src elisp :lexical t
+    (map! (:leader
+           (:prefix "f"
+                    "t" #'find-in-dotfiles
+                    "T" #'browse-dotfiles)))
+
+    (defun find-in-dotfiles ()
+      "Open a file somewhere in ~/.dotfiles via a fuzzy filename search."
+      (interactive)
+      (doom-project-find-file (expand-file-name "~/.dotfiles")))
+
+    (defun browse-dotfiles ()
+      "Browse the files in ~/.dotfiles."
+      (interactive)
+      (doom-project-browse (expand-file-name "~/.dotfiles")))
+  #+end_src
+
 * etc
 
   #+begin_src elisp :lexical t
