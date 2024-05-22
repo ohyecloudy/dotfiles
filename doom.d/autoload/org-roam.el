@@ -6,7 +6,8 @@
      (("note" org-roam-backlinks-sort-by-date)
       ("work" org-roam-backlinks-sort-by-date)))
     ("Relevant items" t
-     (("project")
+     (("topic")
+      ("project")
       ("book")
       ("video")
       ("ref")
@@ -24,6 +25,7 @@
     ("book"          . "📚")
     ("video"         . "🎥")
     ("ref"           . "🔍")
+    ("topic"         . "🔖")
     ("work"          . "🏢")))
 
 (defconst org-roam--spacer (propertize " " 'face 'variable-pitch))

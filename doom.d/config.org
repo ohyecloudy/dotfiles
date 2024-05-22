@@ -193,6 +193,10 @@
                  ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
                  :target (file "note/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
+                ("t" "topic" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/topic.org]" org-roam-directory)
+                 :target (file "topic/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :unnarrowed t)
                 ("w" "work" plain
                  ,(format "#+title: ${title}\n%%[%s/template/work.org]" org-roam-directory)
                  :target (file "work/%<%Y%m%d%H%M%S>-${slug}.org")
