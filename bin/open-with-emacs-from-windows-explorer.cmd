@@ -3,8 +3,10 @@
 
 call is-elevated.bat || goto :finally
 
-SET ecPath=C:\emacs\bin\emacsclientw.exe
-SET ecOption=-na C:\emacs\bin\runemacs.exe
+SET EMACS_DIR
+if "%EMACS_DIR%"=="" set EMACS_DIR=C:\emacs\bin
+SET ecPath=%EMACS_DIR%\emacsclientw.exe
+SET ecOption=-na %EMACS_DIR%\runemacs.exe
 
 REG ADD "HKCR\*\shell\Open with Emacs"         /t REG_SZ /v "" /d "Open with Emacs" /f || goto :finally
 REG ADD "HKCR\*\shell\Open with Emacs"         /t REG_EXPAND_SZ /v "Icon" /d "%ecPath%,0" /f || goto :finally
