@@ -169,7 +169,6 @@
 
    #+begin_src elisp :lexical t
      (setq org-roam-directory (file-truename "~/org_roam")
-           org-directory (file-truename "~/org")
            ;; org-agenda-files (list org-directory) ;; agenda를 사용하면 파일이 많아서 로딩 시간이 너무 오래 걸림
            )
    #+end_src
