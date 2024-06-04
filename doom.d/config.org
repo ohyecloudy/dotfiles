@@ -173,6 +173,13 @@
            )
    #+end_src
 
+   디폴트 fold 표시 레벨 정의
+
+   #+begin_src elisp :lexical t
+     (after! org
+       (setq org-startup-folded 'show2levels))
+   #+end_src
+
 *** org-roam
 
     title이 변경될 때, 파일 이름도 같이 바꾼다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
@@ -247,6 +254,13 @@
       (after! org-roam
         ;; Add ID, Type, Tags, and Aliases to top of backlinks buffer.
         (advice-add #'org-roam-buffer-set-header-line-format :after #'org-roam-add-preamble-a))
+    #+end_src
+
+    backlinks buffer 기본 표시 레벨을 2로 조정
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (add-hook 'org-roam-buffer-postrender-functions #'magit-section-show-level-2))
     #+end_src
 
 *** org settings
