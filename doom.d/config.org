@@ -173,13 +173,6 @@
            )
    #+end_src
 
-   디폴트 fold 표시 레벨 정의
-
-   #+begin_src elisp :lexical t
-     (after! org
-       (setq org-startup-folded 'show2levels))
-   #+end_src
-
 *** org-roam
 
     title이 변경될 때, 파일 이름도 같이 바꾼다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
@@ -283,7 +276,7 @@
          ;; 순서 없는 목록(unordered list)에서 bullet으로 들여쓰기를 할 때마다 +, -를 번갈아 사용한다
          org-list-demote-modify-bullet '(("+" . "-") ("-" . "+"))
          ;; #+STARTUP: fold 를 기본값으로 한다. org 파일을 열었을 때, overview를 가장 먼저 보고 싶기 때문
-         org-startup-folded t))
+         org-startup-folded 'show2levels))
     #+end_src
 
     ui 관련 설정들
