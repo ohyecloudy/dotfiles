@@ -11,6 +11,7 @@
       ("book")
       ("video")
       ("ref")
+      ("chopsticks")
       ("contact")))
     ("Journal" nil
      (("daily" org-roam-backlinks-sort-by-date)
@@ -26,6 +27,7 @@
     ("video"         . "🎥")
     ("ref"           . "🔍")
     ("topic"         . "🔖")
+    ("chopsticks"    . "🍚")
     ("work"          . "🏢")))
 
 (defconst org-roam--spacer (propertize " " 'face 'variable-pitch))
