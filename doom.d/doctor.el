@@ -6,7 +6,7 @@
 
 (defun my-doctor--executable! (path install-guide)
   (unless (executable-find path)
-    (error! "Couldn't find '%s'.\ninstallation guide\n%s" path install-guide)))
+    (warn! "Couldn't find '%s'.\ninstallation guide\n%s" path install-guide)))
 
 ;;
 ;; diagnosis
