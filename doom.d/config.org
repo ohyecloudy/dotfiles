@@ -1395,18 +1395,6 @@
 
 * WORKAROUND
 
-  LSP에서 definition 찾기가 안 돼서  [[https://github.com/doomemacs/doomemacs/issues/7863][doomemacs/doomemacs/issues/7863 - github.com]] 글에서 본 workaround
-
-  #+begin_src elisp :tangle packages.el
-    (unpin! consult)
-  #+end_src
-
-  lsp definition 찾기가 안 되면 아래 명령을 한 번 실행해서 패키지를 업데이트해야 한다.
-
-  #+begin_example
-    doom sync -u
-  #+end_example
-
   macOS Sonoma에서 타이틀바가 너무 크다. [[https://github.com/doomemacs/doomemacs/issues/7532][Large title bar on macOS Sonoma when using railwaycat/homebrew-emacsmacport and Doom Emacs #7532]] 글을 보고 workaround 적용
 
   #+begin_src elisp
