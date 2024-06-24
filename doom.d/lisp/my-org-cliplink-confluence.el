@@ -5,26 +5,58 @@
 ;; Author: Jongbin Oh <ohyecloudy@gmail.com>
 ;; Created: 2024-04-30
 
-(defcustom my/org-cliplink-confluence-host-api-urls '()
-  "Alist of api url about host
-Each element has the form (HOST . API-URL)."
-  :type '(alist :key-type string :value-type string)
+(defcustom my/org-cliplink-confluence-hosts '()
+  "Property List of confluence host
+Ecah element has the form '((:url MY_CONFLUENCE_URL :api-version 6)
+(:url MY_CONFLUECNE_URL :api-version :cloud))"
+  :type '(plist)
   :group 'my/org-cliplink-confluence)
 
 (defun my/org-cliplink-confluence-title (url)
-  (when-let* ((host-api (my/org-cliplink-confluence--find-host url my/org-cliplink-confluence-host-api-urls))
-              (host (car host-api))
-              (api-base-url (cdr host-api))
-              (page-id (my/org-cliplink-confluence--page-id url))
-              (api-url (my/org-cliplink-confluence--api-content-get api-base-url page-id))
-              (auth-header (my/org-cliplink-confluence--auth host))
-              (content (my/org-cliplink-confluence--retrieve-content
-                        (my/org-cliplink-confluence--api-content-get api-base-url page-id)
-                        auth-header)))
-    (format "%s > %s" (plist-get content :space) (plist-get content :title))))
+  (when-let* ((host-info (my/org-cliplink-confluence--find-host url my/org-cliplink-confluence-hosts))
+              (api-version (plist-get host-info :api-version))
+              (extract-page-id-fun (my/org-cliplink-confluence--extract-page-id-fun api-version))
+              (build-content-get-api-fun (my/org-cliplink-confluence--build-content-get-api-fun api-version))
+              (page-id (funcall extract-page-id-fun url))
+              (api-base-url (plist-get host-info :url))
+              (api-url (funcall build-content-get-api-fun api-base-url page-id))
+              (auth-header (my/org-cliplink-confluence--auth (my/org-cliplink-confluence--remove-protocol (plist-get host-info :url))))
+              (content (my/org-cliplink-confluence--retrieve-content api-url auth-header)))
+    (format "%s" (plist-get content :title))))
+
+(defun my/org-cliplink-confluence--find-host (url hosts)
+  (car
+   (seq-filter (lambda (elem)
+                 (let ((host-url (plist-get elem :url)))
+                   (string-match-p (regexp-quote host-url) url)))
+               hosts)))
+
+(defun my/org-cliplink-confluence--remove-protocol (url)
+  (let* ((parsed (url-generic-parse-url url))
+         (host (url-host parsed))
+         (path (url-filename parsed)))
+    (format "%s%s" host path)))
+
+(defun my/org-cliplink-confluence--extract-page-id-fun (api-version)
+  (pcase api-version
+    (:cloud (lambda (url)
+              (save-match-data
+                (if (string-match "/pages/\\([[:digit:]]+\\)\\($\\|/\\)" url)
+                    (match-string 1 url)))))
+    (6 (lambda (url)
+         (save-match-data
+           (if (string-match "\\?pageId=\\([[:digit:]]+\\)" url)
+               (match-string 1 url)))))))
+
+(defun my/org-cliplink-confluence--build-content-get-api-fun (api-version)
+  (pcase api-version
+    (:cloud (lambda (base-url id)
+              (format "%s/api/v2/pages/%s" base-url id)))
+    (6 (lambda (base-url id)
+         (format "%s/rest/api/content/%s" base-url id)))))
 
 (defun my/org-cliplink-confluence--api-content-get (base-url id)
-  (format "%s/rest/api/content/%s" base-url id))
+  )
 
 (defun my/org-cliplink-confluence--retrieve-content (url auth-header)
   (let ((filter-fun (lambda (content)
@@ -44,17 +76,6 @@ Each element has the form (HOST . API-URL)."
       (url-insert-file-contents url)
       (let ((content (json-read)))
         (funcall filter-fun content)))))
-
-(defun my/org-cliplink-confluence--find-host (url host-api-urls)
-  (car (seq-filter (lambda (elem)
-                     (let ((host (car elem)))
-                       (string-match-p (regexp-quote host) url)))
-                   host-api-urls)))
-
-(defun my/org-cliplink-confluence--page-id (url)
-  (save-match-data
-    (if (string-match "\\?pageId=\\([[:digit:]]+\\)" url)
-        (match-string 1 url))))
 
 (defun my/org-cliplink-confluence--auth (host)
   (when-let* ((id-password (my/org-cliplink-confluence--id-password host))
