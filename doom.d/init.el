@@ -46,7 +46,9 @@
        ;;tabs              ; a tab bar for Emacs
        (treemacs +lsp)     ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
-       (vc-gutter +pretty) ; vcs diff in the fringe
+       ;; evil-mode insert state에서 normal state로 넘어올 때, 딜레이가 생김
+       ;; Emacs 29.3, Doom Emacs 39ee7129e
+       ;;(vc-gutter +pretty) ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        ;;window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
