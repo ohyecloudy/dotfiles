@@ -273,19 +273,31 @@
 
     =org-roam-node-read--completions= 함수 [[http://ohyecloudy.com/pnotes/archives/497/][메모이제이션]]. [[https://www.reddit.com/r/orgmode/comments/s8xv5j/orgroam_slows_down_as_nodes_increase_solution/][Org-roam slows down as nodes increase.. solution? - reddit.com]]에서 코드를 가져옴.
 
+    강제 메모이제이션 클리어는 =SPC n r c= 에 바인딩함
+
     #+begin_src elisp :lexical t
       (after! org-roam
         (require 'memoize)
+
         (memoize 'org-roam-node-read--completions "10 minute")
+
         (defun memoize-force-update (func &optional timeout)
           (when (get func :memoize-original-function)
             (progn (memoize-restore func)
                    (memoize func timeout))))
+
         (defun my/force-update-org-roam-node-read-if-memoized (&optional timeout)
           (interactive)
           (memoize-force-update 'org-roam-node-read--completions
                                 (if timeout timeout memoize-default-timeout)))
-        (run-with-idle-timer 60 t #'my/force-update-org-roam-node-read-if-memoized))
+
+        (run-with-idle-timer 60 t #'my/force-update-org-roam-node-read-if-memoized)
+
+        (map! :leader
+              (:prefix-map ("n" . "notes")
+                           (:prefix ("r" . "roam")
+                            :desc "Clear memoization" "c"
+                            #'my/force-update-org-roam-node-read-if-memoized))))
     #+end_src
 
 *** org settings
