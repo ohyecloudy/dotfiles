@@ -15,7 +15,8 @@
       ("contact")))
     ("Journal" nil
      (("daily" org-roam-backlinks-sort-by-date)
-      ("retrospective" org-roam-backlinks-sort-by-date)))))
+      ("retrospective" org-roam-backlinks-sort-by-date)
+      ("plan" org-roam-backlinks-sort-by-date)))))
 
 (defvar org-roam-group-icons
   '(("contact"       . "☎")
@@ -28,8 +29,8 @@
     ("ref"           . "🔍")
     ("topic"         . "🔖")
     ("chopsticks"    . "🍚")
-    ("work"          . "🏢")))
-
+    ("work"          . "🏢")
+    ("plan"          . "🧭")))
 (defconst org-roam--spacer (propertize " " 'face 'variable-pitch))
 
 ;;;###autoload (autoload 'org-roam-node-doom-icon "lang/org/autoload/contrib-roam2" nil t)
@@ -45,49 +46,49 @@
 
 (cl-defun org-roam-node-insert-section-with-tags (&key source-node point properties)
   (magit-insert-section section (org-roam-node-section)
-    (let* ((outline
-            (when-let ((outline (plist-get properties :outline))
-                       ;; Don't repeat redundant leaves
-                       (outline (if (member (car (last outline))
-                                            (list (org-roam-node-title org-roam-buffer-current-node)
-                                                  (org-roam-node-title source-node)))
-                                    (butlast outline)
-                                  outline)))
-              (mapconcat #'org-link-display-format outline " > ")))
-           (file (org-roam-node-file source-node))
-           (private (and (functionp org-roam-backlinks-filter)
-                         (funcall org-roam-backlinks-filter source-node)))
-           (title (concat (org-roam-node-doom-icon source-node)
-                          org-roam--spacer
-                          (propertize (org-roam-node-title source-node)
-                                      'font-lock-face 'org-roam-title)
-                          (when outline
-                            (format " > %s" (propertize outline 'font-lock-face 'org-roam-olp)))))
-           (title (if (not private)
-                      title
-                    (concat (cl-subseq title 0 4)
-                            (make-string (max 0 (- (length title) 6)) ?*)
-                            (ignore-errors (cl-subseq title -2)))))
-           (tags (org-roam-node-doom-tags source-node))
-           (tags (mapconcat (lambda (tag)
-                              (propertize (concat "#" tag) 'face 'shadow))
-                            tags " "))
-           (tags (or tags ""))
-           (spc (propertize " " 'display
-                            `((space :align-to
-                               (- ,(window-text-width (get-buffer-window org-roam-buffer))
-                                  ,(string-width tags)
-                                  0.5))))))
-      (magit-insert-heading (format "%s%s%s" title spc tags))
-      (oset section node source-node)
-      (unless (or private (string-suffix-p ".org.gpg" file))
-        (magit-insert-section section (org-roam-preview-section)
-          (insert (org-roam-fontify-like-in-org-mode
-                   (org-roam-preview-get-contents file point))
-                  "\n")
-          (oset section file file)
-          (oset section point point)
-          (insert ?\n))))))
+                        (let* ((outline
+                                (when-let ((outline (plist-get properties :outline))
+                                           ;; Don't repeat redundant leaves
+                                           (outline (if (member (car (last outline))
+                                                                (list (org-roam-node-title org-roam-buffer-current-node)
+                                                                      (org-roam-node-title source-node)))
+                                                        (butlast outline)
+                                                      outline)))
+                                  (mapconcat #'org-link-display-format outline " > ")))
+                               (file (org-roam-node-file source-node))
+                               (private (and (functionp org-roam-backlinks-filter)
+                                             (funcall org-roam-backlinks-filter source-node)))
+                               (title (concat (org-roam-node-doom-icon source-node)
+                                              org-roam--spacer
+                                              (propertize (org-roam-node-title source-node)
+                                                          'font-lock-face 'org-roam-title)
+                                              (when outline
+                                                (format " > %s" (propertize outline 'font-lock-face 'org-roam-olp)))))
+                               (title (if (not private)
+                                          title
+                                        (concat (cl-subseq title 0 4)
+                                                (make-string (max 0 (- (length title) 6)) ?*)
+                                                (ignore-errors (cl-subseq title -2)))))
+                               (tags (org-roam-node-doom-tags source-node))
+                               (tags (mapconcat (lambda (tag)
+                                                  (propertize (concat "#" tag) 'face 'shadow))
+                                                tags " "))
+                               (tags (or tags ""))
+                               (spc (propertize " " 'display
+                                                `((space :align-to
+                                                   (- ,(window-text-width (get-buffer-window org-roam-buffer))
+                                                      ,(string-width tags)
+                                                      0.5))))))
+                          (magit-insert-heading (format "%s%s%s" title spc tags))
+                          (oset section node source-node)
+                          (unless (or private (string-suffix-p ".org.gpg" file))
+                            (magit-insert-section section (org-roam-preview-section)
+                                                  (insert (org-roam-fontify-like-in-org-mode
+                                                           (org-roam-preview-get-contents file point))
+                                                          "\n")
+                                                  (oset section file file)
+                                                  (oset section point point)
+                                                  (insert ?\n))))))
 
 (defvar org-roam-backlinks-filter nil)
 ;;;###autoload

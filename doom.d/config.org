@@ -222,6 +222,10 @@
                  ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
                  :target (file "chopsticks/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
+                ("l" "plan" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                 :target (file "plan/%<%Y%m%d%H%M%S>-${slug}.org")
+                 :unnarrowed t)
                 ("p" "project" plain
                  ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
                  :target (file "project/%<%Y%m%d>-${slug}.org")
