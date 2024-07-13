@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+set -x
+
+cd ~/org_roam
+git add .
+git commit -m ":star: `date +%Y-%m-%d`"
+git push
