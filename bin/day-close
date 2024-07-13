@@ -5,5 +5,5 @@ set -x
 
 cd ~/org_roam
 git add .
-git commit -m ":star: `date +%Y-%m-%d`"
+git commit -m ":star: `date +%Y-%m-%d`" || true
 git push
