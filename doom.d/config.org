@@ -103,6 +103,18 @@
          (setq-default line-spacing 8)))
    #+end_src
 
+   macos 모듈을 참고해서 키 바인딩을 비슷하게 설정함
+
+   #+begin_src elisp :lexical t
+     (when IS-WINDOWS
+       (map! :leader
+             (:prefix-map ("o" . "open")
+              :desc "Reveal in Explorer"           "o" #'+windows/reveal-in-explorer
+              :desc "Reveal project in Explorer"   "O" #'+windows/reveal-project-in-explorer
+              :desc "Open in git bash"             "i" #'+windows/open-in-bash
+              :desc "Open in cmd"                  "I" #'+windows/open-in-cmd)))
+   #+end_src
+
 * startup
 
   #+begin_src elisp
