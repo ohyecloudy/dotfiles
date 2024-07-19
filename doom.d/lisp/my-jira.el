@@ -1,64 +1,96 @@
 ;;; lisp/my-jira.el -*- lexical-binding: t; -*-
 
-(defun my/jira-insert-issue-heading (issue-number)
-  (interactive "nissue number: ")
-  (let* ((issue-id (my/jira--build-issue-id (my/jira--get-secret "project") issue-number))
-         (api-url (my/jira--build-issue-api-url (my/jira--get-secret "api-base-url") issue-id))
-         (web-url (my/jira--build-issue-web-url (my/jira--get-secret "api-base-url") issue-id))
-         (summary (my/jira--issue-summary api-url (my/jira--get-secret "username") (my/jira--get-secret "password"))))
-    (message "%S" summary)
+(defcustom my/jira-hosts '()
+  "Property List of jira host
+Ecah element has the form '((:url MY_JIRA :api-url MY_JIRA_API :api-version :cloud))"
+  :type '(plist)
+  :group 'my-jira)
+
+(defun my/jira-insert-heading-content ()
+  (interactive)
+  (let* ((url (my/jira--url-clipboard-or-prompt))
+         (content (my/jira--content url))
+         (summary (plist-get content :summary))
+         (id (plist-get content :id)))
     (org-insert-heading)
-    (insert (format "%s %s [/]" issue-id summary))
+    (insert (format "%s %s [/]" id summary))
     (org-update-statistics-cookies nil)
-    (org-set-property "URL" web-url)))
+    (org-set-property "URL" url)))
 
-(defun my/jira--get-secret (key)
-  (funcall
-   (plist-get
-    (nth 0 (auth-source-search
-            :host "myjira"
-            :user key
-            :requires '(:secret)))
-    :secret))
-  )
+(defun my/jira-title (url)
+  (when-let* ((content (my/jira--content url)))
+    (format "%s %s" (plist-get content :id) (plist-get content :summary))))
 
-(defun my/jira--build-issue-id (project issue-number)
-  (format "%s-%d" project issue-number))
+(defun my/jira--content (url)
+  (when-let* ((host-info (my/jira--find-host url my/jira-hosts))
+              (jira-id (my/jira--issue-id url))
+              (api-url (my/jira--build-issue-api-url (plist-get host-info :api-url) jira-id))
+              (auth-header (my/jira--auth (my/jira--remove-protocol (plist-get host-info :url))))
+              (content (my/jira--retrieve-content api-url auth-header)))
+    (plist-put content :id jira-id)))
+
+(defun my/jira--url-clipboard-or-prompt ()
+  (let ((clipboard-content (gui-get-selection 'CLIPBOARD)))
+    (if (and clipboard-content (string-match-p "^http" clipboard-content))
+        clipboard-content
+      (read-string "Enter URL: "))))
+
+(defun my/jira--find-host (url hosts)
+  (car (seq-filter (lambda (elem)
+                     (let ((host-url (plist-get elem :url)))
+                       (string-match-p (regexp-quote host-url) url)))
+                   hosts)))
+
+(defun my/jira--issue-id (url)
+  (save-match-data
+    (if (string-match "/browse/\\([^/]+\\)" url)
+        (match-string 1 url))))
 
 (defun my/jira--build-issue-api-url (base-url issue-id)
   (let ((base-url (string-remove-suffix "/" base-url)))
-    (format "%s/rest/api/2/issue/%s" base-url issue-id)))
+    (format "%s/api/2/issue/%s" base-url issue-id)))
 
-(defun my/jira--build-issue-web-url (base-url issue-id)
-  (let ((base-url (string-remove-suffix "/" base-url)))
-    (format "%s/browse/%s" base-url issue-id)))
+(defun my/jira--remove-protocol (url)
+  (let* ((parsed (url-generic-parse-url url))
+         (host (url-host parsed))
+         (path (url-filename parsed)))
+    (format "%s%s" host path)))
 
-(defun my/jira--issue-summary (url username password)
-  (let ((extract-summary-func (lambda (item)
-                                (when (and (listp item)
-                                           (plist-member item :summary))
-                                  (plist-get item :summary)))))
-    (car (my/jira--request url
-                           (my/jira--build-basic-authorization username password)
-                           extract-summary-func))))
+(defun my/jira--auth (host)
+  (when-let* ((id-password (my/jira--id-password host))
+              (encoded (base64url-encode-string
+                        (format "%s:%s" (car id-password)
+                                (cadr id-password)))))
+    `("Authorization" . ,(format "Basic %s" encoded))))
 
-(defun my/jira--build-basic-authorization (username password)
-  (let* ((base64-encoded (base64url-encode-string (format "%s:%s" username password)))
-         (basic-authorization (format "Basic %s" base64-encoded)))
-    `("Authorization" . ,basic-authorization)))
+(defun my/jira--id-password (host)
+  (when-let* ((found (auth-source-search
+                      :host host
+                      :requires '(:secret)))
+              (first-found (nth 0 found))
+              (id (plist-get first-found :user))
+              (password (funcall (plist-get first-found :secret))))
+    (list id password)))
 
-(defun my/jira--request (url authorization-header response-func)
+(defun my/jira--retrieve-content (url auth-header)
+  (let ((filter-fun (lambda (content)
+                      (let* ((fields (plist-get content :fields))
+                             (summary (plist-get fields :summary))
+                             (description (plist-get fields :description)))
+                        (list :summary summary :description description)))))
+    (my/jira--get url
+                  auth-header
+                  filter-fun)))
+
+(defun my/jira--get (url authorization-header filter-fun)
   (let ((url-request-extra-headers `(,authorization-header
                                      ("Content-type" . "application/json; charset=utf-8")))
         (json-key-type 'keyword)
-        (json-object-type 'plist)
-        (result '()))
+        (json-object-type 'plist))
     (with-temp-buffer
       (url-insert-file-contents url)
       (let ((content (json-read)))
-        (dolist (c content)
-          (push (funcall response-func c) result))))
-    (remove nil result)))
+        (funcall filter-fun content)))))
 
 (provide 'my-jira)
 ;;; my-jira.el ends here
