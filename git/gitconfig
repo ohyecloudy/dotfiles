@@ -37,7 +37,17 @@
 		author=$(git config --get user.email); \
 	    set -x; \
 		git log dev-$start..dev-$end --author=$author; \
-	    }; f"
+		}; f"
+	checkout-highest-tag = "!f() { \
+        highest_tag=$(git tag | grep -E '^dev-[0-9]+$' | sed 's/dev-//' | sort -n | tail -1); \
+        if [ -n \"$highest_tag\" ]; then \
+            git stash; \
+            echo \"git checkout dev-$highest_tag\"; \
+            git checkout \"dev-$highest_tag\"; \
+        else \
+            echo 'No tags found with the pattern dev-<number>'; \
+        fi; \
+    }; f"
 [pull]
 	rebase = true
 [push]
