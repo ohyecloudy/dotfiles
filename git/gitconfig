@@ -1,44 +1,44 @@
 [user]
-	name = ohyecloudy
-	email = ohyecloudy@gmail.com
+    name = ohyecloudy
+    email = ohyecloudy@gmail.com
 [core]
-	excludesfile = ~/.gitignore_global
-	commentchar = $
-	editor = ec-wait
-	precomposeunicode = true
-        # 한글 파일 이름 깨짐 방지
-        quotepath = false
-        # windows에서 magit 속도 향상 https://magit.vc/manual/magit/Microsoft-Windows-Performance.html
-	preloadindex = true
-        # windows에서 magit 속도 향상 https://magit.vc/manual/magit/Microsoft-Windows-Performance.html
-	fscache = true
+    excludesfile = ~/.gitignore_global
+    commentchar = $
+    editor = ec-wait
+    precomposeunicode = true
+    # 한글 파일 이름 깨짐 방지
+    quotepath = false
+    # windows에서 magit 속도 향상 https://magit.vc/manual/magit/Microsoft-Windows-Performance.html
+    preloadindex = true
+    # windows에서 magit 속도 향상 https://magit.vc/manual/magit/Microsoft-Windows-Performance.html
+    fscache = true
 [alias]
-	co = checkout
-	cp = cherry-pick -x
-	st = status -sb
-	ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	standup = log --since '1 day ago' --oneline --author ohyecloudy
-	delete-merged-branches = "!git co master && git branch --merged | grep -v \\* | xargs -n 1 git branch -d;"
-	unmerged = diff --name-only --diff-filter=U
-	rebase-branches = "!git co master && git branch | grep -v \\\\* | xargs -n 1 git rebase master;"
-	pu = "!f() { \
-		[[ $(git config \"branch.$(git symbolic-ref --short HEAD).merge\") = '' ]] && \
-		git push -u origin $(git symbolic-ref --short HEAD) $@ || \
-		git push $@; \
-		}; f"
-	stsh = stash --keep-index
-	staash = stash --include-untracked
-	p4 = "!python.exe 'c:\\git-sdk-64\\mingw64\\libexec\\git-core\\git-p4'"
-	# between tags
-	bt = "!f() { \
-	    end=$1; \
-		delta=${2:-1}; \
-		start=$((end-delta)); \
-		author=$(git config --get user.email); \
-	    set -x; \
-		git log dev-$start..dev-$end --author=$author; \
-		}; f"
-	checkout-highest-tag = "!f() { \
+    co = checkout
+    cp = cherry-pick -x
+    st = status -sb
+    ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    standup = log --since '1 day ago' --oneline --author ohyecloudy
+    delete-merged-branches = "!git co master && git branch --merged | grep -v \\* | xargs -n 1 git branch -d;"
+    unmerged = diff --name-only --diff-filter=U
+    rebase-branches = "!git co master && git branch | grep -v \\\\* | xargs -n 1 git rebase master;"
+    pu = "!f() { \
+        [[ $(git config \"branch.$(git symbolic-ref --short HEAD).merge\") = '' ]] && \
+        git push -u origin $(git symbolic-ref --short HEAD) $@ || \
+        git push $@; \
+        }; f"
+    stsh = stash --keep-index
+    staash = stash --include-untracked
+    p4 = "!python.exe 'c:\\git-sdk-64\\mingw64\\libexec\\git-core\\git-p4'"
+    # between tags
+    bt = "!f() { \
+        end=$1; \
+        delta=${2:-1}; \
+        start=$((end-delta)); \
+        author=$(git config --get user.email); \
+        set -x; \
+        git log dev-$start..dev-$end --author=$author; \
+        }; f"
+    checkout-highest-tag = "!f() { \
         highest_tag=$(git tag | grep -E '^dev-[0-9]+$' | sed 's/dev-//' | sort -n | tail -1); \
         if [ -n \"$highest_tag\" ]; then \
             git stash; \
@@ -49,24 +49,22 @@
         fi; \
     }; f"
 [pull]
-	rebase = true
+    rebase = true
 [push]
-	default = simple
+    default = simple
 [fetch]
-	prune = true
+    prune = true
 [magit]
-	hideCampaign = true
+    hideCampaign = true
 [filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
 [gc]
-        # windows에서 magit 속도 향상 https://magit.vc/manual/magit/Microsoft-Windows-Performance.html
-	auto = 256
-
+    # windows에서 magit 속도 향상 https://magit.vc/manual/magit/Microsoft-Windows-Performance.html
+    auto = 256
 [diff "org"]
-   xfuncname = "^(\\*+ +.*|#\\+title:.*)$"
-
+    xfuncname = "^(\\*+ +.*|#\\+title:.*)$"
 [diff "lisp"]
-  xfuncname = "^(((;;;+ )|\\(|([ \t]+\\(((cl-|el-patch-)?def(un|var|macro|method|custom)|gb/))).*)$"
+    xfuncname = "^(((;;;+ )|\\(|([ \t]+\\(((cl-|el-patch-)?def(un|var|macro|method|custom)|gb/))).*)$"
