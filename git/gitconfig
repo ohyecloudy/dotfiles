@@ -41,9 +41,12 @@
     checkout-highest-tag = "!f() { \
         highest_tag=$(git tag | grep -E '^dev-[0-9]+$' | sed 's/dev-//' | sort -n | tail -1); \
         if [ -n \"$highest_tag\" ]; then \
-            git stash; \
+            stash_result=$(git stash); \
             echo \"git checkout dev-$highest_tag\"; \
             git checkout \"dev-$highest_tag\"; \
+            if [[ \"$stash_result\" != \"No local changes to save\" ]]; then \
+                git stash pop; \
+            fi; \
         else \
             echo 'No tags found with the pattern dev-<number>'; \
         fi; \
