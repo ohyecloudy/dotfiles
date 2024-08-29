@@ -4,14 +4,15 @@
 (defvar org-roam-group-order
   '(("Backlinks" t
      (("note" org-roam-backlinks-sort-by-date)
-      ("work" org-roam-backlinks-sort-by-date)))
+      ("work" org-roam-backlinks-sort-by-date)
+      ("book")
+      ("video")
+      ("game")
+      ("chopsticks")))
     ("Relevant items" t
      (("topic")
       ("project")
-      ("book")
-      ("video")
       ("ref")
-      ("chopsticks")
       ("contact")))
     ("Journal" nil
      (("daily" org-roam-backlinks-sort-by-date)
@@ -30,6 +31,7 @@
     ("topic"         . "🔖")
     ("chopsticks"    . "🍚")
     ("work"          . "🏢")
+    ("game"          . "🎲")
     ("plan"          . "🧭")))
 (defconst org-roam--spacer (propertize " " 'face 'variable-pitch))
 
