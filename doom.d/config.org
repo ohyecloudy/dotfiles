@@ -235,7 +235,7 @@
                  :target (file "chopsticks/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("g" "game" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n%%[%s/template/game.org]" org-roam-directory)
                  :target (file "game/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("l" "plan" plain
