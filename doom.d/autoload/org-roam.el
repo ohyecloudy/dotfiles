@@ -8,7 +8,8 @@
       ("book")
       ("video")
       ("game")
-      ("chopsticks")))
+      ("chopsticks")
+      ("coolthings")))
     ("Relevant items" t
      (("topic")
       ("project")
@@ -32,6 +33,7 @@
     ("chopsticks"    . "🍚")
     ("work"          . "🏢")
     ("game"          . "🎲")
+    ("coolthings"    . "⚙")
     ("plan"          . "🧭")))
 (defconst org-roam--spacer (propertize " " 'face 'variable-pitch))
 
