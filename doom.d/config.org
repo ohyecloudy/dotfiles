@@ -238,7 +238,7 @@
                  ,(format "#+title: ${title}\n%%[%s/template/game.org]" org-roam-directory)
                  :target (file "game/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
-                ("c" "coolthings" plain
+                ("o" "coolthings" plain
                  ,(format "#+title: ${title}\n%%[%s/template/coolthings.org]" org-roam-directory)
                  :target (file "coolthings/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
