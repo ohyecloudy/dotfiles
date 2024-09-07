@@ -179,6 +179,13 @@
            )
    #+end_src
 
+   [[https://github.com/doomemacs/doomemacs/commit/9a6bcc31f96308bc1659d90e6b7f4fcf7b1e3138][9a6bcc31f9]] 커밋에서 ellipsis를 =[...]= 으로 바꿨다. heading에 link가 있는 경우 ellipsis 문자 뒤에 =_= 문자가 보여서 지저분하다. 그래서 원래대로 기본 =org-ellipsis= 문자를 사용한다.
+
+   #+begin_src elisp :lexical t
+     (after! org
+       (setq org-ellipsis nil))
+   #+end_src
+
 *** org-roam
 
     title이 변경될 때, 파일 이름도 같이 바꾼다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
