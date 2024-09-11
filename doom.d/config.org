@@ -1028,6 +1028,17 @@
 
    나는 좀 더 빨리 도움이 필요함
 
+** treemacs
+
+   현재 버퍼에 해당 파일을 treemacs 버퍼에서 포커싱하는 follow mode를 활성화한다.
+
+   #+begin_src elisp :lexical t
+     (after! treemacs
+       (treemacs-follow-mode t))
+   #+end_src
+
+   [[https://github.com/Alexander-Miller/treemacs][Alexander-Miller/treemacs - github.com]]
+
 * syntax
 
   #+begin_src elisp
