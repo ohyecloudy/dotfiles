@@ -6,7 +6,7 @@ default_quality=70  # Default quality value
 max_attempts=3  # Maximum number of attempts
 
 directory=$1
-quality=${2:-default_quality}
+quality=${2:-$default_quality}
 maxsize_kb=${default_maxsize}
 
 # Convert KB to bytes (1KB = 1024 bytes)
