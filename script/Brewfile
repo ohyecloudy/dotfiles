@@ -1,7 +1,7 @@
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/core"
-tap "railwaycat/emacsmacport"
+tap "d12frosted/emacs-plus"
 
 # for doom emacs
 brew "coreutils"
@@ -21,8 +21,10 @@ brew "mas"
 brew "node"
 brew "ripgrep"
 brew "yt-dlp"
-brew "railwaycat/emacsmacport/emacs-mac",
-     args: ["with-modules", "with-native-compilation", "with-mac-metal"]
+brew "imagemagick"
+brew "tree-sitter"
+brew "d12frosted/emacs-plus/emacs-plus@29",
+     args: ["with-imagemagick", "with-native-comp"]
 
 cask "alt-tab"
 cask "iterm2"
