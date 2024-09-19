@@ -149,6 +149,8 @@
                                (plist-get mr :merged_at)
                                :web_url
                                (plist-get mr :web_url)
+                               :reference
+                               (plist-get (plist-get mr :references) :full)
                                ))))))
     mrs))
 
@@ -206,10 +208,10 @@
          (end-date (format "%sT00:00:00.000+09:00" end-date))
          (mrs (my/mrs project begin-date end-date)))
     (dolist (mr mrs)
-      (let ((id (plist-get mr :iid)))
+      (let ((reference (plist-get mr :reference)))
         (org-return)
         (insert "*** TODO ")
-        (insert (format "!%d" id))
+        (insert (format "%s" reference))
         (insert (format " [%s] %s"
                         (name (plist-get mr :author))
                         (plist-get mr :title)))
