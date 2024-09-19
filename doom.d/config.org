@@ -1096,7 +1096,7 @@
 
    [[https://taskjuggler.org/][taskjuggler]] 라이브러리를 exporter로 사용하는 [[https://orgmode.org/worg/exporters/taskjuggler/ox-taskjuggler.html][ox-taskjuggler]] 세팅
 
-** gitlab
+** my-gitlab
 
    #+begin_src elisp
      (require 'my-gitlab)
@@ -1104,6 +1104,32 @@
    #+end_src
 
    gitlab을 사용하면서 만들어놓은 함수
+
+   [[http://ohyecloudy.com/emacsian/2023/04/22/auth-source-easypg/][auth-source]]에 다음과 같은 private token 정보가 저장되어 있어야 한다.
+
+   #+begin_example
+     machine mygitlab.com login NOT_USED password [PRIVATE-TOKEN]
+   #+end_example
+
+   URL을 보고 API에 접근해야할 지 판단한다. 판단 근거로 사용할 host 정보를 세팅해야 한다
+
+   #+begin_src elisp :lexical t :tangle no
+     (add-to-list 'my/gitlab-hosts '(:url "http://mygitlab.com"
+                                     :api-url "http://mygitlab.com/api/v4"))
+   #+end_src
+
+   gitlab merge request 삽입은 두 가지 방법으로 지원한다.
+
+   =SPC m z m= 키로 클립보드에 저장된 URL 혹은 입력 받아서 해당 merge request 정보로 org heading을 삽입한다.
+
+   #+begin_src elisp :lexical t
+     (map! :map org-mode-map
+           :localleader
+           (:prefix ("z" . "insert")
+                    "m" #'my/gitlab-insert-heading-content))
+   #+end_src
+
+   혹은 =SPC m l c= 키로 클립보드에 저장된 URL을 org-cliplink 패키지로 링크 마크업을 삽입한다. 아래 =my-org-cliplink-confluence= 세팅 참고
 
 ** ob-csharp
 
@@ -1276,7 +1302,8 @@
      (setq my/org-cliplink-custom-retrieve-title-hook
            (lambda (url)
              (or (my/org-cliplink-confluence-title url)
-                 (my/jira-title url))))
+                 (my/jira-title url)
+                 (my/gitlab-merge-request-title url))))
    #+end_src
 
 ** my-web-archive

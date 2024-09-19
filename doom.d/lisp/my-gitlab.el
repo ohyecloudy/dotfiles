@@ -1,5 +1,109 @@
 ;;; my-gitlab.el --- gitlab helper package
 
+(defcustom my/gitlab-hosts '()
+  "Property List of giltab host
+    Ecah element has the form '((:url MY_GITLAB :api-url MY_GITLAB))"
+  :type '(plist)
+  :group 'my-gitlab)
+
+(defun my/gitlab-insert-heading-content ()
+  (interactive)
+  (let* ((url (my/gitlab--url-clipboard-or-prompt))
+         (content (my/gitlab-merge-request url))
+         (reference (plist-get content :reference))
+         (title (plist-get content :title)))
+    (org-insert-heading)
+    (insert (format "%s %s [/]" reference title))
+    (org-update-statistics-cookies nil)
+    (org-set-property "URL" url)))
+
+(defun my/gitlab-merge-request-title (url)
+  (when-let (content (my/gitlab-merge-request url))
+    (concat (plist-get content :reference) " " (plist-get content :title))))
+
+(defun my/gitlab-merge-request (url)
+  (when-let* ((host (my/gitlab--find-host url my/gitlab-hosts))
+              (request-url (my/gitlab--merge-request-url url host))
+              (header (my/gitlab--auth (plist-get host :url)))
+              (content (my/gitlab--get-merge-request request-url header)))
+    content))
+
+(defun my/gitlab--url-clipboard-or-prompt ()
+  (let ((clipboard-content (gui-get-selection 'CLIPBOARD)))
+    (if (and clipboard-content (string-match-p "^http" clipboard-content))
+        clipboard-content
+      (read-string "Enter URL: "))))
+
+(defun my/gitlab--merge-request-url (web-url host)
+  (when-let* ((host-url (plist-get host :url))
+              (host-api-url (plist-get host :api-url))
+              (groups-mr-id (my/gitlab--extract-groups-and-mr-id web-url host-url)))
+    (concat host-api-url
+            "/projects/"
+            (url-hexify-string (plist-get groups-mr-id :groups))
+            "/merge_requests/"
+            (int-to-string (plist-get groups-mr-id :mr-id)))))
+
+(defun my/gitlab--auth (host-url)
+  (when-let* ((url (my/gitlab--remove-protocol host-url))
+              (private-token (my/gitlab--private-token url)))
+    `("PRIVATE-TOKEN" . ,private-token)))
+
+(defun my/gitlab--remove-protocol (url)
+  (let* ((parsed (url-generic-parse-url url))
+         (host (url-host parsed))
+         (path (url-filename parsed)))
+    (format "%s%s" host path)))
+
+(defun my/gitlab--private-token (host)
+  (when-let* ((found (auth-source-search
+                      :host host
+                      :requires '(:secret)))
+              (first-found (nth 0 found))
+              (private-token (funcall (plist-get first-found :secret))))
+    private-token))
+
+(defun my/gitlab--find-host (url hosts)
+  (car (seq-filter (lambda (elem)
+                     (let ((host-url (plist-get elem :url)))
+                       (string-match-p (concat "^" (regexp-quote host-url)) url)))
+                   hosts)))
+
+(defun my/gitlab--get-merge-request (url auth-header)
+  (let ((filter-fun (lambda (content)
+                      (let* ((title (plist-get content :title))
+                             (description (plist-get content :description))
+                             (web-url (plist-get content :web_url))
+                             (reference (plist-get (plist-get content :references) :full)))
+                        (list :title title :reference reference :web-url web-url :description description)))))
+    (my/gitlab--get url
+                    auth-header
+                    filter-fun)))
+
+(defun my/gitlab--get (url authorization-header filter-fun)
+  (let ((url-request-extra-headers `(,authorization-header
+                                     ("Content-type" . "application/json; charset=utf-8")))
+        (json-key-type 'keyword)
+        (json-object-type 'plist))
+    (with-temp-buffer
+      (url-insert-file-contents url)
+      (let ((content (json-read)))
+        (funcall filter-fun content)))))
+
+(defun my/gitlab--extract-groups-and-mr-id (url end_point)
+  (let* ((url-without-endpoint (replace-regexp-in-string (concat "^" end_point) "" url))
+         (url_parts (split-string url-without-endpoint "/-/"))
+         (mr-id (my/gitlab--merge-request-id (cadr url_parts))))
+    (list :groups (my/gitlab-remove-leading-slash (car url_parts)) :mr-id mr-id)))
+
+(defun my/gitlab--merge-request-id (url)
+  (save-match-data
+    (if (string-match "/?merge_requests/\\([0-9]+\\)" url)
+        (string-to-number (match-string 1 url)))))
+
+(defun my/gitlab-remove-leading-slash (url)
+  (replace-regexp-in-string "^/" "" url))
+
 (defun my-gitlab-open-todo ()
   (interactive)
   (when (not (boundp 'gitlab-api-url)) (throw 'gitlab-api-url "not bound"))
