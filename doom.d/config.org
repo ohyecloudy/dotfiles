@@ -1525,14 +1525,6 @@
 
   디폴트 메이저 모드로 org-mode를 사용한다. fundamental mode를 거의 사용하지 않아서 자주 사용하는 org-mode로 세팅
 
-* org-roam-db-sync - long-time func
-
-  emacs를 띄우면 가장 먼저 호출하는 함수. config에 같이 넣는다.
-
-  #+begin_src elisp :lexical t
-    (org-roam-db-sync)
-  #+end_src
-
 * TODO 설정
 
   #+begin_src elisp :tangle no
