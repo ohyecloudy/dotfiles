@@ -285,6 +285,16 @@
         (add-hook 'org-roam-buffer-postrender-functions #'magit-section-show-level-2))
     #+end_src
 
+    =SPC n r t= 키를 누르면 org roam 변경 사항에 대한 커밋을 만들어낸다
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (map! :map org-mode-map
+              (:prefix-map ("n" . "notes")
+                           (:prefix ("r" . "roam")
+                            :desc "commit org-roam" "t" #'my/org-roam-commit))))
+    #+end_src
+
 *** org-roam optimization
 
     =org-roam-node-find=, =org-roam-node-insert= 에서 호출하는 =org-roam-node-read--completions= 함수가 느려서 최적화를 진행

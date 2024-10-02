@@ -187,3 +187,36 @@ Calls `org-roam-update-slug-h' on `after-save-hook'."
             (org-roam-db-autosync--setup-file-h))
         (error
          (setq org-roam-old-slug old-slug))))))
+
+(defun my/org-roam-commit ()
+  "Commit all changes in the current org-roam project."
+  (interactive)
+  (when-let* ((_ org-roam-directory)
+              (commit-message (format ":star: %s" (format-time-string "%Y-%m-%d" (current-time))))
+              (default-directory org-roam-directory))
+    (magit-call-git "add" ".")
+    (if (string= commit-message
+                 (get-latest-unpushed-commit-message org-roam-directory))
+        (magit-call-git "commit" "--amend" "-m" commit-message)
+      (magit-call-git "commit" "-m" commit-message))))
+
+(defun get-latest-unpushed-commit-message (directory)
+  "Get the most recent unpushed commit message."
+  (when-let* ((default-directory directory)
+              (unpushed-commits (magit-git-string
+                                 "log" "--format=%s" "@{u}..HEAD"))
+              (latest (car (split-string unpushed-commits "\n"))))
+    latest))
+
+(defun my/org-roam-save-all-buffers ()
+  "Save all modified buffers in the current org-roam project."
+  (when-let* ((modified-buffers (cl-remove-if-not (lambda (buf)
+                                                    (and (buffer-file-name buf)
+                                                         (buffer-modified-p buf)))
+                                                  (org-roam-buffer-list))))
+    (if (null modified-buffers)
+        (message "[Org-roam] No buffers need saving")
+      (dolist (buf modified-buffers)
+        (with-current-buffer buf
+          (save-buffer)))
+      (message "[Org-roam] Saved %d buffers" (length modified-buffers)))))
