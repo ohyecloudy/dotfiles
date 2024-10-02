@@ -289,7 +289,7 @@
 
     #+begin_src elisp :lexical t
       (after! org-roam
-        (map! :map org-mode-map
+        (map! :leader
               (:prefix-map ("n" . "notes")
                            (:prefix ("r" . "roam")
                             :desc "commit org-roam" "t" #'my/org-roam-commit))))
