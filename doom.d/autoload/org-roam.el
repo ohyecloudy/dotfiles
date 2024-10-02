@@ -1,6 +1,8 @@
 ;;; autoload/org-roam.el -*- lexical-binding: t; -*-
 ;; https://github.com/hlissner/.doom.d/blob/master/autoload/hlissner.el 참고
 
+(require 'magit)
+
 (defvar org-roam-group-order
   '(("Backlinks" t
      (("note" org-roam-backlinks-sort-by-date)
@@ -188,6 +190,7 @@ Calls `org-roam-update-slug-h' on `after-save-hook'."
         (error
          (setq org-roam-old-slug old-slug))))))
 
+;;;###autoload
 (defun my/org-roam-commit ()
   "Commit all changes in the current org-roam project."
   (interactive)
