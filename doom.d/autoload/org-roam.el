@@ -201,7 +201,8 @@ Calls `org-roam-update-slug-h' on `after-save-hook'."
     (if (string= commit-message
                  (get-latest-unpushed-commit-message org-roam-directory))
         (magit-call-git "commit" "--amend" "-m" commit-message)
-      (magit-call-git "commit" "-m" commit-message))))
+      (magit-call-git "commit" "-m" commit-message)))
+  (message "Committed changes to org-roam"))
 
 (defun get-latest-unpushed-commit-message (directory)
   "Get the most recent unpushed commit message."
