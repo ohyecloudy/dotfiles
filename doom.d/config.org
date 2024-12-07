@@ -780,7 +780,7 @@
                    (setq evil-input-method nil))))
    #+end_src
 
-   편집 모드를 나갈 때, 입력기(input method)를 초기화 시킨다. 편집 모드로 들어갈 때, 무조건 영문을 기본으로 해서 이전 편집 모드에서 한글을 입력하던 중이었는지 영문을 입력하던 중이었는지 생각할 필요가 없게 한다. 편집 모드로 들어갈 때, 이전 상태를 기억 못하거나 모드 라인(mode line)에 표시된 입력기 상태를 못 봐서 잘못 입력하는 실수를 줄이려고 통일한다.
+   [[https://ohyecloudy.com/emacsian/2024/12/07/evil-mode-initialize-input-method/][편집 모드를 나갈 때, 입력기(input method)를 초기화 시킨다]]. 편집 모드로 들어갈 때, 무조건 영문을 기본으로 해서 이전 편집 모드에서 한글을 입력하던 중이었는지 영문을 입력하던 중이었는지 생각할 필요가 없게 한다. 편집 모드로 들어갈 때, 이전 상태를 기억 못하거나 모드 라인(mode line)에 표시된 입력기 상태를 못 봐서 잘못 입력하는 실수를 줄이려고 통일한다.
 
    #+begin_src elisp
      (setq +evil-want-o/O-to-continue-comments nil)
