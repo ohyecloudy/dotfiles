@@ -1095,7 +1095,7 @@
 
 ** ox-taskjuggler
 
-   #+begin_src elisp
+   #+begin_src elisp :tangle no
      (require 'ox-taskjuggler)
      (progn
        (load-file (expand-file-name "lisp/taskjuggler-setting.el" doom-user-dir))
