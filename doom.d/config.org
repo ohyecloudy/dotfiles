@@ -40,10 +40,10 @@
   버퍼 파일 이름을 타이틀바로 표시한다
 
   #+begin_src elisp
-    (setq display-line-numbers-type nil)
+    (setq display-line-numbers-type 'visual)
   #+end_src
 
-  속도가 느려져서 line number 표시를 안 함
+  evil 키이동 활용성을 높이려고 visual로 세팅. relative는 folding을 고려하지 않지만 visual은 고려한다.
 
 * hangul
 
