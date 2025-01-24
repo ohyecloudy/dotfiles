@@ -4,6 +4,12 @@ set -e
 set -x
 
 cd ~/org_roam
+
+if git diff-index --quiet HEAD --; then
+    echo "No changes to commit"
+    exit 0
+fi
+
 git add .
 git commit -m ":star: `date +%Y-%m-%d`" || true
 git push
