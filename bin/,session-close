@@ -5,11 +5,22 @@ set -x
 
 cd ~/org_roam
 
-if git diff-index --quiet HEAD --; then
-    echo "No changes to commit"
-    exit 0
-fi
-
 git add .
 git commit -m ":star: `date +%Y-%m-%d`" || true
-git push
+
+CURRENT_BRANCH=$(git branch --show-current)
+git fetch origin $CURRENT_BRANCH > /dev/null 2>&1
+LOCAL=$(git rev-parse $CURRENT_BRANCH)
+REMOTE=$(git rev-parse origin/$CURRENT_BRANCH)
+BASE=$(git merge-base $CURRENT_BRANCH origin/$CURRENT_BRANCH)
+
+if [ "$LOCAL" = "$REMOTE" ]; then
+  echo "The local branch is up-to-date with the remote branch. No push needed."
+elif [ "$LOCAL" = "$BASE" ]; then
+  echo "The local branch is behind the remote branch. Push is not allowed. Please pull first."
+elif [ "$REMOTE" = "$BASE" ]; then
+  echo "The local branch is ahead of the remote branch. Pushing changes."
+  git push
+else
+  echo "The local and remote branches have diverged. There is a risk of conflicts. Push is not allowed."
+fi
