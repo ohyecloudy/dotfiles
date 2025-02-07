@@ -89,7 +89,7 @@
          (set-face-attribute 'default nil :family "Consolas")
          (set-fontset-font t 'hangul (font-spec :family "D2Coding"))
          (set-face-attribute 'default nil :height 140)
-         (set-default 'line-spacing 0.2)))
+         (set-default 'line-spacing 0)))
    #+end_src
 
    =doom-font= 심볼에 폰트를 바인딩하면 한글 폰트만 D2Coding으로 변경하는 설정이 제대로 동작하지 않는다. 그래서 무식하게 세팅한다.
@@ -102,7 +102,7 @@
          (set-face-attribute 'default nil :family "Consolas")
          (set-fontset-font t 'hangul (font-spec :family "D2Coding"))
          (set-face-attribute 'default nil :height 110)
-         (set-default 'line-spacing 0.2)))
+         (set-default 'line-spacing 0)))
    #+end_src
 
    macos 모듈을 참고해서 키 바인딩을 비슷하게 설정함
@@ -800,25 +800,6 @@
    #+end_src
 
    splitting 이후 포커스를 옮긴다
-
-*** evil scroll과 line-spacing을 같이 쓰기 위한 WORKAROUND
-
-    #+begin_src elisp :lexical t
-      (after! evil
-        (defun my-evil-get-scroll-count (count)
-          "Given a user-supplied COUNT, return scroll count."
-          (let ((line-count (/ (window-body-height nil t)
-                               (default-line-height))))
-            (cl-flet ((posint (x) (and (natnump x) (< 0 x) x)))
-              (or (posint count)
-                  (posint evil-scroll-count)
-                  (/ line-count 2)))))
-        (advice-add 'evil--get-scroll-count :override #'my-evil-get-scroll-count))
-    #+end_src
-
-    =(window-body-height)= 함수 리턴값을 2로 나누는 기존 구현 방법을 사용하지 않는다. 가독성을 위해 =line-spacing= 값을 =0.2= 로 세팅하는데, =(window-body-height)= 리턴값은 이걸 반영하지 않는 height를 리턴한다. 즉 =line-spacing= 값이 =0= 일때를 기준으로 한 값을 리턴한다.
-
-    그래서 pixel 단위로 =(window-body-height)= 값을 구하고 이걸 =(default-line-height)= 값으로 나눠서 실제 화면에 표시되는 라인 수를 구한다.
 
 ** lsp
 
