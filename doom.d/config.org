@@ -86,9 +86,10 @@
    #+begin_src elisp
      (after! doom-themes
        (when IS-MAC
-         (set-frame-font "Consolas-14" nil t)
-         (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
-         (setq-default line-spacing 3)))
+         (set-face-attribute 'default nil :family "Consolas")
+         (set-fontset-font t 'hangul (font-spec :family "D2Coding"))
+         (set-face-attribute 'default nil :height 140)
+         (set-default 'line-spacing 0.2)))
    #+end_src
 
    =doom-font= 심볼에 폰트를 바인딩하면 한글 폰트만 D2Coding으로 변경하는 설정이 제대로 동작하지 않는다. 그래서 무식하게 세팅한다.
@@ -98,9 +99,10 @@
    #+begin_src elisp
      (after! doom-themes
        (when IS-WINDOWS
-         (set-frame-font "Consolas-11" nil t)
-         (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
-         (setq-default line-spacing 8)))
+         (set-face-attribute 'default nil :family "Consolas")
+         (set-fontset-font t 'hangul (font-spec :family "D2Coding"))
+         (set-face-attribute 'default nil :height 110)
+         (set-default 'line-spacing 0.2)))
    #+end_src
 
    macos 모듈을 참고해서 키 바인딩을 비슷하게 설정함
