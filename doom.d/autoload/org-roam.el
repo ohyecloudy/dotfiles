@@ -17,7 +17,8 @@
      (("topic")
       ("project")
       ("ref")
-      ("contact")))
+      ("contact")
+      ("career")))
     ("Journal" nil
      (("daily" org-roam-backlinks-sort-by-date)
       ("retrospective" org-roam-backlinks-sort-by-date)
@@ -38,6 +39,7 @@
     ("game"          . "🎲")
     ("coolthings"    . "⚙")
     ("place"         . "🌍")
+    ("career"        . "🚀")
     ("plan"          . "🧭")))
 (defconst org-roam--spacer (propertize " " 'face 'variable-pitch))
 
