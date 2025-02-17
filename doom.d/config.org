@@ -895,13 +895,11 @@
 ** atomic-chrome
 
     #+begin_src elisp :tangle packages.el
-      (when IS-MAC
-        (package! atomic-chrome))
+      (package! atomic-chrome)
     #+end_src
 
-    #+begin_src elisp :exports both
-      (when IS-MAC
-        (atomic-chrome-start-server))
+    #+begin_src elisp :lexical t
+      (atomic-chrome-start-server)
     #+end_src
 
     웹브라우저 textarea를 emacs로 편집할 수 있게 해준다. [[https://chrome.google.com/webstore/detail/ghosttext/godiecgffnchndlihlpaajjcplehddca/related][GhostText 크롬 확장]]을 설치해야 한다. 크롬뿐만 아니라 거의 대부분의 웹브라우저를 다 지원한다. 웹브라우저 확장과 통신할 [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]] 패키지를 설치한다.
