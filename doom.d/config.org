@@ -892,6 +892,15 @@
 
    vertico는 =post-command-hook= 을 사용해서 증분 완성(incremental completion)을 수행한다. 영문 입력시 =post-command-hook= 이 잘 발동하지만 조합해서 입력하는 한글은 =post-command-hook= 이 호출되지 않는다. helm 동작 방법을 참고해 timer를 돌려서 해결했다.
 
+   빠른 접근을 위해 =vertico-indexed-mode= 활성화
+
+   #+begin_src elisp :lexical t
+     (after! vertico
+       (vertico-indexed-mode 1))
+   #+end_src
+
+   =C-NUM RET= 키로 동작한다. 5번이 붙은 후보를 바로 사용하려면 =C-5 RET= 키를 누르면 된다.
+
 ** atomic-chrome
 
     #+begin_src elisp :tangle packages.el
