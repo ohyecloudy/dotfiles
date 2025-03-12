@@ -24,11 +24,6 @@
         xargs -n 1 git branch -d;"
     unmerged = diff --name-only --diff-filter=U
     rebase-branches = "!git co master && git branch | grep -v \\\\* | xargs -n 1 git rebase master;"
-    pu = "!f() { \
-        [[ $(git config \"branch.$(git symbolic-ref --short HEAD).merge\") = '' ]] && \
-        git push -u origin $(git symbolic-ref --short HEAD) $@ || \
-        git push $@; \
-        }; f"
     stsh = stash --keep-index
     staash = stash --include-untracked
     p4 = "!python.exe 'c:\\git-sdk-64\\mingw64\\libexec\\git-core\\git-p4'"
@@ -45,8 +40,12 @@
     rebase = true
 [push]
     default = simple
+    autoSetupRemote = true
+    followTags = true
 [fetch]
     prune = true
+    pruneTags = true
+    all = true
 [magit]
     hideCampaign = true
 [filter "lfs"]
@@ -57,7 +56,30 @@
 [gc]
     # windows에서 magit 속도 향상 https://magit.vc/manual/magit/Microsoft-Windows-Performance.html
     auto = 256
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
 [diff "org"]
     xfuncname = "^(\\*+ +.*|#\\+title:.*)$"
 [diff "lisp"]
     xfuncname = "^(((;;;+ )|\\(|([ \t]+\\(((cl-|el-patch-)?def(un|var|macro|method|custom)|gb/))).*)$"
+[column]
+    #
+    ui = auto
+[branch]
+    sort = -committerdate
+[tag]
+    sort = version:refname
+[init]
+    defaultBranch = main
+[help]
+    autocorrect = prompt
+[commit]
+    verbose = true
+[rerere]
+    enabled = true
+    autoupdate = true
+[merge]
+    conflictstyle = zdiff3
