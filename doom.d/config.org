@@ -1392,6 +1392,42 @@
                                                       #'my/web-archive-with-webpage-title))))
    #+end_src
 
+** my-open-log-file
+
+   =tail -f= 로 파일을 연 것처럼 Emacs 버퍼로 파일을 연다.
+
+   =my/project-log-path= 변수에 프로젝트 이름과 로그 파일 path를 association list로 정의한다.
+
+   #+begin_src elisp :tangle no
+     (setq my/project-log-path '(("project 1" . "~/some.log")
+                                 ("project 2" . "~/project2/logs/log.txt")))
+   #+end_src
+
+   #+begin_src elisp :lexical t
+     (defun my/open-log-file (project-log-key)
+       (interactive
+        (list
+         (completing-read "project: " (mapcar #'car my/project-log-path))))
+       (let ((path (cdr (assoc project-log-key my/project-log-path))))
+         (if (file-exists-p path)
+             (progn
+               (find-file-other-window path)
+               (auto-revert-tail-mode 1)
+               (read-only-mode 1)
+               (goto-char (point-max)))
+           (message (concat "log file not found - " path)))))
+   #+end_src
+
+   =SPC o q= 바인딩으로 로그 파일을 열 수 있다
+
+   #+begin_src elisp :lexical t
+     (map! :leader
+           (:prefix-map ("o" . "open")
+            :desc "Open log file" "q" #'my/open-log-file))
+   #+end_src
+
+   [[https://ohyecloudy.com/emacsian/2017/12/02/auto-revert-tail-mode/][tail -f {unity 로그 파일} - (emacsian ohyecloudy) - ohyecloudy.com]] 참고
+
 * my functions
 
   #+begin_src elisp
