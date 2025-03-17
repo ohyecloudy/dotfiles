@@ -37,10 +37,10 @@
     ("chopsticks"    . "🍚")
     ("work"          . "🏢")
     ("game"          . "🎲")
-    ("coolthings"    . "⚙")
+    ("coolthings"    . "🐚")
     ("place"         . "🌍")
     ("career"        . "🚀")
-    ("plan"          . "🧭")))
+    ("plan"          . "📍")))
 (defconst org-roam--spacer (propertize " " 'face 'variable-pitch))
 
 ;;;###autoload (autoload 'org-roam-node-doom-icon "lang/org/autoload/contrib-roam2" nil t)
