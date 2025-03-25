@@ -1073,6 +1073,25 @@
 
    [[https://github.com/Alexander-Miller/treemacs][Alexander-Miller/treemacs - github.com]]
 
+** geiser - Scheme
+
+   org-mode babel에서 scheme을 사용할 수 있게 세팅한다
+
+   #+begin_src elisp :lexical t
+     (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((scheme . t)))
+   #+end_src
+
+   source block에서 =:session=, =:var= 를 사용할 수 있다.
+
+   #+begin_example
+     ,#+header: :session :var message="Hello World!"
+     ,#+begin_src scheme
+     message
+     ,#+end_src
+   #+end_example
+
 * syntax
 
   #+begin_src elisp
