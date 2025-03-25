@@ -1209,7 +1209,8 @@
             :desc "thesaurus"        "t"     #'my/search-thesaurus
             :desc "elixir"           "x"     #'my/search-elixir
             :desc "flutter"          "f"     #'my/search-flutter
-            :desc "my blogs"         "b"     #'my/search-blogs))
+            :desc "my blogs"         "b"     #'my/search-blogs
+            :desc "perplexity"       "p"     #'my/search-perplexity))
    #+end_src
 
    검색 함수를 키에 바인딩함
