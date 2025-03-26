@@ -90,6 +90,14 @@
     )
   )
 
+(defun my/search-chatgpt ()
+  (interactive)
+  (let ((search-terms (my/search--use-region-or-read-user-input)))
+    (my/search--browse "https://chat.openai.com"
+                       `(("q" ,search-terms)))
+    )
+  )
+
 (defun my/search--browse (base-url query-string-list)
   (let* ((query-string (url-build-query-string query-string-list))
          (url (format "%s?%s" base-url query-string)))
