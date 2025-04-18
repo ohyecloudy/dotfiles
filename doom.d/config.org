@@ -7,8 +7,8 @@
 * name, email
 
   #+begin_src elisp
-    (setq user-full-name "Jongbin Oh"
-          user-mail-address "ohyecloudy@gmail.com")
+    (setopt user-full-name "Jongbin Oh"
+            user-mail-address "ohyecloudy@gmail.com")
   #+end_src
 
   GPG configuration, email clients, file templates, snippets 등에 사용할 신원 정보 세팅
@@ -17,7 +17,7 @@
 
   #+begin_src elisp
     (after! doom-themes
-      (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc")))
+      (setopt auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc")))
   #+end_src
 
   디폴트값으로 돌림
@@ -40,7 +40,7 @@
   버퍼 파일 이름을 타이틀바로 표시한다
 
   #+begin_src elisp
-    (setq display-line-numbers-type 'visual)
+    (setopt display-line-numbers-type 'visual)
   #+end_src
 
   evil 키이동 활용성을 높이려고 visual로 세팅. relative는 folding을 고려하지 않지만 visual은 고려한다.
@@ -120,7 +120,7 @@
 * startup
 
   #+begin_src elisp
-    (setq initial-frame-alist '((fullscreen . maximized)))
+    (setopt initial-frame-alist '((fullscreen . maximized)))
   #+end_src
 
   귀한 emacs. 최대 크기로 시작한다.
@@ -136,7 +136,7 @@
 * tab -> space
 
   #+begin_src elisp
-    (setq indent-tabs-mode nil)
+    (setopt indent-tabs-mode nil)
   #+end_src
 
 * cc-mode
@@ -159,7 +159,7 @@
 ** doom theme
 
    #+begin_src elisp
-     (setq
+     (setopt
       doom-theme 'doom-vibrant
       doom-themes-enable-bold nil
       doom-themes-enable-italic nil)
@@ -176,16 +176,16 @@
 ** org
 
    #+begin_src elisp :lexical t
-     (setq org-roam-directory (file-truename "~/org_roam")
-           ;; org-agenda-files (list org-directory) ;; agenda를 사용하면 파일이 많아서 로딩 시간이 너무 오래 걸림
-           )
+     (setopt org-roam-directory (file-truename "~/org_roam")
+             ;; org-agenda-files (list org-directory) ;; agenda를 사용하면 파일이 많아서 로딩 시간이 너무 오래 걸림
+             )
    #+end_src
 
    [[https://github.com/doomemacs/doomemacs/commit/9a6bcc31f96308bc1659d90e6b7f4fcf7b1e3138][9a6bcc31f9]] 커밋에서 ellipsis를 =[...]= 으로 바꿨다. heading에 link가 있는 경우 ellipsis 문자 뒤에 =_= 문자가 보여서 지저분하다. 그래서 원래대로 기본 =org-ellipsis= 문자를 사용한다.
 
    #+begin_src elisp :lexical t
      (after! org
-       (setq org-ellipsis nil))
+       (setopt org-ellipsis nil))
    #+end_src
 
 *** org-roam
@@ -202,74 +202,74 @@
 
     #+begin_src elisp :lexical t
       (after! org-roam
-        (setq org-roam-capture-templates
-              `(("n" "note" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
-                 :target (file "note/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("t" "topic" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/topic.org]" org-roam-directory)
-                 :target (file "topic/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("w" "work" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/work.org]" org-roam-directory)
-                 :target (file "work/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("r" "weekly retrospective" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/retrospective-weekly.org]" org-roam-directory)
-                 :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("e" "retrospective" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/retrospective.org]" org-roam-directory)
-                 :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("f" "ref" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/ref.org]" org-roam-directory)
-                 :target (file "ref/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("c" "contact" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/contact.org]" org-roam-directory)
-                 :target (file "contact/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("b" "book" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/book.org]" org-roam-directory)
-                 :target (file "book/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("v" "video" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/video.org]" org-roam-directory)
-                 :target (file "video/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("h" "chopsticks" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
-                 :target (file "chopsticks/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("g" "game" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/game.org]" org-roam-directory)
-                 :target (file "game/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("o" "coolthings" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/coolthings.org]" org-roam-directory)
-                 :target (file "coolthings/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("l" "plan" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
-                 :target (file "plan/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("a" "place" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
-                 :target (file "place/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("s" "career" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
-                 :target (file "career/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
-                ("p" "project" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
-                 :target (file "project/%<%Y%m%d>-${slug}.org")
-                 :unnarrowed t))
-              org-roam-dailies-capture-templates
-              `(("d" "default" plain ""
-                 :target (file+head "%<%Y-%m-%d>.org" ,(format "%%[%s/template/journal.org]" org-roam-directory))))))
+        (setopt org-roam-capture-templates
+                `(("n" "note" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                   :target (file "note/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("t" "topic" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/topic.org]" org-roam-directory)
+                   :target (file "topic/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("w" "work" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/work.org]" org-roam-directory)
+                   :target (file "work/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("r" "weekly retrospective" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/retrospective-weekly.org]" org-roam-directory)
+                   :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("e" "retrospective" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/retrospective.org]" org-roam-directory)
+                   :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("f" "ref" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/ref.org]" org-roam-directory)
+                   :target (file "ref/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("c" "contact" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/contact.org]" org-roam-directory)
+                   :target (file "contact/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("b" "book" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/book.org]" org-roam-directory)
+                   :target (file "book/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("v" "video" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/video.org]" org-roam-directory)
+                   :target (file "video/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("h" "chopsticks" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                   :target (file "chopsticks/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("g" "game" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/game.org]" org-roam-directory)
+                   :target (file "game/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("o" "coolthings" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/coolthings.org]" org-roam-directory)
+                   :target (file "coolthings/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("l" "plan" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                   :target (file "plan/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("a" "place" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                   :target (file "place/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("s" "career" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                   :target (file "career/%<%Y%m%d%H%M%S>-${slug}.org")
+                   :unnarrowed t)
+                  ("p" "project" plain
+                   ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
+                   :target (file "project/%<%Y%m%d>-${slug}.org")
+                   :unnarrowed t))
+                org-roam-dailies-capture-templates
+                `(("d" "default" plain ""
+                   :target (file+head "%<%Y-%m-%d>.org" ,(format "%%[%s/template/journal.org]" org-roam-directory))))))
     #+end_src
 
     backlink를 카테고리로 나눠서 분류해 보여준다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
@@ -313,7 +313,7 @@
 
     #+begin_src elisp :lexical t
       (after! org-roam
-        (setq org-roam-node-default-sort nil))
+        (setopt org-roam-node-default-sort nil))
     #+end_src
 
     [[https://github.com/skeeto/emacs-memoize/][skeeto/emacs-memoize/ - github.com]] 설치
@@ -355,7 +355,7 @@
 
     #+begin_src elisp
       (after! org
-        (setq
+        (setopt
          ;; quote와 verse block도 배경 색상을 바꾼다
          org-fontify-quote-and-verse-blocks t
          ;; heading *를 한 개만 보여준다.
@@ -378,8 +378,8 @@
 
     #+begin_src elisp
       (after! org
-        (setq org-startup-indented nil
-              org-src-preserve-indentation nil))
+        (setopt org-startup-indented nil
+                org-src-preserve-indentation nil))
     #+end_src
 
     emacs에서 org mode일 때, indentation을 적용하는 기능을 끈다. 이 기능을 끄면 emacs가 아닌 다른 에디터로 org 파일을 볼 때도 space로 indentation을 적용한 상태이다.
@@ -388,22 +388,22 @@
 
     #+begin_src elisp
       (after! org
-        (setq org-todo-keywords
-              '((sequence
-                 "TODO"
-                 "STARTED"
-                 "|"
-                 "DONE"))
-              org-todo-keyword-faces
-              '(("STARTED" . +org-todo-active))))
+        (setopt org-todo-keywords
+                '((sequence
+                   "TODO"
+                   "STARTED"
+                   "|"
+                   "DONE"))
+                org-todo-keyword-faces
+                '(("STARTED" . +org-todo-active))))
     #+end_src
 
     org 모듈에서 정의한 =+org-todo-active= 페이스를 사용하기에 org 모듈을 로드한 후에 실행해야 한다.
 
     #+begin_src elisp
       (after! org
-        (setq org-blank-before-new-entry
-              '((heading . t) (plain-list-item . nil))))
+        (setopt org-blank-before-new-entry
+                '((heading . t) (plain-list-item . nil))))
     #+end_src
 
     heading 사이에는 반드시 빈 줄이 들어가게 한다. plan list item 사이에는 무조건 제거한다.
@@ -421,7 +421,7 @@
 
     #+begin_src elisp
       (after! org
-        (setq org-M-RET-may-split-line '((default . t))))
+        (setopt org-M-RET-may-split-line '((default . t))))
     #+end_src
 
     =M-RET= 키로 라인을 분리할 수 있게 한다. org module에서 nil 값을 바인딩한 걸 디폴트 값으로 돌림.
@@ -449,14 +449,14 @@
 
     #+begin_src elisp
       (after! org-clock
-        (setq org-clock-persist-query-resume nil))
+        (setopt org-clock-persist-query-resume nil))
     #+end_src
 
     active clock이 있을 때, 물어보지 않고 재개한다. [[http://ohyecloudy.com/emacsian/2017/10/14/org-clock-persistence/][#orgmode emacs를 꺼도 org-clock은 굴러간다 - ohyecloudy.com]] 참고
 
     #+begin_src elisp
       (after! org-clock
-        (setq org-clock-idle-time 15))
+        (setopt org-clock-idle-time 15))
     #+end_src
 
     15분을 자리비움 감지 기준으로 설정. [[http://ohyecloudy.com/emacsian/2017/11/04/org-dealing-with-idle-time/][#orgmode idle 시간 다루기 - ohyecloudy.com]] 참고
@@ -464,23 +464,23 @@
     #+begin_src elisp
       (after! org
         ;; org-set-effort 함수 실행 시 나오는 preset 리스트
-        (setq org-global-properties
-              '(("Effort_ALL" .
-                 "1h 2h 3h 4h 8h 16h 24h 32h 40h 0.5h")))
+        (setopt org-global-properties
+                '(("Effort_ALL" .
+                   "1h 2h 3h 4h 8h 16h 24h 32h 40h 0.5h")))
 
         ;; org-columns에서 effort를 볼 수 있게 추가
-        (setq org-columns-default-format "%50ITEM(Task) %10Effort{:} %10CLOCKSUM")
+        (setopt org-columns-default-format "%50ITEM(Task) %10Effort{:} %10CLOCKSUM")
 
         ;; org-clock-report 기본 프로퍼티
-        (setq org-clock-clocktable-default-properties
-              '(:maxlevel 2 :scope file :narrow 30! :properties ("effort"))))
+        (setopt org-clock-clocktable-default-properties
+                '(:maxlevel 2 :scope file :narrow 30! :properties ("effort"))))
     #+end_src
 
     추정 시간에 관련된 설정. 추정 시간 입력시 preset 리스트를 추가하고 =org-columns= 명령과 =org-clock-report= 명령에서 추정 시간을 볼 수 있게 세팅. [[http://ohyecloudy.com/emacsian/2017/09/09/org-effort-estimates/][#orgmode 추정(estimate) 작업 시간 기록 - ohyecloudy.com]] 참고
 
     #+begin_src elisp
       (after! org
-        (setq org-duration-format (quote h:mm)))
+        (setopt org-duration-format (quote h:mm)))
     #+end_src
 
     기간 포맷으로 시간:분 사용. 24시가 넘어갈 때, 1d로 표현하는 게 보기 싫어서 세팅. [[http://ohyecloudy.com/emacsian/2017/11/25/org-duration-format/][#orgmode 하루가 넘어가도 clock table 기간 필드에 시간과 분으로만 표시 - ohyecloudy.com]] 참고
@@ -497,7 +497,7 @@
 
     #+begin_src elisp
       (after! org
-        (setq org-show-notification-handler (lambda (notification) (message notification))))
+        (setopt org-show-notification-handler (lambda (notification) (message notification))))
     #+end_src
 
     쓴 시간이 effort를 넘었을 때, 나오는 desktop notification을 끈다. Task 'some tasks' should be finished by now. (1:00)
@@ -518,22 +518,22 @@
 
     #+begin_src elisp
       (after! org
-        (setq org-enforce-todo-dependencies nil))
+        (setopt org-enforce-todo-dependencies nil))
     #+end_src
 
     자식 todo가 완료되어야만 부모 heading을 done으로 바꿀 수 있는 제한을 푼다. org clock out을 DONE 상태와 연동해서 사용하기 때문.
 
     #+begin_src elisp
       (after! org
-        (setq org-tag-alist '((:startgroup . nil)
-                              ("blog" . ?b)
-                              (:endgroup . nil))))
+        (setopt org-tag-alist '((:startgroup . nil)
+                                ("blog" . ?b)
+                                (:endgroup . nil))))
     #+end_src
 
     미리 정의된 tag를 설정
 
     #+begin_src elisp
-      (setq org-element-use-cache nil)
+      (setopt org-element-use-cache nil)
     #+end_src
 
     #+begin_example
@@ -674,7 +674,7 @@
 
     #+begin_src elisp
       (after! org
-        (setq org-export-with-sub-superscripts nil))
+        (setopt org-export-with-sub-superscripts nil))
     #+end_src
 
     [[http://ohyecloudy.com/emacsian/2019/01/12/org-export-with-sub-superscripts/][#orgmode 익스포트 할 때, underscore가 subscripts로 바뀌는 걸 억제 - ohyecloudy.com]]
@@ -683,7 +683,7 @@
 
    #+begin_src elisp
      (after! doom-modeline
-       (setq
+       (setopt
         ;; 현재 위치를 쬐깐하게 보여준다
         doom-modeline-hud t
         ;; 경로가 아니라 파일 이름만 모드라인에 보여준다. 'auto는 경로를 출력한다
@@ -699,7 +699,7 @@
 
    #+begin_src elisp
      (after! magit
-       (setq magit-save-repository-buffers 'dontask))
+       (setopt magit-save-repository-buffers 'dontask))
    #+end_src
 
    magit status를 실행하면 묻지 않고 수정한 버퍼를 저장한다
@@ -708,7 +708,7 @@
 
    #+begin_src elisp
      (after! projectile
-       (setq projectile-indexing-method 'hybrid))
+       (setopt projectile-indexing-method 'hybrid))
    #+end_src
 
    =.git= 디렉터리를 같이 사용하는 인덱싱
@@ -717,7 +717,7 @@
 
    #+begin_src elisp
      (after! company
-       (setq company-show-quick-access t))
+       (setopt company-show-quick-access t))
    #+end_src
 
    =M-1=, =M-0= 까지 숫자로 빠르게 삽입할 수 있는데, 그 숫자를 옆에 출력하게 한다.
@@ -764,7 +764,7 @@
 ** evil
 
    #+begin_src elisp
-     (setq! evil-want-C-w-delete nil)
+     (setopt evil-want-C-w-delete nil)
    #+end_src
 
    =insert mode= 에서 =C-w= 키를 입력할 때, back word를 지우는 기능을 끈다. 창 전환 키랑 헷갈려서 실수로 단어를 지우는 경우가 많았다.
@@ -778,7 +778,7 @@
 
    #+begin_src elisp
      (after! evil
-       (setq evil-complete-all-buffers nil))
+       (setopt evil-complete-all-buffers nil))
    #+end_src
 
    현재 버퍼를 대상으로 완성(completion) 후보를 추린다. 기본값은 열려 있는 전체 버퍼 대상. =C-n=, =C-p= 키 바인딩에서 사용한다.
@@ -799,8 +799,8 @@
    주석을 연속해서 쓰는 경우가 적어서 오히려 불편하다
 
    #+begin_src elisp :lexical t
-     (setq evil-split-window-below t
-           evil-vsplit-window-right t)
+     (setopt evil-split-window-below t
+             evil-vsplit-window-right t)
    #+end_src
 
    splitting 이후 포커스를 옮긴다
@@ -809,14 +809,14 @@
 
    #+begin_src elisp
      (after! lsp-mode
-       (setq lsp-pwsh-code-formatting-preset "Allman"))
+       (setopt lsp-pwsh-code-formatting-preset "Allman"))
    #+end_src
 
    [[https://en.wikipedia.org/wiki/Indentation_style#Allman_style][Allman]] 스타일로 포맷팅한다.
 
    #+begin_src elisp
      (after! lsp-mode
-       (setq lsp-pwsh-code-formatting-pipeline-indentation-style "IncreaseIndentationForFirstPipeline"))
+       (setopt lsp-pwsh-code-formatting-pipeline-indentation-style "IncreaseIndentationForFirstPipeline"))
    #+end_src
 
    파이프라인 들여쓰기를 해서 더 보기 좋게 한다.
@@ -826,7 +826,7 @@
    #+begin_src elisp
      (when IS-WINDOWS
        (after! lsp-mode
-         (setq lsp-csharp-omnisharp-roslyn-download-url
+         (setopt lsp-csharp-omnisharp-roslyn-download-url
                (concat "https://github.com/omnisharp/omnisharp-roslyn/releases/latest/download/"
                        "omnisharp-win-x64-net6.0.zip"))))
    #+end_src
@@ -835,11 +835,11 @@
 
    #+begin_src elisp
      (after! lsp-mode
-       (setq lsp-elixir-ls-version "v0.23.0")
-       (setq lsp-elixir-ls-download-url
-             (format "https://github.com/elixir-lsp/elixir-ls/releases/download/%s/elixir-ls-%s.zip"
-                     lsp-elixir-ls-version
-                     lsp-elixir-ls-version))
+       (setopt lsp-elixir-ls-version "v0.23.0"
+               lsp-elixir-ls-download-url
+               (format "https://github.com/elixir-lsp/elixir-ls/releases/download/%s/elixir-ls-%s.zip"
+                       lsp-elixir-ls-version
+                       lsp-elixir-ls-version))
        )
    #+end_src
 
@@ -850,7 +850,7 @@
    #+begin_src elisp
      (when IS-WINDOWS
        (after! consult
-         (setq consult-locate-args "es")
+         (setopt consult-locate-args "es")
          )
        )
    #+end_src
@@ -931,7 +931,7 @@
          (add-hook 'org-mode-hook #'org-ai-mode) ; enable org-ai in org-mode
          (org-ai-global-mode) ; installs global keybindings on C-c M-a
          :config
-         (setq org-ai-default-chat-model "gpt-3.5-turbo")
+         (setopt org-ai-default-chat-model "gpt-3.5-turbo")
          (org-ai-install-yasnippets)) ; if you are using yasnippet and want `ai` snippets
        )
    #+end_src
@@ -956,7 +956,7 @@
    #+begin_src elisp
      (when IS-MAC
        (require 'ox-jekyll-lite)
-       (setq org-jekyll-lite-include-yaml-front-matter nil))
+       (setopt org-jekyll-lite-include-yaml-front-matter nil))
 
    #+end_src
 
@@ -984,7 +984,7 @@
                    ("S-TAB" . 'copilot-accept-completion-by-word)
                    ("S-<tab>" . 'copilot-accept-completion-by-word))
        :config
-       (setq copilot-indent-offset-warning-disable t))
+       (setopt copilot-indent-offset-warning-disable t))
    #+end_src
 
    copilot에 elixir 가 없어서 추가
@@ -1009,9 +1009,9 @@
        (set-popup-rule! "^\\*eldoc for" :size 0.2 :vslot -1)
 
        ;; eldoc을 여러 백엔드에서 수집해서 보여줄 수 있게 한다
-       (setq eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly
-             ;; echo area에 최대 4줄까지 보여주게 함
-             eldoc-echo-area-use-multiline-p 4))
+       (setopt eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly
+               ;; echo area에 최대 4줄까지 보여주게 함
+               eldoc-echo-area-use-multiline-p 4))
    #+end_src
 
 ** flycheck
@@ -1047,8 +1047,8 @@
 
        (defun my/flycheck-prefer-eldoc ()
          (add-hook 'eldoc-documentation-functions #'my/flycheck-eldoc nil t)
-         (setq flycheck-display-errors-function nil)
-         (setq flycheck-help-echo-function nil))
+         (setopt flycheck-display-errors-function nil
+                 flycheck-help-echo-function nil))
 
        (add-hook! 'flycheck-mode-hook #'my/flycheck-prefer-eldoc))
    #+end_src
@@ -1057,7 +1057,7 @@
 
    #+begin_src elisp :lexical t
      (after! which-key
-       (setq which-key-idle-delay 0.5))
+       (setopt which-key-idle-delay 0.5))
    #+end_src
 
    나는 좀 더 빨리 도움이 필요함
@@ -1142,9 +1142,9 @@
      (require 'ox-taskjuggler)
      (progn
        (load-file (expand-file-name "lisp/taskjuggler-setting.el" doom-user-dir))
-       (setq org-taskjuggler-reports-directory "~/taskjuggler")
+       (setopt org-taskjuggler-reports-directory "~/taskjuggler")
        ;; 넉넉하게 잡아놔서 Error: Some tasks did not fit into the project time frame. 에러가 안 뜨게 한다
-       (setq org-taskjuggler-default-project-duration 999))
+       (setopt org-taskjuggler-default-project-duration 999))
    #+end_src
 
    [[https://taskjuggler.org/][taskjuggler]] 라이브러리를 exporter로 사용하는 [[https://orgmode.org/worg/exporters/taskjuggler/ox-taskjuggler.html][ox-taskjuggler]] 세팅
@@ -1523,10 +1523,10 @@
 
   #+begin_src elisp
     (when IS-WINDOWS
-      (setq browse-url-chrome-program "run-chrome.bat")
-      (setq browse-url-handlers
-            '(("nexon.com" . browse-url-default-browser)
-              ("." . browse-url-chrome))))
+      (setopt browse-url-chrome-program "run-chrome.bat"
+              browse-url-handlers
+              '(("nexon.com" . browse-url-default-browser)
+                ("." . browse-url-chrome))))
   #+end_src
 
   윈도우에서는 기본 브라우저를 =chrome= 이 아닌 다른 프로그램으로 설정할 때가 많아서 emacs에서 url로 열 때는 =chrome= 으로 고정. 이후 macOS에도 일괄 적용.
@@ -1555,8 +1555,8 @@
              (bash-path (funcall combine-path msys2-bin-dir "bash.exe")))
         (add-to-list 'exec-path msys2-bin-dir)
         (add-to-list 'exec-path mingw64-bin-dir)
-        (setq explicit-shell-file-name bash-path)
-        (setq shell-file-name bash-path)
+        (setopt explicit-shell-file-name bash-path)
+        (setopt shell-file-name bash-path)
         (setenv "SHELL" bash-path)
         (setq explicit-bash.exe-args '("--noediting" "--login" "-i"))
         (setenv "PATH" (concat mingw64-bin-dir path-separator
