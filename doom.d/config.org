@@ -805,6 +805,13 @@
 
    splitting 이후 포커스를 옮긴다
 
+   개발 중이라 로컬에 있는 evil-snipe 패키지를 사용한다
+
+   #+begin_src elisp :lexical t :tangle packages.el
+     (package! evil-snipe
+       :recipe (:local-repo "package/evil-snipe"))
+   #+end_src
+
 ** lsp
 
    #+begin_src elisp

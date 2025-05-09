@@ -1,0 +1,3 @@
+[submodule "doom.d/package/evil-snipe"]
+	path = doom.d/package/evil-snipe
+	url = git@github.com:ohyecloudy/evil-snipe.git
