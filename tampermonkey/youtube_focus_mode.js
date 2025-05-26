@@ -1,31 +1,37 @@
 // ==UserScript==
 // @name         youtube focus mode
 // @namespace    http://ohyecloudy.com/
-// @version      0.1
+// @version      0.2
 // @description  Don't waste your time on YouTube.
 // @author       ohyecloudy@gmail.com
 // @match        https://www.youtube.com/*
-// @require      https://code.jquery.com/jquery-2.2.4.min.js#sha256=BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=
-// @require      https://gist.github.com/raw/2625891/waitForKeyElements.js#sha256=fe967293ad8e533dd8ad61e20461c1fe05d369eed31e6d3e73552c2231b528da
+// @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
-    if (window.location.href == "https://www.youtube.com/") {
-        // youtube main recommended videos
-        waitForKeyElements(
-            "#primary",
-            removeElement
-        );
-    } else {
-        // recommended videos
-        waitForKeyElements(
-            "#secondary",
-            removeElement
-        );
-    }
-})();
 
-function removeElement(elem) {
-    elem.remove();
-}
+    const xpath = "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[2]";
+
+    function removeByXPath(xpath) {
+        const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        const elem = result.singleNodeValue;
+        if (elem) {
+            console.log("? Removing element via XPath");
+            elem.remove();
+        } else {
+            console.log("? Element not found, will retry");
+        }
+    }
+
+    // 처음 한 번 시도하고, 이후 1초마다 재시도 (최대 10초)
+    let attempts = 0;
+    const maxAttempts = 10;
+    const intervalId = setInterval(() => {
+        removeByXPath(xpath);
+        attempts++;
+        if (attempts >= maxAttempts) {
+            clearInterval(intervalId);
+        }
+    }, 1000);
+})();
