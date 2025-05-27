@@ -125,14 +125,14 @@
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
-       (csharp +dotnet +lsp +tree-sitter) ; unity, .NET, and mono shenanigans
+       (csharp +dotnet +lsp) ; unity, .NET, and mono shenanigans
        data                ; config/data formats
        ;;(dart +flutter +lsp) ; paint ui and not much else. Windows에서 elixir 소스 코드를 열 때마다 에러 발생해서 비활성화
        ;;dhall
-       (elixir +lsp +tree-sitter) ; erlang done right
+       (elixir +lsp)       ; erlang done right
        ;;elm               ; care for a cup of TEA?
        emacs-lisp          ; drown in parentheses
-       (erlang +lsp +tree-sitter) ; an elegant language for a more civilized age
+       (erlang +lsp)       ; an elegant language for a more civilized age
        ;;ess               ; emacs speaks statistics
        ;;factor
        ;;faust             ; dsp, but you get to keep your soul
@@ -145,7 +145,7 @@
        ;;(haskell +lsp)    ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
-       (json +lsp +tree-sitter) ; At least it ain't XML
+       (json +lsp)         ; At least it ain't XML
        ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
@@ -153,7 +153,7 @@
        ;;latex             ; writing papers in Emacs has never been so fun
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
-       (lua +lsp +tree-sitter) ; one-based indices? one-based indices
+       (lua +lsp)          ; one-based indices? one-based indices
        (markdown +grip)    ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
@@ -172,13 +172,13 @@
        ;;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        (scheme +racket)    ; a fully conniving family of lisps
-       (sh +lsp +powershell +tree-sitter) ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +lsp +powershell) ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
-       (web +lsp +tree-sitter) ; the tubes
-       (yaml +lsp +tree-sitter) ; JSON, but readable
+       (web +lsp)          ; the tubes
+       (yaml +lsp)         ; JSON, but readable
        ;;zig               ; C, but simpler
 
        :email
