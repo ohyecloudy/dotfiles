@@ -4,7 +4,14 @@
 (require 'magit)
 
 (defvar org-roam-group-order
-  '(("Backlinks" t
+  '(
+    ("Relevant items" t
+     (("topic")
+      ("project")
+      ("ref")
+      ("contact")
+      ("career")))
+    ("Backlinks" t
      (("note" org-roam-backlinks-sort-by-date)
       ("work" org-roam-backlinks-sort-by-date)
       ("book")
@@ -13,16 +20,12 @@
       ("chopsticks")
       ("coolthings")
       ("place")))
-    ("Relevant items" t
-     (("topic")
-      ("project")
-      ("ref")
-      ("contact")
-      ("career")))
     ("Journal" nil
      (("daily" org-roam-backlinks-sort-by-date)
       ("retrospective" org-roam-backlinks-sort-by-date)
-      ("plan" org-roam-backlinks-sort-by-date)))))
+      ("plan" org-roam-backlinks-sort-by-date)))
+    )
+  )
 
 (defvar org-roam-group-icons
   '(("contact"       . "☎")
