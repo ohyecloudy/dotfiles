@@ -154,6 +154,24 @@
 
   =RET= 키를 눌렀을 때, 코멘트가 연결되는 기능을 끈다. 한 줄 코멘트가 많아 오히려 번거롭다.
 
+* doom emacs
+
+** online
+
+   #+begin_src elisp :lexical t
+     (setopt +lookup-provider-url-alist
+             (append '(
+                       ("Google"            +lookup--online-backend-google "https://google.com/search?q=%s")
+                       ("Google images"     "https://www.google.com/images?q=%s")
+                       ("Google maps"       "https://maps.google.com/maps?q=%s")
+                       ("Youtube"           "https://youtube.com/results?aq=f&oq=&search_query=%s")
+                       ("Wikipedia"         "https://wikipedia.org/search-redirect.php?language=ko&go=Go&search=%s")
+                       ("Internet archive"  "https://web.archive.org/web/*/%s")
+                       )
+                     )
+             )
+   #+end_src
+
 * packages
 
 ** doom theme
