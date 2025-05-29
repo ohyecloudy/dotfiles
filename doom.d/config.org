@@ -830,6 +830,37 @@
        :recipe (:local-repo "package/evil-snipe"))
    #+end_src
 
+** evil-snipe
+
+   한글도 f/t로 찾을 수 있게 한다.
+
+   #+begin_src elisp :lexical t
+     (after! evil-snipe
+       (setq evil-snipe-aliases '(
+                                  (?r "[rㄱ가-낗]")
+                                  (?R "[Rㄲ까-낗]")
+                                  (?s "[sㄴ나-닣]")
+                                  (?e "[eㄷ다-딯]")
+                                  (?E "[Eㄸ따-띻]")
+                                  (?f "[fㄹ라-맇]")
+                                  (?a "[aㅁ마-밓]")
+                                  (?q "[qㅂ바-빟]")
+                                  (?Q "[Qㅃ빠-삫]")
+                                  (?t "[tㅅ사-싷]")
+                                  (?T "[Tㅆ싸-앃]")
+                                  (?d "[dㅇ아-잏]")
+                                  (?w "[wㅈ자-짛]")
+                                  (?W "[Wㅉ짜-찧]")
+                                  (?c "[cㅊ차-칳]")
+                                  (?z "[zㅋ카-킿]")
+                                  (?x "[xㅌ타-팋]")
+                                  (?v "[vㅍ파-핗]")
+                                  (?g "[gㅎ하-힣]")
+                                  )))
+   #+end_src
+
+   일괄로 편하게 적용할 수 있는 초성 자음만 찾는다.
+
 ** lsp
 
    #+begin_src elisp
