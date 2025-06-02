@@ -1,28 +1,10 @@
 #!/bin/sh
 
 set -e
-
-submodule_update_from_remote=
-
-while getopts "r" opt; do
-    case "$opt" in
-        r)
-            submodule_update_from_remote=--remote
-            echo "Updating submodules from remote"
-            ;;
-        ?)
-            echo "Usage: $0 [-r]"
-            exit 1
-            ;;
-    esac
-done
-
 set -x
 
 cd ~/.dotfiles
 git pull
-
-git submodule update --init --recursive $submodule_update_from_remote
 
 # error code 1 is returned even during successful updating doom in Windows
 doom install || true
