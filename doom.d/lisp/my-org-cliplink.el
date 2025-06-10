@@ -28,19 +28,23 @@ e.g. A page that obtains the title using the API. jira, confluence."
        #'my/org-cliplink-link-transformer))))
 
 (defun my/org-cliplink-link-transformer (url title)
-  (let* ((parsed-url (url-generic-parse-url url)) ;parse the url
-         (host-url (replace-regexp-in-string "^www\\." "" (url-host parsed-url)))
-         (clean-title
-          (cond
-           ;; if the host is github.com, cleanup the title
-           ((string= (url-host parsed-url) "github.com")
-            (replace-regexp-in-string "^/" ""
-                                      (car (url-path-and-query parsed-url))))
-           ;; otherwise keep the original title
-           (t (my/org-cliplink--cleansing-site-title title))))
-         (title-with-url (format "%s - %s" clean-title host-url)))
-    ;; forward the title to the default org-cliplink transformer
-    (org-cliplink-org-mode-link-transformer url title-with-url)))
+  (let* ((title (or title (org-cliplink-retrieve-title-synchronously url))))
+    ;; If title is still nil after trying to retrieve it synchronously
+    (when (null title)
+      (error "Failed to retrieve title for URL: %s" url))
+    (let* ((parsed-url (url-generic-parse-url url)) ;parse the url
+           (host-url (replace-regexp-in-string "^www\\." "" (url-host parsed-url)))
+           (clean-title
+            (cond
+             ;; if the host is github.com, cleanup the title
+             ((string= (url-host parsed-url) "github.com")
+              (replace-regexp-in-string "^/" ""
+                                        (car (url-path-and-query parsed-url))))
+             ;; otherwise keep the original title
+             (t (my/org-cliplink--cleansing-site-title title))))
+           (title-with-url (format "%s - %s" clean-title host-url)))
+      ;; forward the title to the default org-cliplink transformer
+      (org-cliplink-org-mode-link-transformer url title-with-url))))
 
 (defun my/org-cliplink--cleansing-site-title (title)
   (let ((result title)
