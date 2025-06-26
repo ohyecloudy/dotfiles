@@ -161,12 +161,19 @@
    #+begin_src elisp :lexical t
      (setopt +lookup-provider-url-alist
              (append '(
-                       ("Google"            +lookup--online-backend-google "https://google.com/search?q=%s")
-                       ("Google images"     "https://www.google.com/images?q=%s")
-                       ("Google maps"       "https://maps.google.com/maps?q=%s")
-                       ("Youtube"           "https://youtube.com/results?aq=f&oq=&search_query=%s")
-                       ("Wikipedia"         "https://wikipedia.org/search-redirect.php?language=ko&go=Go&search=%s")
-                       ("Internet archive"  "https://web.archive.org/web/*/%s")
+                       ("blogs"             "https://google.com/search?q=site:ohyecloudy.com %s")
+                       ("chatgpt"           "https://chat.openai.com?q=%s")
+                       ("elixir"            "https://hexdocs.pm/elixir/search.html?q=%s")
+                       ("flutter"           "https://docs.flutter.dev/search?q=%s")
+                       ("google images"     "https://www.google.com/images?q=%s")
+                       ("google maps"       "https://maps.google.com/maps?q=%s")
+                       ("google"            +lookup--online-backend-google "https://google.com/search?q=%s")
+                       ("internet archive"  "https://web.archive.org/web/*/%s")
+                       ("naver dict"        "https://dict.naver.com/search.dict?query=%s")
+                       ("naver"             "https://search.naver.com/search.naver?query=%s")
+                       ("perplexity"        "https://perplexity.ai/search?q=%s")
+                       ("wikipedia"         "https://wikipedia.org/search-redirect.php?language=ko&go=Go&search=%s")
+                       ("youtube"           "https://youtube.com/results?aq=f&oq=&search_query=%s")
                        )
                      )
              )
@@ -1257,32 +1264,6 @@
    #+end_src
 
    source code 이름은 =cs= 를 사용한다.
-
-** my-search
-
-   #+begin_src elisp
-     (require 'my-search)
-   #+end_src
-
-   emacs에서 편하게 웹페이지를 열 수 있는 함수를 모아둔 패키지. [[http://ohyecloudy.com/emacsian/2021/06/20/interactive-function-that-opens-in-a-web-browser/][원하는 URL을 조합해 웹브라우저로 여는 대화형 함수 만들기 - elixir 문서 편하게 검색 - ohyecloudy.com]] 참고.
-
-   #+begin_src elisp
-     (map! :leader
-           (:prefix-map ("S" . "custom search")
-            :desc "google"           "g"     #'my/search-google
-            :desc "naver"            "n"     #'my/search-naver
-            :desc "dict"             "d"     #'my/search-dict
-            :desc "dotnet"           "D"     #'my/search-dotnet
-            :desc "onelook"          "e"     #'my/search-onelook
-            :desc "thesaurus"        "t"     #'my/search-thesaurus
-            :desc "elixir"           "x"     #'my/search-elixir
-            :desc "flutter"          "f"     #'my/search-flutter
-            :desc "my blogs"         "b"     #'my/search-blogs
-            :desc "perplexity"       "p"     #'my/search-perplexity
-            :desc "chatgpt"          "c"     #'my/search-chatgpt))
-   #+end_src
-
-   검색 함수를 키에 바인딩함
 
 ** my-source-mine
 
