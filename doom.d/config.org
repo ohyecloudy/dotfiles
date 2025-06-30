@@ -170,6 +170,7 @@
                        ("google"            +lookup--online-backend-google "https://google.com/search?q=%s")
                        ("internet archive"  "https://web.archive.org/web/*/%s")
                        ("naver dict"        "https://dict.naver.com/search.dict?query=%s")
+                       ("naver map"         "https://map.naver.com/p/search/%s")
                        ("naver"             "https://search.naver.com/search.naver?query=%s")
                        ("perplexity"        "https://perplexity.ai/search?q=%s")
                        ("wikipedia"         "https://wikipedia.org/search-redirect.php?language=ko&go=Go&search=%s")
