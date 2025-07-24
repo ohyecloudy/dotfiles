@@ -1,7 +1,6 @@
 #!/bin/sh
 
 set -e
-set -x
 
 cd ~/org_roam
 
@@ -18,9 +17,21 @@ if [ "$LOCAL" = "$REMOTE" ]; then
   echo "The local branch is up-to-date with the remote branch. No push needed."
 elif [ "$LOCAL" = "$BASE" ]; then
   echo "The local branch is behind the remote branch. Push is not allowed. Please pull first."
+  echo
+  echo "▄████████████▄▐█▄▄▄▄█▌"
+  echo "█████▌▄▌▄▐▐▌██▌▀▀██▀▀"
+  echo "███▄█▌▄▌▄▐▐▌▀██▄▄█▌"
+  echo "▄▄▄▄█████████████"
+  echo
 elif [ "$REMOTE" = "$BASE" ]; then
   echo "The local branch is ahead of the remote branch. Pushing changes."
   git push
 else
   echo "The local and remote branches have diverged. There is a risk of conflicts. Push is not allowed."
+  echo
+  echo "▄████████████▄▐█▄▄▄▄█▌"
+  echo "█████▌▄▌▄▐▐▌██▌▀▀██▀▀"
+  echo "███▄█▌▄▌▄▐▐▌▀██▄▄█▌"
+  echo "▄▄▄▄█████████████"
+  echo
 fi
