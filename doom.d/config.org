@@ -180,6 +180,46 @@
              )
    #+end_src
 
+   선택한 영역이 있을 때, query로 바로 사용한다. 바로 사용하지 않고 디폴트 값으로 정의해 한 번 더 입력을 받는다.
+
+   #+begin_src elisp :lexical t
+     (defun my/+lookup/online (query provider)
+       "Look up QUERY in the browser using PROVIDER.
+     When called interactively, prompt for a query and, when called for the first
+     time, the provider from `+lookup-provider-url-alist'. In subsequent calls, reuse
+     the previous provider. With a non-nil prefix argument, always prompt for the
+     provider.
+
+     QUERY must be a string, and PROVIDER must be a key of
+     `+lookup-provider-url-alist'."
+       (interactive
+        (list (if (use-region-p) (doom-thing-at-point-or-region))
+              (+lookup--online-provider current-prefix-arg)))
+       (let ((backends (cdr (assoc provider +lookup-provider-url-alist))))
+         (unless backends
+           (user-error "No available online lookup backend for %S provider"
+                       provider))
+         (catch 'done
+           (dolist (backend backends)
+             (cl-check-type backend (or string function))
+             (cond ((stringp backend)
+                    (funcall +lookup-open-url-fn
+                             (format backend
+                                     (url-encode-url
+                                      ;; region을 선택했을 때, 바로 찾는 게 아니라 read-string 디폴트 값으로 입력을 기다림
+                                      (read-string (format "Search for (on %s): " provider)
+                                                   (or query (thing-at-point 'symbol t)))))))
+                   ((condition-case-unless-debug e
+                        (and (fboundp backend)
+                             (funcall backend query))
+                      (error
+                       (setf (alist-get major-mode +lookup--last-provider nil t) nil)
+                       (signal (car e) (cdr e))))
+                    (throw 'done t)))))))
+
+     (advice-add '+lookup/online :override #'my/+lookup/online)
+   #+end_src
+
 * packages
 
 ** doom theme
