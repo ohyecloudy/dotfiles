@@ -374,23 +374,58 @@
     오늘을 기준으로 YYYY-wWW(예. 2025-w31) 형식의 node를 찾는 함수를 =SPC n r w= 키에 바인딩함.
 
     #+begin_src elisp :lexical t
-      (defun my/today-week-number ()
-        "Return current date as YYYY-wWW (ISO week number)."
-        (let* ((time (current-time))
-               (year (format-time-string "%Y" time))
-               (week (format-time-string "%V" time)))
-          (format "%s-w%s" year week)))
+      (defun my/week-number-string (&optional time)
+        "Return ISO week string (YYYY-wWW) for TIME or now"
+        (let ((target (or time (current-time))))
+          (format "%s-w%s"
+                  (format-time-string "%Y" target)
+                  (format-time-string "%V" target))))
 
       (defun my/org-roam-find-today-week ()
         "Find org-roam node for the current ISO week number like 2025-w31"
         (interactive)
-        (org-roam-node-find nil (my/today-week-number)))
+        (org-roam-node-find nil (my/week-number-string)))
 
       (after! org-roam
         (map! :leader
               (:prefix-map ("n" . "notes")
                            (:prefix ("r" . "roam")
                             :desc "find today week" "w" #'my/org-roam-find-today-week))))
+    #+end_src
+
+    현재 파일에 기록된 YYYY_wWW를 기준으로 week를 shift한 node를 찾는 함수를 =SPC n r W= 키에 바인딩함.
+
+    #+begin_src elisp :lexical t
+      (defun my/shift-week-number (week-string delta)
+        "Shift WEEK-STRING (YYYY-wWW) by DELTA weeks.
+      Return new week string like '2025-w30' or '2025-w32'."
+        (let* ((parts (split-string week-string "-w"))
+               (year (string-to-number (car parts)))
+               (week (string-to-number (cadr parts)))
+               ;; 1월 4일이 ISO week 1에 항상 포함된다는 규칙을 활용해 ISO 주차 첫날 계산
+               (date (encode-time 0 0 0
+                                  4 1 year))
+               (current-week-time (time-add date (days-to-time (* 7 (1- week)))))
+               (shifted-time (time-add current-week-time (days-to-time (* 7 delta)))))
+          (my/week-number-string shifted-time)))
+
+      (defun my/org-roam-find-shift-week (delta)
+        "Find org-roam node for current buffer's week number shifted by DELTA weeks."
+        (interactive "nWeek delta: ")
+        (let* ((file (buffer-file-name)))
+          (if (and file
+                   (string-match "\\([0-9]\\{4\\}_w[0-9]\\{2\\}\\)" (file-name-base file)))
+              (let* ((week-str (match-string 1 (file-name-base file)))
+                     (refined (replace-regexp-in-string "_" "-" week-str))
+                     (shifted (my/shift-week-number refined delta)))
+                (org-roam-node-find nil shifted))
+            (message "Current buffer '%s' is not a YYYY-wWW file." (or file "<no-file>")))))
+
+      (after! org-roam
+        (map! :leader
+              (:prefix-map ("n" . "notes")
+                           (:prefix ("r" . "roam")
+                            :desc "find shift week" "W" #'my/org-roam-find-shift-week))))
     #+end_src
 
 *** org-roam optimization
