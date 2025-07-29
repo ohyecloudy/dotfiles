@@ -371,6 +371,28 @@
                             :desc "commit org-roam" "t" #'my/org-roam-commit))))
     #+end_src
 
+    오늘을 기준으로 YYYY-wWW(예. 2025-w31) 형식의 node를 찾는 함수를 =SPC n r w= 키에 바인딩함.
+
+    #+begin_src elisp :lexical t
+      (defun my/today-week-number ()
+        "Return current date as YYYY-wWW (ISO week number)."
+        (let* ((time (current-time))
+               (year (format-time-string "%Y" time))
+               (week (format-time-string "%V" time)))
+          (format "%s-w%s" year week)))
+
+      (defun my/org-roam-find-today-week ()
+        "Find org-roam node for the current ISO week number like 2025-w31"
+        (interactive)
+        (org-roam-node-find nil (my/today-week-number)))
+
+      (after! org-roam
+        (map! :leader
+              (:prefix-map ("n" . "notes")
+                           (:prefix ("r" . "roam")
+                            :desc "find today week" "w" #'my/org-roam-find-today-week))))
+    #+end_src
+
 *** org-roam optimization
 
     =org-roam-node-find=, =org-roam-node-insert= 에서 호출하는 =org-roam-node-read--completions= 함수가 느려서 최적화를 진행
