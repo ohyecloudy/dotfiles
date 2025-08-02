@@ -1577,6 +1577,14 @@
 
    [[https://ohyecloudy.com/emacsian/2017/12/02/auto-revert-tail-mode/][tail -f {unity 로그 파일} - (emacsian ohyecloudy) - ohyecloudy.com]] 참고
 
+** my-org-bulk-export-jekyll
+
+   jekyll 소스 org 파일을 한 번에 md로 익스포트하는 라이브러리
+
+   #+begin_src elisp :lexical t
+     (require 'my-org-bulk-export-jekyll)
+   #+end_src
+
 * my functions
 
   #+begin_src elisp
