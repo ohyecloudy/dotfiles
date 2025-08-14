@@ -255,6 +255,14 @@
        (setq org-ellipsis nil))
    #+end_src
 
+   =[b= =]b= 키가 buffer 이동 키로 바인딩되어 있으나 잘 쓰지 않는다. 그것보다 org block 이동이 더 필요해서 바인딩
+
+   #+begin_src elisp :lexical t
+     (after! evil
+       (map! :n "]b" #'org-next-block
+             :n "[b" #'org-previous-block))
+   #+end_src
+
 *** org-roam
 
     title이 변경될 때, 파일 이름도 같이 바꾼다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
