@@ -258,8 +258,9 @@
    =[b= =]b= 키가 buffer 이동 키로 바인딩되어 있으나 잘 쓰지 않는다. 그것보다 org block 이동이 더 필요해서 바인딩
 
    #+begin_src elisp :lexical t
-     (after! evil
-       (map! :n "]b" #'org-next-block
+     (after! org
+       (map! :map org-mode-map
+             :n "]b" #'org-next-block
              :n "[b" #'org-previous-block))
    #+end_src
 
