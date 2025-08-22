@@ -812,6 +812,20 @@
 
     [[http://ohyecloudy.com/emacsian/2019/01/12/org-export-with-sub-superscripts/][#orgmode 익스포트 할 때, underscore가 subscripts로 바뀌는 걸 억제 - ohyecloudy.com]]
 
+*** org-drill
+
+    #+begin_quote
+    Org-Drill is an extension for Org mode. Org-Drill uses a spaced repetition algorithm to conduct interactive "drill sessions", using org files as sources of facts to be memorised. Each topic is treated as a "flash card".
+
+    [[https://orgmode.org/worg/org-contrib/org-drill.html#org237243a][org-drill.el flashcards and spaced repetition for org-mode - orgmode...]]
+    #+end_quote
+
+    간격 학습 반복을 지원하는 org-mode 확장
+
+    #+begin_src elisp :tangle packages.el
+      (package! org-drill)
+    #+end_src
+
 ** doom-modeline
 
    #+begin_src elisp
