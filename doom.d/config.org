@@ -1142,43 +1142,6 @@
 
    참고: [[https://www.pwills.com/post/2019/09/24/blogging-in-org.html][Blogging in Org Mode - pwills.com - pwills.com]]
 
-** copilot
-
-   [[https://github.com/copilot-emacs/copilot.el][copilot-emacs/copilot.el - github.com]]
-
-   #+begin_src elisp :tangle packages.el
-     (package! copilot :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist")))
-   #+end_src
-
-   단축키를 설정하고 copilot에서 indent 잘 추론해서 설정이 안 되어 있지만 그냥 warning을 무시함
-
-   #+begin_src elisp
-     ;; accept completion from copilot and fallback to company
-     (use-package! copilot
-       :hook (prog-mode . copilot-mode)
-       :bind (:map copilot-completion-map
-                   ("<tab>" . 'copilot-accept-completion)
-                   ("TAB" . 'copilot-accept-completion)
-                   ("S-TAB" . 'copilot-accept-completion-by-word)
-                   ("S-<tab>" . 'copilot-accept-completion-by-word))
-       :config
-       (setq copilot-indent-offset-warning-disable t))
-   #+end_src
-
-   copilot에 elixir 가 없어서 추가
-
-   #+begin_src elisp
-     (after! copilot
-       (add-to-list 'copilot-major-mode-alist '("elixir" . "elixir")))
-   #+end_src
-
-   =copilot-minor-mode-alist= 에 =git-commit= 이 있지만 자동으로 켜지지 않아서 git-commit-mode 활성화시 copilot이 켜지게 함
-
-   #+begin_src elisp :lexical t
-     (after! copilot
-       (add-hook! 'git-commit-mode-hook #'copilot-mode))
-   #+end_src
-
 ** eldoc
 
    #+begin_src elisp :lexical t
