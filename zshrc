@@ -107,9 +107,6 @@ export PAGER=""
 #     instead of interpreting them.
 export LESS="-F -X -R"
 
-# Podman is the new Docker
-command -v podman >/dev/null && alias docker=podman
-
 # vterm in Emacs
 if [ "$INSIDE_EMACS" = "vterm" ]; then
     # Communicating with vterm in Emacs
