@@ -81,9 +81,12 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PATH="$HOME/bin.local:$HOME/bin:$HOME/.emacs.d/bin:$PATH";
 
+# elixir
+export ELIXIR_EDITOR="ec +__LINE__ __FILE__"
+export ERL_AFLAGS="-kernel shell_history enabled"
+
 # emacs
 export PATH="$HOME/.emacs.d/bin:$PATH";
-export ELIXIR_EDITOR="ec +__LINE__ __FILE__"
 export VISUAL=ec-wait
 export EDITOR=ec-wait
 
