@@ -127,11 +127,11 @@
 
 * M-x keybinding
 
+  =M-x= 키가 =alt= 키를 눌러야 해서 불편하다. =C-x C-m= 키로도 호출할 수 있게 변경.
+
   #+begin_src elisp
     (global-set-key (kbd "C-x C-m") 'execute-extended-command)
   #+end_src
-
-  =M-x= 키가 =alt= 키를 눌러야 해서 불편하다. =C-x C-m= 키로도 호출할 수 있게 변경
 
 * tab -> space
 
