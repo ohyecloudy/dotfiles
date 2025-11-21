@@ -83,3 +83,6 @@
     autoupdate = true
 [merge]
     conflictstyle = zdiff3
+
+[git-p4]
+    metadataFallbackEncoding = cp949
