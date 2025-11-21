@@ -1233,6 +1233,14 @@
      ,#+end_src
    #+end_example
 
+** pandoc-mode
+
+   universal document converter인 [[https://pandoc.org/index.html][Pandoc]] 사용 모드. [[https://github.com/joostkremers/pandoc-mode/][joostkremers/pandoc-mode/ - github.com]]
+
+   #+begin_src elisp :tangle packages.el
+     (package! pandoc-mode)
+   #+end_src
+
 * syntax
 
   #+begin_src elisp
