@@ -1025,6 +1025,8 @@
 
 ** consult
 
+   [[https://github.com/git-for-windows/build-extra][Git for Windows SDK]]로 설치한 =locate= 프로그램이 제대로 동작하지 않는다. windows에서 더 최적화된 [[https://www.voidtools.com/ko-kr/][Everything]]을 파일 찾기에 사용한다.
+
    #+begin_src elisp
      (when IS-WINDOWS
        (after! consult
@@ -1033,7 +1035,15 @@
        )
    #+end_src
 
-   [[https://github.com/git-for-windows/build-extra][Git for Windows SDK]]로 설치한 =locate= 프로그램이 제대로 동작하지 않는다. windows에서 더 최적화된 [[https://www.voidtools.com/ko-kr/][Everything]]을 파일 찾기에 사용한다.
+   macOS 기본 locate 프로그램은 =--ignore-case= 옵션을 지원하지 않음. 같은 역할을 하는 =-i= 옵션으로 대체
+
+   #+begin_src elisp :lexical t
+     (when IS-MAC
+       (after! consult
+         (setq consult-locate-args "locate -i")
+         )
+       )
+   #+end_src
 
 ** vertico
 
