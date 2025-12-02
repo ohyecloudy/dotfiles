@@ -1458,6 +1458,12 @@
        (define-key org-mode-map [remap org-cliplink] 'my/org-cliplink))
    #+end_src
 
+   타이틀 뒤에 붙는 호스트 이름을 가공할 수 있다.
+
+   #+begin_src elisp :lexical t :tangle no
+     (add-to-list 'my/org-cliplink-host-transform-rules '("github.com" "GitHub"))
+   #+end_src
+
 ** my-org-cliplink-confluence
 
    Confluence 페이지는 API를 사용해 정보를 가져와서 org-cliplink처럼 org-mode 링크 markup을 추가한다. 비공개 Confluence 페이지 정보 삽입도 지원한다.
@@ -1471,7 +1477,7 @@
      machine CONFLUENCE_CLOUD_HOST/wiki login ohyecloudy password SUPER_SECRET_API_KEY
    #+end_example
 
-   url꽈 api-version을 리스트에 추가한다.
+   url과 api-version을 리스트에 추가한다.
 
    #+begin_src elisp :lexical t :tangle no
      (add-to-list 'my/org-cliplink-confluence-hosts '(:url "https://CONFLUENCE_CLOUD_HOST/wiki" :api-version :cloud))

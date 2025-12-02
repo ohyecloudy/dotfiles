@@ -16,6 +16,14 @@ e.g. A page that obtains the title using the API. jira, confluence."
   :type 'hook
   :group 'my/org-cliplink)
 
+(defcustom my/org-cliplink-host-transform-rules
+  '(("^www\\." ""))
+  "Alist of (REGEXP REPLACEMENT) rules used to transform host names in org-cliplink."
+  :group 'org-cliplink
+  :type '(repeat
+          (list (regexp :tag "Match regexp")
+                (string :tag "Replacement"))))
+
 (defun my/org-cliplink ()
   (interactive)
   (let* ((url (org-cliplink-clipboard-content))
@@ -33,7 +41,7 @@ e.g. A page that obtains the title using the API. jira, confluence."
     (when (null title)
       (error "Failed to retrieve title for URL: %s" url))
     (let* ((parsed-url (url-generic-parse-url url)) ;parse the url
-           (host-url (replace-regexp-in-string "^www\\." "" (url-host parsed-url)))
+           (host-url (my/org-cliplink--host-transform-rules (url-host parsed-url)))
            (clean-title
             (cond
              ;; if the host is github.com, cleanup the title
@@ -45,6 +53,12 @@ e.g. A page that obtains the title using the API. jira, confluence."
            (title-with-url (format "%s - %s" clean-title host-url)))
       ;; forward the title to the default org-cliplink transformer
       (org-cliplink-org-mode-link-transformer url title-with-url))))
+
+(defun my/org-cliplink--host-transform-rules (host)
+  (let ((result host))
+    (dolist (rule my/org-cliplink-host-transform-rules result)
+      (setq result (replace-regexp-in-string (car rule) (cadr rule) result t)))
+    result))
 
 (defun my/org-cliplink--cleansing-site-title (title)
   (let ((result title)
