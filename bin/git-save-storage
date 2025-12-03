@@ -7,4 +7,10 @@ git reflog expire --expire-unreachable=now --all
 git prune --progress # delete all the objects w/o references
 git gc --aggressive --prune=all # aggressively collect garbage; may take a lot of time on large repos
 
+if git lfs version >/dev/null 2>&1; then
+    git lfs prune
+else
+    echo "Git LFS is not installed. Skipping LFS prune."
+fi
+
 echo after: $(du -sh)
