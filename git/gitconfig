@@ -26,7 +26,6 @@
     rebase-branches = "!git co master && git branch | grep -v \\\\* | xargs -n 1 git rebase master;"
     stsh = stash --keep-index
     staash = stash --include-untracked
-    p4 = "!python.exe 'c:\\git-sdk-64\\mingw64\\libexec\\git-core\\git-p4'"
     # between tags
     bt = "!f() { \
         end=$1; \
@@ -36,6 +35,10 @@
         set -x; \
         git log dev-$start..dev-$end --author=$author; \
         }; f"
+	p4 = !python.exe \"C:/git-sdk-64/mingw64/libexec/git-core/git-p4\"
+	p4-sync = "!f() { git -c git-p4.largeFileSystem=GitLFS p4 sync \"$@\"; }; f"
+	p4-rebase = "!f() { git -c git-p4.largeFileSystem=GitLFS p4 rebase \"$@\"; }; f"
+	p4-submit = "!f() { git -c git-p4.largeFileSystem= p4 submit \"$@\"; }; f"
 [pull]
     rebase = true
 [push]
@@ -85,4 +88,8 @@
     conflictstyle = zdiff3
 
 [git-p4]
-    metadataFallbackEncoding = cp949
+	metadataFallbackEncoding = cp949
+	largeFileThreshold = 10m
+	largeFileExtensions = .uasset,.umap,.png,.jpg,.jpeg,.tga,.bmp,.psd,.tif,.dds,.wav,.ogg,.flac,.bin,.exe,.dll,.pdb
+	largeFileSystem = GitLFS
+	skipSubmitEdit = true
