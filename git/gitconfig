@@ -39,6 +39,7 @@
 	p4-sync = "!f() { git -c git-p4.largeFileSystem=GitLFS p4 sync \"$@\"; }; f"
 	p4-rebase = "!f() { git -c git-p4.largeFileSystem=GitLFS p4 rebase \"$@\"; }; f"
 	p4-submit = "!f() { git -c git-p4.largeFileSystem= p4 submit \"$@\"; }; f"
+	p4-local-rebase = "!f() { git rebase p4/master; }; f"
 [pull]
     rebase = true
 [push]
