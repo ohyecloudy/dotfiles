@@ -826,6 +826,38 @@
       (package! org-drill)
     #+end_src
 
+*** org-mode
+
+    현재 heading을 포함한 상위 heading을 bullet list로 전환
+
+    #+begin_src elisp :lexical t
+      (defun my/org-copy-parent-headings-as-bullets ()
+        "Collect parent headings of the heading that the cursor belongs to,
+      convert them into a bullet list, and copy the result to the clipboard.
+      TODO/DONE states are removed."
+        (interactive)
+        (unless (derived-mode-p 'org-mode)
+          (user-error "This command can only be used in org-mode."))
+
+        (save-excursion
+          ;; Move to the heading that the cursor belongs to
+          (org-back-to-heading t)
+
+          (let ((parents '()))
+            (let ((current (org-get-heading t t t t)))
+              (setq parents (append parents (list current))))
+
+            ;; Collect parent headings by moving upward
+            (while (org-up-heading-safe)
+              (push (org-get-heading t t t t) parents))
+
+            (if (null parents)
+                (message "No parent headings found.")
+              (let ((bullets (mapconcat (lambda (h) (concat "- " h)) parents "\n")))
+                (kill-new bullets)
+                (message "Copied parent headings as bullet list:\n%s" bullets))))))
+    #+end_src
+
 ** doom-modeline
 
    #+begin_src elisp
