@@ -12,6 +12,7 @@
     preloadindex = true
     # windows에서 magit 속도 향상 https://magit.vc/manual/magit/Microsoft-Windows-Performance.html
     fscache = true
+	pager = cat
 [alias]
     co = checkout
     cp = cherry-pick -x
