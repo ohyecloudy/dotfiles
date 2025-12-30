@@ -280,11 +280,22 @@
                      (if (and expanded (not (string= expanded raw)))
                          (browse-url expanded)
                        (user-error
-                        "No #+LINK rule for 'issue' in this file. Add e.g. '#+LINK: issue https://.../%%s' (or use #+SETUPFILE)"))))))
+                        "No #+LINK rule for 'issue' in this file. Add e.g. '#+LINK: issue https://.../%%s' (or use #+SETUPFILE)")))))
+        (org-link-set-parameters
+         "wiki"
+         :follow (lambda (path _)
+                   ;; 파일 헤더의 #+LINK: wiki ... (abbrev)가 있으면 그걸 우선 확장
+                   (let* ((raw (concat "wiki:" path))
+                          (expanded (org-link-expand-abbrev raw)))
+                     (if (and expanded (not (string= expanded raw)))
+                         (browse-url expanded)
+                       (user-error
+                        "No #+LINK rule for 'wiki' in this file. Add e.g. '#+LINK: wiki https://.../%%s' (or use #+SETUPFILE)"))))))
     #+end_src
 
     #+begin_src org :tangle no
       ,#+LINK: issue https://www.myjira.com/browse/%s
+      ,#+LINK: wiki https://www.wiki.com/%s
     #+end_src
 
     HEADER에 이렇게 정의하면 해당 링크로 열린다.
