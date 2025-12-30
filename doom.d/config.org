@@ -264,6 +264,31 @@
              :n "[b" #'org-previous-block))
    #+end_src
 
+*** abbrev link
+
+    - property drawers에 abbrev 링크를 정의했을 때, 링크로 인식하지 못한다
+    - 디폴트로 에러를 내는 구현을 추가해서 issue abbrev 링크 문자열을 노출
+
+    #+begin_src elisp :lexical t
+      (after! org
+        (org-link-set-parameters
+         "issue"
+         :follow (lambda (path _)
+                   ;; 파일 헤더의 #+LINK: issue ... (abbrev)가 있으면 그걸 우선 확장
+                   (let* ((raw (concat "issue:" path))
+                          (expanded (org-link-expand-abbrev raw)))
+                     (if (and expanded (not (string= expanded raw)))
+                         (browse-url expanded)
+                       (user-error
+                        "No #+LINK rule for 'issue' in this file. Add e.g. '#+LINK: issue https://.../%%s' (or use #+SETUPFILE)"))))))
+    #+end_src
+
+    #+begin_src org :tangle no
+      ,#+LINK: issue https://www.myjira.com/browse/%s
+    #+end_src
+
+    HEADER에 이렇게 정의하면 해당 링크로 열린다.
+
 *** org-roam
 
     title이 변경될 때, 파일 이름도 같이 바꾼다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
