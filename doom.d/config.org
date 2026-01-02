@@ -271,26 +271,40 @@
 
     #+begin_src elisp :lexical t
       (after! org
-        (org-link-set-parameters
-         "issue"
-         :follow (lambda (path _)
-                   ;; 파일 헤더의 #+LINK: issue ... (abbrev)가 있으면 그걸 우선 확장
-                   (let* ((raw (concat "issue:" path))
-                          (expanded (org-link-expand-abbrev raw)))
-                     (if (and expanded (not (string= expanded raw)))
-                         (browse-url expanded)
-                       (user-error
-                        "No #+LINK rule for 'issue' in this file. Add e.g. '#+LINK: issue https://.../%%s' (or use #+SETUPFILE)")))))
+        (defun my/org-link--expand-abbrev-or-error (type path)
+          "Expand TYPE:PATH using #+LINK abbrev rules.
+      TYPE is a string like \"wiki\" or \"issue\".
+      PATH is the raw link path part (without the TYPE: prefix).
+      Return the expanded URL string, or signal user-error if no rule exists."
+          (let* ((raw (concat type ":" path))
+                 (expanded (org-link-expand-abbrev raw)))
+            (if (and expanded (not (string= expanded raw)))
+                expanded
+              (user-error
+               "No #+LINK rule for '%s'. Add e.g. '#+LINK: %s https://.../%%s' (or use #+SETUPFILE)"
+               type type))))
+
+        (defun my/org-link--follow-abbrev (type)
+          "Return a :follow function for org-link-set-parameters that opens expanded URL."
+          (lambda (path _arg)
+            (browse-url (my/org-link--expand-abbrev-or-error type path))))
+
+        (defun my/org-link--export-abbrev (type)
+          "Return an :export function for org-link-set-parameters that exports as real URL."
+          (lambda (path desc backend)
+            (let ((url (my/org-link--expand-abbrev-or-error type path)))
+              (org-link-make-string url (or desc path)))))
+
         (org-link-set-parameters
          "wiki"
-         :follow (lambda (path _)
-                   ;; 파일 헤더의 #+LINK: wiki ... (abbrev)가 있으면 그걸 우선 확장
-                   (let* ((raw (concat "wiki:" path))
-                          (expanded (org-link-expand-abbrev raw)))
-                     (if (and expanded (not (string= expanded raw)))
-                         (browse-url expanded)
-                       (user-error
-                        "No #+LINK rule for 'wiki' in this file. Add e.g. '#+LINK: wiki https://.../%%s' (or use #+SETUPFILE)"))))))
+         :follow (my/org-link--follow-abbrev "wiki")
+         :export (my/org-link--export-abbrev "wiki"))
+
+        (org-link-set-parameters
+         "issue"
+         :follow (my/org-link--follow-abbrev "issue")
+         :export (my/org-link--export-abbrev "issue"))
+        )
     #+end_src
 
     #+begin_src org :tangle no
