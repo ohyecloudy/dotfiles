@@ -13,6 +13,8 @@
     # windows에서 magit 속도 향상 https://magit.vc/manual/magit/Microsoft-Windows-Performance.html
     fscache = true
 	pager = cat
+	untrackedCache = true
+	fsmonitor = true
 [alias]
     co = checkout
     cp = cherry-pick -x
