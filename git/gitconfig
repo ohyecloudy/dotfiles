@@ -37,9 +37,6 @@
         git log dev-$start..dev-$end --author=$author; \
         }; f"
 	p4 = !python.exe \"C:/git-sdk-64/mingw64/libexec/git-core/git-p4\"
-	p4-sync = "!f() { git -c git-p4.largeFileSystem=GitLFS p4 sync \"$@\"; }; f"
-	p4-rebase = "!f() { git -c git-p4.largeFileSystem=GitLFS p4 rebase \"$@\"; }; f"
-	p4-submit = "!f() { git -c git-p4.largeFileSystem= p4 submit \"$@\"; }; f"
 	p4-local-rebase = "!f() { git rebase p4/master; }; f"
 [pull]
     rebase = true
@@ -91,7 +88,4 @@
 
 [git-p4]
 	metadataFallbackEncoding = cp949
-	largeFileThreshold = 10m
-	largeFileExtensions = .uasset,.umap,.png,.jpg,.jpeg,.tga,.bmp,.psd,.tif,.dds,.wav,.ogg,.flac,.bin,.exe,.dll,.pdb
-	largeFileSystem = GitLFS
 	skipSubmitEdit = true
