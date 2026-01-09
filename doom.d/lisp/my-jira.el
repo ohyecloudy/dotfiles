@@ -1,5 +1,7 @@
 ;;; lisp/my-jira.el -*- lexical-binding: t; -*-
 
+(require 'my-org-utils)
+
 (defcustom my/jira-hosts '()
   "Property List of jira host
 Ecah element has the form '((:url MY_JIRA :api-url MY_JIRA_API :api-version :cloud))"
@@ -11,11 +13,13 @@ Ecah element has the form '((:url MY_JIRA :api-url MY_JIRA_API :api-version :clo
   (let* ((url (my/jira--url-clipboard-or-prompt))
          (content (my/jira--content url))
          (summary (plist-get content :summary))
-         (id (plist-get content :id)))
+         (id (plist-get content :id))
+         (abbrev (my/org-url-to-abbrev-link url))
+         (final-link (or abbrev url)))
     (org-insert-heading)
     (insert (format "%s %s [/]" id summary))
     (org-update-statistics-cookies nil)
-    (org-set-property "URL" url)))
+    (org-set-property "URL" final-link)))
 
 (defun my/jira-title (url)
   (when-let* ((content (my/jira--content url)))
