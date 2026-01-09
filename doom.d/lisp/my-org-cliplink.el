@@ -6,6 +6,7 @@
 ;; Created: 2024-03-30
 
 (require 'org-cliplink)
+(require 'my-org-utils)
 
 (defcustom my/org-cliplink-custom-retrieve-title-hook nil
   "Used when retrieving the title using a method other
@@ -51,51 +52,10 @@ e.g. A page that obtains the title using the API. jira, confluence."
              ;; otherwise keep the original title
              (t (my/org-cliplink--cleansing-site-title title))))
            (title-with-url (format "%s - %s" clean-title host-url))
-           (abbrev (my/org-cliplink--url-to-abbrev-link url))
+           (abbrev (my/org-url-to-abbrev-link url))
            (final-link (or abbrev url)))
       ;; forward the title to the default org-cliplink transformer
       (org-cliplink-org-mode-link-transformer final-link title-with-url))))
-
-(defun my/org-cliplink--url-to-abbrev-link (url)
-  "Convert URL to an Org abbrev link if a matching abbrev is defined.
-
-Searches `org-link-abbrev-alist-local' and `org-link-abbrev-alist'
-for an abbrev whose template matches URL.
-
-Supported abbrev forms:
-
-  1. Template with %s
-     #+LINK: gl https://gitlab.com/%s
-     => \"https://gitlab.com/foo/bar\" → \"gl:foo/bar\"
-
-  2. Prefix-only template
-     #+LINK: gh https://github.com/
-     => \"https://github.com/emacs-mirror/emacs\"
-        → \"gh:emacs-mirror/emacs\"
-
-If a matching abbrev is found, return a string of the form
-\"KEY:PATH\".  If no abbrev matches URL, return nil.
-
-URL must be a string."
-  (let* ((alist (append org-link-abbrev-alist-local
-                        org-link-abbrev-alist))
-         (match
-          (seq-find
-           (lambda (entry)
-             (let ((template (cdr entry)))
-               (cond
-                ((and (stringp template) (string-match "%s" template))
-                 (string-prefix-p
-                  (replace-regexp-in-string "%s" "" template)
-                  url))
-                ((stringp template)
-                 (string-prefix-p template url)))))
-           alist)))
-    (when match
-      (let* ((key (car match))
-             (template (cdr match))
-             (prefix (replace-regexp-in-string "%s" "" template)))
-        (format "%s:%s" key (substring url (length prefix)))))))
 
 (defun my/org-cliplink--host-transform-rules (host)
   (let ((result host))
