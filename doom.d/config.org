@@ -1333,6 +1333,20 @@
      (package! pandoc-mode)
    #+end_src
 
+** vlf
+
+   #+begin_quote
+   Emacs minor mode that allows viewing, editing, searching and comparing large files in batches, trading memory for processor time. Batch size can be adjusted on the fly and bounds the memory that is to be used for operations on the file. This way multiple large files (like terabytes or whatever) can be instantly and simultaneously accessed without swapping and degraded performance.
+
+   [[github:m00natic/vlfi][m00natic/vlfi - github.com]]
+   #+end_quote
+
+   대용량 파일도 잘 열린다
+
+   #+begin_src elisp :tangle packages.el
+     (package! vlf)
+   #+end_src
+
 * syntax
 
   #+begin_src elisp
