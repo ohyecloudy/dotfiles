@@ -1668,8 +1668,21 @@
          (if (file-exists-p path)
              (progn
                (find-file-other-window path)
-               (auto-revert-tail-mode 1)
+               ;; Warning (org-element): ‘org-element-at-point’ cannot be used
+               ;; 이 워닝 못 잡겠다. 무시
+               (setq warning-suppress-types '((org-element)))
+
+               (fundamental-mode)
                (read-only-mode 1)
+               (buffer-disable-undo)
+               (when (boundp 'font-lock-mode)
+                 (font-lock-mode -1))
+               (when (fboundp 'so-long-minor-mode)
+                 (so-long-minor-mode 1))
+
+               (setq-local auto-revert-interval 1.0)
+               (auto-revert-tail-mode 1)
+
                (goto-char (point-max)))
            (message (concat "log file not found - " path)))))
    #+end_src
