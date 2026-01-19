@@ -22,9 +22,13 @@ Ecah element has the form '((:url MY_CONFLUENCE_URL :api-version 6)
               (api-url (funcall build-content-get-api-fun api-base-url page-id))
               (auth-header (my/org-cliplink-confluence--auth (my/org-cliplink-confluence--remove-protocol (plist-get host-info :url))))
               (content (my/org-cliplink-confluence--retrieve-content api-url auth-header)))
-    (format "%s - %s"
-            (plist-get content :title)
-            (plist-get content :space))))
+    (if (plist-get content :space)
+        (format "%s - %s"
+                (plist-get content :title)
+                (plist-get content :space))
+      (format "%s"
+              (plist-get content :title))
+      )))
 
 (defun my/org-cliplink-confluence--find-host (url hosts)
   (car
@@ -56,9 +60,6 @@ Ecah element has the form '((:url MY_CONFLUENCE_URL :api-version 6)
               (format "%s/api/v2/pages/%s" base-url id)))
     (6 (lambda (base-url id)
          (format "%s/rest/api/content/%s" base-url id)))))
-
-(defun my/org-cliplink-confluence--api-content-get (base-url id)
-  )
 
 (defun my/org-cliplink-confluence--retrieve-content (url auth-header)
   (let ((filter-fun (lambda (content)
