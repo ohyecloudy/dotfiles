@@ -25,11 +25,29 @@ e.g. A page that obtains the title using the API. jira, confluence."
           (list (regexp :tag "Match regexp")
                 (string :tag "Replacement"))))
 
+(defcustom my/org-cliplink-url-refine-rules
+  '(("^\\(https?://[^/]+\\)/wiki/spaces/[^/]+/pages/\\([0-9]+\\)\\(?:/.*\\)?$"
+     "\\1/wiki/pages/viewpage.action?pageId=\\2"))
+  "Alist of (REGEXP REPLACEMENT) rules used to refine URLs before org-cliplink processing."
+  :group 'my/org-cliplink
+  :type '(repeat
+          (list (regexp :tag "Match regexp")
+                (string :tag "Replacement"))))
+
+(defun my/org-cliplink--refine-url (url)
+  "Refine URL by applying `my/org-cliplink-url-refine-rules` sequentially."
+  (let ((result url))
+    (dolist (rule my/org-cliplink-url-refine-rules result)
+      (when (string-match (car rule) result)
+        (setq result (replace-regexp-in-string (car rule) (cadr rule) result t))))
+    result))
+
 (defun my/org-cliplink ()
   (interactive)
-  (let* ((url (org-cliplink-clipboard-content))
+  (let* ((raw-url (org-cliplink-clipboard-content))
+         (url (my/org-cliplink--refine-url raw-url))
          (title (when my/org-cliplink-custom-retrieve-title-hook
-                  (funcall my/org-cliplink-custom-retrieve-title-hook url))))
+                  (funcall my/org-cliplink-custom-retrieve-title-hook raw-url))))
     (if title
         (insert (funcall #'my/org-cliplink-link-transformer url title))
       (org-cliplink-insert-transformed-title
