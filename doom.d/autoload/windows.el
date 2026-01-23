@@ -37,7 +37,7 @@
                           default-directory))
                 nil t))))
     (message "Running: git-bash.exe --cd=%s" dir)
-    (w32-shell-execute "open" "git-bash.exe" (format "--cd=%s" dir))))
+    (w32-shell-execute "open" "wt.exe" "C:\\git-sdk-64\\git-cmd.exe --command=usr/bin/bash.exe -l -i" (format "--cd=%s" dir))))
 
 (defmacro +windows--explorer-with (id &optional dir)
   `(defun ,(intern (format "+windows/%s" id)) ()
