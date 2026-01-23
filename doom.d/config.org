@@ -925,6 +925,19 @@
                 (message "Copied parent headings as bullet list:\n%s" bullets))))))
     #+end_src
 
+*** org-md
+
+    =_=, =*= 문자 앞에 무조건 =\= 문자를 붙여서 수정
+
+    #+begin_src elisp :lexical t
+      (after! ox-gfm
+          (defadvice! my/org-md-plain-text-no-escape (fn text info)
+            :around #'org-md-plain-text
+            (let ((result (funcall fn text info)))
+              (setq result (replace-regexp-in-string "\\\\_" "_" result))
+              (replace-regexp-in-string "\\\\\\*" "*" result))))
+    #+end_src
+
 ** doom-modeline
 
    #+begin_src elisp
