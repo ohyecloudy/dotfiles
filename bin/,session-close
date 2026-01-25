@@ -1,5 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 
+show_whale() {
+    cat << 'EOF'
+
+        .
+       ":"
+     ___:____     |"\/"|
+   ,'        `.    \  /
+   |  O        \___/  |
+ ~^~^~^~^~^~^~^~^~^~^~^~^~
+
+   Oops! Something went wrong...
+
+EOF
+}
+
+trap 'show_whale' ERR
 set -e
 
 cd ~/org_roam
