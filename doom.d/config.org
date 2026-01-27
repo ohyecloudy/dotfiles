@@ -1894,14 +1894,6 @@
       (doom-project-browse (expand-file-name "~/.dotfiles")))
   #+end_src
 
-* etc
-
-  #+begin_src elisp :lexical t
-    (setq-default major-mode 'org-mode)
-  #+end_src
-
-  디폴트 메이저 모드로 org-mode를 사용한다. fundamental mode를 거의 사용하지 않아서 자주 사용하는 org-mode로 세팅
-
 * TODO 설정
 
   #+begin_src elisp :tangle no
