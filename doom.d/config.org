@@ -1413,13 +1413,13 @@
 
    참고: [[http://ohyecloudy.com/emacsian/2022/05/28/create-link-section-by-scraping-links-from-current-org-docs/][org 문서에서 링크를 긁어서 링크 섹션을 만들기 - ohyecloudy.com]]
 
-** ox-confluence
-
-   #+begin_src elisp
-     (require 'my-ox-confluence)
-   #+end_src
+** ox-confluence - 비활성화
 
    [[https://github.com/aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el][aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el - github.com]] 파일을 가져와서 조금 고친 패키지. confluence 마크업으로 익스포트를 지원한다.
+
+   #+begin_src elisp :tangle no
+     (require 'my-ox-confluence)
+   #+end_src
 
 ** ox-taskjuggler
 
