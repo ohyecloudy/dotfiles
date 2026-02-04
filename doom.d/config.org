@@ -956,12 +956,31 @@
 
 ** magit
 
+   magit status를 실행하면 묻지 않고 수정한 버퍼를 저장한다
+
    #+begin_src elisp
      (after! magit
        (setq magit-save-repository-buffers 'dontask))
    #+end_src
 
-   magit status를 실행하면 묻지 않고 수정한 버퍼를 저장한다
+   큰 용량의 저장소 때문에 수동 refresh
+
+   #+begin_src elisp :lexical t
+     (after! magit
+       (setq magit-refresh-status-buffer nil
+             magit-auto-revert-mode nil))
+   #+end_src
+
+   Doom 에서 추가한 hook 함수가 주기적으로 freezing을 유발해서 제거
+
+   #+begin_src elisp :lexical t
+     (after! magit
+       (remove-hook 'magit-post-refresh-hook #'+magit-mark-stale-buffers-h)
+       (remove-hook 'magit-post-refresh-hook #'+magit--restore-window-state-h)
+       (remove-hook 'magit-post-refresh-hook #'+magit-invalidate-projectile-cache-h)
+       (remove-hook 'doom-switch-frame-hook #'+magit-mark-stale-buffers-h)
+       )
+   #+end_src
 
 ** projectile
 
