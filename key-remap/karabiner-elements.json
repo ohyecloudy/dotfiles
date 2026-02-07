@@ -210,6 +210,35 @@
           ]
         }
       ]
+    },
+    {
+      "description":"caps_lock to left control - remote desktop",
+      "manipulators":[
+        {
+          "conditions":[
+            {
+              "type":"frontmost_application_if",
+              "bundle_identifiers":[
+                "^com\\.microsoft\\.rdc.*"
+              ]
+            }
+          ],
+          "type":"basic",
+          "from":{
+            "key_code":"caps_lock",
+            "modifiers":{
+              "optional":[
+                "any"
+              ]
+            }
+          },
+          "to":[
+            {
+              "key_code":"left_control"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
