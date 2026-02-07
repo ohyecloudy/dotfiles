@@ -8,7 +8,8 @@
           "conditions":[
             {
               "bundle_identifiers":[
-                "^org\\.gnu\\.Emacs"
+                "^org\\.gnu\\.Emacs",
+                "^com\\.microsoft\\.rdc.*"
               ],
               "type":"frontmost_application_unless"
             }
