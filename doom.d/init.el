@@ -127,7 +127,7 @@
        ;;crystal           ; ruby at the speed of c
        (csharp +dotnet +lsp) ; unity, .NET, and mono shenanigans
        data                ; config/data formats
-       ;;(dart +flutter +lsp) ; paint ui and not much else. Windows에서 elixir 소스 코드를 열 때마다 에러 발생해서 비활성화
+       (dart +flutter +lsp) ; paint ui and not much else.
        ;;dhall
        (elixir +lsp)       ; erlang done right
        ;;elm               ; care for a cup of TEA?
