@@ -1396,6 +1396,15 @@
      (package! vlf)
    #+end_src
 
+** nXML
+
+   XML 자동 포맷팅은 기존 문서와 어긋나는 경우가 많아서 끔
+
+   #+begin_src elisp :lexical t
+     (after! format
+       (add-to-list '+format-on-save-disabled-modes 'nxml-mode))
+   #+end_src
+
 * syntax
 
   #+begin_src elisp
