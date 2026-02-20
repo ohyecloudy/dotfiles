@@ -70,3 +70,6 @@ source ~/.dotfiles/git/git-completion.bash
 # asdf
 test -f /opt/homebrew/opt/asdf/libexec/asdf.sh && . /opt/homebrew/opt/asdf/libexec/asdf.sh
 test -f /opt/homebrew/opt/asdf/etc/bash_completion.d/asdf.bash && . /opt/homebrew/opt/asdf/etc/bash_completion.d/asdf.bash
+
+# local overrides
+[[ -f ~/.bashrc.local ]] && source ~/.bashrc.local
