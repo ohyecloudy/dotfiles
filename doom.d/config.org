@@ -1833,18 +1833,6 @@
 
   windows에서는 프로세스로 보내는 coding system을 cp949로 고정한다. =bashrc= 에서 =chcp.com 65001= 을 실행하게 해도 =rg.exe= 파일을 실행하는 프로세스에 =utf-8= 인코딩으로 보내면 동작하지 않는다. 정확한 원인은 찾지 못했다.
 
-* =browse-url= 에서 사용하는 프로그램을 =chrome= 으로 변경
-
-  #+begin_src elisp
-    (when IS-WINDOWS
-      (setq browse-url-chrome-program "run-chrome.bat")
-      (setq browse-url-handlers
-            '(("nexon.com" . browse-url-default-browser)
-              ("." . browse-url-chrome))))
-  #+end_src
-
-  윈도우에서는 기본 브라우저를 =chrome= 이 아닌 다른 프로그램으로 설정할 때가 많아서 emacs에서 url로 열 때는 =chrome= 으로 고정. 이후 macOS에도 일괄 적용.
-
 * windows bash shell
 
   #+begin_src elisp
