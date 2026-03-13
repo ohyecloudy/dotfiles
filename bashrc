@@ -17,7 +17,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
     export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 
-    export PATH="$HOME/.local/bin:$HOME/bin.local:$HOME/bin:$HOME/developer/flutter/bin:$HOME/.emacs.d/bin:$PATH";
+    export PATH="$HOME/.local/bin:$HOME/bin.local:$HOME/bin:$HOME/developer/flutter/bin:$HOME/.config/emacs/bin:$PATH";
     export ELIXIR_EDITOR="ec +__LINE__ __FILE__"
 fi
 
