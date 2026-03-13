@@ -239,6 +239,30 @@
           ]
         }
       ]
+    },
+    {
+        "description": "Change Won (₩) to grave accent (`) in Korean layout.",
+        "manipulators": [
+            {
+                "conditions": [
+                    {
+                        "input_sources": [{ "language": "ko" }],
+                        "type": "input_source_if"
+                    }
+                ],
+                "from": {
+                    "key_code": "grave_accent_and_tilde",
+                    "modifiers": { "optional": ["any"] }
+                },
+                "to": [
+                    {
+                        "key_code": "grave_accent_and_tilde",
+                        "modifiers": ["option"]
+                    }
+                ],
+                "type": "basic"
+            }
+        ]
     }
   ]
 }
