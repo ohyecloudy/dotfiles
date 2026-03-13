@@ -1,12 +1,8 @@
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/core"
 tap "d12frosted/emacs-plus"
 
 # for doom emacs
 brew "coreutils"
 brew "autoconf"
-brew "openssl@1.1"
 brew "wxwidgets"
 brew "libxslt"
 brew "fop"
@@ -23,14 +19,13 @@ brew "ripgrep"
 brew "yt-dlp"
 brew "imagemagick"
 brew "tree-sitter"
-brew "d12frosted/emacs-plus/emacs-plus@29",
-     args: ["with-imagemagick", "with-native-comp"]
+brew "d12frosted/emacs-plus/emacs-plus@30",
+     args: ["with-imagemagick"]
 
-cask "alt-tab"
 cask "iterm2"
-cask "rectangle"
 
 mas "Amphetamine", id: 937984704
 mas "Tailscale", id: 1475387142
-mas "Kindle Classic", id: 405399194
+mas "Amazon Kindle", id: 302584613
 mas "Xcode", id: 497799835
+mas "Windows App", id: 1295203466
