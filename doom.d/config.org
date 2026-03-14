@@ -155,7 +155,7 @@
   =RET= 키를 눌렀을 때, 코멘트가 연결되는 기능을 끈다. 한 줄 코멘트가 많아 오히려 번거롭다.
 
 * doom emacs
-
+  
 ** online
 
    #+begin_src elisp :lexical t
@@ -1823,6 +1823,23 @@
       (while (re-search-forward "\u00a0" nil t)
         (replace-match " ")))
   #+end_src
+
+* LSP
+
+** bash
+
+   #+begin_src elisp :lexical t
+     (after! eglot
+       (add-to-list 'eglot-server-programs '((sh-mode bash-ts-mode) . ("bash-language-server" "start"))))
+
+     (add-hook! (sh-mode bash-ts-mode) #'eglot-ensure)
+   #+end_src
+
+   설치는 아래 명령을 직접 실행
+
+   #+begin_example
+     npm i -g bash-language-server
+   #+end_example
 
 * windows coding system
 
