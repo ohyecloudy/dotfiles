@@ -1927,6 +1927,16 @@
       (doom-project-browse (expand-file-name "~/.dotfiles")))
   #+end_src
 
+* encryption
+
+  #+begin_src elisp :lexical t
+    (require 'epa-file)
+    (epa-file-enable)
+
+    (setq epa-file-select-keys nil)
+    (setq epg-pinentry-mode 'loopback) ;; 미니버퍼에서 입력
+  #+end_src
+
 * TODO 설정
 
   #+begin_src elisp :tangle no
