@@ -499,6 +499,23 @@
                             :desc "find shift week" "W" #'my/org-roam-find-shift-week))))
     #+end_src
 
+    버그로 today로 가면 sync를 처음부터 하는 경우가 있다. 그런 경우를 방지하고자 세션 첫 이동이면 db sync 함수를 호출
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (defvar my/org-roam-db-synced-p nil
+          "Non-nil if `org-roam-db-sync' has been run at least once in this session.")
+
+        (defun my/org-roam-db-sync-once (&rest _)
+          "Run `org-roam-db-sync' once per Emacs session before going to today's daily."
+          (unless my/org-roam-db-synced-p
+            (setq my/org-roam-db-synced-p t)
+            (org-roam-db-sync)))
+
+        (advice-add 'org-roam-dailies-goto-today :before #'my/org-roam-db-sync-once)
+        (advice-add 'org-roam-dailies-goto-yesterday :before #'my/org-roam-db-sync-once))
+    #+end_src
+
 *** org-roam optimization
 
     =org-roam-node-find=, =org-roam-node-insert= 에서 호출하는 =org-roam-node-read--completions= 함수가 느려서 최적화를 진행
