@@ -400,6 +400,10 @@
                  ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
                  :target (file "career/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
+                ("z" "secret" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                 :target (file "secret/%<%Y%m%d%H%M%S>-${slug}.org.gpg")
+                 :unnarrowed t)
                 ("p" "project" plain
                  ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
                  :target (file "project/%<%Y%m%d>-${slug}.org")
