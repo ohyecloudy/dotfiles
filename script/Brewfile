@@ -21,6 +21,8 @@ brew "imagemagick"
 brew "tree-sitter"
 brew "d12frosted/emacs-plus/emacs-plus@30",
      args: ["with-imagemagick"]
+# ruby build in asdf
+brew "libyaml"
 
 cask "iterm2"
 
