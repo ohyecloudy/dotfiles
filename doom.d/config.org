@@ -1426,6 +1426,15 @@
        (add-to-list '+format-on-save-disabled-modes 'nxml-mode))
    #+end_src
 
+** auto-save-visited
+
+   자동 저장
+
+   #+begin_src elisp :lexical t
+     (setq auto-save-visited-interval 5)
+     (auto-save-visited-mode t)
+   #+end_src
+
 * syntax
 
   #+begin_src elisp
