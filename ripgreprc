@@ -1,0 +1,22 @@
+# Exclude Windows special device files
+--glob=!nul
+--glob=!NUL
+
+# Exclude compressed/archive files
+--glob=!*.zip
+--glob=!*.tar
+--glob=!*.tar.gz
+--glob=!*.tgz
+--glob=!*.tar.bz2
+--glob=!*.tbz2
+--glob=!*.tar.xz
+--glob=!*.txz
+--glob=!*.gz
+--glob=!*.bz2
+--glob=!*.xz
+--glob=!*.7z
+--glob=!*.rar
+
+# Other useful defaults
+--smart-case
+--hidden

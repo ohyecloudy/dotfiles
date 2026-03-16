@@ -73,3 +73,4 @@ test -f /opt/homebrew/opt/asdf/etc/bash_completion.d/asdf.bash && . /opt/homebre
 
 # local overrides
 [[ -f ~/.bashrc.local ]] && source ~/.bashrc.local
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"

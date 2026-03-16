@@ -26,6 +26,7 @@ log_info "=> make symbolic links"
 safe_make_symbol_link $root_path/vim/vimrc ~/.vimrc
 safe_make_symbol_link $root_path/vim/ideavimrc ~/.ideavimrc
 safe_make_symbol_link $root_path/bash_profile ~/.bash_profile
+safe_make_symbol_link $root_path/ripgreprc ~/.ripgreprc 
 safe_make_symbol_link $root_path/bashrc ~/.bashrc
 safe_make_symbol_link $root_path/doom.d ~/.doom.d
 safe_make_symbol_link $root_path/bin ~/bin
