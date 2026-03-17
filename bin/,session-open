@@ -24,7 +24,7 @@ cd ~/.dotfiles
 git pull
 
 # error code 1 is returned even during successful updating doom in Windows
-doom install || true
+doom install --force || true
 doom sync || true
 doom env || true
 
