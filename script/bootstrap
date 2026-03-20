@@ -34,6 +34,10 @@ safe_make_symbol_link $root_path/bin.local ~/bin.local
 safe_make_symbol_link $root_path/tool-versions ~/.tool-versions
 safe_make_symbol_link $root_path/elixir/.iex.exs ~/.iex.exs
 
+mkdir ~/.claude 2>1 || true
+safe_make_symbol_link $root_path/claude/CLAUDE.md ~/.claude/CLAUDE.md
+safe_make_symbol_link $root_path/claude/settings.json ~/.claude/settings.json
+
 make_symbol_link_with_backup $root_path/git/gitconfig ~/.gitconfig
 make_symbol_link_with_backup $root_path/git/gitignore_global ~/.gitignore_global
 
