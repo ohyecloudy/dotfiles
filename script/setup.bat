@@ -10,6 +10,8 @@ call %binpath%\is-elevated.bat || goto :finally
 echo ;%path%; | find /c /i ";%hpath%\bin.local;" > NUL || setx /m PATH "%PATH%;%hpath%\bin.local;%hpath%\bin"
 setx /m HOME %hpath% || goto :finally
 
+mkdir %hpath%\.claude
+
 mklink %hpath%\.gitignore_global %dotpath%\git\gitignore_global || goto :finally
 mklink %hpath%\.gitconfig %dotpath%\git\gitconfig || goto :finally
 mklink %hpath%\.vimrc %dotpath%\vim\vimrc || goto :finally
@@ -17,6 +19,8 @@ mklink %hpath%\.ideavimrc %dotpath%\vim\ideavimrc || goto :finally
 mklink %hpath%\.bashrc %dotpath%\bashrc || goto :finally
 mklink %hpath%\.bash_profile %dotpath%\bash_profile || goto :finally
 mklink %hpath%\.ripgreprc %dotpath%\ripgreprc || goto :finally
+mklink %hpath%\.claude\CLAUDE.md %dotpath%\claude\CLAUDE.md || goto :finally
+mklink %hpath%\.claude\settings.json %dotpath%\claude\settings.json || goto :finally
 
 mklink /J %hpath%\.doom.d %dotpath%\doom.d || goto :finally
 mklink /J %hpath%\bin %dotpath%\bin || goto :finally
