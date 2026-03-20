@@ -2,10 +2,10 @@
 
 if [ "$OS" = "Windows_NT" ]
 then
-    emacsclientw --alternate-editor=runemacs "$@"
+    emacsclientw "$@"
 else
     if command -v emacsclient > /dev/null; then
-        emacsclient --alternate-editor=/Applications/Emacs.app/Contents/MacOS/Emacs "$@"
+        emacsclient "$@"
     else
         vim "$@"
     fi
