@@ -1,25 +1,26 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "permissions": {
-    "allow": [
-      "Bash(git log *)",
-      "Bash(git diff *)",
-      "Bash(git status)",
-      "Bash(git branch *)",
-      "Bash(git commit *)"
-    ],
-    "deny": [
-      "Bash(rm -rf *)",
-      "Bash(git push --force *)",
-      "Bash(git reset --hard *)",
-      "Bash(git push * main)",
-      "Bash(git push * master)",
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./secrets/**)",
-      "Read(~/.ssh/**)",
-      "Read(~/.aws/**)",
-      "Read(~/.gnupg/**)"
-    ]
-  }
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "permissions": {
+        "allow": [
+            "Bash(git log *)",
+            "Bash(git diff *)",
+            "Bash(git status)",
+            "Bash(git branch *)",
+            "Bash(git commit *)"
+        ],
+        "deny": [
+            "Bash(rm -rf *)",
+            "Bash(git push --force *)",
+            "Bash(git reset --hard *)",
+            "Bash(git push * main)",
+            "Bash(git push * master)",
+            "Read(./.env)",
+            "Read(./.env.*)",
+            "Read(./secrets/**)",
+            "Read(~/.ssh/**)",
+            "Read(~/.aws/**)",
+            "Read(~/.gnupg/**)"
+        ]
+    },
+    "language": "korean"
 }
