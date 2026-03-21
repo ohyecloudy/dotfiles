@@ -30,4 +30,8 @@
 - 동작하는 코드를 확인 없이 리팩토링하지 말 것
 - IMPORTANT: 파일 삭제, 대규모 rename은 반드시 사전 확인
 
+## Local Configuration
+
+@~/.claude/CLAUDE.local.md 
+
 ## Gotchas
