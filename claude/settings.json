@@ -22,5 +22,9 @@
             "Read(~/.gnupg/**)"
         ]
     },
-    "language": "korean"
+    "language": "korean",
+    "env": {
+        "VISUAL": "~/bin/ec-wait",
+        "EDITOR": "~/bin/ec-wait"
+    }
 }
