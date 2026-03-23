@@ -8,3 +8,5 @@ xvimrc text
 
 *.org diff=org
 *.el  diff=lisp
+
+claude/settings.work.json filter=git-crypt diff=git-crypt
