@@ -71,3 +71,6 @@ Brewfile.lock.json
 
 # local doom config file
 config.local.el
+
+.claude/
+!.claude/settings.json
