@@ -23,6 +23,7 @@
         ]
     },
     "language": "korean",
+    "autoUpdatesChannel": "stable",
     "env": {
         "VISUAL": "~/bin/ec-wait",
         "EDITOR": "~/bin/ec-wait"
