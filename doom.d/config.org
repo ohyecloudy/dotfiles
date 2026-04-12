@@ -33,17 +33,23 @@
 
 * look
 
+  버퍼 파일 이름을 타이틀바로 표시한다
+
   #+begin_src elisp
     (setq frame-title-format "%b")
   #+end_src
 
-  버퍼 파일 이름을 타이틀바로 표시한다
+  evil 키이동 활용성을 높이려고 visual로 세팅. relative는 folding을 고려하지 않지만 visual은 고려한다.
 
   #+begin_src elisp
     (setq display-line-numbers-type 'visual)
   #+end_src
 
-  evil 키이동 활용성을 높이려고 visual로 세팅. relative는 folding을 고려하지 않지만 visual은 고려한다.
+  사용하지 않는 메뉴바 제거
+  
+  #+begin_src elisp :lexical t
+    (menu-bar-mode -1)
+  #+end_src
 
 * hangul
 
