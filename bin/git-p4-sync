@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+LOG_DIR="/c/logs/git-p4"
+TARGET_DIR="/d/work"
+mkdir -p "$LOG_DIR"
+
+TS="$(date '+%Y-%m-%d_%H-%M-%S')"
+LOG_FILE="$LOG_DIR/git_p4_sync_$TS.log"
+
+echo "==== git p4 sync start: $(date '+%F %T') ====" >> "$LOG_FILE" 2>&1
+cd ${TARGET_DIR} >> "$LOG_FILE" 2>&1
+
+if git p4 sync >> "$LOG_FILE" 2>&1; then
+  echo "SUCCESS: $(date '+%F %T')" >> "$LOG_FILE" 2>&1
+  exit 0
+else
+  RC=$?
+  echo "FAILED (exit code: $RC): $(date '+%F %T')" >> "$LOG_FILE" 2>&1
+  exit $RC
+fi

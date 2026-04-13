@@ -2,6 +2,13 @@
 
 set -x
 
+is_windows() {
+    case "$(uname -s)" in
+        MINGW*|MSYS*|CYGWIN*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
 show_whale() {
     cat << 'EOF'
 
@@ -30,3 +37,9 @@ doom env || true
 
 cd ~/org_roam
 git pull
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if is_windows && [ -x "$SCRIPT_DIR/session-open-windows" ]; then
+    "$SCRIPT_DIR/session-open-windows"
+fi
