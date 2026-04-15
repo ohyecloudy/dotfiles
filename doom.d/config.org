@@ -131,12 +131,19 @@
 
   귀한 emacs. 최대 크기로 시작한다.
 
-* M-x keybinding
+* keybinding
 
   =M-x= 키가 =alt= 키를 눌러야 해서 불편하다. =C-x C-m= 키로도 호출할 수 있게 변경.
 
   #+begin_src elisp
     (global-set-key (kbd "C-x C-m") 'execute-extended-command)
+  #+end_src
+
+  workspaces 모듈을 사용 안하면 키바인딩을 안 해서 수동 키바인딩
+
+  #+begin_src elisp :lexical t
+    (map! :leader
+          :desc "Switch buffer"           "<" #'switch-to-buffer))
   #+end_src
 
 * tab -> space
