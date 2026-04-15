@@ -1432,6 +1432,27 @@
        (add-to-list '+format-on-save-disabled-modes 'nxml-mode))
    #+end_src
 
+** agent-shell
+
+   #+begin_quote
+   A native Emacs shell to interact with LLM agents powered by ACP (Agent Client Protocol).
+   
+   [[github:xenodium/agent-shell][xenodium/agent-shell - github.com]]
+   #+end_quote
+
+   #+begin_src elisp :lexical t :tangle packages.el
+     (package! shell-maker)
+     (package! acp)
+     (package! agent-shell)
+   #+end_src
+
+   #+begin_src elisp :lexical t
+     (require 'acp)
+     (require 'agent-shell)
+
+     (setq agent-shell-preferred-agent-config (agent-shell-anthropic-make-claude-code-config))
+   #+end_src
+
 * syntax
 
   #+begin_src elisp
