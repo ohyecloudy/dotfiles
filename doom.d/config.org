@@ -1117,25 +1117,6 @@
 
    splitting 이후 포커스를 옮긴다
 
-*** workaround
-
-    - windows에서만 init 과정에서 evil-org에서 세팅한 'auxiliary keymap'이 타이밍 문제로 덮어씌여짐
-      + motion state의 키만 문제
-
-    #+begin_src elisp :lexical t
-      (when IS-WINDOWS
-        (after! evil-org
-          (evil-define-key 'motion evil-org-mode-map
-            (kbd "RET") #'+org/dwim-at-point
-            (kbd "S-RET") nil
-            "]h" #'org-forward-heading-same-level
-            "[h" #'org-backward-heading-same-level
-            "]l" #'org-next-link
-            "[l" #'org-previous-link
-            "]c" #'org-babel-next-src-block
-            "[c" #'org-babel-previous-src-block)))
-    #+end_src
-
 ** evil-snipe
 
    한글도 f/t로 찾을 수 있게 한다.
