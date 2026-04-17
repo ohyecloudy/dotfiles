@@ -245,6 +245,346 @@
                         ))
    #+end_src
 
+* my packages
+
+  #+begin_src elisp
+    (add-load-path! (expand-file-name "lisp/" doom-user-dir))
+  #+end_src
+
+  =c44bc81a05= commit id에서 =9d4d5b756a= commit id로 업데이트한 이후로 =(add-load-path! "lisp")= 가 동작하지 않는다. =load-path= 변수를 확인해본 결과 =.doom.d= 디렉터리가 아니라 =.emacs.d= 디렉터리를 기준으로 =lisp= 디렉터리가 =load-path= 로 추가된 걸 확인했다. 그래서 =doom-user-dir= 을 기준으로 한 load path를 계산해 명시적으로 할당한다.
+
+** my-build-link-section
+
+   #+begin_src elisp
+     (require 'my-build-link-section)
+   #+end_src
+
+   =M-x my/build-link-section= 함수로 본문에 있는 링크를 수집해서 링크 org heading을 만들어준다.
+
+   참고: [[http://ohyecloudy.com/emacsian/2022/05/28/create-link-section-by-scraping-links-from-current-org-docs/][org 문서에서 링크를 긁어서 링크 섹션을 만들기 - ohyecloudy.com]]
+
+** ox-confluence - 비활성화
+
+   [[https://github.com/aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el][aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el - github.com]] 파일을 가져와서 조금 고친 패키지. confluence 마크업으로 익스포트를 지원한다.
+
+   #+begin_src elisp :tangle no
+     (require 'my-ox-confluence)
+   #+end_src
+
+** ox-taskjuggler
+
+   #+begin_src elisp :tangle no
+     (require 'ox-taskjuggler)
+     (progn
+       (load-file (expand-file-name "lisp/taskjuggler-setting.el" doom-user-dir))
+       (setq org-taskjuggler-reports-directory "~/taskjuggler")
+       ;; 넉넉하게 잡아놔서 Error: Some tasks did not fit into the project time frame. 에러가 안 뜨게 한다
+       (setq org-taskjuggler-default-project-duration 999))
+   #+end_src
+
+   [[https://taskjuggler.org/][taskjuggler]] 라이브러리를 exporter로 사용하는 [[https://orgmode.org/worg/exporters/taskjuggler/ox-taskjuggler.html][ox-taskjuggler]] 세팅
+
+** my-gitlab
+
+   #+begin_src elisp
+     (require 'my-gitlab)
+     (require 'legacy-gitlab)
+   #+end_src
+
+   gitlab을 사용하면서 만들어놓은 함수
+
+   [[http://ohyecloudy.com/emacsian/2023/04/22/auth-source-easypg/][auth-source]]에 다음과 같은 private token 정보가 저장되어 있어야 한다.
+
+   #+begin_example
+     machine mygitlab.com login NOT_USED password [PRIVATE-TOKEN]
+   #+end_example
+
+   URL을 보고 API에 접근해야할 지 판단한다. 판단 근거로 사용할 host 정보를 세팅해야 한다
+
+   #+begin_src elisp :lexical t :tangle no
+     (add-to-list 'my/gitlab-hosts '(:url "http://mygitlab.com"
+                                     :api-url "http://mygitlab.com/api/v4"))
+   #+end_src
+
+   gitlab merge request 삽입은 두 가지 방법으로 지원한다.
+
+   =SPC m z g= 키로 클립보드에 저장된 URL 혹은 입력 받아서 해당 merge request 정보로 org heading을 삽입한다.
+
+   #+begin_src elisp :lexical t
+     (map! :map org-mode-map
+           :localleader
+           (:prefix ("z" . "insert")
+                    "g" #'my/gitlab-insert-heading-content))
+   #+end_src
+
+   혹은 =SPC m l c= 키로 클립보드에 저장된 URL을 org-cliplink 패키지로 링크 마크업을 삽입한다. 아래 =my-org-cliplink-confluence= 세팅 참고
+
+** ob-csharp
+
+   #+begin_src elisp
+     (require 'ob-cs)
+
+     (org-babel-do-load-languages 'org-babel-load-languages
+                                  (append org-babel-load-languages
+                                          '((cs . t))))
+
+     (after! org
+       (add-to-list 'org-src-lang-modes '("cs" . "csharp")))
+   #+end_src
+
+   [[https://github.com/thomas-villagers/ob-csharp][ob-csharp]]에 [[https://github.com/dotnet-script/dotnet-script ][dotnet-script]]를 사용한 [[https://github.com/thomas-villagers/ob-csharp/pull/2][PR]]을 적용했다.
+
+   doom emacs에서 org-contrib를 로드할 때, ob-csharp을 로드한다. 이걸 갈아치는 방법을 못 찾아서 이름을 바꿔서 적용한다.
+
+   #+begin_src org :tangle no
+     ,#+begin_src cs
+       Console.WriteLine("hello org babel")
+     ,#+end_src
+   #+end_src
+
+   source code 이름은 =cs= 를 사용한다.
+
+** my-source-mine
+
+   #+begin_src elisp
+     (require 'my-source-mine)
+   #+end_src
+
+   언어별 참고할만한 코드베이스를 저장한 디렉터리에서 바로 검색하는 패키지. 소스 광산(source mine)이라고 부르자. doom emacs의 함수를 사용해서 구현했다.
+
+   #+begin_src elisp
+     (map! :leader
+           (:prefix-map ("S" . "custom search")
+                        (:prefix-map ("m" . "source mine")
+                         :desc "elixir" "x" #'my/source-mine-elixir)))
+   #+end_src
+
+   elixir 소스 광산을 검색하려면 =SPC S m x= 키를 누르면 된다.
+
+   #+begin_example
+     machine source_mine login elixir password ~/source_mine/elixir
+   #+end_example
+
+   소스 광산 디렉터리는 auth-source 패키지를 사용한다. 이런 식으로 =~/.authinfo= 에 저장하면 된다.
+
+** my-jira
+
+   #+begin_src elisp
+     (require 'my-jira)
+   #+end_src
+
+   비공개 Jira 페이지 정보 삽입을 지원하기 위해 jira rest api를 사용한다. 옛날 버전도 지원하는 척 하지만 현재는 jira cloud만 지원한다.
+
+   [[http://ohyecloudy.com/emacsian/2023/04/22/auth-source-easypg/][auth-source]]에 다음과 같은 id, api key 정보가 저장되어 있어야 한다.
+
+   #+begin_example
+     machine some.atlassian.net/browse login ohyecloudy@email.com password [API-KEY]
+   #+end_example
+
+   URL을 보고 API에 접근해야할 지 판단한다. 판단 근거로 사용할 host 정보를 세팅해야 한다
+
+   #+begin_src elisp :lexical t :tangle no
+     (add-to-list 'my/jira-hosts '(:url "https://some.atlassian.net/browse"
+                                   :api-url "https://some.atlassian.net/rest"
+                                   :api-version :cloud))
+   #+end_src
+
+   jira 이슈 삽입은 두 가지를 지원한다.
+
+   =SPC m z j= 키로 클립보드에 저장된 URL 혹은 입력 받아서 해당 이슈 정보로 org heading을 삽입한다.
+
+   #+begin_src elisp :lexical t
+     (map! :map org-mode-map
+           :localleader
+           (:prefix ("z" . "insert")
+                    "j" #'my/jira-insert-heading-content))
+   #+end_src
+
+   혹은 =SPC m l c= 키로 클립보드에 저장된 URL을 org-cliplink 패키지로 링크 마크업을 삽입한다. 아래 =my-org-cliplink-confluence= 세팅 참고
+
+** my-swarm
+
+   #+begin_src elisp
+     (require 'my-swarm)
+   #+end_src
+
+   api base 주소, project 이름, username, p4 ticket은 auth-source를 사용해서 접근한다. p4 ticket만 넣으려고 했는데, 귀찮아서 로컬에서 저장하는 걸 싹다 넣음
+
+   #+begin_example
+     machine myswarm login username password MYUSERNAME
+     machine myswarm login ticket password SUPERSECRET
+     machine myswarm login host password https://helixswarm.com
+     machine myswarm login project password AWESOME_PROJECT
+   #+end_example
+
+   이런식으로 =~/.authinfo= 파일에 저장하면 된다.
+
+** my-org-cliplink
+
+   =title - ohyecloudy.com= 식으로 org link를 만드는 org-cliplink에 취향을 가미한 라이브러리를 로드한다.
+
+   #+begin_src elisp
+     (require 'my-org-cliplink)
+   #+end_src
+
+   =org-clinklink= 함수에 바인딩된 키를 =my/org-cliplink= 로 바인딩한다.
+
+   #+begin_src elisp
+     (after! org
+       (define-key org-mode-map [remap org-cliplink] 'my/org-cliplink))
+   #+end_src
+
+   타이틀 뒤에 붙는 호스트 이름을 가공할 수 있다.
+
+   #+begin_src elisp :lexical t :tangle no
+     (add-to-list 'my/org-cliplink-host-transform-rules '("github.com" "GitHub"))
+   #+end_src
+
+** my-org-cliplink-confluence
+
+   Confluence 페이지는 API를 사용해 정보를 가져와서 org-cliplink처럼 org-mode 링크 markup을 추가한다. 비공개 Confluence 페이지 정보 삽입도 지원한다.
+
+   Confluence 6.x 버전과 Confluence Cloud v2를 지원한다. 둘 다 HTTP 기본 인증을 사용한다.
+
+   [[http://ohyecloudy.com/emacsian/2023/04/22/auth-source-easypg/][auth-source]]에 다음과 같은 id, password(cloud는 api key) 정보가 저장되어 있어야 한다.
+
+   #+begin_example
+     machine CONFLUENCE_6_HOST/confluence login ohyecloudy password SUPER_SECRET_PASSWORD
+     machine CONFLUENCE_CLOUD_HOST/wiki login ohyecloudy password SUPER_SECRET_API_KEY
+   #+end_example
+
+   url과 api-version을 리스트에 추가한다.
+
+   #+begin_src elisp :lexical t :tangle no
+     (add-to-list 'my/org-cliplink-confluence-hosts '(:url "https://CONFLUENCE_CLOUD_HOST/wiki" :api-version :cloud))
+     (add-to-list 'my/org-cliplink-confluence-hosts '(:url "http://CONFLUENCE_6_HOST/confluence" :api-version 6))
+     (add-to-list 'my/org-cliplink-confluence-hosts '(:url "https://CONFLUENCE_6_HOST/confluence" :api-version 6))
+   #+end_src
+
+   #+begin_src elisp
+     (require 'my-org-cliplink)
+     (require 'my-org-cliplink-confluence)
+   #+end_src
+
+   Confluence API 혹은 Jira API를 사용해서 페이지 정보를 가져올 수 있게 org-cliplink 커스텀 함수를 정의한다.
+
+   #+begin_src elisp :lexical t
+     (setq my/org-cliplink-custom-retrieve-title-hook
+           (lambda (url)
+             (or (my/org-cliplink-confluence-title url)
+                 (my/jira-title url)
+                 (my/gitlab-merge-request-title url))))
+   #+end_src
+
+** my-web-archive
+
+   [[https://web.archive.org/][Web Archive]] 서비스에 URL을 요청해 아카이브 URL을 가져오는 패키지를 로드한다. 아카이브 URL을 가져오는 함수를 적용할 패키지인 my-org-cliplink, my-build-link-section를 같이 로드한다.
+
+   #+begin_src elisp :lexical t
+     (require 'my-web-archive)
+     (require 'my-org-cliplink)
+     (require 'my-build-link-section)
+   #+end_src
+
+   =my-org-cliplink= 패키지를 사용해 아카이브 URL 뿐만 아니라 웹페이지 타이틀도 가져와서 링크를 만들게 한다.
+
+   #+begin_src elisp :lexical t
+     (defun my/web-archive-with-webpage-title (url archive-url)
+       (org-cliplink-retrieve-title
+        url
+        (lambda (url title)
+          (let* ((origin-org-link (my/org-cliplink-link-transformer url title))
+                 (archive-link (format "([[%s][archive]])" archive-url)))
+            (my/web-archive-write-line my/web-archive-result-buffer-name
+                                       (format "%s%s" origin-org-link archive-link))))))
+   #+end_src
+
+   클립보드 컨텐츠를 가져와 링크를 만드는 함수를 정의한다.
+
+   #+begin_src elisp :lexical t
+     (defun my/org-cliplink-with-archive-url ()
+       (interactive)
+       (my/web-archive-async (list (org-cliplink-clipboard-content))
+                             #'my/web-archive-with-webpage-title))
+   #+end_src
+
+   타이틀만 가져와서 링크를 만드는 키바인딩 =SPC m l c= 에서 c를 대문자로 입력하면 아카이브 URL도 같이 가져온다.
+
+   #+begin_src elisp :lexical t
+     (after! org
+       (map! :map org-mode-map
+             :localleader
+             (:prefix ("l" . "links")
+                      "C" #'my/org-cliplink-with-archive-url)))
+   #+end_src
+
+   org 문서에 있는 링크를 긁고 아카이브 URL도 같이 추가할 수 있게 =my/build-link-section= 패키지 함수를 확장.
+
+   #+begin_src elisp :lexical t
+     (defun my/build-link-section-with-archive-urls-async ()
+       (interactive)
+       (my/build-link-section (lambda (links)
+                                (my/web-archive-async links
+                                                      #'my/web-archive-with-webpage-title))))
+   #+end_src
+
+** my-open-log-file
+
+   =tail -f= 로 파일을 연 것처럼 Emacs 버퍼로 파일을 연다.
+
+   =my/project-log-path= 변수에 프로젝트 이름과 로그 파일 path를 association list로 정의한다.
+
+   #+begin_src elisp :tangle no
+     (setq my/project-log-path '(("project 1" . "~/some.log")
+                                 ("project 2" . "~/project2/logs/log.txt")))
+   #+end_src
+
+   #+begin_src elisp :lexical t
+     (defun my/open-log-file (project-log-key)
+       (interactive
+        (list
+         (completing-read "project: " (mapcar #'car my/project-log-path))))
+       (let ((path (cdr (assoc project-log-key my/project-log-path))))
+         (if (file-exists-p path)
+             (progn
+               (find-file-other-window path)
+               ;; Warning (org-element): ‘org-element-at-point’ cannot be used
+               ;; 이 워닝 못 잡겠다. 무시
+               (setq warning-suppress-types '((org-element)))
+
+               (fundamental-mode)
+               (read-only-mode 1)
+               (buffer-disable-undo)
+               (when (boundp 'font-lock-mode)
+                 (font-lock-mode -1))
+               (when (fboundp 'so-long-minor-mode)
+                 (so-long-minor-mode 1))
+
+               (setq-local auto-revert-interval 1.0)
+               (auto-revert-tail-mode 1)
+
+               (goto-char (point-max)))
+           (message (concat "log file not found - " path)))))
+   #+end_src
+
+   =SPC o q= 바인딩으로 로그 파일을 열 수 있다
+
+   #+begin_src elisp :lexical t
+     (map! :leader
+           (:prefix-map ("o" . "open")
+            :desc "Open log file" "q" #'my/open-log-file))
+   #+end_src
+
+   [[https://ohyecloudy.com/emacsian/2017/12/02/auto-revert-tail-mode/][tail -f {unity 로그 파일} - (emacsian ohyecloudy) - ohyecloudy.com]] 참고
+
+** my-org-bulk-export-jekyll
+
+   jekyll 소스 org 파일을 한 번에 md로 익스포트하는 라이브러리
+
+   #+begin_src elisp :lexical t
+     (require 'my-org-bulk-export-jekyll)
+   #+end_src
+
 * packages
 
 ** doom theme
@@ -1460,6 +1800,41 @@
      (setq agent-shell-preferred-agent-config (agent-shell-anthropic-make-claude-code-config))
    #+end_src
 
+*** agent-shell-notifications
+
+    #+begin_quote
+    Desktop notifications for agent-shell events.
+
+    Uses Emacs' built-in notifications.el via D-Bus. Works out of the box on Linux with a running notification daemon. (Tested with KDE Plasma 6)
+
+    [[github:zackattackz/agent-shell-notifications?tab=readme-ov-file#backends][zackattackz/agent-shell-notifications - github.com]]
+    #+end_quote
+
+   #+begin_src elisp :lexical t :tangle packages.el
+     (package! agent-shell-notifications
+       :recipe (:host github
+                :repo "zackattackz/agent-shell-notifications")
+       :pin "fbf7a6b8c16326242d6e07430b7a8f5e84442466")
+   #+end_src
+
+    #+begin_src elisp :lexical t
+      (when (featurep :system 'windows)
+        (require 'agent-shell-notifications-w32))
+
+      (use-package! agent-shell-knockknock
+        :hook
+        ;; Enable notifications in each agent-shell buffer
+        (agent-shell-mode . agent-shell-notifications-mode)
+        ;; If using agent-shell-viewport, also add:
+        ;; (agent-shell-viewport-edit-mode . agent-shell-notifications-viewport-edit-mode)
+        ;; (agent-shell-viewport-view-mode . agent-shell-notifications-viewport-view-mode)
+
+        :init
+        (when (featurep :system 'windows)
+          (setq agent-shell-notifications-provider 'agent-shell-notifications-w32))
+        )
+    #+end_src
+
 * syntax
 
   #+begin_src elisp
@@ -1477,346 +1852,6 @@
   #+end_src
 
   =kebab-case=, =snake_case= 처리 친화적으로 문자를 word로 추가한다. [[http://ohyecloudy.com/emacsian/2017/12/16/evil-syntax-table-kebab-case-snake-case-friendly/][#evilmode kebab-case, snake_case 처리 친화적으로 - '_' 문자나 '-' 문자를 word 취급]] 참고
-
-* my packages
-
-  #+begin_src elisp
-    (add-load-path! (expand-file-name "lisp/" doom-user-dir))
-  #+end_src
-
-  =c44bc81a05= commit id에서 =9d4d5b756a= commit id로 업데이트한 이후로 =(add-load-path! "lisp")= 가 동작하지 않는다. =load-path= 변수를 확인해본 결과 =.doom.d= 디렉터리가 아니라 =.emacs.d= 디렉터리를 기준으로 =lisp= 디렉터리가 =load-path= 로 추가된 걸 확인했다. 그래서 =doom-user-dir= 을 기준으로 한 load path를 계산해 명시적으로 할당한다.
-
-** my-build-link-section
-
-   #+begin_src elisp
-     (require 'my-build-link-section)
-   #+end_src
-
-   =M-x my/build-link-section= 함수로 본문에 있는 링크를 수집해서 링크 org heading을 만들어준다.
-
-   참고: [[http://ohyecloudy.com/emacsian/2022/05/28/create-link-section-by-scraping-links-from-current-org-docs/][org 문서에서 링크를 긁어서 링크 섹션을 만들기 - ohyecloudy.com]]
-
-** ox-confluence - 비활성화
-
-   [[https://github.com/aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el][aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el - github.com]] 파일을 가져와서 조금 고친 패키지. confluence 마크업으로 익스포트를 지원한다.
-
-   #+begin_src elisp :tangle no
-     (require 'my-ox-confluence)
-   #+end_src
-
-** ox-taskjuggler
-
-   #+begin_src elisp :tangle no
-     (require 'ox-taskjuggler)
-     (progn
-       (load-file (expand-file-name "lisp/taskjuggler-setting.el" doom-user-dir))
-       (setq org-taskjuggler-reports-directory "~/taskjuggler")
-       ;; 넉넉하게 잡아놔서 Error: Some tasks did not fit into the project time frame. 에러가 안 뜨게 한다
-       (setq org-taskjuggler-default-project-duration 999))
-   #+end_src
-
-   [[https://taskjuggler.org/][taskjuggler]] 라이브러리를 exporter로 사용하는 [[https://orgmode.org/worg/exporters/taskjuggler/ox-taskjuggler.html][ox-taskjuggler]] 세팅
-
-** my-gitlab
-
-   #+begin_src elisp
-     (require 'my-gitlab)
-     (require 'legacy-gitlab)
-   #+end_src
-
-   gitlab을 사용하면서 만들어놓은 함수
-
-   [[http://ohyecloudy.com/emacsian/2023/04/22/auth-source-easypg/][auth-source]]에 다음과 같은 private token 정보가 저장되어 있어야 한다.
-
-   #+begin_example
-     machine mygitlab.com login NOT_USED password [PRIVATE-TOKEN]
-   #+end_example
-
-   URL을 보고 API에 접근해야할 지 판단한다. 판단 근거로 사용할 host 정보를 세팅해야 한다
-
-   #+begin_src elisp :lexical t :tangle no
-     (add-to-list 'my/gitlab-hosts '(:url "http://mygitlab.com"
-                                     :api-url "http://mygitlab.com/api/v4"))
-   #+end_src
-
-   gitlab merge request 삽입은 두 가지 방법으로 지원한다.
-
-   =SPC m z g= 키로 클립보드에 저장된 URL 혹은 입력 받아서 해당 merge request 정보로 org heading을 삽입한다.
-
-   #+begin_src elisp :lexical t
-     (map! :map org-mode-map
-           :localleader
-           (:prefix ("z" . "insert")
-                    "g" #'my/gitlab-insert-heading-content))
-   #+end_src
-
-   혹은 =SPC m l c= 키로 클립보드에 저장된 URL을 org-cliplink 패키지로 링크 마크업을 삽입한다. 아래 =my-org-cliplink-confluence= 세팅 참고
-
-** ob-csharp
-
-   #+begin_src elisp
-     (require 'ob-cs)
-
-     (org-babel-do-load-languages 'org-babel-load-languages
-                                  (append org-babel-load-languages
-                                          '((cs . t))))
-
-     (after! org
-       (add-to-list 'org-src-lang-modes '("cs" . "csharp")))
-   #+end_src
-
-   [[https://github.com/thomas-villagers/ob-csharp][ob-csharp]]에 [[https://github.com/dotnet-script/dotnet-script ][dotnet-script]]를 사용한 [[https://github.com/thomas-villagers/ob-csharp/pull/2][PR]]을 적용했다.
-
-   doom emacs에서 org-contrib를 로드할 때, ob-csharp을 로드한다. 이걸 갈아치는 방법을 못 찾아서 이름을 바꿔서 적용한다.
-
-   #+begin_src org :tangle no
-     ,#+begin_src cs
-       Console.WriteLine("hello org babel")
-     ,#+end_src
-   #+end_src
-
-   source code 이름은 =cs= 를 사용한다.
-
-** my-source-mine
-
-   #+begin_src elisp
-     (require 'my-source-mine)
-   #+end_src
-
-   언어별 참고할만한 코드베이스를 저장한 디렉터리에서 바로 검색하는 패키지. 소스 광산(source mine)이라고 부르자. doom emacs의 함수를 사용해서 구현했다.
-
-   #+begin_src elisp
-     (map! :leader
-           (:prefix-map ("S" . "custom search")
-                        (:prefix-map ("m" . "source mine")
-                         :desc "elixir" "x" #'my/source-mine-elixir)))
-   #+end_src
-
-   elixir 소스 광산을 검색하려면 =SPC S m x= 키를 누르면 된다.
-
-   #+begin_example
-     machine source_mine login elixir password ~/source_mine/elixir
-   #+end_example
-
-   소스 광산 디렉터리는 auth-source 패키지를 사용한다. 이런 식으로 =~/.authinfo= 에 저장하면 된다.
-
-** my-jira
-
-   #+begin_src elisp
-     (require 'my-jira)
-   #+end_src
-
-   비공개 Jira 페이지 정보 삽입을 지원하기 위해 jira rest api를 사용한다. 옛날 버전도 지원하는 척 하지만 현재는 jira cloud만 지원한다.
-
-   [[http://ohyecloudy.com/emacsian/2023/04/22/auth-source-easypg/][auth-source]]에 다음과 같은 id, api key 정보가 저장되어 있어야 한다.
-
-   #+begin_example
-     machine some.atlassian.net/browse login ohyecloudy@email.com password [API-KEY]
-   #+end_example
-
-   URL을 보고 API에 접근해야할 지 판단한다. 판단 근거로 사용할 host 정보를 세팅해야 한다
-
-   #+begin_src elisp :lexical t :tangle no
-     (add-to-list 'my/jira-hosts '(:url "https://some.atlassian.net/browse"
-                                   :api-url "https://some.atlassian.net/rest"
-                                   :api-version :cloud))
-   #+end_src
-
-   jira 이슈 삽입은 두 가지를 지원한다.
-
-   =SPC m z j= 키로 클립보드에 저장된 URL 혹은 입력 받아서 해당 이슈 정보로 org heading을 삽입한다.
-
-   #+begin_src elisp :lexical t
-     (map! :map org-mode-map
-           :localleader
-           (:prefix ("z" . "insert")
-                    "j" #'my/jira-insert-heading-content))
-   #+end_src
-
-   혹은 =SPC m l c= 키로 클립보드에 저장된 URL을 org-cliplink 패키지로 링크 마크업을 삽입한다. 아래 =my-org-cliplink-confluence= 세팅 참고
-
-** my-swarm
-
-   #+begin_src elisp
-     (require 'my-swarm)
-   #+end_src
-
-   api base 주소, project 이름, username, p4 ticket은 auth-source를 사용해서 접근한다. p4 ticket만 넣으려고 했는데, 귀찮아서 로컬에서 저장하는 걸 싹다 넣음
-
-   #+begin_example
-     machine myswarm login username password MYUSERNAME
-     machine myswarm login ticket password SUPERSECRET
-     machine myswarm login host password https://helixswarm.com
-     machine myswarm login project password AWESOME_PROJECT
-   #+end_example
-
-   이런식으로 =~/.authinfo= 파일에 저장하면 된다.
-
-** my-org-cliplink
-
-   =title - ohyecloudy.com= 식으로 org link를 만드는 org-cliplink에 취향을 가미한 라이브러리를 로드한다.
-
-   #+begin_src elisp
-     (require 'my-org-cliplink)
-   #+end_src
-
-   =org-clinklink= 함수에 바인딩된 키를 =my/org-cliplink= 로 바인딩한다.
-
-   #+begin_src elisp
-     (after! org
-       (define-key org-mode-map [remap org-cliplink] 'my/org-cliplink))
-   #+end_src
-
-   타이틀 뒤에 붙는 호스트 이름을 가공할 수 있다.
-
-   #+begin_src elisp :lexical t :tangle no
-     (add-to-list 'my/org-cliplink-host-transform-rules '("github.com" "GitHub"))
-   #+end_src
-
-** my-org-cliplink-confluence
-
-   Confluence 페이지는 API를 사용해 정보를 가져와서 org-cliplink처럼 org-mode 링크 markup을 추가한다. 비공개 Confluence 페이지 정보 삽입도 지원한다.
-
-   Confluence 6.x 버전과 Confluence Cloud v2를 지원한다. 둘 다 HTTP 기본 인증을 사용한다.
-
-   [[http://ohyecloudy.com/emacsian/2023/04/22/auth-source-easypg/][auth-source]]에 다음과 같은 id, password(cloud는 api key) 정보가 저장되어 있어야 한다.
-
-   #+begin_example
-     machine CONFLUENCE_6_HOST/confluence login ohyecloudy password SUPER_SECRET_PASSWORD
-     machine CONFLUENCE_CLOUD_HOST/wiki login ohyecloudy password SUPER_SECRET_API_KEY
-   #+end_example
-
-   url과 api-version을 리스트에 추가한다.
-
-   #+begin_src elisp :lexical t :tangle no
-     (add-to-list 'my/org-cliplink-confluence-hosts '(:url "https://CONFLUENCE_CLOUD_HOST/wiki" :api-version :cloud))
-     (add-to-list 'my/org-cliplink-confluence-hosts '(:url "http://CONFLUENCE_6_HOST/confluence" :api-version 6))
-     (add-to-list 'my/org-cliplink-confluence-hosts '(:url "https://CONFLUENCE_6_HOST/confluence" :api-version 6))
-   #+end_src
-
-   #+begin_src elisp
-     (require 'my-org-cliplink)
-     (require 'my-org-cliplink-confluence)
-   #+end_src
-
-   Confluence API 혹은 Jira API를 사용해서 페이지 정보를 가져올 수 있게 org-cliplink 커스텀 함수를 정의한다.
-
-   #+begin_src elisp :lexical t
-     (setq my/org-cliplink-custom-retrieve-title-hook
-           (lambda (url)
-             (or (my/org-cliplink-confluence-title url)
-                 (my/jira-title url)
-                 (my/gitlab-merge-request-title url))))
-   #+end_src
-
-** my-web-archive
-
-   [[https://web.archive.org/][Web Archive]] 서비스에 URL을 요청해 아카이브 URL을 가져오는 패키지를 로드한다. 아카이브 URL을 가져오는 함수를 적용할 패키지인 my-org-cliplink, my-build-link-section를 같이 로드한다.
-
-   #+begin_src elisp :lexical t
-     (require 'my-web-archive)
-     (require 'my-org-cliplink)
-     (require 'my-build-link-section)
-   #+end_src
-
-   =my-org-cliplink= 패키지를 사용해 아카이브 URL 뿐만 아니라 웹페이지 타이틀도 가져와서 링크를 만들게 한다.
-
-   #+begin_src elisp :lexical t
-     (defun my/web-archive-with-webpage-title (url archive-url)
-       (org-cliplink-retrieve-title
-        url
-        (lambda (url title)
-          (let* ((origin-org-link (my/org-cliplink-link-transformer url title))
-                 (archive-link (format "([[%s][archive]])" archive-url)))
-            (my/web-archive-write-line my/web-archive-result-buffer-name
-                                       (format "%s%s" origin-org-link archive-link))))))
-   #+end_src
-
-   클립보드 컨텐츠를 가져와 링크를 만드는 함수를 정의한다.
-
-   #+begin_src elisp :lexical t
-     (defun my/org-cliplink-with-archive-url ()
-       (interactive)
-       (my/web-archive-async (list (org-cliplink-clipboard-content))
-                             #'my/web-archive-with-webpage-title))
-   #+end_src
-
-   타이틀만 가져와서 링크를 만드는 키바인딩 =SPC m l c= 에서 c를 대문자로 입력하면 아카이브 URL도 같이 가져온다.
-
-   #+begin_src elisp :lexical t
-     (after! org
-       (map! :map org-mode-map
-             :localleader
-             (:prefix ("l" . "links")
-                      "C" #'my/org-cliplink-with-archive-url)))
-   #+end_src
-
-   org 문서에 있는 링크를 긁고 아카이브 URL도 같이 추가할 수 있게 =my/build-link-section= 패키지 함수를 확장.
-
-   #+begin_src elisp :lexical t
-     (defun my/build-link-section-with-archive-urls-async ()
-       (interactive)
-       (my/build-link-section (lambda (links)
-                                (my/web-archive-async links
-                                                      #'my/web-archive-with-webpage-title))))
-   #+end_src
-
-** my-open-log-file
-
-   =tail -f= 로 파일을 연 것처럼 Emacs 버퍼로 파일을 연다.
-
-   =my/project-log-path= 변수에 프로젝트 이름과 로그 파일 path를 association list로 정의한다.
-
-   #+begin_src elisp :tangle no
-     (setq my/project-log-path '(("project 1" . "~/some.log")
-                                 ("project 2" . "~/project2/logs/log.txt")))
-   #+end_src
-
-   #+begin_src elisp :lexical t
-     (defun my/open-log-file (project-log-key)
-       (interactive
-        (list
-         (completing-read "project: " (mapcar #'car my/project-log-path))))
-       (let ((path (cdr (assoc project-log-key my/project-log-path))))
-         (if (file-exists-p path)
-             (progn
-               (find-file-other-window path)
-               ;; Warning (org-element): ‘org-element-at-point’ cannot be used
-               ;; 이 워닝 못 잡겠다. 무시
-               (setq warning-suppress-types '((org-element)))
-
-               (fundamental-mode)
-               (read-only-mode 1)
-               (buffer-disable-undo)
-               (when (boundp 'font-lock-mode)
-                 (font-lock-mode -1))
-               (when (fboundp 'so-long-minor-mode)
-                 (so-long-minor-mode 1))
-
-               (setq-local auto-revert-interval 1.0)
-               (auto-revert-tail-mode 1)
-
-               (goto-char (point-max)))
-           (message (concat "log file not found - " path)))))
-   #+end_src
-
-   =SPC o q= 바인딩으로 로그 파일을 열 수 있다
-
-   #+begin_src elisp :lexical t
-     (map! :leader
-           (:prefix-map ("o" . "open")
-            :desc "Open log file" "q" #'my/open-log-file))
-   #+end_src
-
-   [[https://ohyecloudy.com/emacsian/2017/12/02/auto-revert-tail-mode/][tail -f {unity 로그 파일} - (emacsian ohyecloudy) - ohyecloudy.com]] 참고
-
-** my-org-bulk-export-jekyll
-
-   jekyll 소스 org 파일을 한 번에 md로 익스포트하는 라이브러리
-
-   #+begin_src elisp :lexical t
-     (require 'my-org-bulk-export-jekyll)
-   #+end_src
 
 * my functions
 
