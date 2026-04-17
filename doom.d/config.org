@@ -46,7 +46,7 @@
   #+end_src
 
   사용하지 않는 메뉴바 제거
-  
+
   #+begin_src elisp :lexical t
     (menu-bar-mode -1)
   #+end_src
@@ -168,7 +168,7 @@
   =RET= 키를 눌렀을 때, 코멘트가 연결되는 기능을 끈다. 한 줄 코멘트가 많아 오히려 번거롭다.
 
 * doom emacs
-  
+
 ** online
 
    #+begin_src elisp :lexical t
@@ -1443,7 +1443,7 @@
 
    #+begin_quote
    A native Emacs shell to interact with LLM agents powered by ACP (Agent Client Protocol).
-   
+
    [[github:xenodium/agent-shell][xenodium/agent-shell - github.com]]
    #+end_quote
 
