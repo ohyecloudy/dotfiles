@@ -99,6 +99,9 @@ export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 command -v pyenv >/dev/null && eval "$(pyenv init -)"
 
+# dart/flutter
+export PATH="$PATH":"$HOME/.pub-cache/bin"
+
 # dont use zsh default PAGER, LESS options
 # export PAGER='less'
 # export LESS='-R'
