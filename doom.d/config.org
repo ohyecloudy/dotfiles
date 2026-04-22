@@ -1793,11 +1793,27 @@
      (package! agent-shell)
    #+end_src
 
-   #+begin_src elisp :lexical t
-     (require 'acp)
-     (require 'agent-shell)
+   windows에서 agent shell 히스토리가 깨져서 인코딩 advice
 
-     (setq agent-shell-preferred-agent-config (agent-shell-anthropic-make-claude-code-config))
+   #+begin_src elisp :lexical t
+     (when IS-WINDOWS
+       (require 'acp)
+       (require 'agent-shell)
+
+       (setq agent-shell-preferred-agent-config (agent-shell-anthropic-make-claude-code-config))
+
+       (advice-add 'shell-maker--read-input-ring-history :around
+                   (lambda (orig-fn &rest args)
+                     (let ((coding-system-for-read 'utf-8))
+                       (apply orig-fn args))))
+
+       (advice-add 'shell-maker--write-input-ring-history :around
+                   (lambda (orig-fn &rest args)
+                     (let ((coding-system-for-write 'utf-8)
+                           (print-escape-nonascii nil)
+                           (print-escape-multibyte nil))
+                       (apply orig-fn args))))
+       )
    #+end_src
 
 *** agent-shell-notifications
