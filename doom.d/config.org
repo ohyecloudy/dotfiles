@@ -1816,6 +1816,14 @@
        )
    #+end_src
 
+   evil keybinding과 충돌 방지
+
+   #+begin_src elisp :lexical t
+     (after! evil
+       (evil-set-initial-state 'agent-shell-viewport-view-mode 'emacs)
+       (evil-set-initial-state 'agent-shell-viewport-edit-mode 'emacs))
+   #+end_src
+
 *** agent-shell-notifications
 
     #+begin_quote
