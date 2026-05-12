@@ -1802,6 +1802,15 @@
 
        (setq agent-shell-preferred-agent-config (agent-shell-anthropic-make-claude-code-config))
 
+       ;; 관련 환경 변수가 있다면 ACP 프로세스에 명시적으로 전달
+       (setq agent-shell-anthropic-claude-environment
+             (apply #'agent-shell-make-environment-variables
+                    (append '(:inherit-env t)
+                            (when-let ((v (getenv "ANTHROPIC_API_KEY")))
+                              (list "ANTHROPIC_AUTH_TOKEN" v))
+                            (when-let ((v (getenv "ANTHROPIC_BASE_URL")))
+                              (list "ANTHROPIC_BASE_URL" v)))))
+
        (advice-add 'shell-maker--read-input-ring-history :around
                    (lambda (orig-fn &rest args)
                      (let ((coding-system-for-read 'utf-8))
