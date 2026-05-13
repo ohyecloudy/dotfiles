@@ -585,6 +585,18 @@
      (require 'my-org-bulk-export-jekyll)
    #+end_src
 
+** my-org-formatter
+
+   org 문서 저장 시 heading 전후에 빈 줄을 정확히 1개로 정규화하는 포매터
+
+   #+begin_src elisp :lexical t
+     (require 'my-org-formatter)
+     (add-hook 'org-mode-hook
+       (lambda ()
+         (add-hook 'before-save-hook
+                   #'my/org-formatter-enforce nil t)))
+   #+end_src
+
 * packages
 
 ** doom theme
