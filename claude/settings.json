@@ -20,6 +20,10 @@
             "Read(~/.ssh/**)",
             "Read(~/.aws/**)",
             "Read(~/.gnupg/**)"
+        ],
+        "ask": [
+            "Read(~/org_roam)",
+            "Grep(~/org_roam)"
         ]
     },
     "language": "korean",
