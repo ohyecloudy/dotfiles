@@ -1917,6 +1917,25 @@
 
   =kebab-case=, =snake_case= 처리 친화적으로 문자를 word로 추가한다. [[http://ohyecloudy.com/emacsian/2017/12/16/evil-syntax-table-kebab-case-snake-case-friendly/][#evilmode kebab-case, snake_case 처리 친화적으로 - '_' 문자나 '-' 문자를 word 취급]] 참고
 
+* sanitize
+
+  #+begin_src elisp
+    (defun my/remove-ctrl-m ()
+      "Remove all ^M (carriage return) characters from the current buffer."
+      (interactive)
+      (save-excursion
+        (goto-char (point-min))
+        (while (search-forward "\r" nil t)
+          (replace-match ""))))
+
+    (defun unevernotify ()
+      (interactive)
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward "\u00a0" nil t)
+          (replace-match " "))))
+  #+end_src
+
 * my functions
 
   #+begin_src elisp
@@ -1972,10 +1991,6 @@
         (string-match "#\\([0-9]+\\)" line)
         (match-string 1 line)))
 
-    (defun unevernotify ()
-      (interactive)
-      (while (re-search-forward "\u00a0" nil t)
-        (replace-match " ")))
   #+end_src
 
 * LSP
