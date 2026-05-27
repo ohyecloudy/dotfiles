@@ -1880,6 +1880,25 @@
         )
     #+end_src
 
+** winpulse
+
+   #+begin_quote
+   Pulse the current window on focus change. A visual cue to help locate the active window.
+
+   [[https://github.com/xenodium/winpulse][xenodium/winpulse - github.com]]
+   #+end_quote
+
+   #+begin_src elisp :lexical t :tangle packages.el
+     (package! winpulse
+       :recipe (:host github :repo "xenodium/winpulse"))
+   #+end_src
+
+   #+begin_src elisp :lexical t
+     (use-package! winpulse
+       :config
+       (winpulse-mode +1))
+   #+end_src
+
 * syntax
 
   #+begin_src elisp
