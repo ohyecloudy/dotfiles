@@ -640,6 +640,55 @@
              :n "[b" #'org-previous-block))
    #+end_src
 
+*** agenda
+
+    agenda 빌드 성능을 높이기 위해 파일을 선별적으로 agenda files로 세팅
+
+    #+begin_src elisp :lexical t
+      (defun my/org-roam-dailies-agenda-files ()
+        "오늘 기준 +-7일 범위의 org-roam daily 파일 목록 반환."
+        (let* ((daily-dir (expand-file-name "daily/" org-roam-directory))
+               (today (current-time))
+               (files '()))
+          (dotimes (i 15)  ; -7 ~ +7 = 15일
+            (let* ((offset (- i 7))
+                   (date (time-add today (days-to-time offset)))
+                   (filename (format-time-string "%Y-%m-%d.org" date))
+                   (filepath (expand-file-name filename daily-dir)))
+              (when (file-exists-p filepath)
+                (push filepath files))))
+          files))
+
+      (defun my/org-roam-work-agenda-files ()
+        "지난주/이번주/다음주에 해당하는 worklog 파일 목록 반환.
+      파일명 패턴: ...worklog_YYYY_wWW_..."
+        (let* ((work-dir (expand-file-name "work/" org-roam-directory))
+               (now (current-time))
+               ;; 이번주, 지난주, 다음주의 (year . week) 쌍 3개
+               (target-weeks
+                (mapcar (lambda (offset)
+                          (let ((time (time-add now (days-to-time (* offset 7)))))
+                            (cons (string-to-number (format-time-string "%G" time))
+                                  (string-to-number (format-time-string "%V" time)))))
+                        '(-1 0 1)))
+               (files '()))
+          (when (file-directory-p work-dir)
+            (dolist (f (directory-files work-dir t "\\.org$"))
+              (when (string-match "worklog_\\([0-9]\\{4\\}\\)_w\\([0-9]\\{1,2\\}\\)_"
+                                  (file-name-nondirectory f))
+                (let ((year (string-to-number (match-string 1 (file-name-nondirectory f))))
+                      (week (string-to-number (match-string 2 (file-name-nondirectory f)))))
+                  (when (member (cons year week) target-weeks)
+                    (push f files))))))
+          files))
+
+      (setq org-agenda-files (append
+                              (list (expand-file-name "project/" org-roam-directory))
+                              (my/org-roam-dailies-agenda-files)
+                              (my/org-roam-work-agenda-files)
+                              ))
+    #+end_src
+
 *** abbrev link
 
     - property drawers에 abbrev 링크를 정의했을 때, 링크로 인식하지 못한다
