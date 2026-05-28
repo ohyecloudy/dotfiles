@@ -1837,12 +1837,77 @@
        )
    #+end_src
 
-   evil keybinding과 충돌 방지
+   evil keybinding
 
    #+begin_src elisp :lexical t
-     (after! evil
-       (evil-set-initial-state 'agent-shell-viewport-view-mode 'emacs)
-       (evil-set-initial-state 'agent-shell-viewport-edit-mode 'emacs))
+     (after! (evil agent-shell)
+       ;; agent-shell-mode (comint 기반 셸 버퍼)
+       (evil-define-key 'normal agent-shell-mode-map
+         (kbd "C-j") #'agent-shell-next-item
+         (kbd "C-k") #'agent-shell-previous-item
+         (kbd "gj")  #'agent-shell-next-item
+         (kbd "gk")  #'agent-shell-previous-item
+         (kbd "]]")  #'agent-shell-next-item
+         (kbd "[[")  #'agent-shell-previous-item
+         (kbd "C-p") #'comint-previous-input
+         (kbd "C-n") #'comint-next-input
+         (kbd "C-c C-c") #'agent-shell-interrupt
+         (kbd "gr")  #'agent-shell-reload
+         (kbd "gp")  #'agent-shell-jump-to-latest-permission-button-row
+         (kbd "go")  #'agent-shell-other-buffer
+         (kbd "gc")  #'agent-shell-prompt-compose
+         (kbd "C-c C-m") #'agent-shell-set-session-mode
+         (kbd "C-c C-v") #'agent-shell-set-session-model)
+
+       (evil-define-key 'insert agent-shell-mode-map
+         (kbd "<up>")   #'comint-previous-input
+         (kbd "<down>") #'comint-next-input
+         (kbd "C-p")    #'comint-previous-input
+         (kbd "C-n")    #'comint-next-input)
+
+       ;; viewport-view-mode (읽기 전용 응답 탐색)
+       (evil-set-initial-state 'agent-shell-viewport-view-mode 'normal)
+
+       (evil-define-key 'normal agent-shell-viewport-view-mode-map
+         (kbd "C-j") #'agent-shell-viewport-next-item
+         (kbd "C-k") #'agent-shell-viewport-previous-item
+         (kbd "gj")  #'agent-shell-viewport-next-item
+         (kbd "gk")  #'agent-shell-viewport-previous-item
+         (kbd "]]")  #'agent-shell-viewport-next-item
+         (kbd "[[")  #'agent-shell-viewport-previous-item
+         (kbd "C-f") #'agent-shell-viewport-next-page
+         (kbd "C-b") #'agent-shell-viewport-previous-page
+         "r"  #'agent-shell-viewport-reply
+         "y"  #'agent-shell-viewport-reply-yes
+         "gc" #'agent-shell-viewport-reply-continue
+         "gm" #'agent-shell-viewport-reply-more
+         "ga" #'agent-shell-viewport-reply-again
+         (kbd "C-c C-c") #'agent-shell-viewport-interrupt
+         "gr" #'agent-shell-viewport-refresh
+         "go" #'agent-shell-other-buffer
+         "?"  #'agent-shell-viewport-help-menu
+         "q"  #'bury-buffer
+         (kbd "C-c C-m") #'agent-shell-viewport-set-session-mode
+         (kbd "C-c C-v") #'agent-shell-viewport-set-session-model)
+
+       ;; viewport-edit-mode (프롬프트 작성)
+       (evil-set-initial-state 'agent-shell-viewport-edit-mode 'normal)
+
+       (evil-define-key 'normal agent-shell-viewport-edit-mode-map
+         (kbd "C-c C-c") #'agent-shell-viewport-compose-send
+         (kbd "C-c C-k") #'agent-shell-viewport-compose-cancel
+         (kbd "C-c C-p") #'agent-shell-viewport-compose-peek-last
+         (kbd "C-p") #'agent-shell-viewport-previous-history
+         (kbd "C-n") #'agent-shell-viewport-next-history
+         "go" #'agent-shell-other-buffer
+         "?"  #'agent-shell-viewport-compose-help-menu
+         (kbd "C-c C-m") #'agent-shell-viewport-set-session-mode
+         (kbd "C-c C-v") #'agent-shell-viewport-set-session-model)
+
+       (evil-define-key 'insert agent-shell-viewport-edit-mode-map
+         (kbd "M-p") #'agent-shell-viewport-previous-history
+         (kbd "M-n") #'agent-shell-viewport-next-history
+         (kbd "M-r") #'agent-shell-viewport-search-history))
    #+end_src
 
 *** agent-shell-notifications
