@@ -683,7 +683,9 @@
           files))
 
       (setq org-agenda-files (append
-                              (list (expand-file-name "project/" org-roam-directory))
+                              (list (expand-file-name "project/" org-roam-directory)
+                                    (expand-file-name "weekly/" org-roam-directory)
+                                    (expand-file-name "monthly/" org-roam-directory))
                               (my/org-roam-dailies-agenda-files)
                               (my/org-roam-work-agenda-files)
                               ))
