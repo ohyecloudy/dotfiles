@@ -11,6 +11,8 @@
                   (looking-at-p "^[[:space:]]*$"))
         (setq count (1+ count))
         (forward-line -1))
+      (when (and (bobp) (looking-at-p "^[[:space:]]*$"))
+        (setq count (1+ count)))
       count)))
 
 (defun my/org-formatter--delete-blank-lines-above ()
