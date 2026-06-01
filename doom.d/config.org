@@ -818,9 +818,18 @@
                  ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
                  :target (file "secret/%<%Y%m%d%H%M%S>-${slug}.org.gpg")
                  :unnarrowed t)
-                ("p" "project" plain
+                ("s" "project" plain
                  ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
                  :target (file "project/%<%Y%m%d>-${slug}.org")
+                 :unnarrowed t)
+                ("p" "periodic")
+                ("pm" "periodic/monthly" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/monthly.org]" org-roam-directory)
+                 :target (file "monthly/%<%Y%m%d>-${slug}.org")
+                 :unnarrowed t)
+                ("pw" "periodic/weekly" plain
+                 ,(format "#+title: ${title}\n%%[%s/template/weekly.org]" org-roam-directory)
+                 :target (file "weekly/%<%Y%m%d>-${slug}.org")
                  :unnarrowed t))
               org-roam-dailies-capture-templates
               `(("d" "default" plain ""
