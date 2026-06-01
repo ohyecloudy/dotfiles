@@ -28,6 +28,10 @@
       (when (< (point) heading-pos)
         (delete-region (point) heading-pos)))))
 
+(defun my/org-formatter--planning-line-p ()
+  "Return non-nil if the current line looks like a planning line."
+  (looking-at-p "^[[:space:]]*\\(SCHEDULED\\|DEADLINE\\|CLOSED\\):"))
+
 (defun my/org-formatter--ensure-blank-before ()
   "Ensure exactly one blank line before the heading at point.
 Uses `org-with-wide-buffer' to see past `org-map-entries' narrowing."
@@ -47,7 +51,8 @@ Point should be at the heading.  Moves to the first line after
 all meta, returning that position."
   (forward-line 1)
   (while (and (< (point) (point-max))
-              (org-at-planning-p))
+              (or (org-at-planning-p)
+                  (my/org-formatter--planning-line-p)))
     (forward-line 1))
   (while (and (< (point) (point-max))
               (looking-at org-drawer-regexp))
