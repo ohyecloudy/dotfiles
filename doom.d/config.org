@@ -691,6 +691,16 @@
                               ))
     #+end_src
 
+    #+begin_src elisp :lexical t
+      (setq org-agenda-custom-commands
+            '(("d" "Daily schedule"
+               ((agenda ""
+                        ((org-agenda-span 'day)
+                         (org-agenda-start-day nil)
+                         (org-agenda-use-time-grid nil)
+                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))))))
+    #+end_src
+
 *** abbrev link
 
     - property drawers에 abbrev 링크를 정의했을 때, 링크로 인식하지 못한다
@@ -832,10 +842,45 @@
                 ("pw" "periodic/weekly" plain
                  ,(format "#+title: ${title}\n%%[%s/template/weekly.org]" org-roam-directory)
                  :target (file "weekly/%<%Y%m%d>-${slug}.org")
-                 :unnarrowed t))
-              org-roam-dailies-capture-templates
-              `(("d" "default" plain ""
-                 :target (file+head "%<%Y-%m-%d>.org" ,(format "%%[%s/template/journal.org]" org-roam-directory))))))
+                 :unnarrowed t))))
+    #+end_src
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (defun my/get-daily-agenda (&optional date)
+          "Return the agenda for the day as a string."
+          (interactive)
+          (let ((file (make-temp-file "daily-agenda" nil ".txt")))
+            (org-agenda nil "d" nil)
+            (when date (org-agenda-goto-date date))
+            (org-agenda-write file nil nil "*Org Agenda(d)*")
+            (kill-buffer)
+            (with-temp-buffer
+              (insert-file-contents file)
+              (goto-char (point-min))
+              (kill-line 2)
+              (while (re-search-forward "^  " nil t)
+                (replace-match "- " nil nil))
+              (buffer-string))))
+
+        (setq org-roam-dailies-capture-templates
+              (let ((head
+                     (concat "#+title: %<%Y-%m-%d %a>\n#+startup: showall\n* Daily Overview\n"
+                             "#+begin_src elisp :results value raw\n"
+                             "(my/get-daily-agenda \"%<%Y-%m-%d>\")\n"
+                             "#+end_src\n"
+                             "* [/] Do Today\n* [/] Maybe Do Today\n* Journal\n")))
+                `(("j" "journal" entry
+                   "* %<%H:%M> %?"
+                   :if-new (file+head+olp "%<%Y-%m-%d>.org" ,head ("Journal")))
+                  ("t" "do today" item
+                   "[ ] %a"
+                   :if-new (file+head+olp "%<%Y-%m-%d>.org" ,head ("Do Today"))
+                   :immediate-finish t)
+                  ("m" "maybe do today" item
+                   "[ ] %a"
+                   :if-new (file+head+olp "%<%Y-%m-%d>.org" ,head ("Maybe Do Today"))
+                   :immediate-finish t)))))
     #+end_src
 
     backlink를 카테고리로 나눠서 분류해 보여준다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
