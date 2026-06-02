@@ -640,6 +640,13 @@
              :n "[b" #'org-previous-block))
    #+end_src
 
+   capture 링크를 상대 경로로 변경
+
+   #+begin_src elisp :lexical t
+     (after! org
+       (setq org-link-file-path-type 'relative))
+   #+end_src
+
 *** agenda
 
     agenda 빌드 성능을 높이기 위해 파일을 선별적으로 agenda files로 세팅
