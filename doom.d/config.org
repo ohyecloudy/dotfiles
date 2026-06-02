@@ -871,12 +871,7 @@
               (buffer-string))))
 
         (setq org-roam-dailies-capture-templates
-              (let ((head
-                     (concat "#+title: %<%Y-%m-%d %a>\n#+startup: showall\n* Daily Overview\n"
-                             "#+begin_src elisp :results value raw\n"
-                             "(my/get-daily-agenda \"%<%Y-%m-%d>\")\n"
-                             "#+end_src\n"
-                             "* [/] Do Today\n* [/] Maybe Do Today\n* Journal\n")))
+              (let ((head (format "%%[%s/template/journal.org]" org-roam-directory)))
                 `(("j" "journal" entry
                    "* %<%H:%M> %?"
                    :if-new (file+head+olp "%<%Y-%m-%d>.org" ,head ("Journal")))
