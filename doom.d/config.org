@@ -2021,7 +2021,22 @@
        (evil-define-key 'insert agent-shell-viewport-edit-mode-map
          (kbd "M-p") #'agent-shell-viewport-previous-history
          (kbd "M-n") #'agent-shell-viewport-next-history
-         (kbd "M-r") #'agent-shell-viewport-search-history))
+         (kbd "M-r") #'agent-shell-viewport-search-history)
+
+       ;; diff-mode (읽기 전용 diff 버퍼)
+       (evil-set-initial-state 'agent-shell-diff-mode 'normal)
+
+       (evil-define-key 'normal agent-shell-diff-mode-map
+         (kbd "C-j") #'diff-hunk-next
+         (kbd "C-k") #'diff-hunk-prev
+         "gj"  #'diff-hunk-next
+         "gk"  #'diff-hunk-prev
+         "]]"  #'diff-file-next
+         "[["  #'diff-file-prev
+         (kbd "RET") #'agent-shell-diff-open-file
+         (kbd "C-c C-c") #'agent-shell-diff-accept-all
+         (kbd "C-c C-k") #'agent-shell-diff-reject-all
+         "q"   #'kill-current-buffer))
    #+end_src
 
 *** agent-shell-notifications
