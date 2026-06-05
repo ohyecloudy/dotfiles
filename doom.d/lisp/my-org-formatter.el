@@ -51,6 +51,7 @@ Point should be at the heading.  Moves to the first line after
 all meta, returning that position."
   (forward-line 1)
   (while (and (< (point) (point-max))
+              (not (looking-at-p "^[[:space:]]*$"))
               (or (org-at-planning-p)
                   (my/org-formatter--planning-line-p)))
     (forward-line 1))
