@@ -1944,7 +1944,14 @@
        )
    #+end_src
 
-   evil keybinding
+   viewport 사용
+
+   #+begin_src elisp :lexical t
+     (after! agent-shell
+       (setq agent-shell-prefer-viewport-interaction t))
+   #+end_src
+
+*** agent-shell keybindings
 
    #+begin_src elisp :lexical t
      (after! (evil agent-shell)
@@ -2015,13 +2022,6 @@
          (kbd "M-p") #'agent-shell-viewport-previous-history
          (kbd "M-n") #'agent-shell-viewport-next-history
          (kbd "M-r") #'agent-shell-viewport-search-history))
-   #+end_src
-
-   viewport 사용
-
-   #+begin_src elisp :lexical t
-     (after! agent-shell
-       (setq agent-shell-prefer-viewport-interaction t))
    #+end_src
 
 *** agent-shell-notifications
