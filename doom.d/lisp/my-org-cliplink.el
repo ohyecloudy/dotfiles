@@ -99,5 +99,28 @@ e.g. A page that obtains the title using the API. jira, confluence."
           result)))
     result))
 
+(defun my/org-cliplink--youtube-url-p (url)
+  (when-let ((host (url-host (url-generic-parse-url url))))
+    (or (string-match-p "\\(?:www\\.\\)?youtube\\.com" host)
+        (string-match-p "youtu\\.be" host))))
+
+(defun my/org-cliplink-youtube-title (url)
+  "Retrieve YouTube video title via oEmbed API.
+Return nil for non-YouTube URLs."
+  (when (my/org-cliplink--youtube-url-p url)
+    (condition-case nil
+        (let* ((oembed-url (format "https://www.youtube.com/oembed?url=%s&format=json"
+                                   (url-hexify-string url)))
+               (buffer (url-retrieve-synchronously oembed-url t)))
+          (when buffer
+            (unwind-protect
+                (with-current-buffer buffer
+                  (goto-char (point-min))
+                  (re-search-forward "\n\n")
+                  (let ((json-object-type 'alist))
+                    (alist-get 'title (json-read))))
+              (kill-buffer buffer))))
+      (error nil))))
+
 (provide 'my-org-cliplink)
 ;;; my-org-cliplink.el ends here

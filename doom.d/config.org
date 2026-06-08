@@ -473,7 +473,8 @@
            (lambda (url)
              (or (my/org-cliplink-confluence-title url)
                  (my/jira-title url)
-                 (my/gitlab-merge-request-title url))))
+                 (my/gitlab-merge-request-title url)
+                 (my/org-cliplink-youtube-title url))))
    #+end_src
 
 ** my-web-archive
