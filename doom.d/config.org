@@ -909,6 +909,15 @@
         (add-hook 'org-roam-buffer-postrender-functions #'magit-section-show-level-2))
     #+end_src
 
+    backlinks buffer에서 evil relative line number 표시
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (add-hook 'org-roam-mode-hook
+                  (lambda ()
+                    (setq-local display-line-numbers 'relative))))
+    #+end_src
+
     =SPC n r t= 키를 누르면 org roam 변경 사항에 대한 커밋을 만들어낸다
 
     #+begin_src elisp :lexical t
