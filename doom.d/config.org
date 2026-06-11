@@ -1942,9 +1942,9 @@
    #+end_quote
 
    #+begin_src elisp :lexical t :tangle packages.el
-     (package! shell-maker)
-     (package! acp)
-     (package! agent-shell)
+     (package! shell-maker :pin "43ee9e1862994cbaa89715d324edb7a424181f22")
+     (package! acp :pin "c8ee1d7f70105fba8efa964ca63f38ca94a1e759")
+     (package! agent-shell :pin "d354db516b6ce8ddc00461e547adc2bae3b07d9d")
    #+end_src
 
    windows에서 agent shell 히스토리가 깨져서 인코딩 advice
