@@ -51,6 +51,12 @@
     (menu-bar-mode -1)
   #+end_src
 
+  줄바꿈된 라인에 들여쓰기 prefix를 시각적으로 표시해 가독성을 높인다
+
+  #+begin_src elisp :lexical t
+    (global-visual-wrap-prefix-mode 1)
+  #+end_src
+
 * hangul
 
   #+begin_src elisp
