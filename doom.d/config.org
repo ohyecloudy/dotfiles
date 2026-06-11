@@ -976,6 +976,25 @@
                             :desc "find shift week" "W" #'my/org-roam-find-shift-week))))
     #+end_src
 
+    =org-roam-dailies-goto-*= 함수가 capture 템플릿 선택을 물어보지 않도록 첫 번째 템플릿 키를 자동으로 전달
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (defun my/org-roam-dailies-goto-today-a (orig-fn &optional keys)
+          (funcall orig-fn (or keys "j")))
+
+        (defun my/org-roam-dailies-goto-with-n-a (orig-fn n &optional keys)
+          (funcall orig-fn n (or keys "j")))
+
+        (defun my/org-roam-dailies-goto-date-a (orig-fn &optional prefer-future keys)
+          (funcall orig-fn prefer-future (or keys "j")))
+
+        (advice-add 'org-roam-dailies-goto-today :around #'my/org-roam-dailies-goto-today-a)
+        (advice-add 'org-roam-dailies-goto-yesterday :around #'my/org-roam-dailies-goto-with-n-a)
+        (advice-add 'org-roam-dailies-goto-tomorrow :around #'my/org-roam-dailies-goto-with-n-a)
+        (advice-add 'org-roam-dailies-goto-date :around #'my/org-roam-dailies-goto-date-a))
+    #+end_src
+
     버그로 today로 가면 sync를 처음부터 하는 경우가 있다. 그런 경우를 방지하고자 세션 첫 이동이면 db sync 함수를 호출
 
     #+begin_src elisp :lexical t
