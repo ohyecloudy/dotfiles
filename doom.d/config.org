@@ -719,6 +719,14 @@
                          (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))))))
     #+end_src
 
+    Emacs 30+에서 menu-bar-open-mouse 바인딩이 easy-menu와 충돌하는 문제 workaround.
+    org-gcal-fetch 등에서 org-mode 활성화 시 org-install-agenda-files-menu이 터진다.
+    Doom에서 메뉴바를 사용하지 않으므로 비활성화.
+
+    #+begin_src elisp
+      (fset 'org-install-agenda-files-menu #'ignore)
+    #+end_src
+
 *** abbrev link
 
     - property drawers에 abbrev 링크를 정의했을 때, 링크로 인식하지 못한다
@@ -1512,6 +1520,85 @@
                   (push (cons cal-id (expand-file-name (format "%s.org" name) my/org-gcal-directory)) alist)))))
       (require 'org-gcal)
     #+end_src
+
+**** workaround
+
+     =deferred:try= 의 =:finally= 콜백은 내부적으로 =deferred:watch= 를 통해 인자 1개를 받는데,
+     upstream에서 =(lambda () ...)= 로 선언해 =wrong-number-of-arguments= 가 발생한다.
+     =(lambda (_) ...)= 로 재정의하여 우회.
+
+     #+begin_src elisp :lexical t
+       (after! org-gcal
+         (defun org-gcal-sync (&optional skip-export silent)
+           "Import events from calendars."
+           (interactive)
+           (when org-gcal--sync-lock
+             (user-error "org-gcal sync locked. If a previous sync has failed, call 'org-gcal--sync-unlock' to reset the lock and try again."))
+           (org-gcal--sync-lock)
+           (org-generic-id-update-id-locations org-gcal-entry-id-property)
+           (when org-gcal-auto-archive
+             (dolist (i org-gcal-fetch-file-alist)
+               (with-current-buffer
+                   (find-file-noselect (cdr i))
+                 (org-gcal--archive-old-event))))
+           (let ((up-time (org-gcal--up-time))
+                 (down-time (org-gcal--down-time)))
+             (deferred:try
+              (deferred:$
+               (deferred:loop org-gcal-fetch-file-alist
+                              (lambda (calendar-id-file)
+                                (deferred:$
+                                 (org-gcal--sync-calendar calendar-id-file skip-export silent
+                                                          up-time down-time)
+                                 (deferred:succeed nil)
+                                 (deferred:nextc it
+                                                 (lambda (_)
+                                                   (org-gcal--notify "Completed event fetching ."
+                                                                     (concat "Events fetched into\n"
+                                                                             (cdr calendar-id-file))
+                                                                     silent)
+                                                   (deferred:succeed nil))))))
+               (deferred:nextc it
+                               (lambda (_)
+                                 (org-generic-id-update-id-locations org-gcal-entry-id-property)
+                                 (when t
+                                   (mapc
+                                    (lambda (file)
+                                      (with-current-buffer (find-file-noselect file 'nowarn)
+                                        (org-with-wide-buffer
+                                         (org-gcal--sync-unlock)
+                                         (org-gcal-sync-buffer skip-export silent 'filter-time
+                                                               'filter-managed))))
+                                    (org-generic-id-files))))))
+              :finally
+              (lambda (_)
+                (org-gcal--sync-unlock)))))
+
+         (defun org-gcal-sync-buffer (&optional skip-export silent filter-date
+                                                filter-managed)
+           "Sync entries with Calendar events in currently-visible portion of buffer."
+           (interactive)
+           (when org-gcal--sync-lock
+             (user-error "org-gcal sync locked. If a previous sync has failed, call 'org-gcal--sync-unlock' to reset the lock and try again."))
+           (org-gcal--sync-lock)
+           (let*
+               ((name (or (buffer-file-name) (buffer-name))))
+             (deferred:try
+              (deferred:$
+               (org-gcal--sync-buffer-inner skip-export silent filter-date
+                                            filter-managed
+                                            (point-min-marker))
+               (deferred:nextc it
+                               (lambda (_)
+                                 (org-gcal--notify "Completed syncing events in buffer."
+                                                   (concat "Events synced in\n" name)
+                                                   silent)
+                                 (deferred:succeed nil))))
+              :finally
+              (lambda (_)
+                (org-generic-id-update-id-locations org-gcal-entry-id-property)
+                (org-gcal--sync-unlock))))))
+     #+end_src
 
 ** doom-modeline
 
