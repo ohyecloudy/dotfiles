@@ -696,10 +696,14 @@
                     (push f files))))))
           files))
 
+      (defvar my/org-gcal-directory (file-truename "~/org/calendar")
+        "Directory for org-gcal synced files.")
+
       (setq org-agenda-files (append
                               (list (expand-file-name "project/" org-roam-directory)
                                     (expand-file-name "weekly/" org-roam-directory)
-                                    (expand-file-name "monthly/" org-roam-directory))
+                                    (expand-file-name "monthly/" org-roam-directory)
+                                    my/org-gcal-directory)
                               (my/org-roam-dailies-agenda-files)
                               (my/org-roam-work-agenda-files)
                               ))
@@ -1480,6 +1484,33 @@
 
     #+begin_src elisp :lexical t :tangle packages.el
       (package! org-gcal :pin "b826356a01a7484bae6245a695059a6f8d36726a")
+    #+end_src
+
+    auth-source 라이브러리로 접근할 수 있게 OAuth에 사용할 정보를 아래와 같이 채운다. [[github:emacsmirror/org-gcal][emacsmirror/org-gcal - github.com]] 참고.
+
+    #+begin_example
+      machine org-gcal login client_id password [CLIENT-ID]
+      machine org-gcal login client_secret password [CLIENT-SECRET]
+    #+end_example
+
+    동기화할 calendar id 입력 방법
+
+    #+begin_example
+      machine org-gcal login main password [CALENDAR-ID]
+    #+end_example
+
+    #+begin_src elisp :lexical t
+      (defun my/auth-source-get-secret (host user)
+        (funcall (plist-get (car (auth-source-search :host host :user user :max 1)) :secret)))
+
+      (setq org-gcal-client-id (my/auth-source-get-secret "org-gcal" "client_id")
+            org-gcal-client-secret (my/auth-source-get-secret "org-gcal" "client_secret")
+            org-gcal-fetch-file-alist
+            (let (alist)
+              (dolist (name '("main" "baseball" "birthday" "break" "cash" "log" "pi") (nreverse alist))
+                (when-let (cal-id (my/auth-source-get-secret "org-gcal" name))
+                  (push (cons cal-id (expand-file-name (format "%s.org" name) my/org-gcal-directory)) alist)))))
+      (require 'org-gcal)
     #+end_src
 
 ** doom-modeline
@@ -2349,6 +2380,19 @@
 
     (setq epa-file-select-keys nil)
     (setq epg-pinentry-mode 'loopback) ;; 미니버퍼에서 입력
+  #+end_src
+
+  plstore도 gpg를 사용
+
+  #+begin_example
+    machine plstore login encrypt-to password [GPG-KEYID]
+  #+end_example
+
+  #+begin_src elisp :lexical t
+    (require 'plstore)
+    (if-let (key-id (my/auth-source-get-secret "plstore" "encrypt-to"))
+        (add-to-list 'plstore-encrypt-to key-id)
+      (message "plstore: encrypt-to key not found in auth-source"))
   #+end_src
 
 * TODO 설정
