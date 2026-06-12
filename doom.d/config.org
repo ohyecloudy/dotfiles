@@ -1509,16 +1509,20 @@
 
     #+begin_src elisp :lexical t
       (defun my/auth-source-get-secret (host user)
-        (funcall (plist-get (car (auth-source-search :host host :user user :max 1)) :secret)))
+        (when-let ((entry (car (auth-source-search :host host :user user :max 1)))
+                   (secret (plist-get entry :secret)))
+          (funcall secret)))
 
-      (setq org-gcal-client-id (my/auth-source-get-secret "org-gcal" "client_id")
-            org-gcal-client-secret (my/auth-source-get-secret "org-gcal" "client_secret")
-            org-gcal-fetch-file-alist
-            (let (alist)
-              (dolist (name '("main" "baseball" "birthday" "break" "cash" "log" "pi") (nreverse alist))
-                (when-let (cal-id (my/auth-source-get-secret "org-gcal" name))
-                  (push (cons cal-id (expand-file-name (format "%s.org" name) my/org-gcal-directory)) alist)))))
-      (require 'org-gcal)
+      (when-let ((client-id (my/auth-source-get-secret "org-gcal" "client_id"))
+                 (client-secret (my/auth-source-get-secret "org-gcal" "client_secret")))
+        (setq org-gcal-client-id client-id
+              org-gcal-client-secret client-secret
+              org-gcal-fetch-file-alist
+              (let (alist)
+                (dolist (name '("main" "baseball" "birthday" "break" "cash" "log" "pi") (nreverse alist))
+                  (when-let (cal-id (my/auth-source-get-secret "org-gcal" name))
+                    (push (cons cal-id (expand-file-name (format "%s.org" name) my/org-gcal-directory)) alist)))))
+        (require 'org-gcal))
     #+end_src
 
 **** workaround
