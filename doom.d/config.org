@@ -1466,6 +1466,22 @@
               (replace-regexp-in-string "\\\\\\*" "*" result))))
     #+end_src
 
+*** org-gcal
+
+    #+begin_quote
+    org-gcal offers
+
+    - Fetch google calendar event
+    - Post/edit org element
+    - Sync between Org and Gcal
+
+    [[github:emacsmirror/org-gcal][emacsmirror/org-gcal - github.com]]
+    #+end_quote
+
+    #+begin_src elisp :lexical t :tangle packages.el
+      (package! org-gcal :pin "b826356a01a7484bae6245a695059a6f8d36726a")
+    #+end_src
+
 ** doom-modeline
 
    #+begin_src elisp
