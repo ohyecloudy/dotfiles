@@ -2183,7 +2183,7 @@
        (evil-define-key 'normal agent-shell-viewport-edit-mode-map
          (kbd "C-c C-c") #'agent-shell-viewport-compose-send
          (kbd "C-c C-k") #'agent-shell-viewport-compose-cancel
-         (kbd "C-c C-p") #'agent-shell-viewport-compose-peek-last
+         (kbd "C-b") #'agent-shell-viewport-compose-peek-last
          (kbd "C-p") #'agent-shell-viewport-previous-history
          (kbd "C-n") #'agent-shell-viewport-next-history
          "go" #'agent-shell-other-buffer
