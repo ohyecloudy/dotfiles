@@ -1519,7 +1519,7 @@
               org-gcal-client-secret client-secret
               org-gcal-fetch-file-alist
               (let (alist)
-                (dolist (name '("main" "baseball" "birthday" "break" "cash" "log" "pi") (nreverse alist))
+                (dolist (name '("main" "baseball" "birthday" "break" "cash" "pi") (nreverse alist))
                   (when-let (cal-id (my/auth-source-get-secret "org-gcal" name))
                     (push (cons cal-id (expand-file-name (format "%s.org" name) my/org-gcal-directory)) alist)))))
         (require 'org-gcal))
