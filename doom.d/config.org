@@ -933,7 +933,7 @@
       (after! org-roam
         (add-hook 'org-roam-mode-hook
                   (lambda ()
-                    (setq-local display-line-numbers 'relative))))
+                    (setq-local display-line-numbers 'visual))))
     #+end_src
 
     =SPC n r t= 키를 누르면 org roam 변경 사항에 대한 커밋을 만들어낸다
