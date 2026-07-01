@@ -12,3 +12,4 @@ xvimrc text
 claude/settings.work.json filter=git-crypt diff=git-crypt
 bin/session-open-windows filter=git-crypt diff=git-crypt
 bin/git-p4-setup-repo filter=git-crypt diff=git-crypt
+bin/git-p4-rebase-all filter=git-crypt diff=git-crypt
