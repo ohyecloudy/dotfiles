@@ -15,7 +15,6 @@
 
 - Conventional Commits: feat:, fix:, refactor:, docs:, chore:
 - 커밋은 작은 논리 단위로 분리
-- main 직접 push 금지
 - IMPORTANT: 확인 없이 git push, git reset --hard, force push 하지 말 것
 
 ## Coding
@@ -23,7 +22,6 @@
 - 타입 안전성 우선 — any, unknown 남용 금지
 - 매직 넘버 대신 이름 있는 상수
 - 에러 핸들링 생략 금지 — 실패 경로를 항상 고려
-- 기존 코드 스타일과 패턴을 따를 것 — 새 패턴 도입 전에 확인
 
 ## Workflow
 
