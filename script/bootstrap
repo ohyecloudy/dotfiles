@@ -37,6 +37,8 @@ safe_make_symbol_link $root_path/elixir/.iex.exs ~/.iex.exs
 mkdir ~/.claude 2>1 || true
 safe_make_symbol_link $root_path/claude/CLAUDE.md ~/.claude/CLAUDE.md
 safe_make_symbol_link $root_path/claude/settings.json ~/.claude/settings.json
+safe_make_symbol_link $root_path/claude/skills ~/.claude/skills
+safe_make_symbol_link $root_path/claude/agents ~/.claude/agents
 
 make_symbol_link_with_backup $root_path/git/gitconfig ~/.gitconfig
 make_symbol_link_with_backup $root_path/git/gitignore_global ~/.gitignore_global

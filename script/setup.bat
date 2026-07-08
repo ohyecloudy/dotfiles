@@ -25,6 +25,8 @@ mklink %hpath%\.claude\settings.json %dotpath%\claude\settings.json || goto :fin
 mklink /J %hpath%\.doom.d %dotpath%\doom.d || goto :finally
 mklink /J %hpath%\bin %dotpath%\bin || goto :finally
 mklink /J %hpath%\bin.local %dotpath%\bin.local || goto :finally
+mklink /J %hpath%\.claude\skills %dotpath%\claude\skills || goto :finally
+mklink /J %hpath%\.claude\agents %dotpath%\claude\agents || goto :finally
 
 :finally
 @set err=%errorlevel%
