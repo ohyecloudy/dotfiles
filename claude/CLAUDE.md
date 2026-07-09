@@ -16,6 +16,7 @@
 - Conventional Commits: feat:, fix:, refactor:, docs:, chore:
 - 커밋은 작은 논리 단위로 분리
 - IMPORTANT: 확인 없이 git push, git reset --hard, force push 하지 말 것
+- GitHub 접근(이슈, PR, API 조회 등)이 필요할 때는 gh CLI 사용
 
 ## Coding
 
