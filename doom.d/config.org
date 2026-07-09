@@ -2155,7 +2155,7 @@
        ;; viewport-view-mode (읽기 전용 응답 탐색)
        (evil-set-initial-state 'agent-shell-viewport-view-mode 'normal)
 
-       (evil-define-key 'normal agent-shell-viewport-view-mode-map
+       (evil-define-key '(normal visual) agent-shell-viewport-view-mode-map
          (kbd "C-j") #'agent-shell-viewport-next-item
          (kbd "C-k") #'agent-shell-viewport-previous-item
          (kbd "gj")  #'agent-shell-viewport-next-item
@@ -2164,13 +2164,12 @@
          (kbd "[[")  #'agent-shell-viewport-previous-item
          (kbd "C-f") #'agent-shell-viewport-next-page
          (kbd "C-b") #'agent-shell-viewport-previous-page
-         "r"  #'agent-shell-viewport-reply
-         "y"  #'agent-shell-viewport-reply-yes
+         "gr"  #'agent-shell-viewport-reply
+         "gy"  #'agent-shell-viewport-reply-yes
          "gc" #'agent-shell-viewport-reply-continue
          "gm" #'agent-shell-viewport-reply-more
          "ga" #'agent-shell-viewport-reply-again
          (kbd "C-c C-c") #'agent-shell-viewport-interrupt
-         "gr" #'agent-shell-viewport-refresh
          "go" #'agent-shell-other-buffer
          "?"  #'agent-shell-viewport-help-menu
          "q"  #'bury-buffer
