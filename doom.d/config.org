@@ -901,6 +901,10 @@
                   ("m" "maybe do today" item
                    "[ ] %a"
                    :if-new (file+head+olp "%<%Y-%m-%d>.org" ,head ("Maybe Do Today"))
+                   :immediate-finish t)
+                  ("T" "tasks (done log)" plain
+                   "%(my/org-done-task-bullets)"
+                   :if-new (file+head+olp "%<%Y-%m-%d>.org" ,head ("Tasks"))
                    :immediate-finish t)))))
     #+end_src
 
@@ -1463,6 +1467,74 @@
               (let ((bullets (mapconcat (lambda (h) (concat "- " h)) parents "\n")))
                 (kill-new bullets)
                 (message "Copied parent headings as bullet list:\n%s" bullets))))))
+    #+end_src
+
+*** org done task to daily
+
+    heading을 =DONE= 으로 바꾸면, 최상위 조상부터 그 heading까지의 경로를 nested bullet
+    리스트로 변환해 오늘 daily note의 =Tasks= heading 밑에 자동으로 기록한다. leaf 항목만
+    원본 heading으로 가는 링크로 만든다. daily note 안에서의 =DONE= 은 재기록을 막기 위해
+    제외한다.
+
+    #+begin_src elisp :lexical t
+      (defun my/org-heading-clean-text ()
+        "Return the heading text at point without TODO/priority/tags/comment and
+      statistics cookies (e.g. [1/1], [50%])."
+        (let ((h (org-get-heading t t t t)))
+          (string-trim
+           (replace-regexp-in-string "\\[[0-9]*/[0-9]*\\]\\|\\[[0-9]+%\\]" "" h))))
+
+      (defun my/org-done-heading->nested-bullets ()
+        "Return the current heading and its ancestors as a nested org bullet list.
+      The leaf (current heading) becomes an `org-store-link' link; ancestors are
+      plain text.  Bullet chars alternate by depth (-, +) with 2-space indent."
+        (save-excursion
+          (org-back-to-heading t)
+          (let* ((leaf-text (my/org-heading-clean-text))
+                 (stored (ignore-errors (org-store-link nil)))
+                 (leaf-raw (and stored
+                                (string-match "\\[\\[\\(.*?\\)\\]\\[" stored)
+                                (match-string 1 stored)))
+                 (leaf (if leaf-raw
+                           (format "[[%s][%s]]" leaf-raw leaf-text)
+                         leaf-text))
+                 (texts (list leaf)))
+            (while (org-up-heading-safe)
+              (push (my/org-heading-clean-text) texts))
+            (let ((depth 0) (lines '()))
+              (dolist (txt texts)
+                (push (format "%s%s %s"
+                              (make-string (* depth 2) ?\s)
+                              (nth (mod depth 2) '("-" "+"))
+                              txt)
+                      lines)
+                (setq depth (1+ depth)))
+              (mapconcat #'identity (nreverse lines) "\n")))))
+
+      (defvar my/org-done-task-bullets-string nil
+        "Stashed nested-bullet string for the pending DONE-task capture.")
+
+      (defun my/org-done-task-bullets ()
+        "Return the stashed nested-bullet string for the `Tasks' capture template."
+        (or my/org-done-task-bullets-string ""))
+
+      (defun my/org-capture-done-task-to-today ()
+        "On a DONE transition, log the completed heading into today's daily note.
+      Builds the full heading path as a nested bullet list and inserts it under the
+      `Tasks' heading via `org-roam-dailies-capture-today'.  Daily notes are skipped
+      so the logged entries do not re-trigger this on themselves."
+        (when (and org-state
+                   (member org-state org-done-keywords)
+                   (not (equal org-state org-last-state))
+                   (buffer-file-name)
+                   (not (string-prefix-p
+                         (file-truename (expand-file-name "daily/" org-roam-directory))
+                         (file-truename (buffer-file-name)))))
+          (setq my/org-done-task-bullets-string (my/org-done-heading->nested-bullets))
+          (org-roam-dailies-capture-today nil "T")))
+
+      (add-hook 'org-after-todo-state-change-hook
+                #'my/org-capture-done-task-to-today)
     #+end_src
 
 *** org-md
