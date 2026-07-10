@@ -902,7 +902,7 @@
                    "[ ] %a"
                    :if-new (file+head+olp "%<%Y-%m-%d>.org" ,head ("Maybe Do Today"))
                    :immediate-finish t)
-                  ("T" "tasks (done log)" plain
+                  ("T" "tasks (done log)" item
                    "%(my/org-done-task-bullets)"
                    :if-new (file+head+olp "%<%Y-%m-%d>.org" ,head ("Tasks"))
                    :immediate-finish t)))))
