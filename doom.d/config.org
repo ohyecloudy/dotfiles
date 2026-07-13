@@ -1478,11 +1478,13 @@
 
     #+begin_src elisp :lexical t
       (defun my/org-heading-clean-text ()
-        "Return the heading text at point without TODO/priority/tags/comment and
-      statistics cookies (e.g. [1/1], [50%])."
+        "Return the heading text at point without TODO/priority/tags/comment,
+      statistics cookies (e.g. [1/1], [50%]), and org link markup (links are
+      replaced by their description text)."
         (let ((h (org-get-heading t t t t)))
           (string-trim
-           (replace-regexp-in-string "\\[[0-9]*/[0-9]*\\]\\|\\[[0-9]+%\\]" "" h))))
+           (org-link-display-format
+            (replace-regexp-in-string "\\[[0-9]*/[0-9]*\\]\\|\\[[0-9]+%\\]" "" h)))))
 
       (defun my/org-done-heading->nested-bullets ()
         "Return the current heading and its ancestors as a nested org bullet list.
