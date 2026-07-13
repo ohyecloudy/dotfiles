@@ -21,7 +21,9 @@
       ("coolthings")
       ("place")))
     ("Journal" nil
-     (("daily" org-roam-backlinks-sort-by-date)
+     (("monthly" org-roam-backlinks-sort-by-date)
+      ("weekly" org-roam-backlinks-sort-by-date)
+      ("daily" org-roam-backlinks-sort-by-date)
       ("retrospective" org-roam-backlinks-sort-by-date)
       ("plan" org-roam-backlinks-sort-by-date)))
     )
@@ -30,6 +32,8 @@
 (defvar org-roam-group-icons
   '(("contact"       . "☎")
     ("daily"         . "📅")
+    ("weekly"        . "📆")
+    ("monthly"       . "🗓")
     ("retrospective" . "🐘")
     ("note"          . "✏")
     ("project"       . "⭐")
