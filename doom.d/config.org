@@ -1539,6 +1539,84 @@
                 #'my/org-capture-done-task-to-today)
     #+end_src
 
+*** restore original links
+
+    =org done task to daily= 가 만든 =[[file:PATH::*<heading>][desc]]= 링크를 원본 heading 텍스트로 되돌린다. region이 있으면 그 안의 모든 대상 링크를, 없으면 point의 링크 하나를 변환한다. 대상은 =file:= 이면서 검색부가 =::*= (heading 검색)로 시작하는 링크만이다.
+
+    복원값은 링크를 따라가 원본 heading을 읽어 만든다(=org-get-heading=). 파일 접근/heading 탐색이 실패하면 링크에 임베드된 검색 문자열로 fallback 한다.
+
+    #+begin_src elisp :lexical t
+      (defun my/org-restore--heading-string (path search-option)
+        "Resolve the original heading text for a `file:PATH::*...' link.
+      Visit PATH, jump to the heading matched by SEARCH-OPTION and return its raw
+      heading via `org-get-heading'.  On any failure fall back to the embedded
+      SEARCH-OPTION (with its leading `*' stripped); the element parser has already
+      unescaped it."
+        (or (condition-case nil
+                (with-current-buffer (find-file-noselect path)
+                  (org-with-wide-buffer
+                   (goto-char (point-min))
+                   (let ((org-link-search-must-match-exact-headline t))
+                     (org-link-search search-option))
+                   (org-get-heading t t t t)))
+              (error nil))
+            (substring search-option 1)))
+
+      (defun my/org-restore--link-at (pos)
+        "Parse the bracket link starting at POS.
+      Return a plist (:begin :end :string) for a `file:...::*' heading link, or nil
+      when the link is not a restore target."
+        (save-excursion
+          (goto-char pos)
+          (let* ((link (org-element-link-parser))
+                 (type (org-element-property :type link))
+                 (opt (org-element-property :search-option link)))
+            (when (and (equal type "file")
+                       opt
+                       (eq (string-to-char opt) ?*))
+              (list :begin (org-element-property :begin link)
+                    :end (- (org-element-property :end link)
+                            (org-element-property :post-blank link))
+                    :string (my/org-restore--heading-string
+                             (org-element-property :path link) opt))))))
+
+      (defun my/org-restore-original-links ()
+        "Restore heading links made by `my/org-capture-done-task-to-today'.
+      Replace each `[[file:PATH::*<heading>][desc]]' link with the original heading
+      text.  Operate on the active region, or the link at point when there is none."
+        (interactive)
+        (unless (derived-mode-p 'org-mode)
+          (user-error "This command can only be used in org-mode."))
+        (let ((count 0))
+          (if (use-region-p)
+              (let ((beg (region-beginning)))
+                (save-excursion
+                  (goto-char (region-end))
+                  ;; Walk backwards so earlier link positions stay valid after edits.
+                  (while (re-search-backward org-link-bracket-re beg t)
+                    (when-let* ((info (my/org-restore--link-at (match-beginning 0))))
+                      (delete-region (plist-get info :begin) (plist-get info :end))
+                      (goto-char (plist-get info :begin))
+                      (insert (plist-get info :string))
+                      (goto-char (plist-get info :begin))
+                      (setq count (1+ count))))))
+            (let ((ctx (org-element-context)))
+              (unless (org-element-type-p ctx 'link)
+                (user-error "No region and no link at point"))
+              (when-let* ((info (my/org-restore--link-at (org-element-property :begin ctx))))
+                (delete-region (plist-get info :begin) (plist-get info :end))
+                (goto-char (plist-get info :begin))
+                (insert (plist-get info :string))
+                (setq count (1+ count)))))
+          (message "Restored %d link%s" count (if (= count 1) "" "s"))))
+
+      (after! org
+        (map! :map org-mode-map
+              :localleader
+              (:prefix ("l" . "links")
+                       "u" #'my/org-restore-original-links)))
+    #+end_src
+
 *** org-md
 
     =_=, =*= 문자 앞에 무조건 =\= 문자를 붙여서 수정
