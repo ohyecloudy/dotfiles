@@ -1048,18 +1048,27 @@
     daily 노트의 =* Week= 에 그 주의 ISO 라벨(=%G-w%V-<월요일 MM-DD>=, 예: =2026-w29-07-13=)을
     남기기 위한 헬퍼. =template/journal.org= 에서 =%(my/org-roam-week-label)= 로 호출한다.
 
+    =my/org-roam-insert-week-label= 은 캘린더(=org-read-date=)로 날짜를 고르면 그 주의 라벨을 커서 위치에 삽입하는 대화형 명령이다.
+
     #+begin_src elisp :lexical t
-      (defun my/org-roam-week-label ()
+      (defun my/org-roam-week-label (&optional time)
         "Return the ISO week label for the daily's target date.
       Example: \"2026-w29-07-13\" where the trailing MM-DD is the Monday of that ISO week.
-      Uses the capture's target date so backfilled dailies get the correct week."
-        (let* ((time (or org-overriding-default-time
+      Uses the capture's target date so backfilled dailies get the correct week.
+      When TIME is non-nil, use it instead."
+        (let* ((time (or time
+                         org-overriding-default-time
                          (org-capture-get :default-time)
                          (current-time)))
                (dow (string-to-number (format-time-string "%u" time))) ; 1=Mon .. 7=Sun
                (monday (time-subtract time (days-to-time (1- dow)))))
           (concat (format-time-string "%G-w%V-" time)
                   (format-time-string "%m-%d" monday))))
+
+      (defun my/org-roam-insert-week-label ()
+        "Pick a date from the calendar and insert its ISO week label at point."
+        (interactive)
+        (insert (my/org-roam-week-label (org-read-date nil t))))
     #+end_src
 
 *** org-roam optimization
