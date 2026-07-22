@@ -2456,6 +2456,18 @@
        (winpulse-mode +1))
    #+end_src
 
+** shift-number
+
+   #+begin_quote
+   =shift-number= clone시 접근하는 codeberg.org에서 문제가 생겨서 (schannel CRYPT_E_NO_REVOCATION_CHECK).
+   접근 가능한 GitHub 미러 =emacsmirror/shift-number= 로 오버라이드한다.
+   #+end_quote
+
+   #+begin_src elisp :lexical t :tangle packages.el
+     (package! shift-number
+       :recipe (:host github :repo "emacsmirror/shift-number"))
+   #+end_src
+
 * syntax
 
   #+begin_src elisp
