@@ -10,6 +10,8 @@
 - 문장은 짧고 간결하게 — 서술형 어미 생략, 명사형으로 끝낼 것
   - 예) 에이전트가 호출해야 할 스킬을 제안한다. (X) → 에이전트가 호출해야 할 스킬을 제안 (O)
 - 나열은 서술형 문단 대신 bullet list를 적극 활용
+- 코드 위치는 항상 절대 경로 + 라인 번호로 표시 (emacs `ffap`/compilation-mode 점프용)
+  - 예) `foo.cpp:42` (X) → `/home/user/project/src/foo.cpp:42` (O)
 
 ## Git
 
