@@ -122,7 +122,7 @@
    #+begin_src elisp :lexical t
      (when IS-WINDOWS
        (map! :leader
-             (:prefix-map ("o" . "open")
+             (:prefix "o"
               :desc "Reveal in Explorer"           "o" #'+windows/reveal-in-explorer
               :desc "Reveal project in Explorer"   "O" #'+windows/reveal-project-in-explorer
               :desc "Open in git bash"             "i" #'+windows/open-in-bash
@@ -245,10 +245,10 @@
    #+begin_src elisp :lexical t
      (map! :leader
            ;;; <leader> s --- search
-           (:prefix-map ("s" . "search")
-                        :desc "Look up online (w/ prompt)"   "o" #'+lookup/online-select
-                        :desc "Look up online"               "O" #'+lookup/online
-                        ))
+           (:prefix "s"
+            :desc "Look up online (w/ prompt)"   "o" #'+lookup/online-select
+            :desc "Look up online"               "O" #'+lookup/online
+            ))
    #+end_src
 
 * my packages
@@ -360,9 +360,9 @@
 
    #+begin_src elisp
      (map! :leader
-           (:prefix-map ("S" . "custom search")
-                        (:prefix-map ("m" . "source mine")
-                         :desc "elixir" "x" #'my/source-mine-elixir)))
+           (:prefix ("S" . "custom search")
+                    (:prefix ("m" . "source mine")
+                     :desc "elixir" "x" #'my/source-mine-elixir)))
    #+end_src
 
    elixir 소스 광산을 검색하려면 =SPC S m x= 키를 누르면 된다.
@@ -402,7 +402,7 @@
    #+begin_src elisp :lexical t
      (map! :map org-mode-map
            :localleader
-           (:prefix ("z" . "insert")
+           (:prefix "z"
                     "j" #'my/jira-insert-heading-content))
    #+end_src
 
@@ -521,7 +521,7 @@
      (after! org
        (map! :map org-mode-map
              :localleader
-             (:prefix ("l" . "links")
+             (:prefix "l"
                       "C" #'my/org-cliplink-with-archive-url)))
    #+end_src
 
@@ -578,7 +578,7 @@
 
    #+begin_src elisp :lexical t
      (map! :leader
-           (:prefix-map ("o" . "open")
+           (:prefix "o"
             :desc "Open log file" "q" #'my/open-log-file))
    #+end_src
 
@@ -945,9 +945,9 @@
     #+begin_src elisp :lexical t
       (after! org-roam
         (map! :leader
-              (:prefix-map ("n" . "notes")
-                           (:prefix ("r" . "roam")
-                            :desc "commit org-roam" "t" #'my/org-roam-commit))))
+              (:prefix "n"
+                       (:prefix "r"
+                        :desc "commit org-roam" "t" #'my/org-roam-commit))))
     #+end_src
 
     오늘을 기준으로 YYYY-wWW(예. 2025-w31) 형식의 node를 찾는 함수를 =SPC n r w= 키에 바인딩함.
@@ -967,9 +967,9 @@
 
       (after! org-roam
         (map! :leader
-              (:prefix-map ("n" . "notes")
-                           (:prefix ("r" . "roam")
-                            :desc "find today week" "w" #'my/org-roam-find-today-week))))
+              (:prefix "n"
+                       (:prefix "r"
+                        :desc "find today week" "w" #'my/org-roam-find-today-week))))
     #+end_src
 
     현재 파일에 기록된 YYYY_wWW를 기준으로 week를 shift한 node를 찾는 함수를 =SPC n r W= 키에 바인딩함.
@@ -1002,9 +1002,9 @@
 
       (after! org-roam
         (map! :leader
-              (:prefix-map ("n" . "notes")
-                           (:prefix ("r" . "roam")
-                            :desc "find shift week" "W" #'my/org-roam-find-shift-week))))
+              (:prefix "n"
+                       (:prefix "r"
+                        :desc "find shift week" "W" #'my/org-roam-find-shift-week))))
     #+end_src
 
     =org-roam-dailies-goto-*= 함수가 capture 템플릿 선택을 물어보지 않도록 첫 번째 템플릿 키를 자동으로 전달
@@ -1111,10 +1111,10 @@
         (run-with-idle-timer 60 t #'my/force-update-org-roam-node-read-if-memoized)
 
         (map! :leader
-              (:prefix-map ("n" . "notes")
-                           (:prefix ("r" . "roam")
-                            :desc "Clear memoization" "c"
-                            #'my/force-update-org-roam-node-read-if-memoized))))
+              (:prefix "n"
+                       (:prefix "r"
+                        :desc "Clear memoization" "c"
+                        #'my/force-update-org-roam-node-read-if-memoized))))
     #+end_src
 
 *** org settings
@@ -1430,7 +1430,7 @@
       (after! org
         (map! :map org-mode-map
               :localleader
-              (:prefix ("l" . "links")
+              (:prefix "l"
                        "y" #'my/org-copy-link-at-point)))
     #+end_src
 
@@ -1641,7 +1641,7 @@
       (after! org
         (map! :map org-mode-map
               :localleader
-              (:prefix ("l" . "links")
+              (:prefix "l"
                        "u" #'my/org-restore-original-links)))
     #+end_src
 
