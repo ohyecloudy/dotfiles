@@ -2402,6 +2402,23 @@
          "q"   #'kill-current-buffer))
    #+end_src
 
+*** agent-shell embark
+
+   파일 검색 중 =embark-act= 로 고른 파일을 agent-shell 로 전송.
+
+   #+begin_src elisp :lexical t
+     (after! (embark agent-shell)
+       (defun my/agent-shell-embark-send-file (file)
+         "Send FILE to an agent-shell, prompting for which shell to use.
+     Intended as an `embark-file-map' action."
+         (with-current-buffer (find-file-noselect file)
+           ;; buffer-file-name 이 설정돼 있어 agent-shell-send-file 이 이 파일을 전송.
+           ;; 두 번째 인자 t = pick-shell (send-file-to 와 동일하게 shell 선택 프롬프트).
+           (agent-shell-send-file nil t)))
+
+       (define-key embark-file-map (kbd "a") #'my/agent-shell-embark-send-file))
+   #+end_src
+
 *** agent-shell-notifications
 
     #+begin_quote
