@@ -1844,6 +1844,16 @@
        )
    #+end_src
 
+*** diff line wrap
+
+    긴 diff 라인이 잘려 보이지 않게 자동 줄바꿈한다. diff/revision 버퍼뿐 아니라 status 버퍼 안에서 펼친 diff도 대상이다.
+
+    #+begin_src elisp :lexical t
+      (add-hook 'magit-diff-mode-hook (lambda () (setq truncate-lines nil)))
+      (add-hook 'magit-revision-mode-hook (lambda () (setq truncate-lines nil)))
+      (add-hook 'magit-status-mode-hook (lambda () (setq truncate-lines nil)))
+    #+end_src
+
 ** projectile
 
    #+begin_src elisp
