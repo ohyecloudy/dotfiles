@@ -65,6 +65,10 @@
     colorMoved = plain
     mnemonicPrefix = true
     renames = true
+# UTF-16 텍스트 파일을 diff 볼 때만 UTF-8로 변환해 표시
+# .gitattributes 에 `*.xsd diff=utf16` 지정된 파일에만 적용됨
+[diff "utf16"]
+    textconv = iconv -f utf-16 -t utf-8
 [diff "org"]
     xfuncname = "^(\\*+ +.*|#\\+title:.*)$"
 [diff "lisp"]
