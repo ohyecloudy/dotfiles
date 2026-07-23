@@ -56,9 +56,7 @@
        ;;zen               ; distraction-free coding or writing
 
        :editor
-       ;; Windows에서 evil binding deferred 실행 타이밍 때문에 제일 마지막에 실행
-       ;; macOS에서는 원래대로 실행
-       (:unless (featurep :system 'windows) (evil +everywhere)) ; come to the dark side, we have cookies
+       (evil +everywhere)  ; come to the dark side, we have cookies
        ;; org-roam-node-insert 에서 발생하는 오류 때문에 주석 처리
        ;;file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
@@ -202,8 +200,4 @@
        :config
        literate
        (default +bindings +smartparens)
-
-       ;; Windows에서 evil binding deferred 실행 타이밍 때문에 제일 마지막에 실행
-       :editor
-       (:if (featurep :system 'windows) (evil +everywhere)) ; come to the dark side, we have cookies
        )
