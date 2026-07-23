@@ -1499,10 +1499,11 @@
 
 *** org done task to daily
 
-    heading을 =DONE= 으로 바꾸면, 최상위 조상부터 그 heading까지의 경로를 nested bullet
-    리스트로 변환해 오늘 daily note의 =Tasks= heading 밑에 자동으로 기록한다. leaf 항목만
-    원본 heading으로 가는 링크로 만든다. daily note 안에서의 =DONE= 은 재기록을 막기 위해
-    제외한다.
+    heading을 =DONE= 으로 바꾸면, 소속 파일부터 그 heading까지의 경로를 nested bullet
+    리스트로 변환해 오늘 daily note의 =Tasks= heading 밑에 자동으로 기록한다. 파일이
+    org-roam 노드(file-level =:ID:= 존재)면 최상위 조상 위에 파일로 가는 =id:= 링크를
+    루트로 추가한다. leaf 항목은 원본 heading으로 가는 링크로 만든다. daily note 안에서의
+    =DONE= 은 재기록을 막기 위해 제외한다.
 
     #+begin_src elisp :lexical t
       (defun my/org-heading-clean-text ()
@@ -1514,10 +1515,22 @@
            (org-link-display-format
             (replace-regexp-in-string "\\[[0-9]*/[0-9]*\\]\\|\\[[0-9]+%\\]" "" h)))))
 
+      (defun my/org-done-file-link ()
+        "Return an `id:' link to the current file's org-roam node, or nil.
+      Only file-level nodes (a `:ID:' in the top property drawer) qualify; the
+      link description is the node's `#+title'."
+        (let ((id (org-with-point-at 1 (org-id-get))))
+          (when id
+            (let ((title (org-roam-node-title
+                          (org-with-point-at 1 (org-roam-node-at-point)))))
+              (format "[[id:%s][%s]]" id title)))))
+
       (defun my/org-done-heading->nested-bullets ()
         "Return the current heading and its ancestors as a nested org bullet list.
-      The leaf (current heading) becomes an `org-store-link' link; ancestors are
-      plain text.  Bullet chars alternate by depth (-, +) with 2-space indent."
+      When the file is an org-roam node, an `id:' link to the file is prepended as
+      the root.  The leaf (current heading) becomes an `org-store-link' link;
+      ancestors are plain text.  Bullet chars alternate by depth (-, +) with
+      2-space indent."
         (save-excursion
           (org-back-to-heading t)
           (let* ((leaf-text (my/org-heading-clean-text))
@@ -1528,9 +1541,12 @@
                  (leaf (if leaf-raw
                            (format "[[%s][%s]]" leaf-raw leaf-text)
                          leaf-text))
-                 (texts (list leaf)))
+                 (texts (list leaf))
+                 (file-link (my/org-done-file-link)))
             (while (org-up-heading-safe)
               (push (my/org-heading-clean-text) texts))
+            (when file-link
+              (push file-link texts))
             (let ((depth 0) (lines '()))
               (dolist (txt texts)
                 (push (format "%s%s %s"
