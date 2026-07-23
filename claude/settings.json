@@ -28,6 +28,7 @@
     },
     "language": "korean",
     "autoUpdatesChannel": "stable",
+    "includeCoAuthoredBy": false,
     "env": {
         "VISUAL": "ec-wait",
         "EDITOR": "ec-wait"
