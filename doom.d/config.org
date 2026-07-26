@@ -1567,15 +1567,18 @@
       (defun my/org-capture-done-task-to-today ()
         "On a DONE transition, log the completed heading into today's daily note.
       Builds the full heading path as a nested bullet list and inserts it under the
-      `Tasks' heading via `org-roam-dailies-capture-today'.  Daily notes are skipped
-      so the logged entries do not re-trigger this on themselves."
+      `Tasks' heading via `org-roam-dailies-capture-today'.  Daily/weekly/monthly
+      notes are skipped so the logged entries do not re-trigger this on themselves."
         (when (and org-state
                    (member org-state org-done-keywords)
                    (not (equal org-state org-last-state))
                    (buffer-file-name)
-                   (not (string-prefix-p
-                         (file-truename (expand-file-name "daily/" org-roam-directory))
-                         (file-truename (buffer-file-name)))))
+                   (not (seq-some
+                         (lambda (dir)
+                           (string-prefix-p
+                            (file-truename (expand-file-name dir org-roam-directory))
+                            (file-truename (buffer-file-name))))
+                         '("daily/" "weekly/" "monthly/"))))
           (setq my/org-done-task-bullets-string (my/org-done-heading->nested-bullets))
           (org-roam-dailies-capture-today nil "T")))
 
