@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 문서에 "suggested skills" 섹션을 포함해, 에이전트가 호출해야 할 스킬을 제안한다.
 
-이미 다른 산출물(PRD, 계획, ADR, 이슈, 커밋, diff)에 담긴 내용은 중복하지 않는다. 대신 경로나 URL로 참조한다.
+이미 다른 산출물(spec `docs/specs/`, 계획, ADR, 이슈, 커밋, diff)에 담긴 내용은 중복하지 않는다. 대신 경로나 URL로 참조한다.
 
 API 키, 비밀번호, 개인 식별 정보 같은 민감한 정보는 마스킹한다.
 
