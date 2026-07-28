@@ -21,6 +21,11 @@
 - IMPORTANT: 확인 없이 git push, git reset --hard, force push 하지 말 것
 - GitHub 접근(이슈, PR, API 조회 등)이 필요할 때는 gh CLI 사용
 
+## Jira / Confluence
+
+- Jira/Confluence에 Jira·Confluence URL을 추가할 때는 항상 smartlink 사용
+  - `editJiraIssue`/`createJiraIssue` 등에서 `contentFormat: adf` + `inlineCard` 노드로 삽입 (plain URL은 smartlink로 자동 변환 안 됨)
+
 ## Coding
 
 - 타입 안전성 우선 — any, unknown 남용 금지
