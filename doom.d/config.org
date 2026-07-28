@@ -1048,7 +1048,10 @@
     daily 노트의 =* Week= 에 그 주의 ISO 라벨(=%G-w%V-<월요일 MM-DD>=, 예: =2026-w29-07-13=)을
     남기기 위한 헬퍼. =template/journal.org= 에서 =%(my/org-roam-week-label)= 로 호출한다.
 
-    =my/org-roam-insert-week-label= 은 캘린더(=org-read-date=)로 날짜를 고르면 그 주의 라벨을 커서 위치에 삽입하는 대화형 명령이다.
+    =my/org-roam-week-label-link= 은 라벨과 같은 제목의 roam 노드가 있으면 =id:= 링크로 감싸고, 없으면 plain text 라벨을 그대로 돌려준다.
+    링크는 =org-roam-node-insert= 와 동일하게 =org-link-make-string= + =org-roam-node-id= 로 만든다. 주간 노트가 있을 때만 링크가 걸리므로 깨진 링크가 생기지 않는다.
+
+    =my/org-roam-insert-week-label= 은 캘린더(=org-read-date=)로 날짜를 고르면 그 주의 라벨(있으면 링크)을 커서 위치에 삽입하는 대화형 명령이다.
 
     #+begin_src elisp :lexical t
       (defun my/org-roam-week-label (&optional time)
@@ -1065,10 +1068,21 @@
           (concat (format-time-string "%G-w%V-" time)
                   (format-time-string "%m-%d" monday))))
 
+      (defun my/org-roam-week-label-link (&optional time)
+        "Return the week label, linked to its roam node when one exists.
+      If a roam node titled like the label exists, return an =id:= link
+      \"[[id:ID][LABEL]]\"; otherwise return the plain LABEL string."
+        (let* ((label (my/org-roam-week-label time))
+               (node (org-roam-node-from-title-or-alias label)))
+          (if node
+              (org-link-make-string (concat "id:" (org-roam-node-id node)) label)
+            label)))
+
       (defun my/org-roam-insert-week-label ()
-        "Pick a date from the calendar and insert its ISO week label at point."
+        "Pick a date from the calendar and insert its ISO week label at point.
+      Links to the matching roam node when one exists."
         (interactive)
-        (insert (my/org-roam-week-label (org-read-date nil t))))
+        (insert (my/org-roam-week-label-link (org-read-date nil t))))
     #+end_src
 
 *** org-roam optimization
