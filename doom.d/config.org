@@ -1085,6 +1085,41 @@
         (insert (my/org-roam-week-label-link (org-read-date nil t))))
     #+end_src
 
+*** weekly month label
+
+    weekly 노트의 =* Month= 에 그 주가 속한 월(=YYYY-MM=, 예: =2026-07=)을 남기기 위한 헬퍼.
+    weekly 노트 제목은 주간 라벨(=YYYY-wWW-MM-DD=)이라 날짜 대신 제목에서 년/월을 유추한다.
+    =template/weekly.org= 에서 =%(my/org-roam-month-label-link)= 로 호출한다.
+
+    =my/org-roam-month-label= 은 캡처 중인 노드(=org-roam-capture--node=)의 제목을 파싱해 =YYYY-MM= 을 만든다.
+    =-link= 은 =week-label-link= 과 동일하게 같은 제목의 월간 노드가 있으면 =id:= 링크로 감싸고, 없으면 plain text 라벨을 돌려준다.
+    (년 경계에서 ISO 연도 =%G= 와 월력 연도가 어긋날 수 있지만, 노드가 있을 때만 링크되므로 없으면 plain text로 안전하게 남는다.)
+
+    #+begin_src elisp :lexical t
+      (defun my/org-roam-month-label (&optional title)
+        "Return the \"YYYY-MM\" month label inferred from a weekly note TITLE.
+      TITLE defaults to the current capture node's title.  It expects the
+      week-label format \"YYYY-wWW-MM-DD\" and reuses its year and month.
+      Returns nil when TITLE is absent or does not match."
+        (let ((title (or title
+                         (and (bound-and-true-p org-roam-capture--node)
+                              (org-roam-node-title org-roam-capture--node)))))
+          (when (and title
+                     (string-match "\\`\\([0-9]\\{4\\}\\)-w[0-9]+-\\([0-9]\\{2\\}\\)-[0-9]\\{2\\}" title))
+            (concat (match-string 1 title) "-" (match-string 2 title)))))
+
+      (defun my/org-roam-month-label-link (&optional title)
+        "Return the month label, linked to its roam node when one exists.
+      If a roam node titled like the label exists, return an =id:= link
+      \"[[id:ID][LABEL]]\"; otherwise return the plain LABEL string.
+      Returns an empty string when TITLE yields no label."
+        (let* ((label (my/org-roam-month-label title))
+               (node (and label (org-roam-node-from-title-or-alias label))))
+          (cond ((null label) "")
+                (node (org-link-make-string (concat "id:" (org-roam-node-id node)) label))
+                (t label))))
+    #+end_src
+
 *** org-roam optimization
 
     =org-roam-node-find=, =org-roam-node-insert= 에서 호출하는 =org-roam-node-read--completions= 함수가 느려서 최적화를 진행
