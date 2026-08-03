@@ -804,10 +804,6 @@
                  ,(format "#+title: ${title}\n%%[%s/template/work.org]" org-roam-directory)
                  :target (file "work/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
-                ("r" "weekly retrospective" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/retrospective-weekly.org]" org-roam-directory)
-                 :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
-                 :unnarrowed t)
                 ("e" "retrospective" plain
                  ,(format "#+title: ${title}\n%%[%s/template/retrospective.org]" org-roam-directory)
                  :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
