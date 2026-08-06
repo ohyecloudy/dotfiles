@@ -17,7 +17,7 @@
 # A traditional Gantt chart with a project overview.
 taskreport plan \"\" {
   headline \"Project Plan\"
-  columns name, start, end, effort, effortleft, complete, chart {scale week width 1500}
+  columns name, start, end, chart {scale day width 2000}
   loadunit shortauto
   hideresource 1
 }
