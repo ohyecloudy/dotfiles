@@ -30,14 +30,34 @@ if [[ "$confirm" != "y" ]]; then
     exit 0
 fi
 
+converted=()
+skipped=()
+
 while IFS= read -r -d '' file; do
     output="${file%.webm}.mp4"
 
     if [ -f "$output" ]; then
         echo "Skipping $file (already converted: $output)"
+        skipped+=("$file")
         continue
     fi
 
     echo "Converting $file -> $output"
     ffmpeg -nostdin -i "$file" -c:v libx264 -c:a aac "$output"
+    converted+=("$file")
 done < <(find "$directory" -name "*.webm" -print0)
+
+echo
+echo "Converted files:"
+if [ "${#converted[@]}" -eq 0 ]; then
+    echo "  (none)"
+else
+    printf '  %s\n' "${converted[@]}"
+fi
+
+echo "Skipped files:"
+if [ "${#skipped[@]}" -eq 0 ]; then
+    echo "  (none)"
+else
+    printf '  %s\n' "${skipped[@]}"
+fi
