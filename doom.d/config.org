@@ -2336,13 +2336,13 @@
    #+begin_src elisp :lexical t :tangle packages.el
      (package! shell-maker
        :recipe (:host github :repo "xenodium/shell-maker")
-       :pin "071c6df3ca22a2f4c0daa689848ac9bd21bf4e2b")
+       :pin "e7c11e029f3fb54f2c04803d3833e0ccaff4ed3e")
      (package! acp
        :recipe (:host github :repo "xenodium/acp.el")
        :pin "a29cb161ac95f1819f34481a98666707661c5cf8")
      (package! agent-shell
        :recipe (:host github :repo "xenodium/agent-shell")
-       :pin "c5bc80bad17aaf9d0cab8a6410b7552ddb0accdd")
+       :pin "6929073c9a4b0898ac62f160e1c0779f19461df8")
    #+end_src
 
    - [[github:xenodium/acp.el][xenodium/acp.el - github.com]]
