@@ -1769,6 +1769,13 @@
         (require 'org-gcal))
     #+end_src
 
+    google calendar 취소된 이벤트를 물어보지 않고 삭제함
+
+    #+begin_src elisp :lexical t
+       (after! org-gcal
+         (setq org-gcal-remove-api-cancelled-events t))
+    #+end_src
+
 **** workaround
 
      =deferred:try= 의 =:finally= 콜백은 내부적으로 =deferred:watch= 를 통해 인자 1개를 받는데,
