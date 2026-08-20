@@ -2403,6 +2403,15 @@
        (setq agent-shell-preferred-agent-config '(preselect . claude-code)))
    #+end_src
 
+*** agent-shell defaults
+
+    session mode 기본 값을 변경
+
+    #+begin_src elisp :lexical t
+      (after! agent-shell
+        (setq agent-shell-anthropic-default-session-mode-id "auto"))
+    #+end_src
+
 *** agent-shell keybindings
 
    #+begin_src elisp :lexical t
