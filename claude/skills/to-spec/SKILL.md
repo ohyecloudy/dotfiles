@@ -19,7 +19,7 @@ disable-model-invocation: true
 
 2. **작성.** 아래 템플릿으로 spec을 쓴다. 도메인 용어는 `한글(영문)` 병기.
 
-3. **저장.** `docs/specs/<kebab-title>.md`에 저장한다. 커밋·스테이징은 하지 않는다 — 저장 경로만 출력한다.
+3. **저장.** `docs/specs/<slug>/spec.md`에 저장한다(`<slug>` = 제목 kebab; feature 폴더 하나에 spec + 티켓 co-locate). 커밋·스테이징은 하지 않는다 — 저장 경로만 출력한다.
 
 <spec-template>
 ---
