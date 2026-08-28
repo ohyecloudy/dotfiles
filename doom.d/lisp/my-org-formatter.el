@@ -33,17 +33,16 @@
   (looking-at-p "^[[:space:]]*\\(SCHEDULED\\|DEADLINE\\|CLOSED\\):"))
 
 (defun my/org-formatter--ensure-blank-before ()
-  "Ensure exactly one blank line before the heading at point.
-Uses `org-with-wide-buffer' to see past `org-map-entries' narrowing."
-  (org-with-wide-buffer
-   (when (not (bobp))
-     (let ((n (my/org-formatter--count-blank-lines-above)))
-       (cond
-        ((= n 1) nil)
-        ((= n 0) (insert "\n"))
-        (t
-         (my/org-formatter--delete-blank-lines-above)
-         (insert "\n")))))))
+  "Ensure exactly one blank line before the heading at point."
+  (save-excursion
+    (when (not (bobp))
+      (let ((n (my/org-formatter--count-blank-lines-above)))
+        (cond
+         ((= n 1) nil)
+         ((= n 0) (insert "\n"))
+         (t
+          (my/org-formatter--delete-blank-lines-above)
+          (insert "\n")))))))
 
 (defun my/org-formatter--skip-meta ()
   "Move past planning lines and drawers after a heading.
@@ -52,8 +51,7 @@ all meta, returning that position."
   (forward-line 1)
   (while (and (< (point) (point-max))
               (not (looking-at-p "^[[:space:]]*$"))
-              (or (org-at-planning-p)
-                  (my/org-formatter--planning-line-p)))
+              (my/org-formatter--planning-line-p))
     (forward-line 1))
   (while (and (< (point) (point-max))
               (looking-at org-drawer-regexp))
