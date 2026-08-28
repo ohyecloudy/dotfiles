@@ -96,18 +96,28 @@ Point should already be past planning/drawers."
 
 ;;;###autoload
 (defun my/org-formatter-enforce ()
-  "Ensure exactly one blank line before and after each heading."
+  "Ensure exactly one blank line before and after each heading.
+Scans headings with a plain regexp instead of `org-map-entries':
+mutating the buffer inside `org-map-entries' triggers per-entry cache
+work that degrades to O(N^2), so a direct scan is dramatically faster."
   (interactive)
-  (org-map-entries
-   (lambda ()
-     (my/org-formatter--ensure-blank-before)
-     (unless (org-at-heading-p)
-       (outline-next-heading))
-     (let ((end (org-entry-end-position)))
-       (save-excursion
-         (my/org-formatter--skip-meta)
-         (my/org-formatter--ensure-blank-after end))))
-   t nil))
+  (save-excursion
+    (goto-char (point-min))
+    (let ((heading-re (concat "^" org-outline-regexp)))
+      (while (re-search-forward heading-re nil t)
+        (beginning-of-line)
+        (my/org-formatter--ensure-blank-before)
+        ;; End of this entry is the next heading, matching the old
+        ;; `org-entry-end-position' (defined as `outline-next-heading').
+        (let ((end (save-excursion
+                     (end-of-line)
+                     (if (re-search-forward heading-re nil t)
+                         (line-beginning-position)
+                       (point-max)))))
+          (save-excursion
+            (my/org-formatter--skip-meta)
+            (my/org-formatter--ensure-blank-after end)))
+        (end-of-line)))))
 
 (provide 'my-org-formatter)
 ;;; my-org-formatter.el ends here
