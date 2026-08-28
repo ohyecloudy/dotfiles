@@ -96,5 +96,36 @@
    "#+title: My Note\n* H1\n"
    "#+title: My Note\n\n* H1\n"))
 
+;;; No org-element cache access
+;;
+;; `org-at-planning-p' 등 org-element 계열 API를 formatter에서 부르면
+;; outline 구조 변경으로 무효화된 org-element-cache를 동기적으로 재파싱해
+;; 저장이 느려진다.  formatter는 순수 정규식/버퍼 조작만 써야 한다.
+;;
+;; 런타임 감시(cl-letf로 org-element-at-point 호출 카운트)는 native-comp가
+;; 호출을 직접 링크해 우회하므로 신뢰할 수 없다.  대신 소스에 캐시 접근
+;; 심볼이 등장하지 않는지 정적으로 검사한다.
+
+(defconst my/org-formatter-test--cache-symbols
+  '("org-element-at-point" "org-element-cache" "org-at-planning-p")
+  "formatter가 써서는 안 되는 org-element-cache 접근 심볼.")
+
+;; 로드 시점에 디렉토리를 캡처한다.  테스트 실행 시점에는
+;; `load-file-name'/`buffer-file-name'이 nil이라 경로를 못 만든다.
+(defconst my/org-formatter-test--dir
+  (file-name-directory
+   (or load-file-name buffer-file-name (expand-file-name "x")))
+  "테스트 파일 디렉토리.  소스 정적 검사에서 formatter 경로를 만든다.")
+
+(ert-deftest my/org-formatter-test/no-org-element-cache-access ()
+  (let ((src (expand-file-name "my-org-formatter.el"
+                               my/org-formatter-test--dir)))
+    (with-temp-buffer
+      (insert-file-contents src)
+      (dolist (sym my/org-formatter-test--cache-symbols)
+        (goto-char (point-min))
+        (should-not
+         (re-search-forward (concat "\\_<" (regexp-quote sym) "\\_>") nil t))))))
+
 (provide 'my-org-formatter-test)
 ;;; my-org-formatter-test.el ends here
