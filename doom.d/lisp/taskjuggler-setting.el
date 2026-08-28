@@ -1,5 +1,5 @@
 (setq org-taskjuggler-default-reports
-  '("textreport report \"Plan\" {
+      '("textreport report \"Plan\" {
   formats html
   header '== %title =='
 
@@ -17,7 +17,10 @@
 # A traditional Gantt chart with a project overview.
 taskreport plan \"\" {
   headline \"Project Plan\"
-  columns name, start, end, chart {scale day width 2000}
+  columns name { cellcolor plan.complete >= 100.0 \"#90EE90\" },
+          start { cellcolor plan.complete >= 100.0 \"#90EE90\" },
+          end { cellcolor plan.complete >= 100.0 \"#90EE90\" },
+          chart {scale day width 2000}
   loadunit shortauto
   hideresource 1
 }
