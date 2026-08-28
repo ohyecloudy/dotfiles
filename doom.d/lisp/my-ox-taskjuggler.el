@@ -823,7 +823,7 @@ a unique id will be associated to it."
   (let* ((allocate (org-element-property :ALLOCATE task))
          (complete
           (if (eq (org-element-property :todo-type task) 'done) "100"
-            (org-element-property :COMPLETE task)))
+            (or (org-element-property :COMPLETE task) "0")))
          (depends (org-taskjuggler-resolve-dependencies task info))
          (effort (let ((property
 			(intern (concat ":" (upcase org-effort-property)))))
