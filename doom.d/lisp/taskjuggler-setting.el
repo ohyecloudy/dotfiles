@@ -17,9 +17,12 @@
 # A traditional Gantt chart with a project overview.
 taskreport plan \"\" {
   headline \"Project Plan\"
-  columns name { cellcolor plan.complete >= 100.0 \"#90EE90\" },
-          start { cellcolor plan.complete >= 100.0 \"#90EE90\" },
-          end { cellcolor plan.complete >= 100.0 \"#90EE90\" },
+  columns name { cellcolor plan.complete >= 100.0 \"#90EE90\"
+                 cellcolor (plan.end < ${now}) & (plan.complete < 100.0) \"#F08080\" },
+          start { cellcolor plan.complete >= 100.0 \"#90EE90\"
+                  cellcolor (plan.end < ${now}) & (plan.complete < 100.0) \"#F08080\" },
+          end { cellcolor plan.complete >= 100.0 \"#90EE90\"
+                cellcolor (plan.end < ${now}) & (plan.complete < 100.0) \"#F08080\" },
           chart {scale day width 2000}
   loadunit shortauto
   hideresource 1
