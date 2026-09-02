@@ -1,6 +1,6 @@
 ---
 name: commit-message
-description: 커밋 메시지 생성. "커밋 메시지 작성해줘", "commit message 생성", "커밋 메시지 만들어줘" 등의 요청에 트리거.
+description: 커밋 메시지 생성. "커밋", "커밋 메시지 작성해줘", "commit message 생성", "커밋 메시지 만들어줘" 등의 요청에 트리거.
 ---
 
 # commit-message skill
