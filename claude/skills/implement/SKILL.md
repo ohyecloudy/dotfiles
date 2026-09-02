@@ -14,4 +14,4 @@ disable-model-invocation: true
 
 완료되면 `/code-review`로 작업을 검토한다.
 
-작업을 현재 브랜치에 커밋한다.
+작업을 현재 브랜치에 커밋한다. 커밋 메시지 작성 시 `/commit-message` 사용.
