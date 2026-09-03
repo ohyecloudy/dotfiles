@@ -9,20 +9,22 @@
 
 * Language
 
-** Order
+** 계획
 
-{용어를 설명하는 한두 문장}
-/Avoid/: Purchase, transaction
+*** Order
 
-** Invoice
+    {용어를 설명하는 한두 문장}
+    /Avoid/: Purchase, transaction
 
-배송 후 고객에게 보내는 결제 요청.
-/Avoid/: Bill, payment request
+*** Invoice
 
-** Customer
+    배송 후 고객에게 보내는 결제 요청.
+    /Avoid/: Bill, payment request
 
-주문하는 개인 또는 조직.
-/Avoid/: Client, buyer, account
+*** Customer
+
+    주문하는 개인 또는 조직.
+    /Avoid/: Client, buyer, account
 ```
 
 ## 규칙
@@ -34,6 +36,7 @@
 - 한 항목 = 한 bullet, 물리적으로 한 줄(문장 중간 하드 줄바꿈 금지 — 길어도 한 줄, 표시는 emacs soft-wrap).
 - org verbatim(`=...=`) 안에 `=` 문자를 넣지 않는다(구문이 깨진다).
 - 한글 조사가 바로 뒤에 붙는 자리에는 마크업을 쓰지 않는다 — `~Order~에`는 org가 마크업으로 인식하지 못해 export에서 깨진다. `Order 항목에`처럼 조사가 붙지 않게 쓰고, 부득이하면 `~Order~ 에`로 한 칸 띄운다.
+- 헤딩 아래 본문은 별 개수 + 1칸 들여쓴다(`*` → 2칸, `**` → 3칸, `***` → 4칸). emacs `org-adapt-indentation` 기본 동작과 같다.
 
 ## 단일 vs 다중 컨텍스트 저장소
 
