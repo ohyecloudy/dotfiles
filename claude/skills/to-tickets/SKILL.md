@@ -89,10 +89,20 @@ disable-model-invocation: true
 
 구체적 파일 경로나 코드 스니펫은 피하라 — 금방 낡는다. 예외: 프로토타입이 산문보다 결정을 더 정확히 담는 스니펫(상태 기계, reducer, 스키마, 타입 모양)을 냈다면 인라인하고 프로토타입 출처임을 짧게 명시하라. 동작 데모가 아니라 결정이 담긴 핵심 부분만, 중요한 것만 남겨라. 스니펫은 `#+begin_src <lang>` 블록에 넣는다(언어가 불명확하면 `#+begin_example`).
 
+### 6. 포매팅
+
+발행한 티켓 파일 전부를 emacs로 정렬한다.
+
+```bash
+emacs -Q --batch --eval '(progn (require (quote org)) (setq org-adapt-indentation t) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (save-buffer))))' <생성한 .org 파일들>
+```
+
+emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 — 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
+
 ## org 작성 규칙
 
 - 한 항목 = 한 bullet, 물리적으로 한 줄(문장 중간 하드 줄바꿈 금지 — 길어도 한 줄, 표시는 emacs soft-wrap).
 - org verbatim(`=...=`) 안에 `=` 문자를 넣지 않는다(구문이 깨진다).
 - 한글 조사가 바로 뒤에 붙는 자리에는 마크업을 쓰지 않는다 — `~Workout~에`는 org가 마크업으로 인식하지 못해 export에서 깨진다. `Workout 모델에`처럼 조사가 붙지 않게 문장을 쓰고, 부득이하면 `~Workout~ 에`로 한 칸 띄운다.
-- 헤딩 아래 본문은 별 개수 + 1칸 들여쓴다(`*` → 2칸, `**` → 3칸, `***` → 4칸). emacs `org-adapt-indentation` 기본 동작과 같다.
+- 헤딩 아래 본문은 별 개수 + 1칸 들여쓴다(`*` → 2칸, `**` → 3칸, `***` → 4칸). 포매팅 단계가 자동으로 맞추므로 초안에서 손으로 맞출 필요는 없다.
 - 완료한 인수 기준은 **대문자** `- [X]`로 표시한다. 소문자 `- [x]`는 org가 체크박스로 인식하지 않아 진행률 집계에서 통째로 빠진다.
