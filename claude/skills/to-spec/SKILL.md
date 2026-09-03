@@ -75,3 +75,4 @@ disable-model-invocation: true
 
 - 한 항목 = 한 bullet, 물리적으로 한 줄(문장 중간 하드 줄바꿈 금지 — 길어도 한 줄, 표시는 emacs soft-wrap).
 - org verbatim(`=...=`) 안에 `=` 문자를 넣지 않는다(구문이 깨진다).
+- 한글 조사가 바로 뒤에 붙는 자리에는 마크업을 쓰지 않는다 — `~Workout~에`는 org가 마크업으로 인식하지 못해 export에서 깨진다. `Workout 모델에`처럼 조사가 붙지 않게 문장을 쓰고, 부득이하면 `~Workout~ 에`로 한 칸 띄운다.
