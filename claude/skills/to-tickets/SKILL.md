@@ -1,6 +1,6 @@
 ---
 name: to-tickets
-description: 계획·spec·현재 대화를 트레이서 불릿(tracer bullet) 티켓 묶음으로 분해해 트래커(로컬 파일 또는 실제 이슈 트래커)에 발행. 각 티켓은 자신의 블로킹 엣지(blocking edge)를 선언 — 로컬은 티켓당 한 파일에 텍스트로, 실제 트래커는 네이티브 블로킹 링크로.
+description: 계획·spec·현재 대화를 트레이서 불릿(tracer bullet) 티켓 묶음으로 분해해 로컬 파일로 발행. 각 티켓은 티켓당 한 파일에 자신의 블로킹 엣지(blocking edge)를 텍스트로 선언.
 disable-model-invocation: true
 ---
 
@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 계획·spec·대화를 **티켓** 묶음으로 분해: 트레이서 불릿(tracer bullet) 수직 슬라이스(vertical slice), 각 티켓은 자신을 **막는(block)** 티켓들을 선언한다.
 
-티켓은 두 형태 중 하나로 발행한다 — **로컬 파일**(기본) 또는 **실제 이슈 트래커**(GitHub/Linear 등). 형태·트래커·트리아지 라벨(triage label)이 대화에서 이미 정해졌으면 그걸 쓰고, 아니면 기본값(로컬 파일 + `ready-for-agent` 라벨/상태)으로 진행한다. 실제 트래커 후보가 여럿이라 애매하면 사용자에게 확인한다.
+티켓은 **로컬 파일**로 발행한다 — 티켓당 한 파일, 상태는 `ready-for-agent`. 트리아지 라벨(triage label)이 대화에서 이미 정해졌으면 그걸 쓴다.
 
 ## 프로세스
 
@@ -64,16 +64,11 @@ disable-model-invocation: true
 
 ### 5. 티켓 발행
 
-승인된 티켓을 발행한다. **어떻게**는 위에서 정한 형태(로컬 파일 vs 실제 트래커)에 달렸다. 티켓 자체는 어느 쪽이든 같고, 블로킹 엣지의 형태만 다르다:
-
-- **로컬 파일** → 티켓당 한 파일을 `docs/specs/<feature-slug>/tickets/<NN>-<slug>.md`에 쓴다(소스 spec과 같은 feature 폴더에 co-locate; spec이 없는 소스면 `docs/tickets/<feature-slug>/`로 폴백). 의존성 순서(블로커 먼저)로 `01`부터 번호를 매긴다. 각 파일의 "Blocked by"에 의존하는 번호/제목을 나열한다. 아래 티켓당 파일 템플릿을 쓴다: 티켓 하나당 파일 하나, 절대 하나로 합친 파일 금지.
-- **실제 이슈 트래커(GitHub, Linear, …)** → 의존성 순서(블로커 먼저)로 티켓당 이슈 하나를 발행해, 각 티켓의 블로킹 엣지가 실제 식별자를 참조할 수 있게 한다. 플랫폼에 네이티브 블로킹/서브이슈 관계가 있으면 그것을 쓰고, 없으면 각 티켓의 "Blocked by"를 블로킹 이슈로 설정한다. 별도 지시가 없으면 `ready-for-agent` 트리아지 라벨을 붙인다 — 티켓은 구성상 에이전트가 집어갈 수 있다.
+승인된 티켓을 티켓당 한 파일로 `docs/specs/<feature-slug>/tickets/<NN>-<slug>.md`에 쓴다(소스 spec과 같은 feature 폴더에 co-locate; spec이 없는 소스면 `docs/tickets/<feature-slug>/`로 폴백). 의존성 순서(블로커 먼저)로 `01`부터 번호를 매긴다. 각 파일의 "Blocked by"에 의존하는 번호/제목을 나열한다. 아래 티켓당 파일 템플릿을 쓴다: 티켓 하나당 파일 하나, 절대 하나로 합친 파일 금지.
 
 **프론티어(frontier)**를 표시한다: 블로커 없는 티켓 = 다운스트림 에이전트가 먼저 집을 티켓. 순수 선형 체인이면 위에서 아래로. (to-tickets는 여기서 멈춘다 — 구현은 픽업 에이전트 몫)
 
-발행 후 to-tickets는 멈춘다 — 구현은 시작하지 않는다. 로컬 파일은 커밋·스테이징하지 않고 생성만 하며(커밋은 사용자 몫), 발행한 로컬 경로 목록 또는 트래커 이슈 식별자/URL을 사용자에게 보고한다.
-
-부모 이슈(parent issue)는 닫거나 수정하지 마라.
+발행 후 to-tickets는 멈춘다 — 구현은 시작하지 않는다. 파일은 커밋·스테이징하지 않고 생성만 하며(커밋은 사용자 몫), 발행한 경로 목록을 사용자에게 보고한다.
 
 <local-ticket-template>
 
@@ -92,25 +87,4 @@ disable-model-invocation: true
 
 </local-ticket-template>
 
-<issue-template>
-
-## Parent
-
-부모/소스 참조 — 기존 트래커 이슈면 부모 이슈, spec이면 `docs/specs/<slug>/spec.md`. 대화만이 소스면 생략.
-
-## What to build
-
-이 티켓이 동작하게 만드는 end-to-end 동작 — 레이어별 구현이 아니라 사용자 관점.
-
-## Acceptance criteria
-
-- [ ] 기준 1
-- [ ] 기준 2
-
-## Blocked by
-
-- 각 블로킹 티켓 참조, 또는 "None (can start immediately)".
-
-</issue-template>
-
-두 형태 모두, 구체적 파일 경로나 코드 스니펫은 피하라 — 금방 낡는다. 예외: 프로토타입이 산문보다 결정을 더 정확히 담는 스니펫(상태 기계, reducer, 스키마, 타입 모양)을 냈다면 인라인하고 프로토타입 출처임을 짧게 명시하라. 동작 데모가 아니라 결정이 담긴 핵심 부분만, 중요한 것만 남겨라.
+구체적 파일 경로나 코드 스니펫은 피하라 — 금방 낡는다. 예외: 프로토타입이 산문보다 결정을 더 정확히 담는 스니펫(상태 기계, reducer, 스키마, 타입 모양)을 냈다면 인라인하고 프로토타입 출처임을 짧게 명시하라. 동작 데모가 아니라 결정이 담긴 핵심 부분만, 중요한 것만 남겨라.
