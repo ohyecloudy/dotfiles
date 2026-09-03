@@ -1,13 +1,13 @@
 # ADR 형식
 
 - ADR은 `docs/adr/`에 위치
-- 순차 번호 사용: `0001-slug.md`, `0002-slug.md` 등
+- 순차 번호 사용: `0001-slug.org`, `0002-slug.org` 등
 - `docs/adr/` 디렉터리는 첫 번째 ADR이 필요할 때만 생성
 
 ## 템플릿
 
-```md
-# {결정의 짧은 제목}
+```org
+#+title: {결정의 짧은 제목}
 
 {1-3문장: 맥락은 무엇이고, 무엇을 결정했고, 왜 그랬는지.}
 ```
@@ -19,9 +19,9 @@
 
 - 진짜 가치를 더할 때만 포함. 대부분의 ADR은 필요 없음
 
-- **Status** 프론트매터 (`proposed | accepted | deprecated | superseded by ADR-NNNN`) — 결정을 다시 검토할 때 유용
-- **Considered Options** — 기각된 대안이 기억할 가치가 있을 때만
-- **Consequences** — 명확하지 않은 하위 영향을 짚어야 할 때만
+- **Status** keyword (`#+status: proposed | accepted | deprecated | superseded by ADR-NNNN`) — 결정을 다시 검토할 때 유용
+- **Considered Options** (`* Considered Options`) — 기각된 대안이 기억할 가치가 있을 때만
+- **Consequences** (`* Consequences`) — 명확하지 않은 하위 영향을 짚어야 할 때만
 
 ## 번호 매기기
 

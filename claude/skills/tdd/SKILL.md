@@ -7,7 +7,7 @@ description: 테스트 주도 개발(test-driven development). 기능을 만들�
 
 TDD는 red → green 루프다. 이 스킬은 그 루프가 **간직할 가치가 있는 테스트**를 만들어내게 하는 레퍼런스다: 좋은 테스트란 무엇인가, 테스트는 어디에 두는가, 안티패턴(anti-pattern), 그리고 루프의 규칙. 모든 섹션은 매 사이클마다 적용된다 — 루프가 끝난 뒤가 아니라 루프 전·중에 참조한다.
 
-코드베이스를 탐색할 때 `CONTEXT.md`(다중 컨텍스트면 `CONTEXT-MAP.md` → 각 `CONTEXT.md`)를 읽어 테스트 이름과 인터페이스 어휘를 프로젝트의 도메인 언어에 맞추고, 건드리는 영역의 ADR을 존중한다. tdd는 glossary를 *읽기만* 한다 — 새 용어 확정·갱신은 `domain-modeling` 몫.
+코드베이스를 탐색할 때 `CONTEXT.org`(다중 컨텍스트면 `CONTEXT-MAP.org` → 각 `CONTEXT.org`)를 읽어 테스트 이름과 인터페이스 어휘를 프로젝트의 도메인 언어에 맞추고, 건드리는 영역의 ADR을 존중한다. tdd는 glossary를 *읽기만* 한다 — 새 용어 확정·갱신은 `domain-modeling` 몫.
 
 ## 좋은 테스트란
 

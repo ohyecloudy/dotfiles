@@ -16,14 +16,14 @@ disable-model-invocation: true
 
 대화 컨텍스트에 이미 있는 것으로 작업한다. 사용자가 인자로 레퍼런스(spec 경로, 이슈 번호나 URL)를 넘기면 가져와 본문과 코멘트 전체를 읽는다.
 
-- 레퍼런스도 없고 대화에도 spec이 없으면 `docs/specs/*/spec.md`(특히 `status: ready-for-agent`)를 훑어 후보를 제시하고, 어느 spec을 분해할지 사용자에게 확인한다. silent auto-pick 금지.
+- 레퍼런스도 없고 대화에도 spec이 없으면 `docs/specs/*/spec.org`(특히 `#+status: ready-for-agent`)를 훑어 후보를 제시하고, 어느 spec을 분해할지 사용자에게 확인한다. silent auto-pick 금지.
 - 소스가 spec이면 그 폴더 slug가 곧 티켓의 `<feature-slug>` — 티켓은 같은 feature 폴더 `docs/specs/<slug>/tickets/`에 co-locate.
 
 ### 2. 코드베이스 탐색 (선택)
 
 아직 코드베이스를 탐색하지 않았다면, 현재 상태를 파악하기 위해 탐색한다.
 
-- `CONTEXT.md`(다중 컨텍스트면 `CONTEXT-MAP.md` → 각 `CONTEXT.md`)가 있으면 읽어 티켓 제목·설명에 그 용어를 쓴다.
+- `CONTEXT.org`(다중 컨텍스트면 `CONTEXT-MAP.org` → 각 `CONTEXT.org`)가 있으면 읽어 티켓 제목·설명에 그 용어를 쓴다.
 - 건드리는 영역에 `docs/adr/` ADR이 있으면 존중한다.
 - 둘 다 없으면 강제하지 않는다. to-tickets는 glossary를 *읽기만* 한다 — 새 용어 확정·갱신은 `domain-modeling` 몫.
 
@@ -64,27 +64,32 @@ disable-model-invocation: true
 
 ### 5. 티켓 발행
 
-승인된 티켓을 티켓당 한 파일로 `docs/specs/<feature-slug>/tickets/<NN>-<slug>.md`에 쓴다(소스 spec과 같은 feature 폴더에 co-locate; spec이 없는 소스면 `docs/tickets/<feature-slug>/`로 폴백). 의존성 순서(블로커 먼저)로 `01`부터 번호를 매긴다. 각 파일의 "Blocked by"에 의존하는 번호/제목을 나열한다. 아래 티켓당 파일 템플릿을 쓴다: 티켓 하나당 파일 하나, 절대 하나로 합친 파일 금지.
+승인된 티켓을 티켓당 한 파일로 `docs/specs/<feature-slug>/tickets/<NN>-<slug>.org`에 쓴다(소스 spec과 같은 feature 폴더에 co-locate; spec이 없는 소스면 `docs/tickets/<feature-slug>/`로 폴백). 의존성 순서(블로커 먼저)로 `01`부터 번호를 매긴다. 각 파일의 "Blocked by"에 의존하는 번호/제목을 나열한다. 아래 티켓당 파일 템플릿을 쓴다: 티켓 하나당 파일 하나, 절대 하나로 합친 파일 금지.
 
 **프론티어(frontier)**를 표시한다: 블로커 없는 티켓 = 다운스트림 에이전트가 먼저 집을 티켓. 순수 선형 체인이면 위에서 아래로. (to-tickets는 여기서 멈춘다 — 구현은 픽업 에이전트 몫)
 
 발행 후 to-tickets는 멈춘다 — 구현은 시작하지 않는다. 파일은 커밋·스테이징하지 않고 생성만 하며(커밋은 사용자 몫), 발행한 경로 목록을 사용자에게 보고한다.
 
 <local-ticket-template>
+#+title: <NN>: <티켓 제목>
+#+status: ready-for-agent
 
-# <NN>: <티켓 제목>
+- Spec: [[file:../spec.org][docs/specs/<slug>/spec.org]] (소스가 spec일 때; 아니면 계획/대화 출처 명시)
+- 블로킹(Blocked by): 이 티켓을 gate하는 티켓의 번호/제목, 또는 "None (can start immediately)"
 
-**Spec:** `docs/specs/<slug>/spec.md` (소스가 spec일 때; 아니면 계획/대화 출처 명시)
+* 무엇을 만드나(What to build)
 
-**무엇을 만드나(What to build):** 이 티켓이 동작하게 만드는 end-to-end 동작 — 레이어별 구현 목록이 아니라 사용자 관점.
+이 티켓이 동작하게 만드는 end-to-end 동작 — 레이어별 구현 목록이 아니라 사용자 관점.
 
-**블로킹(Blocked by):** 이 티켓을 gate하는 티켓의 번호/제목, 또는 "None (can start immediately)".
+* 인수 기준(acceptance criteria)
 
-**상태(Status):** ready-for-agent
-
-- [ ] 인수 기준(acceptance criterion) 1
+- [ ] 인수 기준 1
 - [ ] 인수 기준 2
-
 </local-ticket-template>
 
-구체적 파일 경로나 코드 스니펫은 피하라 — 금방 낡는다. 예외: 프로토타입이 산문보다 결정을 더 정확히 담는 스니펫(상태 기계, reducer, 스키마, 타입 모양)을 냈다면 인라인하고 프로토타입 출처임을 짧게 명시하라. 동작 데모가 아니라 결정이 담긴 핵심 부분만, 중요한 것만 남겨라.
+구체적 파일 경로나 코드 스니펫은 피하라 — 금방 낡는다. 예외: 프로토타입이 산문보다 결정을 더 정확히 담는 스니펫(상태 기계, reducer, 스키마, 타입 모양)을 냈다면 인라인하고 프로토타입 출처임을 짧게 명시하라. 동작 데모가 아니라 결정이 담긴 핵심 부분만, 중요한 것만 남겨라. 스니펫은 `#+begin_src <lang>` 블록에 넣는다(언어가 불명확하면 `#+begin_example`).
+
+## org 작성 규칙
+
+- 한 항목 = 한 bullet, 물리적으로 한 줄(문장 중간 하드 줄바꿈 금지 — 길어도 한 줄, 표시는 emacs soft-wrap).
+- org verbatim(`=...=`) 안에 `=` 문자를 넣지 않는다(구문이 깨진다).

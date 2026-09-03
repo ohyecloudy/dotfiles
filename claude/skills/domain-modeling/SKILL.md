@@ -9,7 +9,7 @@ description: 프로젝트의 도메인 모델을 구축하고 다듬는다. 사�
 
 - 설계하면서 도메인 모델을 적극적으로 구축하고 다듬는다
 - 용어에 도전하고, 엣지 케이스 시나리오를 만들고, 확정된 즉시 용어집과 결정을 기록한다
-- `CONTEXT.md`를 읽는 것만으로는 이 스킬이 아님
+- `CONTEXT.org`를 읽는 것만으로는 이 스킬이 아님
 - 이 스킬은 모델을 *변경*할 때 사용. 단순히 읽을 때는 아님
 
 ## 파일 구조
@@ -18,39 +18,39 @@ description: 프로젝트의 도메인 모델을 구축하고 다듬는다. 사�
 
 ```
 /
-├── CONTEXT.md
+├── CONTEXT.org
 ├── docs/
 │   └── adr/
-│       ├── 0001-event-sourced-orders.md
-│       └── 0002-postgres-for-write-model.md
+│       ├── 0001-event-sourced-orders.org
+│       └── 0002-postgres-for-write-model.org
 └── src/
 ```
 
-루트에 `CONTEXT-MAP.md`가 있으면 저장소에 여러 컨텍스트가 존재. 맵은 각 위치를 가리킴:
+루트에 `CONTEXT-MAP.org`가 있으면 저장소에 여러 컨텍스트가 존재. 맵은 각 위치를 가리킴:
 
 ```
 /
-├── CONTEXT-MAP.md
+├── CONTEXT-MAP.org
 ├── docs/
 │   └── adr/                          ← 시스템 전체 결정
 ├── src/
 │   ├── ordering/
-│   │   ├── CONTEXT.md
+│   │   ├── CONTEXT.org
 │   │   └── docs/adr/                 ← 컨텍스트별 결정
 │   └── billing/
-│       ├── CONTEXT.md
+│       ├── CONTEXT.org
 │       └── docs/adr/
 ```
 
 - 파일은 쓸 내용이 생길 때만 생성
-- `CONTEXT.md`가 없으면 첫 번째 용어가 확정될 때 생성
+- `CONTEXT.org`가 없으면 첫 번째 용어가 확정될 때 생성
 - `docs/adr/`가 없으면 첫 번째 ADR이 필요할 때 생성
 
 ## 세션 중 행동 지침
 
 ### 용어집과 대조해 검증
 
-- 사용자가 `CONTEXT.md`의 기존 언어와 충돌하는 용어를 쓰면 즉시 지적
+- 사용자가 `CONTEXT.org`의 기존 언어와 충돌하는 용어를 쓰면 즉시 지적
 - 예: "용어집에서 'cancellation'은 X로 정의되어 있는데 Y를 의미하는 것 같습니다 — 어느 쪽인가요?"
 
 ### 모호한 언어 정제
@@ -68,12 +68,12 @@ description: 프로젝트의 도메인 모델을 구축하고 다듬는다. 사�
 - 사용자가 어떻게 작동한다고 말하면 코드가 동의하는지 확인
 - 모순 발견 시 표면화: "코드는 전체 Order를 취소하는데, 방금 부분 취소가 가능하다고 했습니다 — 어느 쪽이 맞나요?"
 
-### CONTEXT.md 즉시 업데이트
+### CONTEXT.org 즉시 업데이트
 
-- 용어가 확정되면 바로 `CONTEXT.md`를 업데이트
+- 용어가 확정되면 바로 `CONTEXT.org`를 업데이트
 - 일괄 처리 금지 — 발생하는 즉시 기록
 - 형식은 [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md) 참고
-- `CONTEXT.md`에 구현 세부사항 절대 포함 금지
+- `CONTEXT.org`에 구현 세부사항 절대 포함 금지
 - 스펙, 메모장, 구현 결정 저장소로 쓰지 말 것 — 용어집 역할만
 
 ### ADR은 신중하게 제안

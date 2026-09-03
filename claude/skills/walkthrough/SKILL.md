@@ -35,7 +35,7 @@ disable-model-invocation: true
 
 ### 2. 탐색
 
-- `CONTEXT.md`(다중 컨텍스트면 `CONTEXT-MAP.md` → 각 `CONTEXT.md`)가 있으면 읽어 그 용어를 문서 전반에 쓴다.
+- `CONTEXT.org`(다중 컨텍스트면 `CONTEXT-MAP.org` → 각 `CONTEXT.org`)가 있으면 읽어 그 용어를 문서 전반에 쓴다.
 - 건드리는 영역에 `docs/adr/` ADR이 있으면 찾아 둔다.
 - 둘 다 없으면 넘어간다(강제하지 않음). glossary는 **읽기만** 한다 — 갱신은 `domain-modeling` 몫.
 - 심(seam)·인터페이스 배치가 바뀌었으면 Skill 도구로 `codebase-design`을 호출해 어휘를 참조한다. 실행할 세션이 아니라 참조할 레퍼런스다.
@@ -47,7 +47,7 @@ disable-model-invocation: true
 `~/walkthrough/YYYY-MM-DD-HHMM-<slug>.org`에 쓴다(`<slug>` = 변경 주제 kebab). 디렉터리가 없으면 만든다.
 
 ```org
-#+TITLE: Walkthrough — <한 줄 제목>
+#+title: Walkthrough — <한 줄 제목>
 
 * 헤드라인
 
