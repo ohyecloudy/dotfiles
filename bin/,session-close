@@ -18,6 +18,9 @@ EOF
 trap 'show_whale' ERR
 set -e
 
+cd ~/.dotfiles
+git push
+
 cd ~/org_roam
 
 git add .
