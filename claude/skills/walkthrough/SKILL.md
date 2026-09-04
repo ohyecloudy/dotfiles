@@ -43,11 +43,11 @@ disable-model-invocation: true
 
 Skill 도구로 `explain-change`를 호출해 변경을 분석한다. §1에서 정한 범위를 그대로 넘긴다 - 커밋 범위면 hash/범위, uncommitted면 diff 텍스트, 저장소 위치도 함께. **인라인 호출**이라 세션 컨텍스트를 유지한 채 결과를 받는다.
 
-반환 JSON(`units[]`: `summary`/`architecture`/`impact`/`evidence`)이 다음 문서의 재료다. 코어는 심·인터페이스 배치, 의존성 방향 같은 아키텍처 관찰과 그 근거 코드를 위치·형태의 **사실 서술로만** 채운다(`codebase-design` 어휘 참조). 평가·판정은 코어도 이 스킬도 하지 않는다. `basis: inferred` 항목과 세션에서만 아는 "왜"는 아래 `사전 지식`·`사람 판단 필요`에서 이 스킬이 직접 채운다.
+반환 JSON이 다음 문서의 재료다 - `stat`(범위·규모), `units[]`(`summary`/`architecture`/`impact`/`evidence`), `prerequisites`(사전 지식), `reading_order`(읽는 순서), `omitted`(다루지 않은 변경). 코어는 diff·코드베이스로 알 수 있는 것을 위치·형태의 **사실 서술로만** 채운다(`codebase-design` 어휘 참조, 평가·판정 없음). 이 스킬은 코어가 못 내는 것 - `basis: inferred`에서 뽑는 `사람 판단 필요`, 사전 지식의 "왜 이걸 골랐나·대안", 그 밖에 세션에서만 아는 "왜" - 를 세션 컨텍스트로 보강한다.
 
 ### 4. 문서 작성
 
-§3의 코어 JSON을 재료로 아래 구조를 채운다. `아키텍처 델타`는 `units[].architecture`에 `impact`(호출자가 새로 알아야 할 참조처)를 얹어, `워크스루`의 근거 코드는 `units[].evidence`로 채운다. 나머지 섹션(`사전 지식`, `읽는 순서`, `사람 판단 필요`, `다루지 않은 변경`)은 코어가 다루지 않으므로 이 스킬이 세션 컨텍스트로 직접 쓴다.
+§3의 코어 JSON을 재료로 아래 구조를 채운다. `헤드라인`의 범위·규모는 `stat`, `아키텍처 델타`는 `units[].architecture` + `impact`(호출자가 새로 알아야 할 참조처), `사전 지식`은 `prerequisites`, `읽는 순서`는 `reading_order`, `워크스루`는 `units[].summary`(설명) + `evidence`(근거 코드), `다루지 않은 변경`은 `omitted`로 채운다. `사람 판단 필요`(코어 `basis: inferred`에서)와 사전 지식의 "왜·대안" 등 세션에서만 아는 부분은 이 스킬이 보강한다.
 
 `~/walkthrough/YYYY-MM-DD-HHMM-<slug>.org`에 쓴다(`<slug>` = 변경 주제 kebab). 디렉터리가 없으면 만든다.
 
