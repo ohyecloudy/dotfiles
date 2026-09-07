@@ -2430,6 +2430,8 @@
        (evil-define-key '(normal visual) agent-shell-viewport-view-mode-map
          ;; evil-collection 이 gF 를 agent-shell-viewport-fork 로 덮어써서 evil 기본값 복구
          (kbd "gF") #'evil-find-file-at-point-with-line
+         ;; normal에만 바인딩되어 있어서 visual에도 바인딩
+         (kbd "gr") #'agent-shell-viewport-reply
          )
        )
    #+end_src
