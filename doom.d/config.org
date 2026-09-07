@@ -2010,6 +2010,17 @@
 
    splitting 이후 포커스를 옮긴다
 
+*** jump list
+
+    #+begin_src elisp :lexical t
+      (after! evil
+        (advice-add 'evil-find-file-at-point-with-line :around #'doom-set-jump-a))
+    #+end_src
+
+    - =gF= (=evil-find-file-at-point-with-line=)로 파일 이동 후 =C-o= 로 원래 위치에 복귀되게 한다
+    - =gf= (=+lookup/file=)는 내부에서 =better-jumper-set-jump=를 호출해 점프를 기록
+    - =gF= 는 어디서도 기록하지 않아 jump list에 안 남는다
+
 ** evil-snipe
 
    한글도 f/t로 찾을 수 있게 한다.
