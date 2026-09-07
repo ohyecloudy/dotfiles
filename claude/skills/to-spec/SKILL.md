@@ -10,16 +10,20 @@ disable-model-invocation: true
 - 확인 질문 없이 끝까지 **비인터랙티브**로 진행한다. 남은 애매함은 사용자를 붙잡지 말고 spec의 "추가 노트"에 적는다.
 - **전제**: 이 스킬은 `grill`/`grill-with-docs`로 계획을 다듬은 *다음* 실행한다. 설계가 덜 여물었으면 to-spec 대신 먼저 grilling하라.
 
+## 저장 위치 판정
+
+먼저 저장소 루트를 보고 in-repo인지 외부(`~`)인지 결정한다. 전체 규칙은 [project-docs-storage.md](../shared/project-docs-storage.md) 참고. 요약: 루트에 `CONTEXT(-MAP).org` 또는 마커 `.project-docs`가 있으면 **in-repo**, 없으면 **외부** - 아래 모든 경로를 `~/project-docs/<정규화된 저장소 절대경로>/` 아래에 그대로 복제(서브트리 미러). 읽기·쓰기 모두 이 규칙을 따른다.
+
 ## 프로세스
 
 1. **탐색.** 아직 안 했다면 repo를 탐색해 현재 상태를 파악한다.
-   - `CONTEXT.org`(다중 컨텍스트면 `CONTEXT-MAP.org` → 각 `CONTEXT.org`)가 있으면 읽어 그 용어를 spec 전반에 사용한다.
+   - `CONTEXT.org`(다중 컨텍스트면 `CONTEXT-MAP.org` → 각 `CONTEXT.org`)가 있으면 읽어 그 용어를 spec 전반에 사용한다. 외부 모드면 미러 트리(`~/project-docs/<정규화 경로>/`)에서 읽는다.
    - 건드리는 영역에 `docs/adr/` ADR이 있으면 존중한다.
    - 둘 다 없으면 그냥 넘어간다(강제하지 않음). to-spec은 glossary를 *읽기*만 한다 - 갱신은 `domain-modeling` 몫.
 
 2. **작성.** 아래 템플릿으로 spec을 쓴다. 도메인 용어는 `한글(영문)` 병기.
 
-3. **저장.** `docs/specs/<slug>/spec.org`에 저장한다(`<slug>` = 제목 kebab; feature 폴더 하나에 spec + 티켓 co-locate). 커밋·스테이징은 하지 않는다 - 저장 경로만 출력한다.
+3. **저장.** `docs/specs/<slug>/spec.org`에 저장한다(`<slug>` = 제목 kebab; feature 폴더 하나에 spec + 티켓 co-locate). 외부 모드면 `~/project-docs/<정규화 경로>/docs/specs/<slug>/spec.org`. 커밋·스테이징은 하지 않는다 - 저장 경로만 출력한다.
 
 4. **포매팅.** 저장한 뒤 emacs로 org 들여쓰기를 정렬한다.
 
@@ -27,7 +31,7 @@ disable-model-invocation: true
 emacs -Q --batch --eval '(progn (require (quote org)) (setq org-adapt-indentation t) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (save-buffer))))' <생성한 .org 파일들>
 ```
 
-emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
+emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. 외부 모드 파일은 `~/project-docs/...` 절대경로로 넘긴다(`default-directory` 상대 처리와 무관하게 동작). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
 
 <spec-template>
 #+title: <spec 제목>

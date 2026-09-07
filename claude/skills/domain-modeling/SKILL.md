@@ -14,30 +14,9 @@ description: 프로젝트의 도메인 모델을 구축하고 다듬는다. 사�
 
 ## 저장 위치 판정
 
-모델을 변경(읽기 포함)하기 전에, 먼저 저장소 루트를 보고 in-repo인지 외부(`~`)인지 결정한다. 공용 저장소를 오염시키지 않도록 **기본값은 외부**.
+모델을 변경(읽기 포함)하기 전에, 먼저 저장소 루트를 보고 in-repo인지 외부(`~`)인지 결정한다. 전체 규칙은 [project-docs-storage.md](../shared/project-docs-storage.md) 참고.
 
-3단계 규칙(저장소 루트 기준):
-
-1. 루트에 `CONTEXT.org` 또는 `CONTEXT-MAP.org`가 이미 있으면 → **in-repo** (기존 프로젝트 자동 승계, 마커 불필요)
-2. 루트에 마커 파일 `.domain-model`이 있으면 → **in-repo** (아직 문서가 없는 새 개인 프로젝트용. 빈 파일이며 존재 여부만 판정)
-3. 둘 다 없으면 → **외부** (기본값, 공용 프로젝트 안전)
-
-### 외부 모드 매핑
-
-외부일 때는 in-repo에서 쓸 경로를 `~/domain-models/<정규화된 저장소 절대경로>/` 아래에 **그대로** 복제한다(서브트리 미러). 즉 in-repo 경로 `X`는 외부에서 `~/domain-models/<정규화 경로>/X`가 된다. 읽기·쓰기 모두 이 외부 경로를 대상으로 한다.
-
-절대경로 정규화: 드라이브 콜론 제거 + 슬래시 통일.
-
-- `D:\repo` → `~/domain-models/D/repo/`
-- `/home/user/proj` → `~/domain-models/home/user/proj/`
-
-예(`E:\horde`, 외부 모드):
-
-- `CONTEXT.org` → `~/domain-models/E/horde/CONTEXT.org`
-- `src/ordering/CONTEXT.org` → `~/domain-models/E/horde/src/ordering/CONTEXT.org`
-- `docs/adr/0001-x.org` → `~/domain-models/E/horde/docs/adr/0001-x.org`
-
-`CONTEXT-MAP.org`의 `file:./src/...` 상대 링크는 미러된 외부 트리 안에서 그대로 유효하므로 재작성하지 않는다.
+요약: 루트에 `CONTEXT.org`/`CONTEXT-MAP.org` 또는 마커 `.project-docs`가 있으면 **in-repo**, 없으면 **외부** - `~/project-docs/<정규화된 저장소 절대경로>/` 아래에 in-repo 경로를 그대로 복제(서브트리 미러). 읽기·쓰기 모두 이 규칙을 따른다.
 
 ## 파일 구조
 
@@ -72,7 +51,7 @@ description: 프로젝트의 도메인 모델을 구축하고 다듬는다. 사�
 - 파일은 쓸 내용이 생길 때만 생성
 - `CONTEXT.org`가 없으면 첫 번째 용어가 확정될 때 생성
 - `docs/adr/`가 없으면 첫 번째 ADR이 필요할 때 생성
-- 위 예시는 in-repo 기준. 외부 모드면 같은 트리가 `~/domain-models/<정규화 경로>/` 아래에 생긴다(위 "저장 위치 판정" 참고)
+- 위 예시는 in-repo 기준. 외부 모드면 같은 트리가 `~/project-docs/<정규화 경로>/` 아래에 생긴다(위 "저장 위치 판정" 참고)
 
 ## 세션 중 행동 지침
 
@@ -109,7 +88,7 @@ description: 프로젝트의 도메인 모델을 구축하고 다듬는다. 사�
 emacs -Q --batch --eval '(progn (require (quote org)) (setq org-adapt-indentation t) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (save-buffer))))' <생성한 .org 파일들>
 ```
 
-emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. 외부 모드 파일은 `~/domain-models/...` 절대경로로 넘긴다(`default-directory` 상대 처리와 무관하게 동작). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
+emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. 외부 모드 파일은 `~/project-docs/...` 절대경로로 넘긴다(`default-directory` 상대 처리와 무관하게 동작). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
 
 ### ADR은 신중하게 제안
 

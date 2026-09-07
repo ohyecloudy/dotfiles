@@ -1,6 +1,6 @@
 # ADR 형식
 
-- ADR은 `docs/adr/`에 위치 (외부 모드면 `~/domain-models/<정규화 경로>/docs/adr/`에 미러 - 위치 판정은 [SKILL.md](./SKILL.md)의 "저장 위치 판정" 참고)
+- ADR은 `docs/adr/`에 위치 (외부 모드면 `~/project-docs/<정규화 경로>/docs/adr/`에 미러 - 위치 판정은 [SKILL.md](./SKILL.md)의 "저장 위치 판정" 참고)
 - 순차 번호 사용: `0001-slug.org`, `0002-slug.org` 등
 - `docs/adr/` 디렉터리는 첫 번째 ADR이 필요할 때만 생성
 

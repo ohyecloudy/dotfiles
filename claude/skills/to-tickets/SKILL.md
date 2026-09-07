@@ -10,20 +10,24 @@ disable-model-invocation: true
 
 티켓은 **로컬 파일**로 발행한다 - 티켓당 한 파일, 상태는 `ready-for-agent`. 트리아지 라벨(triage label)이 대화에서 이미 정해졌으면 그걸 쓴다.
 
+## 저장 위치 판정
+
+먼저 저장소 루트를 보고 in-repo인지 외부(`~`)인지 결정한다. 전체 규칙은 [project-docs-storage.md](../shared/project-docs-storage.md) 참고. 요약: 루트에 `CONTEXT(-MAP).org` 또는 마커 `.project-docs`가 있으면 **in-repo**, 없으면 **외부** - 아래 모든 경로(spec 후보 탐색·티켓 발행)를 `~/project-docs/<정규화된 저장소 절대경로>/` 아래에 그대로 복제(서브트리 미러). 읽기·쓰기 모두 이 규칙을 따른다.
+
 ## 프로세스
 
 ### 1. 컨텍스트 수집
 
 대화 컨텍스트에 이미 있는 것으로 작업한다. 사용자가 인자로 레퍼런스(spec 경로, 이슈 번호나 URL)를 넘기면 가져와 본문과 코멘트 전체를 읽는다.
 
-- 레퍼런스도 없고 대화에도 spec이 없으면 `docs/specs/*/spec.org`(특히 `#+status: ready-for-agent`)를 훑어 후보를 제시하고, 어느 spec을 분해할지 사용자에게 확인한다. silent auto-pick 금지.
+- 레퍼런스도 없고 대화에도 spec이 없으면 `docs/specs/*/spec.org`(특히 `#+status: ready-for-agent`)를 훑어 후보를 제시하고, 어느 spec을 분해할지 사용자에게 확인한다. 외부 모드면 미러 트리(`~/project-docs/<정규화 경로>/docs/specs/*/spec.org`)를 훑는다. silent auto-pick 금지.
 - 소스가 spec이면 그 폴더 slug가 곧 티켓의 `<feature-slug>` - 티켓은 같은 feature 폴더 `docs/specs/<slug>/tickets/`에 co-locate.
 
 ### 2. 코드베이스 탐색 (선택)
 
 아직 코드베이스를 탐색하지 않았다면, 현재 상태를 파악하기 위해 탐색한다.
 
-- `CONTEXT.org`(다중 컨텍스트면 `CONTEXT-MAP.org` → 각 `CONTEXT.org`)가 있으면 읽어 티켓 제목·설명에 그 용어를 쓴다.
+- `CONTEXT.org`(다중 컨텍스트면 `CONTEXT-MAP.org` → 각 `CONTEXT.org`)가 있으면 읽어 티켓 제목·설명에 그 용어를 쓴다. 외부 모드면 미러 트리(`~/project-docs/<정규화 경로>/`)에서 읽는다.
 - 건드리는 영역에 `docs/adr/` ADR이 있으면 존중한다.
 - 둘 다 없으면 강제하지 않는다. to-tickets는 glossary를 *읽기만* 한다 - 새 용어 확정·갱신은 `domain-modeling` 몫.
 
@@ -64,7 +68,7 @@ disable-model-invocation: true
 
 ### 5. 티켓 발행
 
-승인된 티켓을 티켓당 한 파일로 `docs/specs/<feature-slug>/tickets/<NN>-<slug>.org`에 쓴다(소스 spec과 같은 feature 폴더에 co-locate; spec이 없는 소스면 `docs/tickets/<feature-slug>/`로 폴백). 의존성 순서(블로커 먼저)로 `01`부터 번호를 매긴다. 각 파일의 "Blocked by"에 의존하는 번호/제목을 나열한다. 아래 티켓당 파일 템플릿을 쓴다: 티켓 하나당 파일 하나, 절대 하나로 합친 파일 금지.
+승인된 티켓을 티켓당 한 파일로 `docs/specs/<feature-slug>/tickets/<NN>-<slug>.org`에 쓴다(소스 spec과 같은 feature 폴더에 co-locate; spec이 없는 소스면 `docs/tickets/<feature-slug>/`로 폴백). 외부 모드면 이 경로를 `~/project-docs/<정규화 경로>/` 아래에 그대로 쓴다 - `[[file:../spec.org]]` 상대 링크는 미러 트리 안에서 그대로 유효하므로 재작성하지 않는다. 의존성 순서(블로커 먼저)로 `01`부터 번호를 매긴다. 각 파일의 "Blocked by"에 의존하는 번호/제목을 나열한다. 아래 티켓당 파일 템플릿을 쓴다: 티켓 하나당 파일 하나, 절대 하나로 합친 파일 금지.
 
 **프론티어(frontier)**를 표시한다: 블로커 없는 티켓 = 다운스트림 에이전트가 먼저 집을 티켓. 순수 선형 체인이면 위에서 아래로. (to-tickets는 여기서 멈춘다 - 구현은 픽업 에이전트 몫)
 
@@ -97,7 +101,7 @@ disable-model-invocation: true
 emacs -Q --batch --eval '(progn (require (quote org)) (setq org-adapt-indentation t) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (save-buffer))))' <생성한 .org 파일들>
 ```
 
-emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
+emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. 외부 모드 파일은 `~/project-docs/...` 절대경로로 넘긴다(`default-directory` 상대 처리와 무관하게 동작). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
 
 ## org 작성 규칙
 
