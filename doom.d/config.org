@@ -2351,6 +2351,20 @@
        (add-to-list '+format-on-save-disabled-modes 'nxml-mode))
    #+end_src
 
+*** flycheck xml-xmllint utf-8
+
+    - flycheck =xml-xmllint= 는 버퍼를 임시 파일이 아니라 stdin으로 xmllint에 넘긴다
+    - 이때 인코딩은 파일 인코딩이 아니라 =default-process-coding-system= 을 따름
+      + windows 일 때, cp949로 인코딩
+        - =(set-language-environment "Korean")=
+    - 한글이 포함된 라인에서 "Invalid bytes in character encoding" 에러가 난다.
+
+    #+begin_src elisp :lexical t
+      (when (featurep :system 'windows)
+        (add-to-list 'process-coding-system-alist '("xmllint" utf-8 . utf-8))
+        )
+    #+end_src
+
 ** agent-shell
 
    #+begin_quote
