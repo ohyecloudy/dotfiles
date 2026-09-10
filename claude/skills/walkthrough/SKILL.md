@@ -41,13 +41,13 @@ disable-model-invocation: true
 
 ### 3. 변경 분석
 
-Skill 도구로 `explain-change`를 호출해 변경을 분석한다. §1에서 정한 범위를 그대로 넘긴다 - 커밋 범위면 hash/범위, uncommitted면 diff 텍스트, 저장소 위치도 함께. **인라인 호출**이라 세션 컨텍스트를 유지한 채 결과를 받는다.
+Skill 도구로 `explain-change`를 호출해 변경을 분석한다. §1에서 정한 범위를 그대로 넘긴다 - 커밋 범위면 hash/범위, uncommitted면 diff 텍스트, 저장소 위치도 함께. 다이어그램 종류로 `module`·`class`·`sequence` **3종 전부**를 요청한다. **인라인 호출**이라 세션 컨텍스트를 유지한 채 결과를 받는다.
 
-반환 JSON이 다음 문서의 재료다 - `stat`(범위·규모), `units[]`(`summary`/`architecture`/`impact`/`evidence`), `prerequisites`(사전 지식), `reading_order`(읽는 순서), `omitted`(다루지 않은 변경). 코어는 diff·코드베이스로 알 수 있는 것을 위치·형태의 **사실 서술로만** 채운다(`codebase-design` 어휘 참조, 평가·판정 없음). 이 스킬은 코어가 못 내는 것 - `basis: inferred`에서 뽑는 `사람 판단 필요`, 사전 지식의 "왜 이걸 골랐나·대안", 그 밖에 세션에서만 아는 "왜" - 를 세션 컨텍스트로 보강한다.
+반환 JSON이 다음 문서의 재료다 - `stat`(범위·규모), `units[]`(`summary`/`architecture`/`impact`/`evidence`), `prerequisites`(사전 지식), `reading_order`(읽는 순서), `omitted`(다루지 않은 변경), `diagrams`(아키텍처 다이어그램). 코어는 diff·코드베이스로 알 수 있는 것을 위치·형태의 **사실 서술로만** 채운다(`codebase-design` 어휘 참조, 평가·판정 없음). 이 스킬은 코어가 못 내는 것 - `basis: inferred`에서 뽑는 `사람 판단 필요`, 사전 지식의 "왜 이걸 골랐나·대안", 그 밖에 세션에서만 아는 "왜" - 를 세션 컨텍스트로 보강한다.
 
 ### 4. 문서 작성
 
-§3의 코어 JSON을 재료로 아래 구조를 채운다. `헤드라인`의 범위·규모는 `stat`, `아키텍처 델타`는 `units[].architecture` + `impact`(호출자가 새로 알아야 할 참조처), `사전 지식`은 `prerequisites`, `읽는 순서`는 `reading_order`, `워크스루`는 `units[].summary`(설명) + `evidence`(근거 코드), `다루지 않은 변경`은 `omitted`로 채운다. `사람 판단 필요`(코어 `basis: inferred`에서)와 사전 지식의 "왜·대안" 등 세션에서만 아는 부분은 이 스킬이 보강한다.
+§3의 코어 JSON을 재료로 아래 구조를 채운다. `헤드라인`의 범위·규모는 `stat`, `아키텍처 델타`는 `units[].architecture` + `impact`(호출자가 새로 알아야 할 참조처), `아키텍처 다이어그램`은 `diagrams`, `사전 지식`은 `prerequisites`, `읽는 순서`는 `reading_order`, `워크스루`는 `units[].summary`(설명) + `evidence`(근거 코드), `다루지 않은 변경`은 `omitted`로 채운다. `사람 판단 필요`(코어 `basis: inferred`에서)와 사전 지식의 "왜·대안" 등 세션에서만 아는 부분은 이 스킬이 보강한다.
 
 `~/walkthrough/YYYY-MM-DD-HHMM-<slug>.org`에 쓴다(`<slug>` = 변경 주제 kebab). 디렉터리가 없으면 만든다.
 
@@ -69,6 +69,15 @@ Skill 도구로 `explain-change`를 호출해 변경을 분석한다. §1에서 
   - <상태·데이터 소유권 이동>
   - 변경 후 데이터 흐름: <한 줄>
   - ADR-<NNN> 준수 - <어느 부분이>        ← 관련 ADR 있을 때만
+
+* 아키텍처 다이어그램                       ← diagrams 없으면 "없음" 한 줄
+
+** <title>
+
+   - <caption 한 줄>
+   #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>.png :width "1200"
+   <mermaid 소스>
+   #+end_src
 
 * 사전 지식(prerequisite)                  ← 해당 없으면 섹션 통째 생략
 
@@ -132,6 +141,7 @@ emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - �
 - **완전성보다 선별.** 문서 총량 상한은 없지만 리뷰어가 봐야 할 것만 싣는다. 대신 **생략한 것을 `다루지 않은 변경`에 반드시 적는다** - 선별 요약은 *"이게 전부인가?"*에 답하지 못하면 신뢰받지 못한다. 포매팅, 기계적 반복, 자동 생성 파일 등을 한 줄로 묶어 명시한다.
 - **코드 위치는 어디에 쓰든 항상 절대 경로 + 단일 라인 번호.** emacs `ffap`/compilation-mode 점프용이다. `foo.ts:42`(상대경로)나 라인 범위(`:42-50`)가 아니라 `/abs/path/foo.ts:42`. 산문에 인라인해도 되지만 형식은 반드시 이것 - 절대경로:단일라인이면 문장 중간이어도 점프된다.
 - **빈 섹션은 "없음"으로 명시한다.** 섹션을 통째로 지우면 "해당 없음"과 "확인 안 함"이 구분되지 않는다. 예외는 `사전 지식` 하나뿐.
+- **아키텍처 다이어그램은 `diagrams`를 org mermaid 블록으로 싣는다.** 각 항목을 `** <title>` 아래 `- <caption>` + `#+begin_src mermaid :file <경로>.png :width "1200"` … `#+end_src`로 넣는다. `:file`은 org 파일 옆 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 `kind`, module/class/sequence), `:width "1200"`으로 렌더 폭을 통일한다. 코어가 준 `mermaid` 소스는 그대로 넣고(편집·재작성 금지, org verbatim `=` 규칙과 무관), `diagrams`가 비면 섹션에 "없음" 한 줄. 렌더는 온디맨드 - 사용자가 `C-c C-c`/export로 PNG를 만든다(파이프라인에서 pre-render하지 않는다).
 - **사전 지식 판정 기준은 "이 코드베이스에 선례가 없는 것"이다.** `grep`으로 확인할 수 있는 객관적 기준을 쓴다 - 사용자가 알지 모를지 추측하지 않는다.
   - 대상: 라이브러리·프레임워크, 언어 기능, 설계 패턴, 알고리즘, 프로토콜·포맷
   - 제외: 이미 코드베이스에 널린 관용구, 일반 상식
