@@ -1,5 +1,13 @@
 # -*- mode: sh -*-
 
+# 비인터랙티브 셸(예: `bash -lc "cmd"`로 실행되는 서브프로세스)에서는 조기 종료한다.
+# native 콘솔 프로그램(chcp.com 등)이 파일 기반 stdin을 소비해 stdin으로 입력을
+# 받는 명령(ob-mermaid의 `mmdc -i -` 등)을 깨뜨리는 것을 방지한다.
+case $- in
+    *i*) ;;
+    *) return ;;
+esac
+
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
@@ -23,7 +31,7 @@ fi
 
 if [[ "$OS" == "Windows_NT" ]]; then
     # UTF-8
-    chcp.com 65001 >/dev/null
+    chcp.com 65001 >/dev/null 2>&1 </dev/null
 fi
 
 export VISUAL=ec-wait
