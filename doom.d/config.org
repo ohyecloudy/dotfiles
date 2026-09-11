@@ -2672,8 +2672,8 @@
     ;; -i 옵션은 job control 생성을 못해서 대신 -l 옵션을 사용했다.
     ;; bash: cannot set terminal process group (-1): Inappropriate ioctl for device
     ;; bash: no job control in this shell
-    (when IS-WINDOWS
-      (setq shell-command-switch "-lc"))
+    ;; (when IS-WINDOWS
+    ;;   (setq shell-command-switch "-lc"))
 
     ;;; shell
     (when IS-WINDOWS
