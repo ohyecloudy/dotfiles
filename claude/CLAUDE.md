@@ -51,6 +51,11 @@
 - 동작하는 코드를 확인 없이 리팩토링하지 말 것
 - IMPORTANT: 파일 삭제, 대규모 rename은 반드시 사전 확인
 
+## Org
+
+- org 문서 산문에 수동 줄바꿈(폭 맞춤 개행) 금지 - 한 줄로 이어 쓰기
+- 나열은 bullet list, 관심사 분리는 heading(`*`/`**`/`***`) 적극 활용
+
 ## Local Configuration
 
 @~/.claude/CLAUDE.local.md 
