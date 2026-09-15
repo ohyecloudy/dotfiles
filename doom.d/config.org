@@ -1962,17 +1962,23 @@
 
    org-babel 언어로 =mermaid= 를 추가해서 소스 코드 블럭 컴파일을 할 수 있게 한다.
 
-   #+begin_src elisp
-     (when IS-WINDOWS
-       (setq mermaid-mmdc-location "~/bin.local/mermaid-cli/node_modules/.bin/mmdc.cmd"))
-   #+end_src
+*** windows mmdc 경로
 
-   #+begin_src elisp
-     (when IS-WINDOWS
-       (setq ob-mermaid-cli-path "~/bin.local/mermaid-cli/node_modules/.bin/mmdc.cmd"))
-   #+end_src
+    #+begin_src elisp
+      (when IS-WINDOWS
+        (setq mermaid-mmdc-location (expand-file-name "~/bin.local/mermaid-cli/node_modules/.bin/mmdc.cmd")))
+    #+end_src
 
-   windows에서는 직접 설치하고 경로를 지정한다.
+    #+begin_src elisp
+      (when IS-WINDOWS
+        (setq ob-mermaid-cli-path (expand-file-name "~/bin.local/mermaid-cli/node_modules/.bin/mmdc.cmd")))
+    #+end_src
+
+    windows에서는 직접 설치하고 경로를 지정한다.
+
+    - =ob-mermaid= 는 경로를 =shell-quote-argument= 로 그대로 감싸 셸에 넘김
+    - =~= 를 리터럴로 quoting해 셸이 홈 디렉토리로 확장하지 못함 (exit 127)
+    - =expand-file-name= 으로 미리 절대 경로로 바꿔 넘김
 
 ** evil
 
