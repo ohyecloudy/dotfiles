@@ -59,7 +59,13 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 
 규율:
 
-- **확인 엣지는 실선, 추정 엣지는 점선**(`-.->`). 점선을 쓰면 캡션에 "점선=추정" 범례를 넣는다. `basis` 규율을 그대로 상속한다 - grep/read로 확인한 것만 실선.
+- **엣지 라벨 = 관계 동사.** 무라벨 엣지는 "뭔가 연결돼 있다"까지만 읽힌다. `sends`·`creates`·`observes`처럼 무엇을 하는 관계인지 적는다.
+- **근거는 선 모양이 아니라 라벨로 표시한다.** 추정 엣지는 라벨 앞에 `?`를 붙인다(`?sends`). 라벨 채널을 쓰는 이유는 선 모양에 이미 관계 의미가 걸려 있어서다 - class의 `..>`는 UML 의존, sequence의 `-->>`는 응답 메시지라, 점선을 추정 뜻으로 겹쳐 쓰면 확인된 관계까지 추정으로 읽힌다. `basis` 규율을 그대로 상속한다 - grep/read로 확인한 것만 무표시.
+  - flowchart: `PCM -->|sends| Sel` / 추정은 `PCM -->|?sends| Sel`
+  - class: `Workout ..> Selection : creates` / 추정은 `: ?creates`
+  - sequence: `CV ->> WCM: chooseExercise(offset:)` / 추정은 `: ?chooseExercise(offset:)`
+- **캡션 범례는 조건부.** 추정 엣지가 하나라도 있을 때만 "?=추정"을 넣는다. 추정이 0이면 범례를 쓰지 않는다 - 늘 붙이면 오독을 부른다.
+- **추정이 전체 엣지의 1/3을 넘으면 그대로 내지 않는다.** grep/read로 더 확인하거나, 확인 못 한 엣지는 빼고 캡션에 "관계 N개 미확인"을 적는다. 절반이 추정인 그림은 리뷰어에게 노이즈다.
 - **노드 라벨 = 식별자 + 역할 한 줄.** 식별자만 두지 않는다. `<br/>`로 역할을 붙여 그림만 보고도 각 노드가 왜 있는지 알 수 있게 한다.
   - 역할은 이름을 풀어 쓴 게 아니라 **책임 서술**. 예) `Sel["libre08Shared/WatchWorkoutSelection<br/>워치 운동 선택 정보를 공유하는 모듈"]`
   - sequence는 `participant Sel as libre08Shared/WatchWorkoutSelection<br/>워치 운동 선택 정보 공유`, class는 `class Foo["Foo<br/>역할"]`.
@@ -90,7 +96,7 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
   "prerequisites": [{ "concept": "개념명", "what": "무엇인지 한 줄", "location": "/abs/path.cpp:40" }],
   "reading_order": [{ "path": "/abs/path.cpp:40", "why": "왜 여기부터" }],
   "omitted":       [{ "text": "생략분과 이유" }],
-  "diagrams":      [{ "kind": "module|class|sequence", "title": "제목(한국어)", "caption": "무엇을 보는 그림인지 한 줄(점선=추정 범례 포함)", "mermaid": "<mermaid 소스>" }]
+  "diagrams":      [{ "kind": "module|class|sequence", "title": "제목(한국어)", "caption": "무엇을 보는 그림인지 한 줄(추정 엣지 있으면 ?=추정 범례 포함)", "mermaid": "<mermaid 소스>" }]
 }
 ```
 
@@ -103,6 +109,6 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 - **근거 코드(`evidence`)는 최소 라인만.** 함수·hunk 통째 복붙 금지. 논리 단위당 20줄 이내, 판단을 뒷받침하는 줄만. `origin`으로 diff hunk인지 주변 코드인지 구분한다.
 - **경로는 어디에 쓰든 항상 `절대경로:단일라인`.** `/abs/path/foo.cpp:42` 형식. 상대경로(`foo.cpp:42`)·파일명만·라인 범위(`:42-50`)는 emacs ffap/compilation-mode가 점프 못 하므로 금지. `summary`·`architecture` 같은 산문 text에 인라인으로 넣어도 되지만, 그때도 반드시 절대경로:단일라인이어야 한다(절대경로면 문장 중간이어도 점프된다). `impact.refs`·`evidence.path`·`prerequisites.location`·`reading_order.path`도 동일.
 - **`text`는 한 항목 = 한 줄.** 산문 문단으로 뭉치지 않는다.
-- **다이어그램(`diagrams`)은 요청된 종류만, 유효 엣지가 있을 때만 낸다.** 노드 라벨은 실제 코드 식별자(클래스·파일·네임스페이스) + `<br/>` + 역할 한 줄이며, `["라벨"]`로 감싸 **구문상 유효한 mermaid**를 보장한다(`::`·`<>` 등 특수문자 포함 시에도 동일). 확인 엣지는 실선, 추정은 점선(`-.->`), 변경 노드는 하이라이트. 노드 상한 ~15, 초과분은 `caption`에 "외 N개 생략"으로 명시한다. `mermaid`엔 소스만 담고 org `#+begin_src` 래핑·`:file`·`:width`는 호출자 몫이다.
+- **다이어그램(`diagrams`)은 요청된 종류만, 유효 엣지가 있을 때만 낸다.** 노드 라벨은 실제 코드 식별자(클래스·파일·네임스페이스) + `<br/>` + 역할 한 줄이며, `["라벨"]`로 감싸 **구문상 유효한 mermaid**를 보장한다(`::`·`<>` 등 특수문자 포함 시에도 동일). 엣지에는 관계 동사 라벨을 달고, 추정은 라벨 앞 `?`로 표시한다(선 모양은 관계 의미 전용). 변경 노드는 하이라이트. 노드 상한 ~15, 초과분은 `caption`에 "외 N개 생략"으로 명시한다. `mermaid`엔 소스만 담고 org `#+begin_src` 래핑·`:file`·`:width`는 호출자 몫이다.
 - 설명·제목은 한국어. **모든 출력은 utf-8**(입력이 cp949 등이면 변환해 처리).
 - 변경이 없거나 코드가 아니면 `units: []`와 빈 배열들을 반환한다.
