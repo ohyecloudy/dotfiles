@@ -152,6 +152,15 @@
           :desc "Switch buffer"           "<" #'switch-to-buffer)
   #+end_src
 
+** visual line 이동
+
+   =C-j= / =C-k= 로 wrap된 줄을 화면 줄(visual line) 단위로 이동한다. vim 관용 키인 =gj= / =gk= 는 evil-org 등 여러 모드가 element 이동으로 덮어써서 모드 간 일관성이 없다. 모디파이어 키는 navigation 패키지가 잘 안 건드려 전역에서 안정적으로 동작하고, =display-line-numbers-type= =visual= 의 화면 줄 번호 표시와 짝을 이룬다.
+
+   #+begin_src elisp :lexical t
+     (map! :nvm "C-j" #'evil-next-visual-line
+           :nvm "C-k" #'evil-previous-visual-line)
+   #+end_src
+
 * tab -> space
 
   #+begin_src elisp
