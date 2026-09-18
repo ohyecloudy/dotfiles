@@ -98,10 +98,10 @@ disable-model-invocation: true
 발행한 티켓 파일 전부를 emacs로 정렬한다.
 
 ```bash
-emacs -Q --batch --eval '(progn (require (quote org)) (setq org-adapt-indentation t) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (save-buffer))))' <생성한 .org 파일들>
+emacs -Q --batch --eval '(progn (require (quote org)) (setq org-adapt-indentation t) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (set-buffer-file-coding-system (if (memq system-type (quote (windows-nt ms-dos))) (quote utf-8-dos) (quote utf-8-unix))) (save-buffer))))' <생성한 .org 파일들>
 ```
 
-emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. 외부 모드 파일은 `~/project-docs/...` 절대경로로 넘긴다(`default-directory` 상대 처리와 무관하게 동작). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
+emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. 이때 line ending도 실행 OS에 맞춘다(`set-buffer-file-coding-system` - Windows CRLF, 그 외 LF). 외부 모드 파일은 `~/project-docs/...` 절대경로로 넘긴다(`default-directory` 상대 처리와 무관하게 동작). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
 
 ## org 작성 규칙
 
