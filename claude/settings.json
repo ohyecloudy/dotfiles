@@ -34,6 +34,5 @@
   "language": "korean",
   "autoUpdatesChannel": "stable",
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
-  "model": "opus"
+  "agentPushNotifEnabled": true
 }
