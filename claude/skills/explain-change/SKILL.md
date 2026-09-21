@@ -90,7 +90,7 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
       "summary":      [{ "text": "핵심 변경 한 줄", "basis": "diff|codebase|inferred" }],
       "architecture": [{ "text": "위치·형태 서술 한 줄", "basis": "diff|codebase|inferred" }],
       "impact":       [{ "symbol": "Foo::Bar", "refs": ["/abs/path.cpp:120"] }],
-      "evidence":     [{ "path": "/abs/path.cpp:120", "origin": "diff|codebase", "snippet": "핵심 라인만" }]
+      "evidence":     [{ "path": "/abs/path.cpp:120", "origin": "diff|codebase", "before": "수정 전 원본 라인(신규 추가면 \"\")", "snippet": "핵심 라인만" }]
     }
   ],
   "prerequisites": [{ "concept": "개념명", "what": "무엇인지 한 줄", "location": "/abs/path.cpp:40" }],
@@ -106,7 +106,8 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 
 - **`basis`(근거 출처)는 필수다.** `diff`=diff 확증, `codebase`=탐색 확인, `inferred`=추정. 추정을 확증처럼 쓰지 않는다. 호출자가 이 태그로 신뢰도를 판단하고 "사람 판단 필요"를 만든다.
 - **`impact`·`prerequisites`는 탐색으로 확인한 것만.** 못 찾았거나 해당 없으면 빈 배열. 추측으로 채우지 않는다. 특히 `prerequisites`는 grep으로 선례 없음을 확인한 것만.
-- **근거 코드(`evidence`)는 최소 라인만.** 함수·hunk 통째 복붙 금지. 논리 단위당 20줄 이내, 판단을 뒷받침하는 줄만. `origin`으로 diff hunk인지 주변 코드인지 구분한다.
+- **근거 코드(`evidence`)는 최소 라인만.** 함수·hunk 통째 복붙 금지. 논리 단위당 20줄 이내(`before`+`snippet` 합산), 판단을 뒷받침하는 줄만. `origin`으로 diff hunk인지 주변 코드인지 구분한다.
+- **`before`는 기존 라인을 고친 evidence에만 채운다.** 같은 diff hunk의 삭제(`-`) 라인에서 그대로 뽑는다(추가 git 조회 불필요) - 순수 신규 추가 라인이면 `before: ""`. diff 형식이라도 원본 hunk 그대로 덤프하지 않고 최소 대비 라인만.
 - **경로는 어디에 쓰든 항상 `절대경로:단일라인`.** `/abs/path/foo.cpp:42` 형식. 상대경로(`foo.cpp:42`)·파일명만·라인 범위(`:42-50`)는 emacs ffap/compilation-mode가 점프 못 하므로 금지. `summary`·`architecture` 같은 산문 text에 인라인으로 넣어도 되지만, 그때도 반드시 절대경로:단일라인이어야 한다(절대경로면 문장 중간이어도 점프된다). `impact.refs`·`evidence.path`·`prerequisites.location`·`reading_order.path`도 동일.
 - **`text`는 한 항목 = 한 줄.** 산문 문단으로 뭉치지 않는다.
 - **다이어그램(`diagrams`)은 요청된 종류만, 유효 엣지가 있을 때만 낸다.** 노드 라벨은 실제 코드 식별자(클래스·파일·네임스페이스) + `<br/>` + 역할 한 줄이며, `["라벨"]`로 감싸 **구문상 유효한 mermaid**를 보장한다(`::`·`<>` 등 특수문자 포함 시에도 동일). 엣지에는 관계 동사 라벨을 달고, 추정은 라벨 앞 `?`로 표시한다(선 모양은 관계 의미 전용). 변경 노드는 하이라이트. 노드 상한 ~15, 초과분은 `caption`에 "외 N개 생략"으로 명시한다. `mermaid`엔 소스만 담고 org `#+begin_src` 래핑·`:file`·`:width`는 호출자 몫이다.
