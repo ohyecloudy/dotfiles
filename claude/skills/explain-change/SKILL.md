@@ -69,7 +69,7 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 - **노드 라벨 = 식별자 + 역할 한 줄.** 식별자만 두지 않는다. `<br/>`로 역할을 붙여 그림만 보고도 각 노드가 왜 있는지 알 수 있게 한다.
   - 역할은 이름을 풀어 쓴 게 아니라 **책임 서술**. 예) `Sel["libre08Shared/WatchWorkoutSelection<br/>워치 운동 선택 정보를 공유하는 모듈"]`
   - sequence는 `participant Sel as libre08Shared/WatchWorkoutSelection<br/>워치 운동 선택 정보 공유`, class는 `class Foo["Foo<br/>역할"]`.
-- **변경 노드는 하이라이트**(mermaid `classDef` + `class` 지정 등)로 이웃과 구분한다.
+- **변경 노드는 하이라이트**(mermaid `classDef changed ...` + `class <Id> changed`)로 이웃과 구분한다. `class` 지정은 노드 하나당 한 줄 - 쉼표로 여러 식별자를 묶지 않는다(`class A,B changed`는 무효 구문).
 - **노드 상한 ~15.** 넘으면 가장 먼 홉·변경과 무관한 잎 노드부터 가지치기하고 캡션에 "외 N개 생략"을 적는다.
 - **유효 엣지가 0이면 그 종류는 생략한다**(빈 다이어그램 금지). 코드가 아니거나 관계가 없는 변경은 다이어그램이 안 나올 수 있다.
 
