@@ -93,7 +93,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 ** <title>
 
    - <caption 한 줄>
-   #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>.png :width "1200"
+   #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>.png :width "2048"
    <mermaid 소스>
    #+end_src
 
@@ -189,6 +189,6 @@ emacs -Q --batch --eval '(progn (require (quote org)) (setq org-adapt-indentatio
 - **verbatim 뒤에 한글 조사를 붙이지 않는다.** `=Foo=에`는 org가 마크업으로 인식하지 못해 export에서 깨진다. 조사가 안 붙게 문장을 쓰고, 부득이하면 한 칸 띄운다.
 - **헤딩 아래 본문은 별 개수 + 1칸 들여쓴다**(`*` → 2칸, `**` → 3칸).
 - **다이어그램은 `diagrams`를 그대로 org mermaid 블록으로 싣는다.**
-  - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `:width "1200"`으로 폭 통일.
+  - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `:width "2048"`으로 폭 통일.
   - mermaid 소스는 편집·재작성 금지(verbatim `=` 규칙과 무관).
   - 렌더는 온디맨드 - 사용자가 `C-c C-c`/export로 PNG를 만든다(pre-render하지 않는다).
