@@ -2457,6 +2457,14 @@
        (setq agent-shell-preferred-agent-config '(preselect . claude-code)))
    #+end_src
 
+   cost 지시자 출력
+
+   #+begin_src elisp :lexical t
+     (after! agent-shell
+       (setopt agent-shell-show-cost-indicator t)
+       )
+   #+end_src
+
 *** agent-shell defaults
 
     session mode 기본 값을 변경
