@@ -53,7 +53,7 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 
 입력에서 다이어그램 종류가 지정됐을 때만 수행한다. **변경 중심 + 2홉 이웃**을 대상으로, 요청된 종류의 mermaid 소스를 만든다(§3의 `impact` 탐색을 재사용해 2홉으로 확장한다).
 
-- **module**(`flowchart`): 변경이 닿은 모듈과 그 2홉 이웃, include/import/참조 엣지.
+- **module**(`flowchart TD`): 변경이 닿은 모듈과 그 2홉 이웃, include/import/참조 엣지. 방향은 `TD` 고정 - `LR`은 노드가 가로로 늘어서 고정 폭 렌더에서 글자가 작아진다.
 - **class**(`classDiagram`): 변경이 닿은 클래스와 2홉 이웃, 상속/합성/연관 엣지.
 - **sequence**(`sequenceDiagram`): diff와 탐색으로 복원한 호출 순서.
 
