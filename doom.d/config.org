@@ -2465,6 +2465,23 @@
        )
    #+end_src
 
+*** agent-shell context sources
+
+    셸 열 때 현재 라인 대신 현재 파일을 @mention으로 첨부. region, error, dired 파일이 우선
+
+    =files= 소스는 이미지 버퍼, dired 선택 파일만 다뤄서 일반 파일 버퍼용 함수 추가. 파일 링크 표시를 위해 내부 함수 =agent-shell--get-files-context= 사용 - 패키지 업데이트 시 깨질 수 있음
+
+    #+begin_src elisp :lexical t
+      (defun my/agent-shell-current-file-context ()
+        "Return the current buffer file as an agent-shell @mention, or nil."
+        (when-let* ((file (buffer-file-name)))
+          (agent-shell--get-files-context :files (list file))))
+
+      (after! agent-shell
+        (setopt agent-shell-context-sources
+                '(files region error my/agent-shell-current-file-context)))
+    #+end_src
+
 *** agent-shell defaults
 
     session mode 기본 값을 변경
