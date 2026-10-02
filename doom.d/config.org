@@ -2501,6 +2501,9 @@
          ;; normal에만 바인딩되어 있어서 visual에도 바인딩
          (kbd "gr") #'agent-shell-viewport-reply
          )
+       ;; view-mode 의 C-k(이전 페이지)와 맞춤. C-j 로 다시 compose 복귀
+       (evil-define-key 'normal agent-shell-viewport-edit-mode-map
+         (kbd "C-k") #'agent-shell-viewport-compose-peek-last)
        )
    #+end_src
 
