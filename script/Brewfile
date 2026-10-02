@@ -9,6 +9,8 @@ brew "fop"
 brew "asdf"
 # for doom emacs
 brew "fd"
+# for consult-locate. bin/locate-updatedb
+brew "findutils"
 brew "fontconfig"
 brew "git"
 brew "git-lfs"

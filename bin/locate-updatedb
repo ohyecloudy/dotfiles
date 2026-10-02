@@ -1,0 +1,17 @@
+#!/bin/bash
+# Per-user locate DB builder: indexes $HOME including dot directories that Spotlight skips, for consult-locate.
+
+set -euo pipefail
+
+# launchd agents start with a minimal PATH that lacks Homebrew
+export PATH="/opt/homebrew/bin:$PATH"
+
+db_dir="$HOME/.cache"
+db_file="$db_dir/locate.db"
+prune_paths="$HOME/Library $HOME/.Trash"
+
+mkdir -p "$db_dir"
+
+gupdatedb --localpaths="$HOME" \
+          --prunepaths="$prune_paths" \
+          --output="$db_file"

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Hourly launchd agent that refreshes the per-user locate DB used by consult-locate. -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.ohyecloudy.locate-updatedb</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string>
+    <string>-c</string>
+    <!-- plist cannot expand $HOME, so delegate to the shell -->
+    <string>exec "$HOME/bin/locate-updatedb"</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>3600</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>LowPriorityIO</key>
+  <true/>
+  <key>Nice</key>
+  <integer>10</integer>
+  <key>StandardOutPath</key>
+  <string>/tmp/com.ohyecloudy.locate-updatedb.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/com.ohyecloudy.locate-updatedb.log</string>
+</dict>
+</plist>

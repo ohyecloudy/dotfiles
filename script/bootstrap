@@ -95,4 +95,13 @@ if [ "$machine" == "Mac" ]; then
 
     log_info "=> => create an emacs symbolic link in applications"
     safe_make_symbol_link /opt/homebrew/opt/emacs-plus@29/Emacs.app /Applications/Emacs.app
+
+    log_info "=> => install locate-updatedb launch agent"
+    # copy instead of symlink: launchd may skip symlinked plists at login
+    locate_agent=com.ohyecloudy.locate-updatedb
+    locate_agent_plist=~/Library/LaunchAgents/$locate_agent.plist
+    mkdir -p ~/Library/LaunchAgents
+    cp $root_path/launchd/$locate_agent.plist $locate_agent_plist
+    launchctl bootout gui/$(id -u)/$locate_agent 2>/dev/null || true
+    launchctl bootstrap gui/$(id -u) $locate_agent_plist
 fi
