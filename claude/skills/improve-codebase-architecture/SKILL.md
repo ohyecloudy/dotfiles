@@ -1,6 +1,6 @@
 ---
 name: improve-codebase-architecture
-description: 코드베이스에서 deepening(얕은 모듈을 깊게 만드는) 기회를 찾아 시각적 HTML 리포트로 제시하고, 사용자가 고른 후보를 grilling으로 파고든다.
+description: 코드베이스에서 deepening(얕은 모듈을 깊게 만드는) 기회를 찾아 mermaid 다이어그램을 담은 org 리포트로 제시하고, 사용자가 고른 후보를 grilling으로 파고든다.
 disable-model-invocation: true
 ---
 
@@ -38,28 +38,34 @@ disable-model-invocation: true
 
 얕다고 의심되는 것에는 **삭제 테스트(deletion test)**를 적용한다: 삭제하면 복잡성이 한곳에 모이는가, 아니면 그냥 옮겨가는가? "그렇다, 모인다"가 원하는 신호다.
 
-### 2. 후보를 HTML 리포트로 제시
+### 2. 후보를 org 리포트로 제시
 
-저장소에 아무것도 남지 않도록 자체 완결형(self-contained) HTML 파일을 OS 임시 디렉터리에 쓴다. 임시 디렉터리는 `$TMPDIR`에서 얻고, 없으면 `/tmp`(윈도우는 `%TEMP%`)로 폴백한다. 매 실행마다 새 파일이 생기도록 `<tmpdir>/architecture-review-<timestamp>.html`에 쓴다. 사용자를 위해 파일을 열고(`xdg-open <path>`(Linux), `open <path>`(macOS), `start <path>`(Windows)) 절대경로를 알려준다.
+저장소에 아무것도 남지 않도록 저장소 밖 `~/architecture-review/YYYY-MM-DD-HHMM-<repo>.org`에 쓴다(`<repo>` = 저장소 디렉터리 이름). 디렉터리가 없으면 만든다. 파일을 자동으로 열지 않고 절대경로만 알려준다(emacs `ffap`로 점프).
 
-리포트는 레이아웃·스타일에 **Tailwind CDN**을, 그래프/플로우/시퀀스가 구조를 확실히 전달하는 다이어그램에 **Mermaid CDN**을 쓴다. Mermaid와 손으로 만든 CSS/SVG 비주얼을 섞는다: 관계가 그래프 모양(콜 그래프, 의존성, 시퀀스)일 때 Mermaid를, 더 편집(editorial)적인 것(질량 다이어그램, 단면도, 붕괴 애니메이션)을 원할 때 직접 만든 div/SVG를 쓴다. 각 후보에 **before/after 시각화**를 넣는다. 시각적으로 만들 것.
+각 후보에 **before/after 다이어그램**을 org mermaid 블록(`#+begin_src mermaid :file ... :width "2048"`)으로 넣는다. 후보에 맞는 패턴(콜 플로우, 왕복 시퀀스, 단면도, 질량 다이어그램, 콜 그래프 붕괴)을 골라 섞는다. 시각적으로 만들 것.
 
-각 후보마다 카드를 렌더한다:
+각 후보는 `**` 헤딩 하나로 렌더한다:
 
+- **Tags**: recommendation strength(`strong` / `worth_exploring` / `speculative`)와 의존성 분류를 헤딩 태그로
 - **Files**: 관련된 파일/모듈
 - **Problem**: 현재 아키텍처가 왜 마찰을 일으키는가
 - **Solution**: 무엇이 바뀔지 평이한 설명
-- **Benefits**: 지역성(locality)과 레버리지(leverage) 관점에서, 그리고 테스트가 어떻게 나아지는지로 설명
-- **Before / After diagram**: 나란히, 직접 그려서, 얕음과 깊어짐을 보여준다
-- **Recommendation strength**: `Strong`, `Worth exploring`, `Speculative` 중 하나를 배지로
+- **Before / After**: `*** Before` / `*** After` 하위 헤딩에 같은 패턴으로 연속 배치해 얕음과 깊어짐을 보여준다
+- **Wins**: 지역성(locality)과 레버리지(leverage) 관점에서, 그리고 테스트가 어떻게 나아지는지로 설명
 
-리포트 끝에 **Top recommendation** 섹션을 둔다: 어느 후보를 먼저 다룰지와 이유.
+리포트 맨 위에 **Top recommendation** 섹션을 둔다: 어느 후보를 먼저 다룰지와 이유, 그 후보 헤딩으로 가는 내부 링크.
 
 **도메인은 `CONTEXT.org` 어휘로, 아키텍처는 `codebase-design` 어휘로 말한다.** `CONTEXT.org`가 "Order"를 정의했다면 "the Order intake module"이라 부르고, "the FooBarHandler"나 "the Order service"라 부르지 않는다.
 
-**ADR 충돌**: 후보가 기존 ADR과 모순되면, 마찰이 ADR을 재검토할 만큼 진짜일 때만 표면화한다. 카드에 분명히 표시한다(예: 경고 콜아웃 _"ADR-0007과 모순되지만, ...때문에 재검토할 가치가 있음"_). ADR이 금하는 이론적 리팩토링을 전부 나열하지 말 것.
+**ADR 충돌**: 후보가 기존 ADR과 모순되면, 마찰이 ADR을 재검토할 만큼 진짜일 때만 표면화한다. 후보의 `*** ADR` 하위 헤딩에 한 줄로 분명히 표시한다(예: _"ADR-0007과 모순되지만, ...때문에 재검토할 가치가 있음"_). ADR이 금하는 이론적 리팩토링을 전부 나열하지 말 것.
 
-전체 HTML 스캐폴드, 다이어그램 패턴, 스타일 가이드는 [HTML-REPORT.md](HTML-REPORT.md) 참고.
+전체 org 스캐폴드, 다이어그램 패턴, 톤은 [ORG-REPORT.md](ORG-REPORT.md) 참고.
+
+쓴 뒤 emacs로 org 들여쓰기를 정렬한다(emacs에서 열었다 저장한 것과 같은 상태). line ending도 실행 OS에 맞춘다. emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
+
+```bash
+emacs -Q --batch --eval '(progn (require (quote org)) (setq org-adapt-indentation t) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (set-buffer-file-coding-system (if (memq system-type (quote (windows-nt ms-dos))) (quote utf-8-dos) (quote utf-8-unix))) (save-buffer))))' <생성한 .org 파일>
+```
 
 아직 인터페이스를 제안하지 말 것. 파일을 쓴 뒤 사용자에게 묻는다: "이 중 어느 것을 탐색하고 싶으세요?"
 
