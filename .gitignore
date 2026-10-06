@@ -75,3 +75,6 @@ config.local.el
 .claude/
 !.claude/settings.json
 .agent-shell/
+
+# Claude Code synced account skills (auto-generated per machine)
+/claude/skills/synced/
