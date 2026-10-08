@@ -160,6 +160,7 @@ PY
 - 규칙: 이 SKILL.md 절대 경로. `## 메시지 규칙`, `## 표현 기준`, `## 유머 기준`, `## 메시지 템플릿` 섹션을 따르라고 지시
 - 감정 단어 팔레트: 이 SKILL.md 옆 `EMOTION-WORDS.md` 절대 경로. `[감정]` 제안 때 Read로 참고하라고 지시
 - 출력 경로: `~/blog-feedback/outbox/<blog>-<slug>.html` (절대 경로로 풀어서 전달, 디렉토리 없으면 생성)
+- 모델: 템플릿의 `<model>`에는 서브에이전트 자신의 모델 ID(시스템 프롬프트에 적힌 값, 예: `claude-opus-5-5`)를 넣으라고 지시. 메인이 추측해 넘기지 않는다(에이전트 정의가 모델을 바꿀 수 있음)
 - 지시: 메시지 파일을 Write로 저장한 뒤 `<제목> - <먼저 고칠 것 한 줄>` 한 줄만 반환. 글 본문 외 정보는 추측하지 말 것 (WebFetch로 다른 글 조회 금지)
 
 ### 3. 텔레그램 전송
@@ -301,7 +302,7 @@ PY
 ```html
 https://ohyecloudy.com/...
 <b>[<blog>] <title></b> (<date>)
-<a href="<url>">원문</a>
+<a href="<url>">원문</a> · <i><model></i>
 
 <b>좋은 점</b>
 <blockquote>원문 인용</blockquote>
