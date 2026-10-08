@@ -1646,6 +1646,53 @@
                 #'my/org-capture-done-task-to-today)
     #+end_src
 
+*** org new node to daily
+
+    =org-roam-capture= 로 새 파일 노드를 만들면 오늘 daily note의 =Tasks= heading 밑에 =- 생성: [[id:..][제목]]= 을 기록한다. =org done task to daily= 의 ="T"= 템플릿과 stash 변수를 재사용한다. daily/weekly/monthly(재기록 루프, 주기 노트)와 secret(제목 평문 노출)은 제외한다.
+
+    =org-roam-capture-new-node-hook= 은 기존 파일 target에도 실행되므로 =:new-file= 로 신규 여부를 판별해 pending만 표시하고, 실제 기록은 =org-capture-after-finalize-hook= 에서 abort가 아닐 때만 한다. 중첩 capture가 =org-capture-plist= 를 덮어써 org-roam의 finalize(find-file/insert-link)를 깨뜨리지 않도록 =run-at-time= 으로 지연 실행한다. 제목은 capture 시점의 =${title}= 기준이다.
+
+    #+begin_src elisp :lexical t
+      (defvar my/org-new-node-pending nil
+        "Pending (ID . TITLE) of a newly captured org-roam node, or nil.")
+
+      (defconst my/org-new-node-excluded-dirs
+        '("daily/" "weekly/" "monthly/" "secret/")
+        "Subdirectories of `org-roam-directory' whose new nodes are not logged.")
+
+      (defun my/org-new-node-mark-pending ()
+        "Remember the node being captured when it lives in a brand-new file.
+      Runs from `org-roam-capture-new-node-hook'."
+        (let ((new-file (org-roam-capture--get :new-file)))
+          (when (and new-file
+                     (not (seq-some
+                           (lambda (dir)
+                             (string-prefix-p
+                              (file-truename (expand-file-name dir org-roam-directory))
+                              (file-truename new-file)))
+                           my/org-new-node-excluded-dirs)))
+            (setq my/org-new-node-pending
+                  (cons (org-roam-node-id org-roam-capture--node)
+                        (org-roam-node-title org-roam-capture--node))))))
+
+      (defun my/org-new-node-log-to-today ()
+        "Log the pending new node into today's daily `Tasks' unless aborted.
+      Runs from `org-capture-after-finalize-hook'; the daily capture is deferred so
+      it does not clobber `org-capture-plist' of the capture being finalized."
+        (let ((pending my/org-new-node-pending))
+          (setq my/org-new-node-pending nil)
+          (when (and pending (not org-note-abort))
+            (run-at-time
+             0 nil
+             (lambda ()
+               (setq my/org-done-task-bullets-string
+                     (format "- 생성: [[id:%s][%s]]" (car pending) (cdr pending)))
+               (org-roam-dailies-capture-today nil "T"))))))
+
+      (add-hook 'org-roam-capture-new-node-hook #'my/org-new-node-mark-pending)
+      (add-hook 'org-capture-after-finalize-hook #'my/org-new-node-log-to-today)
+    #+end_src
+
 *** restore original links
 
     =org done task to daily= 가 만든 =[[file:PATH::*<heading>][desc]]= 링크를 원본 heading 텍스트로 되돌린다. region이 있으면 그 안의 모든 대상 링크를, 없으면 point의 링크 하나를 변환한다. 대상은 =file:= 이면서 검색부가 =::*= (heading 검색)로 시작하는 링크만이다.
