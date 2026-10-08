@@ -2568,7 +2568,7 @@
 
 *** agent-shell rate limit indicator
 
-   Claude 구독 rate limit(5시간, 주간) 사용률을 헤더 cost 옆에 상시 표시. =/usage= 를 매번 치지 않기 위함.
+   Claude 구독 rate limit(5시간, 주간) 사용률을 헤더에 상시 표시. =/usage= 를 매번 치지 않기 위함. cost 는 불필요해서 cost 지시자 자리를 rate limit 으로 대체.
 
    =claude-agent-acp= 가 =rate_limit_event= 를 =usage_update= 의 =_meta._claude/rateLimit= 로 전달하지만 agent-shell 은 이를 버림. =unifiedWindows= 에 모든 윈도우의 utilization(0-1)과 resetsAt(epoch 초)이 들어 있어서 이것만 저장. 계정 단위 값이라 전역 변수에 보관.
 
@@ -2617,16 +2617,10 @@
                    ""))
                my/agent-shell-rate-limit-labels "\n")))))
 
-       (defun my/agent-shell-append-rate-limit (cost)
-         "Append the rate limit indicator to the header COST indicator."
-         (let ((limits (my/agent-shell-rate-limit-indicator)))
-           (cond ((and cost limits) (concat cost " " limits))
-                 (t (or cost limits)))))
-
        (advice-add 'agent-shell--update-usage-from-notification
                    :after #'my/agent-shell-save-rate-limit)
        (advice-add 'agent-shell--cost-indicator
-                   :filter-return #'my/agent-shell-append-rate-limit))
+                   :override #'my/agent-shell-rate-limit-indicator))
    #+end_src
 
 *** agent-shell context sources
