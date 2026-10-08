@@ -808,76 +808,76 @@
       (after! org-roam
         (setq org-roam-capture-templates
               `(("n" "note" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/note.org]" org-roam-directory)
                  :target (file "note/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("t" "topic" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/topic.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/topic.org]" org-roam-directory)
                  :target (file "topic/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("w" "work" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/work.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/work.org]" org-roam-directory)
                  :target (file "work/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("e" "retrospective" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/retrospective.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/retrospective.org]" org-roam-directory)
                  :target (file "retrospective/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("f" "ref" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/ref.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/ref.org]" org-roam-directory)
                  :target (file "ref/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("c" "contact" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/contact.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/contact.org]" org-roam-directory)
                  :target (file "contact/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("b" "book" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/book.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/book.org]" org-roam-directory)
                  :target (file "book/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("v" "video" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/video.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/video.org]" org-roam-directory)
                  :target (file "video/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("h" "chopsticks" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/note.org]" org-roam-directory)
                  :target (file "chopsticks/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("g" "game" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/game.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/game.org]" org-roam-directory)
                  :target (file "game/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("o" "coolthings" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/coolthings.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/coolthings.org]" org-roam-directory)
                  :target (file "coolthings/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("l" "plan" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/note.org]" org-roam-directory)
                  :target (file "plan/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("a" "place" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/note.org]" org-roam-directory)
                  :target (file "place/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("s" "career" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/note.org]" org-roam-directory)
                  :target (file "career/%<%Y%m%d%H%M%S>-${slug}.org")
                  :unnarrowed t)
                 ("z" "secret" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/note.org]" org-roam-directory)
                  :target (file "secret/%<%Y%m%d%H%M%S>-${slug}.org.gpg")
                  :unnarrowed t)
                 ("s" "project" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/project.org]" org-roam-directory)
                  :target (file "project/%<%Y%m%d>-${slug}.org")
                  :unnarrowed t)
                 ("p" "periodic")
                 ("pm" "periodic/monthly" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/monthly.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/monthly.org]" org-roam-directory)
                  :target (file "monthly/%<%Y%m%d>-${slug}.org")
                  :unnarrowed t)
                 ("pw" "periodic/weekly" plain
-                 ,(format "#+title: ${title}\n%%[%s/template/weekly.org]" org-roam-directory)
+                 ,(format "#+title: ${title}\n#+last_modified: \n%%[%s/template/weekly.org]" org-roam-directory)
                  :target (file "weekly/%<%Y%m%d>-${slug}.org")
                  :unnarrowed t))))
     #+end_src
@@ -1052,6 +1052,50 @@
 
         (advice-add 'org-roam-dailies-goto-today :before #'my/org-roam-db-sync-once)
         (advice-add 'org-roam-dailies-goto-yesterday :before #'my/org-roam-db-sync-once))
+    #+end_src
+
+*** org-roam last modified
+
+    org-roam 파일을 저장할 때 =#+title= 아래 =#+last_modified: [YYYY-MM-DD Day HH:MM]= 을 갱신해 노트별 마지막 수정 시각을 남긴다. [[https://github.com/org-roam/org-roam/wiki/User-contributed-Tricks#timestamp-on-save-alanz][Timestamp on Save (@alanz) - github.com]] 의 =time-stamp= 방식을 org keyword 형식으로 바꿨다.
+
+    =org-roam-find-file-hook= 은 =org-roam-file-p= 인 버퍼에서만 실행되므로 설정을 buffer-local로 걸어 org-roam 파일에만 적용한다. 마커가 없는 기존 파일은 저장 시 =#+title= 아래에 마커를 삽입해 수정하는 파일만 점진적으로 채운다(일괄 마이그레이션은 모든 값이 마이그레이션 날짜가 되어 의미를 잃음). 수정 없는 버퍼는 저장되지 않으므로 열기만 한 파일은 바뀌지 않는다.
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (require 'time-stamp)
+
+        (defconst my/org-roam-time-stamp-line-limit 20
+          "Number of leading lines `time-stamp' scans for the `#+last_modified:' marker.")
+
+        (defun my/org-roam-ensure-last-modified ()
+          "Insert an empty `#+last_modified:' line below `#+title:' when missing.
+      Only the file header (text before the first heading) is searched; files
+      without a `#+title:' line are left untouched."
+          (save-excursion
+            (save-restriction
+              (widen)
+              (goto-char (point-min))
+              (let ((header-end (save-excursion
+                                  (if (re-search-forward org-outline-regexp-bol nil t)
+                                      (line-beginning-position)
+                                    (point-max))))
+                    (case-fold-search t))
+                (unless (save-excursion
+                          (re-search-forward "^#\\+last_modified:" header-end t))
+                  (when (re-search-forward "^#\\+title:.*$" header-end t)
+                    (insert "\n#+last_modified: ")))))))
+
+        (defun my/org-roam-time-stamp-setup-h ()
+          "Update `#+last_modified:' on save in the current org-roam buffer."
+          (setq-local time-stamp-start "#\\+last_modified:[ \t]*"
+                      time-stamp-end "$"
+                      time-stamp-format "[%Y-%m-%d %a %H:%M]"
+                      time-stamp-line-limit my/org-roam-time-stamp-line-limit)
+          ;; Ensure the marker exists before `time-stamp' looks for it.
+          (add-hook 'before-save-hook #'time-stamp nil t)
+          (add-hook 'before-save-hook #'my/org-roam-ensure-last-modified nil t))
+
+        (add-hook 'org-roam-find-file-hook #'my/org-roam-time-stamp-setup-h))
     #+end_src
 
 *** daily week label
