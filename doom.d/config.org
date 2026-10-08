@@ -2566,12 +2566,67 @@
        (setq agent-shell-preferred-agent-config '(preselect . claude-code)))
    #+end_src
 
-   cost 지시자 출력
+*** agent-shell rate limit indicator
+
+   Claude 구독 rate limit(5시간, 주간) 사용률을 헤더 cost 옆에 상시 표시. =/usage= 를 매번 치지 않기 위함.
+
+   =claude-agent-acp= 가 =rate_limit_event= 를 =usage_update= 의 =_meta._claude/rateLimit= 로 전달하지만 agent-shell 은 이를 버림. =unifiedWindows= 에 모든 윈도우의 utilization(0-1)과 resetsAt(epoch 초)이 들어 있어서 이것만 저장. 계정 단위 값이라 전역 변수에 보관.
+
+   내부 함수 =agent-shell--update-usage-from-notification=, =agent-shell--cost-indicator= 에 advice - 패키지 업데이트 시 깨질 수 있음
 
    #+begin_src elisp :lexical t
      (after! agent-shell
-       (setopt agent-shell-show-cost-indicator t)
-       )
+       (defconst my/agent-shell-rate-limit-labels
+         '((five_hour . "5h") (seven_day . "7d"))
+         "Rate limit windows shown in the header, in display order.")
+
+       (defconst my/agent-shell-rate-limit-warning-ratio 0.8
+         "Utilization ratio at which a window is highlighted as a warning.")
+
+       (defvar my/agent-shell-rate-limit-windows nil
+         "Latest Claude `unifiedWindows' alist reported by the ACP adapter.")
+
+       (defun my/agent-shell-save-rate-limit (&rest args)
+         "Store rate limit windows from the usage_update in ARGS."
+         (when-let* ((update (plist-get args :acp-update))
+                     (windows (map-nested-elt
+                               update '(_meta _claude/rateLimit unifiedWindows))))
+           (setq my/agent-shell-rate-limit-windows windows)))
+
+       (defun my/agent-shell-rate-limit-indicator ()
+         "Return \"5h 34% 7d 21%\" for the header, or nil before any event."
+         (let (parts (warn nil))
+           (pcase-dolist (`(,key . ,label) my/agent-shell-rate-limit-labels)
+             (when-let* ((window (map-elt my/agent-shell-rate-limit-windows key))
+                         (ratio (map-elt window 'utilization)))
+               (when (>= ratio my/agent-shell-rate-limit-warning-ratio)
+                 (setq warn t))
+               (push (format "%s %d%%" label (round (* 100 ratio))) parts)))
+           (when parts
+             (propertize
+              (string-join (nreverse parts) " ")
+              'face (if warn 'warning 'agent-shell-secondary)
+              'help-echo
+              (mapconcat
+               (pcase-lambda (`(,key . ,label))
+                 (if-let* ((reset (map-nested-elt
+                                   my/agent-shell-rate-limit-windows
+                                   (list key 'resetsAt))))
+                     (format "%s resets %s" label
+                             (format-time-string "%m-%d %H:%M" reset))
+                   ""))
+               my/agent-shell-rate-limit-labels "\n")))))
+
+       (defun my/agent-shell-append-rate-limit (cost)
+         "Append the rate limit indicator to the header COST indicator."
+         (let ((limits (my/agent-shell-rate-limit-indicator)))
+           (cond ((and cost limits) (concat cost " " limits))
+                 (t (or cost limits)))))
+
+       (advice-add 'agent-shell--update-usage-from-notification
+                   :after #'my/agent-shell-save-rate-limit)
+       (advice-add 'agent-shell--cost-indicator
+                   :filter-return #'my/agent-shell-append-rate-limit))
    #+end_src
 
 *** agent-shell context sources
