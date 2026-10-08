@@ -1878,6 +1878,23 @@
                 (org-gcal--sync-unlock))))))
      #+end_src
 
+     Windows Emacs는 1970년 이전 로컬 시간을 =encode-time= 하면 =Invalid time specification= 에러를 낸다. syncToken 응답에는 기간과 무관하게 변경된 이벤트가 모두 오는데, 생일 캘린더의 반복 원본 이벤트처럼 시작일이 1970년 이전이면 기간 필터의 =org-gcal--parse-calendar-time= 에서 터져 fetch가 =deferred error= 로 중단된다. 파싱 실패 시 epoch(0)를 반환해 =org-gcal-up-days= 범위 밖 이벤트로 무시되게 우회.
+
+     #+begin_src elisp :lexical t
+       (when IS-WINDOWS
+         (defun my/org-gcal-parse-calendar-time-string-safe (fn time-string)
+           (condition-case err
+               (funcall fn time-string)
+             (error
+              (message "org-gcal: ignore unparsable time %S (%s)"
+                       time-string (error-message-string err))
+              0)))
+
+         (after! org-gcal
+           (advice-add 'org-gcal--parse-calendar-time-string
+                       :around #'my/org-gcal-parse-calendar-time-string-safe)))
+     #+end_src
+
 ** doom-modeline
 
    #+begin_src elisp
