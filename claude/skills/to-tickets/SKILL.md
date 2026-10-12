@@ -14,6 +14,16 @@ disable-model-invocation: true
 
 먼저 저장소 루트를 보고 in-repo인지 외부(`~`)인지 결정한다. 전체 규칙은 [project-docs-storage.md](../shared/project-docs-storage.md) 참고. 요약: 루트에 `CONTEXT(-MAP).org` 또는 마커 `.project-docs`가 있으면 **in-repo**, 없으면 **외부** - 아래 모든 경로(spec 후보 탐색·티켓 발행)를 `~/project-docs/<정규화된 저장소 절대경로>/` 아래에 그대로 복제(서브트리 미러). 읽기·쓰기 모두 이 규칙을 따른다.
 
+## 티켓 status
+
+티켓 `#+status:` 어휘의 정본. 다른 스킬(`implement` 등)은 여기를 참조한다.
+
+- `ready-for-agent` - 발행 초기값. 에이전트가 집을 수 있음 (to-tickets 설정)
+- `ready-for-human` - 에이전트 구현·검증 완료, 사람 수동 검증만 남음 (implement 설정)
+- `done` - 모든 인수 기준 `- [X]` (implement 또는 사람 설정)
+- `wont-do` - 하지 않기로 결정 (사람 설정)
+- `withdrawn` - 다른 티켓·설계로 흡수되어 철회 (사람 설정)
+
 ## 프로세스
 
 ### 1. 컨텍스트 수집
@@ -70,7 +80,7 @@ disable-model-invocation: true
 
 승인된 티켓을 티켓당 한 파일로 `docs/specs/<feature-slug>/tickets/<NN>-<slug>.org`에 쓴다(소스 spec과 같은 feature 폴더에 co-locate; spec이 없는 소스면 `docs/tickets/<feature-slug>/`로 폴백). 외부 모드면 이 경로를 `~/project-docs/<정규화 경로>/` 아래에 그대로 쓴다 - `[[file:../spec.org]]` 상대 링크는 미러 트리 안에서 그대로 유효하므로 재작성하지 않는다. 의존성 순서(블로커 먼저)로 `01`부터 번호를 매긴다. 각 파일의 "Blocked by"에 의존하는 번호/제목을 나열한다. 아래 티켓당 파일 템플릿을 쓴다: 티켓 하나당 파일 하나, 절대 하나로 합친 파일 금지.
 
-**프론티어(frontier)**를 표시한다: 블로커 없는 티켓 = 다운스트림 에이전트가 먼저 집을 티켓. 순수 선형 체인이면 위에서 아래로. (to-tickets는 여기서 멈춘다 - 구현은 픽업 에이전트 몫)
+**프론티어(frontier)**를 표시한다: 블로커 없는 티켓 = 다운스트림 에이전트가 먼저 집을 티켓. 순수 선형 체인이면 위에서 아래로. 블로커는 status가 `done` 또는 `ready-for-human`이면 해제된 것으로 본다. (to-tickets는 여기서 멈춘다 - 구현은 픽업 에이전트 몫)
 
 발행 후 to-tickets는 멈춘다 - 구현은 시작하지 않는다. 파일은 커밋·스테이징하지 않고 생성만 하며(커밋은 사용자 몫), 발행한 경로 목록을 사용자에게 보고한다.
 
