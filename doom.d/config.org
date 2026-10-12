@@ -2509,7 +2509,7 @@
        :pin "2fa9c3f72339fd7bc755bc166428b139720e5d0d")
      (package! acp
        :recipe (:host github :repo "xenodium/acp.el")
-       :pin "5b3abb2956d16f39ed76bc53fe31d3c2ee7fecfd")
+       :pin "62e33d8ca6ab6d7c458b6fb89a847d5ab49ee427")
      (package! agent-shell
        :recipe (:host github :repo "xenodium/agent-shell")
        :pin "2ab0aba06a4dbf4225efdff47380f40a5d1f8898")
