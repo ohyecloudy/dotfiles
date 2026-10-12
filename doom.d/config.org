@@ -2516,7 +2516,12 @@
    #+end_src
 
    - [[github:xenodium/acp.el][xenodium/acp.el - github.com]]
-     + =npm install -g @agentclientprotocol/claude-agent-acp=
+     + =npm install -g @agentclientprotocol/claude-agent-acp@0.89.1=
+       - 머신 간 동일 동작을 위해 버전 고정. agent-shell 패키지 pin bump 시 같이 올릴 것
+       - 설치 버전 확인: =npm ls -g @agentclientprotocol/claude-agent-acp=
+       - 최신 버전 확인: =npm view @agentclientprotocol/claude-agent-acp version=
+       - 버전 목록 확인: =npm view @agentclientprotocol/claude-agent-acp versions --json=
+       - 변경 내역: [[github:agentclientprotocol/claude-agent-acp/releases][agentclientprotocol/claude-agent-acp releases - github.com]]
    - [[github:xenodium/shell-maker][xenodium/shell-maker - github.com]]
 
 
