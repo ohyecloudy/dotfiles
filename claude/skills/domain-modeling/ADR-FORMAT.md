@@ -20,7 +20,18 @@
 
 - 진짜 가치를 더할 때만 포함. 대부분의 ADR은 필요 없음
 
-- **Status** keyword (`#+status: proposed | accepted | deprecated | superseded by ADR-NNNN`) - 결정을 다시 검토할 때 유용
+- **Status** 속성 - 결정을 다시 검토할 때 유용. 파일 맨 위(`#+title:` 위) property drawer에 둔다
+  - 어휘: `proposed`, `accepted`, `deprecated`, `superseded`. `:STATUS:` 값은 항상 이 중 한 단어
+  - 다른 ADR이 대체하면 `:SUPERSEDED_BY:`에 번호를 적는다. 부분 대체는 `:STATUS:`를 유지하고 `(partial)`을 붙인다
+
+  ```org
+  :PROPERTIES:
+  :STATUS_ALL: proposed accepted deprecated superseded
+  :STATUS:   accepted
+  :SUPERSEDED_BY: 0002, 0003 (partial)
+  :END:
+  #+title: {결정의 짧은 제목}
+  ```
 - **Considered Options** (`* Considered Options`) - 기각된 대안이 기억할 가치가 있을 때만
 - **Consequences** (`* Consequences`) - 명확하지 않은 하위 영향을 짚어야 할 때만
 
