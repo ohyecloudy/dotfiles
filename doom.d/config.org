@@ -2584,6 +2584,43 @@
        )
    #+end_src
 
+*** agent-shell viewport file link navigation
+
+   viewport 에서 파일 링크 사이를 =]l=, =[l= 로 이동. org 의 =org-next-link=, =org-previous-link= 키와 동일.
+
+   #+begin_src elisp :lexical t
+     (after! (evil agent-shell)
+       (defun my/agent-shell-viewport--goto-file-link (backwards)
+         "Move point to the next visible local file link, or previous if BACKWARDS."
+         (if-let* ((pos (save-excursion
+                          (agent-shell-markdown--search-visible
+                           :property 'agent-shell-markdown-url
+                           ;; called with nil on runs without the property
+                           :predicate (lambda (url)
+                                        (and url (agent-shell-markdown--parse-local-link url)))
+                           :backwards backwards))))
+             (goto-char pos)
+           (user-error "No %s file link" (if backwards "previous" "next"))))
+
+       (defun my/agent-shell-viewport-next-file-link ()
+         "Move point to the next visible local file link."
+         (interactive)
+         (my/agent-shell-viewport--goto-file-link nil))
+
+       (defun my/agent-shell-viewport-previous-file-link ()
+         "Move point to the previous visible local file link."
+         (interactive)
+         (my/agent-shell-viewport--goto-file-link t))
+
+       (evil-define-key '(normal visual) agent-shell-viewport-view-mode-map
+         (kbd "]l") #'my/agent-shell-viewport-next-file-link
+         (kbd "[l") #'my/agent-shell-viewport-previous-file-link))
+   #+end_src
+
+   - 렌더링된 링크는 =agent-shell-markdown-url= 텍스트 속성에 URL 보관. 이 중 =agent-shell-markdown--parse-local-link= 가 존재하는 로컬 파일로 해석하는 것만 대상 (웹 URL 제외)
+   - 접힌(invisible) 영역의 링크는 건너뜀
+   - 내부 함수 =agent-shell-markdown--search-visible=, =agent-shell-markdown--parse-local-link= 사용 - 패키지 업데이트 시 깨질 수 있음
+
 *** agent-shell viewport jump list
 
    viewport 에서 =gF= 로 파일 이동 후 =C-o= 로 viewport 복귀되게 한다.
