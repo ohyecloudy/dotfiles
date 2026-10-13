@@ -27,6 +27,8 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 
 호출자는 선택적으로 **원하는 다이어그램 종류**(`module`/`class`/`sequence`의 부분집합)를 함께 지정할 수 있다. 지정된 종류만 §4에서 탐색·생성하고, **지정이 없으면 다이어그램을 만들지 않는다**(안 그릴 걸 탐색하면 낭비 - 탐색 비용을 요청 범위에 맞춘다).
 
+호출자는 선택적으로 **독자의 낯선 영역**([reader-profile.md](../shared/reader-profile.md)로 정한 언어·버전·프레임워크 숙련도)을 함께 넘길 수 있다. 넘기면 §3 사전 지식 판정에 쓴다. 이 스킬이 직접 묻거나 프로필 파일을 고치지는 않는다 - 서브에이전트로 호출되는 경우가 있어 사용자와 대화할 수 없다.
+
 한 번의 호출은 **한 변경 단위**(커밋 1개 / 범위 1개 / diff 1건)를 다룬다. 여러 CL·커밋을 가로지르는 묶기는 호출자가 결과를 모아서 한다.
 
 입력이 cp949 등 비 utf-8이면 **utf-8로 변환해** 처리한다. 반환 JSON은 항상 utf-8이다.
@@ -46,7 +48,9 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 변경된 **공개 심볼**(함수·타입·시그니처·상수)을 diff에서 식별하고, Grep/Read/Glob와 git(read-only)으로 조사한다.
 
 - **영향 범위(`impact`)**: 그 심볼의 참조처·호출부. diff엔 없고 탐색으로만 복원된다.
-- **사전 지식(`prerequisites`)**: 이 코드베이스에 **선례 없는** 라이브러리·패턴·알고리즘. grep으로 선례 유무를 확인해 판정한다(선례 있으면 사전 지식 아님). "무엇"과 "등장 위치"까지 사실로 채우고, "왜 이걸 골랐나·대안"은 호출자 보강 몫으로 남긴다.
+- **사전 지식(`prerequisites`)**: 아래 둘 중 하나에 해당하는 것. "무엇"과 "등장 위치"까지 사실로 채우고, "왜 이걸 골랐나·대안"은 호출자 보강 몫으로 남긴다.
+  - `no-precedent`: 이 코드베이스에 **선례 없는** 라이브러리·패턴·알고리즘. grep으로 선례 유무를 확인해 판정한다.
+  - `reader-unfamiliar`: 호출자가 넘긴 낯선 영역에 속하는, diff에 실제 등장한 언어 기능·프레임워크 기능. 선례가 있어도 포함한다 - 코드베이스엔 흔해도 독자는 모른다. 낯선 영역을 넘겨받지 않았으면 이 종류는 만들지 않는다(독자를 추측하지 않는다).
 - 정의·관련 모듈: 아키텍처 관찰의 근거.
 
 ### 4. 다이어그램 구성 (요청된 종류만)
@@ -93,7 +97,7 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
       "evidence":     [{ "path": "/abs/path.cpp:120", "origin": "diff|codebase", "before": "수정 전 원본 라인(신규 추가면 \"\")", "snippet": "핵심 라인만" }]
     }
   ],
-  "prerequisites": [{ "concept": "개념명", "what": "무엇인지 한 줄", "location": "/abs/path.cpp:40" }],
+  "prerequisites": [{ "concept": "개념명", "what": "무엇인지 한 줄", "location": "/abs/path.cpp:40", "reason": "no-precedent | reader-unfamiliar" }],
   "reading_order": [{ "path": "/abs/path.cpp:40", "why": "왜 여기부터" }],
   "omitted":       [{ "text": "생략분과 이유" }],
   "diagrams":      [{ "kind": "module|class|sequence", "title": "제목(한국어)", "caption": "무엇을 보는 그림인지 한 줄(추정 엣지 있으면 ?=추정 범례 포함)", "mermaid": "<mermaid 소스>" }]
@@ -105,7 +109,7 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 ## 작성 규칙
 
 - **`basis`(근거 출처)는 필수다.** `diff`=diff 확증, `codebase`=탐색 확인, `inferred`=추정. 추정을 확증처럼 쓰지 않는다. 호출자가 이 태그로 신뢰도를 판단하고 "사람 판단 필요"를 만든다.
-- **`impact`·`prerequisites`는 탐색으로 확인한 것만.** 못 찾았거나 해당 없으면 빈 배열. 추측으로 채우지 않는다. 특히 `prerequisites`는 grep으로 선례 없음을 확인한 것만.
+- **`impact`·`prerequisites`는 탐색으로 확인한 것만.** 못 찾았거나 해당 없으면 빈 배열. 추측으로 채우지 않는다. 특히 `prerequisites`는 grep으로 선례 없음을 확인한 것(`no-precedent`)과 넘겨받은 낯선 영역에 속하는 것(`reader-unfamiliar`)만.
 - **근거 코드(`evidence`)는 최소 라인만.** 함수·hunk 통째 복붙 금지. 논리 단위당 20줄 이내(`before`+`snippet` 합산), 판단을 뒷받침하는 줄만. `origin`으로 diff hunk인지 주변 코드인지 구분한다.
 - **`before`는 기존 라인을 고친 evidence에만 채운다.** 같은 diff hunk의 삭제(`-`) 라인에서 그대로 뽑는다(추가 git 조회 불필요) - 순수 신규 추가 라인이면 `before: ""`. diff 형식이라도 원본 hunk 그대로 덤프하지 않고 최소 대비 라인만.
 - **경로는 어디에 쓰든 항상 `절대경로:단일라인`.** `/abs/path/foo.cpp:42` 형식. 상대경로(`foo.cpp:42`)·파일명만·라인 범위(`:42-50`)는 emacs ffap/compilation-mode가 점프 못 하므로 금지. `summary`·`architecture` 같은 산문 text에 인라인으로 넣어도 되지만, 그때도 반드시 절대경로:단일라인이어야 한다(절대경로면 문장 중간이어도 점프된다). `impact.refs`·`evidence.path`·`prerequisites.location`·`reading_order.path`도 동일.
