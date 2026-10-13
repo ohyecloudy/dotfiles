@@ -14,6 +14,17 @@ disable-model-invocation: true
 
 먼저 저장소 루트를 보고 in-repo인지 외부(`~`)인지 결정한다. 전체 규칙은 [project-docs-storage.md](../shared/project-docs-storage.md) 참고. 요약: 루트에 `CONTEXT(-MAP).org` 또는 마커 `.project-docs`가 있으면 **in-repo**, 없으면 **외부** - 아래 모든 경로를 `~/project-docs/<정규화된 저장소 절대경로>/` 아래에 그대로 복제(서브트리 미러). 읽기·쓰기 모두 이 규칙을 따른다.
 
+## spec status
+
+spec status 어휘의 정본. 파일 맨 위 property drawer의 `:STATUS:` 속성에 쓰고, 허용값은 같은 drawer의 `:STATUS_ALL:`에 아래 어휘를 공백으로 나열한다. status를 바꿀 때는 `:STATUS:` 줄만 고친다.
+
+- `ready-for-agent` - 발행 초기값. to-tickets로 분해 가능 (to-spec 설정)
+- `ticketed` - to-tickets로 티켓 분해 완료 (to-tickets 설정)
+- `done` - 구현 완료 (사람 설정)
+- `superseded` - 다른 spec·ADR로 대체됨. 대체한 문서를 `:SUPERSEDED_BY:` 속성에 적는다(예: `ADR-0002`) (사람 설정)
+
+`:CREATED:`는 비활성 타임스탬프(inactive timestamp) `[YYYY-MM-DD Day]`로 쓴다 - 요일은 locale과 무관하게 영어 약어.
+
 ## 프로세스
 
 1. **탐색.** 아직 안 했다면 repo를 탐색해 현재 상태를 파악한다.
@@ -34,9 +45,12 @@ emacs -Q --batch --eval '(progn (require (quote org)) (setq org-adapt-indentatio
 emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. 이때 line ending도 실행 OS에 맞춘다(`set-buffer-file-coding-system` - Windows CRLF, 그 외 LF). 외부 모드 파일은 `~/project-docs/...` 절대경로로 넘긴다(`default-directory` 상대 처리와 무관하게 동작). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
 
 <spec-template>
+:PROPERTIES:
+:STATUS_ALL: ready-for-agent ticketed done superseded
+:STATUS:   ready-for-agent
+:CREATED:  [<YYYY-MM-DD> <영어 요일 약어: Mon..Sun>]
+:END:
 #+title: <spec 제목>
-#+status: ready-for-agent
-#+created: <YYYY-MM-DD>
 
 * 문제 정의
 
