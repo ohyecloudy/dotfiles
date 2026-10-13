@@ -16,7 +16,7 @@ disable-model-invocation: true
 
 ## 티켓 status
 
-티켓 `#+status:` 어휘의 정본. 다른 스킬(`implement` 등)은 여기를 참조한다.
+티켓 status 어휘의 정본. 다른 스킬(`implement` 등)은 여기를 참조한다. 파일 맨 위 property drawer의 `:STATUS:` 속성에 쓰고, 허용값은 같은 drawer의 `:STATUS_ALL:`에 아래 어휘를 공백으로 나열한다(emacs에서 첫 heading 위에 커서를 두고 `C-c C-x p`로 후보 선택). status를 바꿀 때는 `:STATUS:` 줄만 고치고 `:STATUS_ALL:`은 건드리지 않는다.
 
 - `ready-for-agent` - 발행 초기값. 에이전트가 집을 수 있음 (to-tickets 설정)
 - `ready-for-human` - 에이전트 구현·검증 완료, 사람 수동 검증만 남음 (implement 설정)
@@ -30,7 +30,7 @@ disable-model-invocation: true
 
 대화 컨텍스트에 이미 있는 것으로 작업한다. 사용자가 인자로 레퍼런스(spec 경로, 이슈 번호나 URL)를 넘기면 가져와 본문과 코멘트 전체를 읽는다.
 
-- 레퍼런스도 없고 대화에도 spec이 없으면 `docs/specs/*/spec.org`(특히 `#+status: ready-for-agent`)를 훑어 후보를 제시하고, 어느 spec을 분해할지 사용자에게 확인한다. 외부 모드면 미러 트리(`~/project-docs/<정규화 경로>/docs/specs/*/spec.org`)를 훑는다. silent auto-pick 금지.
+- 레퍼런스도 없고 대화에도 spec이 없으면 `docs/specs/*/spec.org`(특히 `:STATUS: ready-for-agent`)를 훑어 후보를 제시하고, 어느 spec을 분해할지 사용자에게 확인한다. 외부 모드면 미러 트리(`~/project-docs/<정규화 경로>/docs/specs/*/spec.org`)를 훑는다. silent auto-pick 금지.
 - 소스가 spec이면 그 폴더 slug가 곧 티켓의 `<feature-slug>` - 티켓은 같은 feature 폴더 `docs/specs/<slug>/tickets/`에 co-locate.
 
 ### 2. 코드베이스 탐색 (선택)
@@ -82,11 +82,14 @@ disable-model-invocation: true
 
 **프론티어(frontier)**를 표시한다: 블로커 없는 티켓 = 다운스트림 에이전트가 먼저 집을 티켓. 순수 선형 체인이면 위에서 아래로. 블로커는 status가 `done` 또는 `ready-for-human`이면 해제된 것으로 본다. (to-tickets는 여기서 멈춘다 - 구현은 픽업 에이전트 몫)
 
-발행 후 to-tickets는 멈춘다 - 구현은 시작하지 않는다. 파일은 커밋·스테이징하지 않고 생성만 하며(커밋은 사용자 몫), 발행한 티켓 목록을 7단계 형식으로 보고한다.
+소스가 spec이면 발행 후 그 spec의 `:STATUS:`를 `ticketed`로 바꾼다(spec 어휘 정본은 [to-spec](../to-spec/SKILL.md)의 "spec status"). 발행 후 to-tickets는 멈춘다 - 구현은 시작하지 않는다. 파일은 커밋·스테이징하지 않고 생성만 하며(커밋은 사용자 몫), 발행한 티켓 목록을 7단계 형식으로 보고한다.
 
 <local-ticket-template>
+:PROPERTIES:
+:STATUS_ALL: ready-for-agent ready-for-human done wont-do withdrawn
+:STATUS:   ready-for-agent
+:END:
 #+title: <NN>: <티켓 제목>
-#+status: ready-for-agent
 
 - Spec: [[file:../spec.org][docs/specs/<slug>/spec.org]] (소스가 spec일 때; 아니면 계획/대화 출처 명시)
 - 블로킹(Blocked by): 이 티켓을 gate하는 티켓의 번호/제목, 또는 "None (can start immediately)"
