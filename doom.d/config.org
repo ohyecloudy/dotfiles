@@ -2133,6 +2133,16 @@
 
    default [[https://github.com/elixir-lsp/elixir-ls][elixir-ls]] 버전이 낮아서 최신 버전을 지정
 
+** eglot
+
+   #+begin_src elisp
+     (when IS-MAC
+       (after! swift-mode
+         (set-eglot-client! 'swift-mode '("xcrun" "sourcekit-lsp"))))
+   #+end_src
+
+   PATH에 먼저 잡히는 swiftly 툴체인의 sourcekit-lsp는 Xcode SDK의 SwiftUI/Foundation 모듈을 로드하지 못한다. =xcrun= 으로 Xcode 툴체인의 sourcekit-lsp를 실행한다. doom swift 모듈이 swift-mode =:config= 에서 =sourcekit-lsp= 를 등록하므로 그 이후(=after! swift-mode=)에 덮어쓴다.
+
 ** consult
 
    [[https://github.com/git-for-windows/build-extra][Git for Windows SDK]]로 설치한 =locate= 프로그램이 제대로 동작하지 않는다. windows에서 더 최적화된 [[https://www.voidtools.com/ko-kr/][Everything]]을 파일 찾기에 사용한다.
