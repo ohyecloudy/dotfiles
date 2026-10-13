@@ -82,7 +82,7 @@ disable-model-invocation: true
 
 **프론티어(frontier)**를 표시한다: 블로커 없는 티켓 = 다운스트림 에이전트가 먼저 집을 티켓. 순수 선형 체인이면 위에서 아래로. 블로커는 status가 `done` 또는 `ready-for-human`이면 해제된 것으로 본다. (to-tickets는 여기서 멈춘다 - 구현은 픽업 에이전트 몫)
 
-발행 후 to-tickets는 멈춘다 - 구현은 시작하지 않는다. 파일은 커밋·스테이징하지 않고 생성만 하며(커밋은 사용자 몫), 발행한 경로 목록을 사용자에게 보고한다.
+발행 후 to-tickets는 멈춘다 - 구현은 시작하지 않는다. 파일은 커밋·스테이징하지 않고 생성만 하며(커밋은 사용자 몫), 발행한 티켓 목록을 7단계 형식으로 보고한다.
 
 <local-ticket-template>
 #+title: <NN>: <티켓 제목>
@@ -112,6 +112,28 @@ emacs -Q --batch --eval '(progn (require (quote org)) (setq org-adapt-indentatio
 ```
 
 emacs에서 파일을 열었다 저장한 것과 같은 상태로 만든다 - 헤딩 아래 본문이 별 개수 + 1칸으로 정렬된다. 여러 파일을 한 번에 넘길 수 있다. 이때 line ending도 실행 OS에 맞춘다(`set-buffer-file-coding-system` - Windows CRLF, 그 외 LF). 외부 모드 파일은 `~/project-docs/...` 절대경로로 넘긴다(`default-directory` 상대 처리와 무관하게 동작). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
+
+### 7. 티켓 목록 출력
+
+응답의 마지막 출력으로, 발행한 티켓 전부를 번호순으로 org 형식 코드 블록(```org)에 담아 출력한다. 각 티켓은 제목 bullet 아래에 파일 경로 하위 bullet 하나를 둔다. 경로는 항상 절대경로로 쓴다(emacs `ffap` 점프용).
+
+- 외부 모드: 홈 디렉터리를 `~`로 줄인다
+
+  ```org
+  - 01: <티켓 제목>
+    - ~/project-docs/<정규화 경로>/docs/specs/<feature-slug>/tickets/01-<slug>.org
+  - 02: <티켓 제목>
+    - ~/project-docs/<정규화 경로>/docs/specs/<feature-slug>/tickets/02-<slug>.org
+  ```
+
+- in-repo 모드: 저장소 루트 절대경로 뒤에 붙인다. 저장소가 홈 디렉터리 아래면 `~`로 줄이고, 아니면 그대로 쓴다(Windows는 `D:/...`처럼 슬래시 사용)
+
+  ```org
+  - 01: <티켓 제목>
+    - D:/work/my-repo/docs/specs/<feature-slug>/tickets/01-<slug>.org
+  - 02: <티켓 제목>
+    - D:/work/my-repo/docs/specs/<feature-slug>/tickets/02-<slug>.org
+  ```
 
 ## org 작성 규칙
 
