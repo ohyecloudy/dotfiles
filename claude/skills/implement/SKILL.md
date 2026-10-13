@@ -28,7 +28,7 @@ disable-model-invocation: true
 - 실패 항목은 `/tdd`로 수정한 뒤 재검증한다. **수정 재시도 상한: 1회** - 그 뒤에도 같은 항목이 실패하면 중단하고, 실패 항목과 원인을 보고한 뒤 사용자 판단을 기다린다.
 - 검증 불가 항목은 `- [ ]`로 둔다.
 
-모든 기준 검증이 끝나면 티켓 `#+status:`를 갱신한다(어휘 정본은 [to-tickets](../to-tickets/SKILL.md)의 "티켓 status").
+모든 기준 검증이 끝나면 티켓 drawer의 `:STATUS:` 줄을 갱신한다(`:STATUS_ALL:`은 그대로, 어휘 정본은 [to-tickets](../to-tickets/SKILL.md)의 "티켓 status").
 
 - 전부 `- [X]` → `done`
 - 검증 불가 항목이 남음 → `ready-for-human`
