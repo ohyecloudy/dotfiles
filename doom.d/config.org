@@ -2584,6 +2584,21 @@
        )
    #+end_src
 
+*** agent-shell viewport jump list
+
+   viewport 에서 =gF= 로 파일 이동 후 =C-o= 로 viewport 복귀되게 한다.
+
+   #+begin_src elisp :lexical t
+     (after! (better-jumper agent-shell)
+       (setq better-jumper--buffer-targets
+             (concat better-jumper--buffer-targets
+                     "\\|" (regexp-quote agent-shell-viewport--suffix) "\\'")))
+   #+end_src
+
+   - better-jumper 는 =buffer-file-name= 이 있거나 이름이 =better-jumper--buffer-targets= (기본 =*scratch*=, =*new*=)에 매칭되는 버퍼만 jump list에 기록
+   - viewport 버퍼(=... [viewport]=)는 파일 없는 버퍼라 =gF= 직전 위치가 기록 안 됨
+   - 내부 변수 =better-jumper--buffer-targets=, =agent-shell-viewport--suffix= 사용 - 패키지 업데이트 시 깨질 수 있음
+
 *** agent-shell embark
 
    파일 검색 중 =embark-act= 로 고른 파일을 agent-shell 로 전송.
