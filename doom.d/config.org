@@ -619,6 +619,25 @@
                    #'my/org-formatter-enforce nil t)))
    #+end_src
 
+** my-llm-usage
+
+   게이트웨이(LiteLLM) 사용시 LLM 키 예산 사용량(누적 사용액, 예산, 리셋까지 남은 일수)을 비동기로 가져오는 라이브러리. agent-shell 헤더 표시용.
+
+   - 게이트웨이(LiteLLM)는 사용액을 응답 헤더 =x-litellm-key-spend= 에만 담는데 Claude Code가 버림. 키 권한상 =/key/info= 도 막혀 있음
+   - 포털은 토큰을 쓰지 않는 GET 요청. 키는 =?key== 쿼리로만 받음(헤더 인증은 422)
+   - 키는 =ANTHROPIC_API_KEY=, 없으면 =ANTHROPIC_AUTH_TOKEN= 사용
+   - 포털 집계 주기가 약 1분이라 최소 60초 간격으로 조회
+
+   포털 URL은 auth-source에서 가져온다. 항목이 없으면 아무것도 하지 않음
+
+   #+begin_example
+     machine llm-usage login url password https://PORTAL_HOST/v1/usage/me
+   #+end_example
+
+   #+begin_src elisp :lexical t
+     (require 'my-llm-usage)
+   #+end_src
+
 * packages
 
 ** doom theme
