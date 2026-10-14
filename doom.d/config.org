@@ -2631,6 +2631,24 @@
         (setq agent-shell-anthropic-default-session-mode-id "auto"))
     #+end_src
 
+*** agent-shell workaround - viewport header not refreshed on config option change
+
+    초기화 때 모드를 설정하면 shell 버퍼 헤더만 갱신되고 viewport 헤더는 첫 턴이 끝날 때까지 =Manual= 로 남는 문제가 있음. =config-option-update= 이벤트에서 헤더를 다시 그려서 우회
+
+    - [[*agent-shell LLM budget indicator][agent-shell LLM budget indicator]] 의 =my/agent-shell-refresh-headers= 사용
+
+    #+begin_src elisp :lexical t
+      (after! agent-shell
+        (defun my/agent-shell-watch-config-options ()
+          "Redraw viewport headers when this shell's config options change."
+          (agent-shell-subscribe-to
+           :shell-buffer (current-buffer)
+           :event 'config-option-update
+           :on-event (lambda (_event) (my/agent-shell-refresh-headers))))
+
+        (add-hook 'agent-shell-mode-hook #'my/agent-shell-watch-config-options))
+    #+end_src
+
 *** agent-shell keybindings
 
    #+begin_src elisp :lexical t
