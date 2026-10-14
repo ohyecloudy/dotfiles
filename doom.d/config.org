@@ -2510,7 +2510,7 @@
 
    =claude-agent-acp= 가 =rate_limit_event= 를 =usage_update= 의 =_meta._claude/rateLimit= 로 전달하지만 agent-shell 은 이를 버림. =unifiedWindows= 에 모든 윈도우의 utilization(0-1)과 resetsAt(epoch 초)이 들어 있어서 이것만 저장. 계정 단위 값이라 전역 변수에 보관.
 
-   내부 함수 =agent-shell--update-usage-from-notification=, =agent-shell--cost-indicator= 에 advice - 패키지 업데이트 시 깨질 수 있음
+   내부 함수 =agent-shell--update-usage-from-notification= 에 advice - 패키지 업데이트 시 깨질 수 있음. 헤더 표시는 아래 [[*agent-shell LLM budget indicator][agent-shell LLM budget indicator]] 에서 예산 표시와 합쳐서 cost 지시자를 대체
 
    #+begin_src elisp :lexical t
      (after! agent-shell
@@ -2556,9 +2556,53 @@
                my/agent-shell-rate-limit-labels "\n")))))
 
        (advice-add 'agent-shell--update-usage-from-notification
-                   :after #'my/agent-shell-save-rate-limit)
+                   :after #'my/agent-shell-save-rate-limit))
+   #+end_src
+
+*** agent-shell LLM budget indicator
+
+   게이트웨이 키 예산 사용량을 헤더에 표시. 예) =$363.2/$500 (73%) 18d= - 누적 사용액/예산, 사용률, 리셋까지 남은 일수. 툴팁에 오늘 사용액, 리셋 시각, 포털 집계 시각
+
+   - 조회는 [[*my-llm-usage][my-llm-usage]] 담당. 셸 시작 시와 매 턴 종료(=turn-complete=) 시 갱신 요청, 실제 요청은 60초 throttle
+   - 게이트웨이 환경에서는 =_claude/rateLimit= 이 오지 않아 rate limit 표시가 비고, 구독 환경에서는 예산 표시가 빔. 값이 있는 것만 이어 붙임
+   - 응답이 오면 셸 버퍼와 viewport 버퍼 헤더를 모두 다시 그림
+   - 내부 함수 =agent-shell--cost-indicator=, =agent-shell--update-header-and-mode-line=, =agent-shell-viewport--update-header= 사용 - 패키지 업데이트 시 깨질 수 있음
+
+   #+begin_src elisp :lexical t
+     (after! agent-shell
+       (defun my/agent-shell-usage-indicator ()
+         "Join the rate limit and LLM budget indicators for the header, or nil."
+         (when-let* ((parts (delq nil (list (my/agent-shell-rate-limit-indicator)
+                                            (my/llm-usage-indicator
+                                             'agent-shell-secondary)))))
+           (string-join parts " ")))
+
+       (defun my/agent-shell-refresh-headers ()
+         "Redraw the header of every agent-shell and viewport buffer."
+         (dolist (buffer (buffer-list))
+           (with-current-buffer buffer
+             (condition-case err
+                 (cond
+                  ((derived-mode-p 'agent-shell-mode)
+                   (agent-shell--update-header-and-mode-line))
+                  ((derived-mode-p 'agent-shell-viewport-view-mode
+                                   'agent-shell-viewport-edit-mode)
+                   (agent-shell-viewport--update-header)))
+               (error (message "agent-shell header refresh failed in %s: %s"
+                               (buffer-name buffer) (error-message-string err)))))))
+
+       (defun my/agent-shell-watch-llm-usage ()
+         "Refresh LLM usage now and after every turn of this shell."
+         (my/llm-usage-refresh)
+         (agent-shell-subscribe-to
+          :shell-buffer (current-buffer)
+          :event 'turn-complete
+          :on-event (lambda (_event) (my/llm-usage-refresh))))
+
+       (add-hook 'my/llm-usage-updated-hook #'my/agent-shell-refresh-headers)
+       (add-hook 'agent-shell-mode-hook #'my/agent-shell-watch-llm-usage)
        (advice-add 'agent-shell--cost-indicator
-                   :override #'my/agent-shell-rate-limit-indicator))
+                   :override #'my/agent-shell-usage-indicator))
    #+end_src
 
 *** agent-shell context sources
