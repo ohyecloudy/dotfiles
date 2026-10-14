@@ -2895,26 +2895,61 @@
 
   버전 컨트롤하지 않고 로컬에만 담아둔 설정을 로드한다.
 
-* find or browse dotfiles
+* find, search, browse
 
-  =SPC f t=, =SPC f T= 로 dotfiles 디렉터리에서 find 하거나 browse 한다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
+** find or browse dotfiles
 
-  #+begin_src elisp :lexical t
-    (map! (:leader
+   =SPC f t=, =SPC f T= 로 dotfiles 디렉터리에서 find 하거나 browse 한다. [[https://github.com/hlissner/.doom.d/blob/master/config.el][hlissner/.doom.d/blob/master/config.el - github.com]] 에서 가져옴
+
+   #+begin_src elisp :lexical t
+     (map! (:leader
+            (:prefix "f"
+                     "t" #'find-in-dotfiles
+                     "T" #'browse-dotfiles)))
+
+     (defun find-in-dotfiles ()
+       "Open a file somewhere in ~/.dotfiles via a fuzzy filename search."
+       (interactive)
+       (doom-project-find-file (expand-file-name "~/.dotfiles")))
+
+     (defun browse-dotfiles ()
+       "Browse the files in ~/.dotfiles."
+       (interactive)
+       (doom-project-browse (expand-file-name "~/.dotfiles")))
+   #+end_src
+
+** find or search project-docs
+
+   =SPC f w= 로 =~/project-docs= 디렉터리에서 파일 이름을 찾고, =SPC s w= 로 파일 내용을 검색한다. =SPC f e= / =SPC s e= 처럼 대상 디렉터리가 같으면 마지막 키를 같게 맞춘 Doom 컨벤션을 따름. =w= 는 work docs.
+
+   #+begin_src elisp :lexical t
+     (defconst my/project-docs-dir (expand-file-name "~/project-docs")
+       "Root directory of project documents.")
+
+     (defun my/project-docs--ensure-dir ()
+       "Signal a `user-error' when `my/project-docs-dir' does not exist."
+       (unless (file-directory-p my/project-docs-dir)
+         (user-error "Directory not found: %s" my/project-docs-dir)))
+
+     (defun my/find-in-project-docs ()
+       "Open a file somewhere in `my/project-docs-dir' via a fuzzy filename search."
+       (interactive)
+       (my/project-docs--ensure-dir)
+       (doom-project-find-file my/project-docs-dir))
+
+     (defun my/search-project-docs ()
+       "Conduct a text search in files under `my/project-docs-dir'."
+       (interactive)
+       (my/project-docs--ensure-dir)
+       (let ((default-directory (file-name-as-directory my/project-docs-dir)))
+         (call-interactively #'+default/search-cwd)))
+
+     (map! :leader
            (:prefix "f"
-                    "t" #'find-in-dotfiles
-                    "T" #'browse-dotfiles)))
-
-    (defun find-in-dotfiles ()
-      "Open a file somewhere in ~/.dotfiles via a fuzzy filename search."
-      (interactive)
-      (doom-project-find-file (expand-file-name "~/.dotfiles")))
-
-    (defun browse-dotfiles ()
-      "Browse the files in ~/.dotfiles."
-      (interactive)
-      (doom-project-browse (expand-file-name "~/.dotfiles")))
-  #+end_src
+            :desc "Find file in project-docs" "w" #'my/find-in-project-docs)
+           (:prefix "s"
+            :desc "Search project-docs"       "w" #'my/search-project-docs))
+   #+end_src
 
 * encryption
 
