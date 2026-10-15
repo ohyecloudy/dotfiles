@@ -2932,6 +2932,20 @@
      npm i -g bash-language-server
    #+end_example
 
+** csharp
+
+   #+begin_src elisp :lexical t
+     (after! eglot
+       (add-to-list 'eglot-server-programs
+                    '((csharp-mode csharp-ts-mode) . ("csharp-ls"))))
+   #+end_src
+
+   eglot 기본값은 omnisharp를 먼저 시도하므로 csharp-ls로 고정. 설치는 아래 명령을 직접 실행
+
+   #+begin_example
+     dotnet tool install --global csharp-ls
+   #+end_example
+
 * windows coding system
 
   #+begin_src elisp
