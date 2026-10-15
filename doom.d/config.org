@@ -2656,6 +2656,42 @@
        )
    #+end_src
 
+*** agent-shell viewport UTF-8 check
+
+   compose 내용을 전송(=C-c C-c= 등) 전에 UTF-8로 온전히 인코딩되는지 검사. 실패하면 해당 문자로 이동하고 전송 중단
+
+   - 대상은 유니코드 범위(=max-char t=) 밖 문자. raw byte(=\352= 처럼 보이는 문자)도 여기 포함
+     + raw byte는 =utf-8= 이 에러 없이 바이트 그대로 써서 깨진 UTF-8이 됨. =unencodable-char-position= 으로는 못 잡음
+   - 모든 전송 경로(=-override=, prefix 인자 포함)가 =agent-shell-viewport-compose-send= 를 거쳐서 여기에 =:before= advice
+
+   #+begin_src elisp :lexical t
+     (after! agent-shell
+       (defun my/agent-shell-non-utf-8-position (beg end)
+         "Return the first position in BEG..END not encodable as valid UTF-8, or nil."
+         (save-excursion
+           (goto-char beg)
+           (catch 'found
+             (while (< (point) end)
+               (when (> (char-after) (max-char t))
+                 (throw 'found (point)))
+               (forward-char))
+             nil)))
+
+       (defun my/agent-shell-viewport-check-utf-8 (&rest _)
+         "Signal `user-error' at the first char of the compose buffer UTF-8 cannot encode."
+         (when-let* ((pos (my/agent-shell-non-utf-8-position (point-min) (point-max))))
+           (let ((ch (char-after pos)))
+             (goto-char pos)
+             (user-error "Cannot encode %s as UTF-8 at line %d"
+                         (if (eq (char-charset ch) 'eight-bit)
+                             (format "raw byte \\%o" (multibyte-char-to-unibyte ch))
+                           (format "char #x%X" ch))
+                         (line-number-at-pos pos)))))
+
+       (advice-add 'agent-shell-viewport-compose-send
+                   :before #'my/agent-shell-viewport-check-utf-8))
+   #+end_src
+
 *** agent-shell leader keybindings
 
    Doom =:tools llm= 모듈(gptel)의 =SPC o l= 바인딩을 참고해서 같은 키에 같은 역할의 agent-shell 명령 배치. =llm= 모듈은 =init.el= 에서 비활성화
