@@ -2938,7 +2938,8 @@
      (after! eglot
        (add-to-list 'eglot-server-programs
                     '((csharp-mode csharp-ts-mode)
-                      . ("roslyn-language-server" "--stdio" "--autoLoadProjects"))))
+                      . (my/eglot-roslyn
+                         "roslyn-language-server" "--stdio" "--autoLoadProjects"))))
    #+end_src
 
    VS Code C# 확장이 쓰는 Microsoft 공식 Roslyn 서버. 분석기(analyzer) 진단(IDE*, CA*)까지 제공해서 csharp-ls보다 진단이 풍부. eglot 기본값은 omnisharp를 먼저 시도하므로 직접 지정
@@ -2952,6 +2953,25 @@
    #+begin_example
      dotnet tool install --global roslyn-language-server --prerelease
    #+end_example
+
+*** file watcher 위임 끄기
+
+   #+begin_src elisp :lexical t
+     (after! eglot
+       (defclass my/eglot-roslyn (eglot-lsp-server) ()
+         :documentation "roslyn-language-server that watches files itself.")
+
+       (cl-defmethod eglot-client-capabilities :around ((_server my/eglot-roslyn))
+         (let ((caps (cl-call-next-method)))
+           (plist-put (plist-get caps :workspace)
+                      :didChangeWatchedFiles '(:dynamicRegistration :json-false))
+           caps)))
+   #+end_src
+
+   Roslyn은 =**/*= 같은 넓은 glob으로 =workspace/didChangeWatchedFiles= 를 등록. eglot은 이를 받으면 프로젝트 전체 하위 디렉토리를 동기로 열거하고 디렉토리마다 watch 추가 - 큰 프로젝트에서 =eglot-max-file-watches= (10000) 경고 후 Emacs 멈춤. Windows는 w32notify가 watch마다 스레드를 써서 더 심함
+
+   - client capability의 =dynamicRegistration= 을 끄면 Roslyn이 자체 watcher(.NET =FileSystemWatcher=)로 fallback (=LspFileChangeWatcher.TryCreate=)
+   - 서버 클래스(=my/eglot-roslyn=)를 따로 둬서 다른 서버(clangd 등)의 file watch는 그대로 유지. 위 =eglot-server-programs= 항목이 이 클래스를 사용
 
 *** csharp-ls (대체)
 
