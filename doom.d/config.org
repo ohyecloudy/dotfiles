@@ -1713,7 +1713,7 @@
 
     =org-roam-capture= 로 새 파일 노드를 만들면 오늘 daily note의 =Tasks= heading 밑에 =- 생성: [[id:..][제목]]= 을 기록한다. =org done task to daily= 의 ="T"= 템플릿과 stash 변수를 재사용한다. daily/weekly/monthly(재기록 루프, 주기 노트)와 secret(제목 평문 노출)은 제외한다.
 
-    =org-roam-capture-new-node-hook= 은 기존 파일 target에도 실행되므로 =:new-file= 로 신규 여부를 판별해 pending만 표시하고, 실제 기록은 =org-capture-after-finalize-hook= 에서 abort가 아닐 때만 한다. 중첩 capture가 =org-capture-plist= 를 덮어써 org-roam의 finalize(find-file/insert-link)를 깨뜨리지 않도록 =run-at-time= 으로 지연 실행한다. 제목은 capture 시점의 =${title}= 기준이다.
+    =org-roam-capture-new-node-hook= 은 기존 파일 target에도 실행되므로 =:new-file= 로 신규 여부를 판별해 pending만 표시하고, 실제 기록은 =org-capture-after-finalize-hook= 에서 abort가 아닐 때만 한다. 중첩 capture가 =org-capture-plist= 를 덮어써 org-roam의 finalize(find-file/insert-link)를 깨뜨리지 않도록 =run-at-time= 으로 지연 실행한다. 제목은 capture 시점의 =${title}= 기준이며, 제목이 =nil= 이거나 공백뿐인 노드(daily가 새로 만들어질 때 등)는 기록하지 않는다.
 
     #+begin_src elisp :lexical t
       (defvar my/org-new-node-pending nil
@@ -1726,8 +1726,10 @@
       (defun my/org-new-node-mark-pending ()
         "Remember the node being captured when it lives in a brand-new file.
       Runs from `org-roam-capture-new-node-hook'."
-        (let ((new-file (org-roam-capture--get :new-file)))
+        (let ((new-file (org-roam-capture--get :new-file))
+              (title (org-roam-node-title org-roam-capture--node)))
           (when (and new-file
+                     (org-string-nw-p title)
                      (not (seq-some
                            (lambda (dir)
                              (string-prefix-p
@@ -1735,8 +1737,7 @@
                               (file-truename new-file)))
                            my/org-new-node-excluded-dirs)))
             (setq my/org-new-node-pending
-                  (cons (org-roam-node-id org-roam-capture--node)
-                        (org-roam-node-title org-roam-capture--node))))))
+                  (cons (org-roam-node-id org-roam-capture--node) title)))))
 
       (defun my/org-new-node-log-to-today ()
         "Log the pending new node into today's daily `Tasks' unless aborted.
