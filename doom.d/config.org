@@ -2132,16 +2132,6 @@
    참고: [[https://emacs-lsp.github.io/lsp-mode/page/lsp-pwsh/][Powershell - LSP Mode - LSP support for Emacs - emacs-lsp.github.io]]
 
    #+begin_src elisp
-     (when IS-WINDOWS
-       (after! lsp-mode
-         (setq lsp-csharp-omnisharp-roslyn-download-url
-               (concat "https://github.com/omnisharp/omnisharp-roslyn/releases/latest/download/"
-                       "omnisharp-win-x64-net6.0.zip"))))
-   #+end_src
-
-   windows에서는 =omnisharp-win-x64.zip= 파일을 다운로드 받고 있어서 직접 지정
-
-   #+begin_src elisp
      (after! lsp-mode
        (setq lsp-elixir-ls-version "v0.23.0")
        (setq lsp-elixir-ls-download-url
