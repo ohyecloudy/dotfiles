@@ -2671,7 +2671,7 @@
    Doom =:tools llm= 모듈(gptel)의 =SPC o l= 바인딩을 참고해서 같은 키에 같은 역할의 agent-shell 명령 배치. =llm= 모듈은 =init.el= 에서 비활성화
 
    - =a= - =gptel-add= 대응. region, 에러, 현재 파일을 프롬프트에 삽입 (제출은 안 함)
-   - =s= - =gptel-send= 대응. 프롬프트 작성 후 전송
+   - =r= - 같은 프로젝트에서 셸을 재시작해 대화 초기화. 셸/viewport 버퍼에서 호출
    - =t= - 소스 버퍼에서 셸 창을 닫거나 다시 띄움. =l= 은 셸 밖에서 호출 시 포커스 이동
    - =A= - =a= 의 셸 선택 버전. 전용 명령이 없어서 =agent-shell-send-dwim= 의 =C-u C-u= 동작을 래핑
 
@@ -2692,7 +2692,7 @@
             :desc "Open agent-shell"              "l" #'agent-shell
             :desc "New shell"                     "L" #'agent-shell-new-shell
             :desc "Menu"                          "m" #'agent-shell-help-menu
-            :desc "Compose prompt"                "s" #'agent-shell-prompt-compose
+            :desc "Restart shell"                 "r" #'agent-shell-restart
             :desc "Toggle"                        "t" #'agent-shell-toggle))
    #+end_src
 
