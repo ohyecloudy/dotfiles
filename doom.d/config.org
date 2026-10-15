@@ -2937,10 +2937,31 @@
    #+begin_src elisp :lexical t
      (after! eglot
        (add-to-list 'eglot-server-programs
+                    '((csharp-mode csharp-ts-mode)
+                      . ("roslyn-language-server" "--stdio" "--autoLoadProjects"))))
+   #+end_src
+
+   VS Code C# 확장이 쓰는 Microsoft 공식 Roslyn 서버. 분석기(analyzer) 진단(IDE*, CA*)까지 제공해서 csharp-ls보다 진단이 풍부. eglot 기본값은 omnisharp를 먼저 시도하므로 직접 지정
+
+   - =--autoLoadProjects= : 루트의 =.sln= / =.slnx= 또는 =.csproj= 를 자동 로드. 없으면 프로젝트를 안 열어서 정의 이동 등이 동작 안 함
+   - 진단은 pull 방식(=textDocument/diagnostic=)만 지원. Emacs 30.2 내장 eglot 1.17에서는 진단이 안 보이고, Doom이 설치하는 eglot 1.23에서는 정상 동작
+   - .NET 10 런타임 필요, prerelease로만 배포
+
+   설치는 아래 명령을 직접 실행
+
+   #+begin_example
+     dotnet tool install --global roslyn-language-server --prerelease
+   #+end_example
+
+*** csharp-ls (대체)
+
+   #+begin_src elisp :lexical t :tangle no
+     (after! eglot
+       (add-to-list 'eglot-server-programs
                     '((csharp-mode csharp-ts-mode) . ("csharp-ls"))))
    #+end_src
 
-   eglot 기본값은 omnisharp를 먼저 시도하므로 csharp-ls로 고정. 설치는 아래 명령을 직접 실행
+   roslyn-language-server에 문제가 있을 때 쓰는 정식 릴리스 서버. 시험할 때는 블록에서 =C-c C-c= 로 평가 후 C# 버퍼에서 =M-x eglot-reconnect=
 
    #+begin_example
      dotnet tool install --global csharp-ls
