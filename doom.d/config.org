@@ -2613,6 +2613,30 @@
                 '(files region error my/agent-shell-current-file-context)))
     #+end_src
 
+*** agent-shell workaround - slash command ignored with attached files
+
+    @파일 첨부가 있으면 첫 줄 =/skill= 이 스킬로 인식 안 되는 문제 우회
+
+    - agent-shell 이 @mention 기준으로 프롬프트를 text/resource 블록 여러 개로 쪼갬
+    - claude-agent-acp 는 resource 내용을 =<context>= text 블록으로 맨 뒤에 붙임
+    - Claude Code CLI 는 마지막 text 블록만 슬래시 커맨드 후보로 봄 → 첫 블록의 =/skill= 무시
+    - =/= 로 시작하는 프롬프트는 단일 text 블록으로 보내서 우회. @mention 은 CLI 가 직접 해석
+      + 첨부 파일 목록 표시(=agent-shell--display-attached-files=)는 생략됨
+    - 내부 함수 =agent-shell--build-content-blocks= 에 advice - 패키지 업데이트 시 깨질 수 있음
+
+    #+begin_src elisp :lexical t
+      (after! agent-shell
+        (defun my/agent-shell-slash-command-as-single-block (orig-fn prompt)
+          "Send PROMPT as one text block when it is a slash command, else call ORIG-FN."
+          (if (string-prefix-p "/" (string-trim-left prompt))
+              (list `((type . "text")
+                      (text . ,(substring-no-properties prompt))))
+            (funcall orig-fn prompt)))
+
+        (advice-add 'agent-shell--build-content-blocks
+                    :around #'my/agent-shell-slash-command-as-single-block))
+    #+end_src
+
 *** agent-shell defaults
 
     session mode 기본 값을 변경
