@@ -11,7 +11,7 @@
 - em dash(U+2014) 금지. 대신 하이픈(-) 사용
 - 긴 코드 블록 대신 diff 형태로 변경점만 표시
 - 불확실한 부분은 추측하지 말고 먼저 물어볼 것
-- 코드 위치는 절대 경로 + 라인 번호로 표시 (emacs `ffap`/compilation-mode 점프용)
+- 코드 위치는 절대 경로 + 라인 번호로 표시 (emacs evil `gF`/compilation-mode 점프용)
   - 예) `foo.cpp:42` (X) → `/home/user/project/src/foo.cpp:42` (O)
 
 ## Git

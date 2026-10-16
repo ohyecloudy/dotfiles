@@ -40,7 +40,7 @@ disable-model-invocation: true
 
 ### 2. 후보를 org 리포트로 제시
 
-저장소에 아무것도 남지 않도록 저장소 밖 `~/architecture-review/YYYY-MM-DD-HHMM-<repo>.org`에 쓴다(`<repo>` = 저장소 디렉터리 이름). 디렉터리가 없으면 만든다. 파일을 자동으로 열지 않고 절대경로만 알려준다(emacs `ffap`로 점프).
+저장소에 아무것도 남지 않도록 저장소 밖 `~/architecture-review/YYYY-MM-DD-HHMM-<repo>.org`에 쓴다(`<repo>` = 저장소 디렉터리 이름). 디렉터리가 없으면 만든다. 파일을 자동으로 열지 않고 절대경로만 알려준다(emacs evil `gF` 로 점프).
 
 각 후보에 **before/after 다이어그램**을 org mermaid 블록(`#+begin_src mermaid :file ... :width "2048"`)으로 넣는다. 후보에 맞는 패턴(콜 플로우, 왕복 시퀀스, 단면도, 질량 다이어그램, 콜 그래프 붕괴)을 골라 섞는다. 시각적으로 만들 것.
 
