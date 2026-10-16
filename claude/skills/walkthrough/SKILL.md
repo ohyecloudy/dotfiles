@@ -155,7 +155,9 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
 ### 5. 포매팅
 
-쓴 뒤 emacs로 org 들여쓰기를 정렬한다(emacs에서 열었다 저장한 것과 같은 상태). 여러 파일을 한 번에 넘길 수 있다. 이때 line ending도 실행 OS에 맞춘다(`set-buffer-file-coding-system` - Windows CRLF, 그 외 LF). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
+먼저 [code-locations.md](../shared/code-locations.md)의 검사를 생성한 .org 파일에 실행하고, 출력이 없을 때까지 위반을 고친다.
+
+그다음 emacs로 org 들여쓰기를 정렬한다(emacs에서 열었다 저장한 것과 같은 상태). 여러 파일을 한 번에 넘길 수 있다. 이때 line ending도 실행 OS에 맞춘다(`set-buffer-file-coding-system` - Windows CRLF, 그 외 LF). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
 
 ```bash
 emacs -Q --batch --eval '(progn (require (quote org)) (setq make-backup-files nil) (setq org-adapt-indentation t) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (set-buffer-file-coding-system (if (memq system-type (quote (windows-nt ms-dos))) (quote utf-8-dos) (quote utf-8-unix))) (save-buffer))))' <생성한 .org 파일들>
@@ -202,9 +204,7 @@ emacs -Q --batch --eval '(progn (require (quote org)) (setq make-backup-files ni
 
 ### org 표기
 
-- **코드 위치는 어디에 쓰든 `/abs/path/foo.ts:42`**(절대 경로 + 단일 라인). emacs `ffap`/compilation-mode 점프용.
-  - 금지: 상대경로(`foo.ts:42`), 라인 범위(`:42-50`), verbatim으로 감싸기(점프가 막힌다).
-  - 산문에 인라인해도 된다 - 형식만 맞으면 문장 중간에서도 점프된다.
+- **코드 위치는 [code-locations.md](../shared/code-locations.md)를 따른다** - 어디에 쓰든 `/abs/path/foo.ts:42`, 같은 파일 반복도 전체 경로, 경로는 verbatim 금지.
 - **한 항목 = 한 bullet = 물리적으로 한 줄.** 문장 중간 하드 줄바꿈 금지(길어도 한 줄, 표시는 emacs soft-wrap).
 - **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
 - **verbatim 뒤에 한글 조사를 붙이지 않는다.** `=Foo=에`는 org가 마크업으로 인식하지 못해 export에서 깨진다. 조사가 안 붙게 문장을 쓰고, 부득이하면 한 칸 띄운다.

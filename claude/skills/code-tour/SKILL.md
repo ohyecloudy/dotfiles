@@ -62,7 +62,7 @@ disable-model-invocation: true
 각 단계 = `먼저 읽을 것` → `코드` → `설계 포인트` → `언어·프레임워크 포인트` → `확인 질문`. 해당 없는 하위 섹션은 생략(확인 질문은 생략 불가). `0단계 전제`는 예외 - 설명만 두고 확인 질문을 만들지 않는다. 언어·프레임워크 일반 지식이라 이 코드로 답이 하나로 정해지지 않고, 이해 여부는 이후 단계 질문에서 드러난다.
 
 - **먼저 읽을 것**: 이 단계 전에 읽을 ADR·spec·CONTEXT 절. 절대 경로로.
-- **코드**: 읽을 순서대로 번호 매긴 `절대경로:라인 =심볼= - <왜 여기>`. 선언부 → 진입 함수 → 핵심 함수 순.
+- **코드**: 읽을 순서대로 번호 매긴 `절대경로:라인 =심볼= - <왜 여기>`. 선언부 → 진입 함수 → 핵심 함수 순. 같은 파일의 여러 위치는 그 항목 아래 하위 bullet로 펼치고 각 줄에 전체 경로를 쓴다([code-locations.md](../shared/code-locations.md)).
 - **설계 포인트**: 코드에 박힌 결정과 그 이유. 주석·ADR에 근거가 있는 것만. `*굵게*` 한 구절 + 설명.
 - **언어·프레임워크 포인트**: 언어는 주력 언어(버전 포함)에 **직접 대응이 없거나 의미가 다른 것만** - 주력 언어에도 똑같이 있는 문법은 소음이다. 각 항목에 주력 언어의 가장 가까운 개념을 `≈` 로 붙인다. 프레임워크는 §1 숙련도별 분량을 따른다. 모든 항목에 이 코드의 실제 등장 위치 하나를 단다.
 - **확인 질문**: §5
@@ -107,7 +107,7 @@ disable-model-invocation: true
 * TODO 사용법
 
   - 단계를 순서대로 진행. 각 단계는 "먼저 읽을 것 → 코드 → 설계 포인트 → 언어·프레임워크 포인트 → 확인 질문"
-  - 경로는 절대 경로 + 라인 번호 - emacs =M-x ffap= 로 점프
+  - 경로는 절대 경로 + 라인 번호 - emacs evil =gF= 로 점프
   - 라인 번호는 커밋 =<sha>= 기준. 어긋나면 함께 적힌 심볼 이름으로 검색
   - 확인 질문 heading 아래 답을 쓰고, 그 영역을 선택해 =/code-tour= 로 검증
   - 막히면 해당 영역의 단위 테스트 - 테스트 이름이 곧 규칙 목록
@@ -128,7 +128,7 @@ disable-model-invocation: true
 
 ** 디렉터리와 타깃
 
-   - =/abs/path/dir/= - <역할>
+   - /abs/path/dir/ - <역할>
 
 * TODO 0단계: 읽기 전 전제 - <대상 언어>, <숙련도 낮은 프레임워크>
 
@@ -195,7 +195,7 @@ disable-model-invocation: true
 
 ### 2. 정답 재도출
 
-- 문서에 정답이 없으므로 **지금 코드(working tree)에서** 다시 도출한다 - 사용자도 `ffap`으로 지금 파일을 열어 읽고 답을 쓴다. 질문·단서·답이 가리키는 위치를 실제로 열어 확인한다 - 답이 그럴듯해 보인다는 이유로 판정하지 않는다.
+- 문서에 정답이 없으므로 **지금 코드(working tree)에서** 다시 도출한다 - 사용자도 `gF` 로 지금 파일을 열어 읽고 답을 쓴다. 질문·단서·답이 가리키는 위치를 실제로 열어 확인한다 - 답이 그럴듯해 보인다는 이유로 판정하지 않는다.
 - `사용법`의 기준 커밋과 `git rev-parse --short HEAD`가 다르면 검토에 그 사실을 적는다(라인·동작이 바뀌었을 수 있다).
 - 질문의 전제(가리키는 심볼·테스트)가 지금 코드에 없으면 판정을 `전제 변경`으로 하고 무엇이 사라졌는지만 적는다. 질문을 고치거나 재출제하지 않는다 - 문서 재생성은 사용자 몫.
 
@@ -229,10 +229,8 @@ disable-model-invocation: true
 
 ## org 표기
 
-- **코드 위치는 어디에 쓰든 `/abs/path/foo.ts:42`**(절대 경로 + 단일 라인). emacs `ffap`/compilation-mode 점프용.
-  - 예외: 반사실 질문 단서는 라인 없는 파일 경로(§5). `ffap`으로 파일까지는 점프된다.
-  - 금지: 상대경로(`foo.ts:42`), 라인 범위(`:42-50`), verbatim으로 감싸기(점프가 막힌다).
-  - 산문에 인라인해도 된다 - 형식만 맞으면 문장 중간에서도 점프된다.
+- **코드 위치는 [code-locations.md](../shared/code-locations.md)를 따른다** - 어디에 쓰든 `/abs/path/foo.ts:42`, 같은 파일 반복도 전체 경로, 경로는 verbatim 금지.
+  - 예외: 반사실 질문 단서는 라인 없는 파일 경로(§5). `gF` 로 파일까지는 열린다.
 - **한 항목 = 한 bullet = 물리적으로 한 줄.** 문장 중간 하드 줄바꿈 금지(길어도 한 줄, 표시는 emacs soft-wrap).
 - **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
 - **verbatim 뒤에 한글 조사를 붙이지 않는다.** `=Foo=에`는 org가 마크업으로 인식하지 못해 export에서 깨진다. 조사가 안 붙게 문장을 쓰고, 부득이하면 한 칸 띄운다.
@@ -243,7 +241,9 @@ disable-model-invocation: true
 
 ## 포매팅
 
-쓴 뒤 emacs로 org 들여쓰기를 정렬한다(emacs에서 열었다 저장한 것과 같은 상태). 여러 파일을 한 번에 넘길 수 있다. 이때 line ending도 실행 OS에 맞춘다(`set-buffer-file-coding-system` - Windows CRLF, 그 외 LF). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
+먼저 [code-locations.md](../shared/code-locations.md)의 검사를 생성·수정한 .org 파일에 실행하고, 출력이 없을 때까지 위반을 고친다.
+
+그다음 emacs로 org 들여쓰기를 정렬한다(emacs에서 열었다 저장한 것과 같은 상태). 여러 파일을 한 번에 넘길 수 있다. 이때 line ending도 실행 OS에 맞춘다(`set-buffer-file-coding-system` - Windows CRLF, 그 외 LF). emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
 
 ```bash
 emacs -Q --batch --eval '(progn (require (quote org)) (setq make-backup-files nil) (setq org-adapt-indentation t) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (set-buffer-file-coding-system (if (memq system-type (quote (windows-nt ms-dos))) (quote utf-8-dos) (quote utf-8-unix))) (save-buffer))))' <생성·수정한 .org 파일들>
