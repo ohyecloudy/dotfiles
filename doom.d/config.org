@@ -2082,6 +2082,23 @@
     - =gf= (=+lookup/file=)는 내부에서 =better-jumper-set-jump=를 호출해 점프를 기록
     - =gF= 는 어디서도 기록하지 않아 jump list에 안 남는다
 
+*** MSYS 경로 (windows)
+
+    #+begin_src elisp :lexical t
+      (when (eq system-type 'windows-nt)
+        (defun my/ffap-msys-path-to-windows (string)
+          "Convert MSYS-style path like /e/foo to e:/foo."
+          (if (and (stringp string)
+                   (string-match "\\`/\\([a-zA-Z]\\)/" string))
+              (replace-match "\\1:/" t nil string)
+            string))
+        (advice-add 'ffap-string-at-point :filter-return #'my/ffap-msys-path-to-windows))
+    #+end_src
+
+    - Git Bash 기반 도구(Claude Code 등)가 =/e/ue/foo.cpp:42= 처럼 MSYS 경로를 출력
+    - Windows Emacs 는 =/e/...= 를 현재 드라이브 기준 =C:/e/...= 로 해석해 =gF= 가 "File does not exist." 로 실패
+    - =ffap-file-at-point= 가 존재 검사 전에 호출하는 =ffap-string-at-point= 결과만 변환 - =ffap-string-at-point-region= 은 그대로라 =:42= 줄 번호 파싱 유지
+
 ** evil-snipe
 
    한글도 f/t로 찾을 수 있게 한다.
