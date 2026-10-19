@@ -2099,6 +2099,27 @@
     - Windows Emacs 는 =/e/...= 를 현재 드라이브 기준 =C:/e/...= 로 해석해 =gF= 가 "File does not exist." 로 실패
     - =ffap-file-at-point= 가 존재 검사 전에 호출하는 =ffap-string-at-point= 결과만 변환 - =ffap-string-at-point-region= 은 그대로라 =:42= 줄 번호 파싱 유지
 
+*** 줄 번호 뒤 한글 조사
+
+    #+begin_src elisp :lexical t
+      (defun my/ffap-strip-non-ascii-after-line-number (string)
+        "Strip non-ASCII suffix like 에서 from path:42에서 and shrink the region."
+        (if (and (stringp string)
+                 (string-match ":[0-9]+\\(?::[0-9]+\\)?\\([^[:ascii:]]+\\)\\'" string))
+            (let ((suffix-length (- (match-end 1) (match-beginning 1))))
+              (when (consp (cdr ffap-string-at-point-region))
+                (setcar (cdr ffap-string-at-point-region)
+                        (- (cadr ffap-string-at-point-region) suffix-length)))
+              (substring string 0 (match-beginning 1)))
+          string))
+      (advice-add 'ffap-string-at-point :filter-return #'my/ffap-strip-non-ascii-after-line-number)
+    #+end_src
+
+    - Claude Code 가 =foo.swift:40에서= 처럼 줄 번호 뒤에 한글 조사를 붙여 출력
+    - ffap 파일명 문자 집합에 =[:alpha:]= 가 있어 한글까지 경로로 포함 - 영역 끝이 =에서= 뒤
+    - =gF= 는 영역 끝 바로 앞의 =:숫자= 만 줄 번호로 인식해 파일만 열고 줄 이동 실패
+    - 줄 번호 뒤 비ASCII 접미사를 문자열과 =ffap-string-at-point-region= 양쪽에서 제거
+
 ** evil-snipe
 
    한글도 f/t로 찾을 수 있게 한다.
