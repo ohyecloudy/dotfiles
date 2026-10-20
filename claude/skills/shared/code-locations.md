@@ -15,7 +15,7 @@
   - target에 `[`, `]`가 있으면 `\`로 escape.
 - **같은 파일이 반복돼도 매번 전체 target.** description만 짧다.
 - **링크를 verbatim으로 감싸지 않는다.** `=...=` 안에서는 링크가 아니게 된다.
-- **라인 없는 파일 링크 금지.** 호출 스킬이 명시한 예외만 허용(예: code-tour 반사실 질문 단서 - `[[file:/abs/path/FooTests.swift][FooTests.swift]]`).
+- **라인 없는 파일 링크 금지.** 호출 스킬이 명시한 예외만 허용(예: code-tour 반사실 질문의 힌트 1 - `[[file:/abs/path/FooTests.swift][FooTests.swift]]`).
 - 산문에 인라인해도 된다.
 - 링크가 아닌 것: babel 헤더 인자(mermaid `:file` 등).
 
@@ -57,7 +57,7 @@ done
 - 첫 줄: 링크를 지운 뒤 남은 위치 - 라인만 축약, verbatim 경로, 맨 경로, 파일명만. `sed`는 라인 단위라 라인 번호가 보존된다.
 - 둘째 줄: verbatim 링크, 링크 target - 단일 콜론 라인, 라인 범위, MSYS 경로, 상대 경로.
 - verbatim 경로 패턴은 슬래시 2개 이상을 요구한다 - `=/code-tour=` 같은 slash command 오탐 회피.
-- 라인 없는 링크는 잡지 않는다(예외 단서·디렉터리와 구분이 어렵다). 위 규칙으로 직접 지킨다.
+- 라인 없는 링크는 잡지 않는다(예외 힌트·디렉터리와 구분이 어렵다). 위 규칙으로 직접 지킨다.
 
 ## 그 밖(채팅, JSON)
 
