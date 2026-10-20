@@ -638,6 +638,26 @@
      (require 'my-llm-usage)
    #+end_src
 
+** my-rider
+
+   =M-x my/open-in-rider= 로 보고 있는 파일을 커서 위치(줄/컬럼) 그대로 Rider에서 연다. 키바인딩 없이 직접 호출한다.
+
+   - 파일 디렉터리부터 상위로 올라가며 처음 만나는 디렉터리의 프로젝트 파일 사용. 우선순위 =.uproject= > =.slnx= > =.sln=
+   - 같은 확장자 후보가 여러 개면 선택. 디렉터리 이름과 같은 파일이 기본값
+   - 프로젝트가 이미 열려 있으면 파일만 열리는 동작은 Rider 런처(단일 인스턴스)에 위임
+   - 프로젝트를 못 찾으면 파일만 연다(LightEdit)
+   - 수정된 버퍼는 자동 저장 후 넘긴다. Rider는 Emacs와 분리된 프로세스로 실행
+
+   Rider 경로는 =C:/Program Files/JetBrains/JetBrains Rider */bin/rider64.exe= 중 최신 버전을 자동으로 고른다. 다른 경로를 쓰려면 =config.local.el= 에서 덮어쓴다.
+
+   #+begin_src elisp :lexical t :tangle no
+     (setq my/rider-executable "D:/tools/Rider/bin/rider64.exe")
+   #+end_src
+
+   #+begin_src elisp :lexical t
+     (require 'my-rider)
+   #+end_src
+
 * packages
 
 ** doom theme
