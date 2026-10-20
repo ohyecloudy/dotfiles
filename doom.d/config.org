@@ -3035,6 +3035,18 @@
 
 * LSP
 
+** gD 참조 찾기 복원
+
+   #+begin_src elisp :lexical t
+     (after! evil-collection
+       (add-to-list 'evil-collection-key-blacklist "gD"))
+   #+end_src
+
+   eglot 버퍼에서 =gD= 가 참조 찾기(=+lookup/references=)가 아니라 =xref-find-definitions-other-window= 로 동작. evil-collection-eglot이 =eglot-mode-map= normal state에 =gD= 를 바인딩해서 Doom 바인딩을 덮어씀
+
+   - Doom은 =gd= / =gf= / =K= 만 evil-collection blacklist에 넣고 =gD= 는 빠뜨림
+   - blacklist는 =evil-collection-eglot-setup= 이 키를 정의할 때 확인하므로 eglot 로드 전에만 추가되면 됨
+
 ** bash
 
    #+begin_src elisp :lexical t
