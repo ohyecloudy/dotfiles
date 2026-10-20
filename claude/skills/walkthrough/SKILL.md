@@ -66,6 +66,8 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 | 사람 판단 필요 | `basis: inferred` + 세션 컨텍스트 |
 | 다루지 않은 변경 | `omitted` |
 
+코어 결과의 경로는 맨 경로 - 문서에 옮길 때 org 링크로 바꾼다([code-locations.md](../shared/code-locations.md)).
+
 ```org
 #+title: Walkthrough - <한 줄 제목>
 
@@ -81,7 +83,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
   - 요지: <이 변경의 구조적 정체 한 줄>
 
   - <축>: <전> → <후>
-    /abs/path/foo.ts:40
+    [[file:/abs/path/foo.ts::40][foo.ts:40]]
 
 ** ADR                                      ← 관련 ADR 없으면 섹션 생략
 
@@ -108,26 +110,26 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
    - 왜 여기 필요했나: <한 줄>
    - 대안: <한 줄>
    - 주의점: <한 줄>
-   - 등장 위치: /abs/path/foo.ts:40
+   - 등장 위치: [[file:/abs/path/foo.ts::40][foo.ts:40]]
 
 ** <개념명>                                 ← reason: reader-unfamiliar
 
    - 무엇: <한 줄>
    - 독자가 아는 것으로는: <주력 언어·버전에서 같은 일을 하던 방식 | 해당 없음>
    - 주의점: <한 줄>
-   - 등장 위치: /abs/path/foo.ts:40
+   - 등장 위치: [[file:/abs/path/foo.ts::40][foo.ts:40]]
 
 * 읽는 순서
 
-  1. /abs/path/foo.ts:12 - <왜 여기부터>
-  2. /abs/path/bar.ts:88 - <왜 그다음>
+  1. [[file:/abs/path/foo.ts::12][foo.ts:12]] - <왜 여기부터>
+  2. [[file:/abs/path/bar.ts::88][bar.ts:88]] - <왜 그다음>
 
 * 워크스루
 
 ** <논리 단위 제목>
 
    - <설명 한 줄>
-   /abs/path/foo.ts:40
+   [[file:/abs/path/foo.ts::40][foo.ts:40]]
    #+begin_src ts
    <근거 라인만>
    #+end_src
@@ -136,7 +138,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 ** <논리 단위 제목>                        ← 기존 코드를 고친 경우: evidence.before가 있으면 diff
 
    - <설명 한 줄>
-   /abs/path/bar.ts:88
+   [[file:/abs/path/bar.ts::88][bar.ts:88]]
    #+begin_src diff
    -<이전 라인>
    +<이후 라인>
@@ -145,7 +147,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
 * 사람 판단 필요
 
-  - <결정> - 근거: <…>, 대안: <…> → /abs/path/foo.ts:40
+  - <결정> - 근거: <…>, 대안: <…> → [[file:/abs/path/foo.ts::40][foo.ts:40]]
                                               ← 없으면 "없음" 한 줄
 
 * 다루지 않은 변경
@@ -204,7 +206,7 @@ emacs -Q --batch --eval '(progn (require (quote org)) (setq make-backup-files ni
 
 ### org 표기
 
-- **코드 위치는 [code-locations.md](../shared/code-locations.md)를 따른다** - 어디에 쓰든 `/abs/path/foo.ts:42`, 같은 파일 반복도 전체 경로, 경로는 verbatim 금지.
+- **코드 위치는 [code-locations.md](../shared/code-locations.md)의 org 규칙을 따른다** - 어디에 쓰든 `[[file:/abs/path/foo.ts::42][foo.ts:42]]`, 같은 파일 반복도 전체 target, 링크는 verbatim 금지. 채팅 보고의 경로는 맨 경로.
 - **한 항목 = 한 bullet = 물리적으로 한 줄.** 문장 중간 하드 줄바꿈 금지(길어도 한 줄, 표시는 emacs soft-wrap).
 - **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
 - **verbatim 뒤에 한글 조사를 붙이지 않는다.** `=Foo=에`는 org가 마크업으로 인식하지 못해 export에서 깨진다. 조사가 안 붙게 문장을 쓰고, 부득이하면 한 칸 띄운다.
