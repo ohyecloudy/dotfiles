@@ -3103,6 +3103,55 @@
    - client capability의 =dynamicRegistration= 을 끄면 Roslyn이 자체 watcher(.NET =FileSystemWatcher=)로 fallback (=LspFileChangeWatcher.TryCreate=)
    - 서버 클래스(=my/eglot-roslyn=)를 따로 둬서 다른 서버(clangd 등)의 file watch는 그대로 유지. 위 =eglot-server-programs= 항목이 이 클래스를 사용
 
+*** 호출 계층 / 타입 계층
+
+   #+begin_src elisp :lexical t
+     (map! :leader
+           (:prefix "c"
+            :desc "Call hierarchy" "y" #'eglot-show-call-hierarchy
+            :desc "Type hierarchy" "Y" #'eglot-show-type-hierarchy))
+   #+end_src
+
+   =SPC c D= (참조 목록)와 달리 호출 관계를 트리로 탐색. 키는 Doom lsp-mode + treemacs의 call hierarchy 바인딩(=SPC c y=)을 따름
+
+   - call hierarchy: 이 메서드를 호출하는 쪽(incoming) / 이 메서드가 호출하는 쪽(outgoing)
+   - type hierarchy: 상위 타입(supertypes) / 하위 타입(subtypes)
+   - eglot 1.18+ 명령. 서버가 해당 capability를 지원하지 않으면 에러
+
+*** 인레이 힌트
+
+   #+begin_src elisp :lexical t
+     (setq-default eglot-workspace-configuration
+                   '(;; parameter names at call sites (master switch + per-argument kinds)
+                     :csharp|inlay_hints.dotnet_enable_inlay_hints_for_parameters t
+                     :csharp|inlay_hints.dotnet_enable_inlay_hints_for_literal_parameters t
+                     :csharp|inlay_hints.dotnet_enable_inlay_hints_for_indexer_parameters t
+                     :csharp|inlay_hints.dotnet_enable_inlay_hints_for_object_creation_parameters t
+                     :csharp|inlay_hints.dotnet_enable_inlay_hints_for_other_parameters t
+                     ;; inferred types
+                     :csharp|inlay_hints.csharp_enable_inlay_hints_for_types t
+                     :csharp|inlay_hints.csharp_enable_inlay_hints_for_implicit_variable_types t
+                     :csharp|inlay_hints.csharp_enable_inlay_hints_for_lambda_parameter_types t
+                     :csharp|inlay_hints.csharp_enable_inlay_hints_for_implicit_object_creation t
+                     :csharp|inlay_hints.csharp_enable_inlay_hints_for_collection_expressions t))
+   #+end_src
+
+   Roslyn은 인레이 힌트(인수 이름, 추론 타입)를 기본으로 보내지 않음. =workspace/configuration= 요청으로 옵션을 물어볼 때 켜진 값을 응답해야 함
+
+   - 인수 이름: =dotnet_enable_inlay_hints_for_parameters= 가 전체 스위치, 나머지는 인수 종류별
+     - literal: =Foo(true, 3)= 같은 리터럴 인수
+     - indexer: =list[0]= 같은 인덱서 인수
+     - object_creation: =new Foo(...)= 생성자 인수
+     - other: 위에 해당하지 않는 인수(변수, 식 등)
+   - 추론 타입
+     - types / implicit_variable_types: =var x= 의 추론 타입
+     - lambda_parameter_types: =(x, y) => ...= 람다 매개변수 타입
+     - implicit_object_creation: =Foo f = new()= 의 생략된 타입
+     - collection_expressions: =[1, 2, 3]= 컬렉션 식의 대상 타입
+   - 인수 이름이 매개변수 이름과 같은 경우 등은 Roslyn 기본값(=dotnet_suppress_inlay_hints_for_*=)으로 숨겨짐
+   - 키 이름은 Roslyn이 실제 요청하는 section 이름으로 확인함. 힌트가 안 보이면 =eglot-events-buffer= 에서 다시 확인
+   - 다른 서버는 이 키를 요청하지 않으므로 영향 없음
+
 *** csharp-ls (대체)
 
    #+begin_src elisp :lexical t :tangle no
