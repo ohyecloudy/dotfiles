@@ -22,8 +22,8 @@
    - Problem: <한 문장. 무엇이 아픈가>
    - Solution: <한 문장. 무엇이 바뀌는가>
    - Files:
-     - /abs/path/foo.ts:1
-     - /abs/path/bar.ts:1
+     - [[file:/abs/path/foo.ts::1][foo.ts:1]]
+     - [[file:/abs/path/bar.ts::1][bar.ts:1]]
 
 *** Before
 
@@ -150,7 +150,7 @@ flowchart TD
 
 [walkthrough](../walkthrough/SKILL.md)의 "org 표기" 규칙을 따른다. 요지:
 
-- 코드 위치는 `/abs/path/foo.ts:42`(절대경로 + 단일 라인), verbatim으로 감싸지 않는다.
+- 코드 위치는 [code-locations.md](../shared/code-locations.md)의 org 규칙 - `[[file:/abs/path/foo.ts::42][foo.ts:42]]`, verbatim으로 감싸지 않는다.
 - 한 항목 = 한 bullet = 물리적으로 한 줄.
 - 식별자는 `=...=`, 바로 뒤에 한글 조사를 붙이지 않는다.
 - 헤딩 아래 본문은 별 개수 + 1칸 들여쓴다.
