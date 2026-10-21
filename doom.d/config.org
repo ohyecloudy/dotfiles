@@ -2278,6 +2278,16 @@
 
    =C-NUM RET= 키로 동작한다. 5번이 붙은 후보를 바로 사용하려면 =C-5 RET= 키를 누르면 된다.
 
+** mb-depth
+
+   Doom이 =enable-recursive-minibuffers= 를 켜둬서 미니버퍼 입력 중 미니버퍼를 또 열 수 있음. 예) =find-file= 중 =consult-dir=, =embark-act= 액션의 추가 입력. 중첩 여부가 안 보여서 =C-g= 로 한 층만 빠져나온 걸 모르고 헤매는 경우 발생. 내장 =minibuffer-depth-indicate-mode= 로 2층 이상일 때 프롬프트 앞에 =[2]= 처럼 깊이 표시
+
+   #+begin_src elisp :lexical t
+     (minibuffer-depth-indicate-mode 1)
+   #+end_src
+
+   모든 층을 한 번에 빠져나오려면 =M-x top-level=
+
 ** atomic-chrome
 
     #+begin_src elisp :tangle packages.el
