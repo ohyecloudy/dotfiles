@@ -1930,6 +1930,23 @@
               org-gcal-down-days 7))
     #+end_src
 
+**** 시간 정보 없는 취소 일정 갱신 에러 회피
+
+    sync token으로 받은 변경분에는 취소된 반복 일정 인스턴스가 =:start=/=:end= 없이 =:status "cancelled"= 로만 들어온다. 기존 항목이면 =org-gcal--update-entry= 가 취소 처리 전에 타임스탬프부터 만들다가 =Invalid time specification= 에러를 내고, drawer가 =:END:= 없이 깨진 채 남는다. 시간 정보 없는 취소 일정은 취소 처리(삭제)만 하고 원 함수는 건너뜀
+
+    #+begin_src elisp :lexical t
+      (after! org-gcal
+        (defun my/org-gcal-skip-cancelled-without-time (_calendar-id event &optional _update-mode)
+          "Handle cancelled EVENT lacking start time without rebuilding its timestamp."
+          (when (and (org-gcal--event-cancelled-p event)
+                     (null (plist-get event :start)))
+            (org-back-to-heading t)
+            (org-gcal--handle-cancelled-entry)
+            t))
+        (advice-add 'org-gcal--update-entry :before-until
+                    #'my/org-gcal-skip-cancelled-without-time))
+    #+end_src
+
 ** doom-modeline
 
    #+begin_src elisp
