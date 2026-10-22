@@ -2234,6 +2234,18 @@
        )
    #+end_src
 
+*** consult-dir jump-file - fd 사용
+
+   미니버퍼 =C-x C-j= (=consult-dir-jump-file=)는 기본으로 =consult-find= 를 호출. Windows에는 셸 글롭 확장이 없어 MSYS =find= 가 인자를 자체 확장하고, Emacs는 공백 없는 인자를 따옴표 없이 넘기므로 =consult-find-args= 의 =*/.[A-Za-z]*= 패턴이 실제 경로(=ContentTool/.idea= 등)로 펼쳐져 =paths must precede expression= 에러 발생. 네이티브 바이너리 =fd= 로 대체
+
+   #+begin_src elisp
+     (when IS-WINDOWS
+       (after! consult-dir
+         (setq consult-dir-jump-file-command #'consult-fd)
+         )
+       )
+   #+end_src
+
 ** vertico
 
    #+begin_src elisp :exports both
