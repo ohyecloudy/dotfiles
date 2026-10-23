@@ -1,6 +1,6 @@
 # 프로젝트 문서 저장 위치 판정 (정본)
 
-`domain-modeling`, `to-spec`, `to-tickets`가 공유하는 저장 위치 규칙. 세 스킬이 만드는 산출물(`CONTEXT.org`/`CONTEXT-MAP.org`, `docs/adr/`, `docs/specs/`, `docs/tickets/`)이 서로 링크로 엮이므로, 판정은 **하나로 통일**돼야 상대 링크와 glossary 읽기가 같은 트리 안에서 유효하다.
+`domain-modeling`, `to-spec`, `to-tickets`가 공유하는 저장 위치 규칙. 세 스킬이 만드는 산출물(`CONTEXT.org`/`CONTEXT-MAP.org`, `docs/adr/`, `docs/specs/`, `docs/tickets/`)이 서로 링크로 엮이므로, 판정은 **하나로 통일**돼야 상대 링크와 glossary 읽기가 같은 트리 안에서 유효하다. "저장소 텍스트의 문서 참조" 절은 `tdd`·`implement`·`commit-message`도 따른다.
 
 공용 저장소를 오염시키지 않도록 **기본값은 외부(`~`)**.
 
@@ -32,6 +32,15 @@
 - `docs/specs/<slug>/tickets/01-x.org` → `~/project-docs/E/repo/docs/specs/<slug>/tickets/01-x.org`
 
 `CONTEXT-MAP.org`의 `file:./src/...`나 티켓의 `[[file:../spec.org]]` 같은 상대 링크는 미러된 외부 트리 안에서 그대로 유효하므로 재작성하지 않는다.
+
+## 저장소 텍스트의 문서 참조
+
+저장소에 커밋되는 텍스트(코드 주석, 식별자·테스트 이름, 커밋 메시지, in-repo 문서)는 **저장소 밖 문서를 참조하지 않는다**. 저장소만 받은 사람은 그 문서를 찾을 수 없다.
+
+- 기준은 모드가 아니라 **참조 대상 문서의 위치**. 외부 모드여도 저장소 안 upstream 문서(`docs/adr/` 등)는 인용해도 된다. 저장소 안 문서 인용은 허용이지 의무가 아니다.
+- 금지: 저장소 밖 문서의 ADR 번호(`(ADR 0003)`, `ADR-0007 참고`), 경로·링크(`~/project-docs/...`), 정의 참조 지시(`CONTEXT.org 정의 참고`)
+- 허용: 용어집 용어 자체를 쓰는 것. 문서 없이도 읽힌다.
+- 이유가 필요하면 결론을 한 구절로 직접 적는다. 예) `config 해석을 CLI에 두기 위해(ADR 0003)` → `config 해석을 CLI에 두기 위해`
 
 ## 주의
 

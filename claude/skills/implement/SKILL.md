@@ -41,6 +41,7 @@ disable-model-invocation: true
 
 - in-repo 티켓이면 체크·status 변경을 구현 커밋에 포함한다.
 - 외부 모드(`~/project-docs/...`) 티켓이면 파일만 갱신하고 커밋하지 않는다([project-docs-storage.md](../shared/project-docs-storage.md)).
+- 코드 주석·커밋 메시지에 저장소 밖 문서(ADR·CONTEXT·spec·티켓)를 참조하지 않는다([저장소 텍스트의 문서 참조](../shared/project-docs-storage.md)).
 
 ## 보고
 
