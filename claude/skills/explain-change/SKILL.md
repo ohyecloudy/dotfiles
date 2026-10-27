@@ -29,6 +29,8 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 
 호출자는 선택적으로 **독자의 낯선 영역**([reader-profile.md](../shared/reader-profile.md)로 정한 언어·버전·프레임워크 숙련도)을 함께 넘길 수 있다. 넘기면 §3 사전 지식 판정에 쓴다. 이 스킬이 직접 묻거나 프로필 파일을 고치지는 않는다 - 서브에이전트로 호출되는 경우가 있어 사용자와 대화할 수 없다.
 
+호출자는 선택적으로 **코드 분량 모드** `evidence: "minimal" | "full"`을 지정할 수 있다. 기본은 `minimal` - `reading_order`에 위치·이유만 싣는다. `full`이면 §5에서 `reading_order` 항목마다 심볼과 코드 본문까지 채운다(문서만 읽어도 diff를 대충 이해하게 하려는 호출자용).
+
 한 번의 호출은 **한 변경 단위**(커밋 1개 / 범위 1개 / diff 1건)를 다룬다. 여러 CL·커밋을 가로지르는 묶기는 호출자가 결과를 모아서 한다.
 
 입력이 cp949 등 비 utf-8이면 **utf-8로 변환해** 처리한다. 반환 JSON은 항상 utf-8이다.
@@ -81,6 +83,19 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 
 이 변경을 이해하려면 어느 파일부터 읽어야 하는지(`reading_order`)를 의존·이해 순서로 정한다.
 
+`evidence: full`이면 항목마다 `symbol`(바뀐 심볼 이름)과 `code`를 채운다. 항목 하나 = 심볼 하나. 아래 분량 상수는 이 절에서만 정의한다.
+
+- `SYMBOL_FULL_MAX_LINES = 40`, `HUNK_CONTEXT_LINES = 3`
+- `code.kind`: 기존 코드를 고쳤으면 `diff`, 순수 신규 심볼이면 `new`, 삭제만 됐으면 `deleted`
+- `code.text`
+  - `diff`: `-`/`+`/공백 접두 unified 본문(`@@` 헤더 없음, 원본 인덴트 유지). `deleted`는 `-` 줄만
+  - `new`: 원본 코드 그대로
+- 분량: 심볼이 `SYMBOL_FULL_MAX_LINES` 이하면 심볼 전체(diff면 심볼 전체를 문맥 줄로 포함). 넘으면 바뀐 hunk + 앞뒤 `HUNK_CONTEXT_LINES`줄, 사이 생략은 `new`면 언어 주석 한 줄(`// ...`, `;; ...`), `diff`면 문맥 줄 ` ...`
+- 테스트 항목도 같은 규칙 - 테스트 함수 본문
+- 기계적 반복(같은 패턴 N곳)은 대표 1곳만 `code`, 나머지 항목은 `code` 생략
+- `deleted`면 `path`는 삭제 전 경로·라인(`git show <sha>^:<파일>` 기준)
+- `minimal`이면 `symbol`·`code`를 생략한다
+
 ### 6. 출력
 
 아래 JSON을 반환한다. 서브에이전트로 위임돼 호출되면 **최종 반환 텍스트 전체가 이 JSON**이어야 한다(설명 산문을 덧붙이지 않는다).
@@ -98,19 +113,19 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
     }
   ],
   "prerequisites": [{ "concept": "개념명", "what": "무엇인지 한 줄", "location": "/abs/path.cpp:40", "reason": "no-precedent | reader-unfamiliar" }],
-  "reading_order": [{ "path": "/abs/path.cpp:40", "why": "왜 여기부터" }],
+  "reading_order": [{ "path": "/abs/path.cpp:40", "why": "왜 여기부터", "symbol": "Foo::Bar", "code": { "kind": "diff|new|deleted", "lang": "cpp", "text": "<§5 규칙의 본문>" } }],
   "omitted":       [{ "text": "생략분과 이유" }],
   "diagrams":      [{ "kind": "module|class|sequence", "title": "제목(한국어)", "caption": "무엇을 보는 그림인지 한 줄(추정 엣지 있으면 ?=추정 범례 포함)", "mermaid": "<mermaid 소스>" }]
 }
 ```
 
-`stat`·`prerequisites`·`reading_order`·`omitted`·`diagrams`는 변경 단위 전체 레벨(파일은 논리 단위를 가로지르므로). `units[]`만 논리 단위별이다. `diagrams`는 입력에서 요청된 종류만, 유효 엣지가 있을 때만 채운다(요청 없으면 빈 배열).
+`stat`·`prerequisites`·`reading_order`·`omitted`·`diagrams`는 변경 단위 전체 레벨(파일은 논리 단위를 가로지르므로). `units[]`만 논리 단위별이다. `diagrams`는 입력에서 요청된 종류만, 유효 엣지가 있을 때만 채운다(요청 없으면 빈 배열). `reading_order[].symbol`·`code`는 `evidence: full`일 때만 있다.
 
 ## 작성 규칙
 
 - **`basis`(근거 출처)는 필수다.** `diff`=diff 확증, `codebase`=탐색 확인, `inferred`=추정. 추정을 확증처럼 쓰지 않는다. 호출자가 이 태그로 신뢰도를 판단하고 "사람 판단 필요"를 만든다.
 - **`impact`·`prerequisites`는 탐색으로 확인한 것만.** 못 찾았거나 해당 없으면 빈 배열. 추측으로 채우지 않는다. 특히 `prerequisites`는 grep으로 선례 없음을 확인한 것(`no-precedent`)과 넘겨받은 낯선 영역에 속하는 것(`reader-unfamiliar`)만.
-- **근거 코드(`evidence`)는 최소 라인만.** 함수·hunk 통째 복붙 금지. 논리 단위당 20줄 이내(`before`+`snippet` 합산), 판단을 뒷받침하는 줄만. `origin`으로 diff hunk인지 주변 코드인지 구분한다.
+- **근거 코드(`evidence`)는 최소 라인만.** 함수·hunk 통째 복붙 금지. 논리 단위당 20줄 이내(`before`+`snippet` 합산), 판단을 뒷받침하는 줄만. 이 상한은 `units[].evidence`에만 적용 - `reading_order[].code`는 §5 분량 규칙을 따른다. `origin`으로 diff hunk인지 주변 코드인지 구분한다.
 - **`before`는 기존 라인을 고친 evidence에만 채운다.** 같은 diff hunk의 삭제(`-`) 라인에서 그대로 뽑는다(추가 git 조회 불필요) - 순수 신규 추가 라인이면 `before: ""`. diff 형식이라도 원본 hunk 그대로 덤프하지 않고 최소 대비 라인만.
 - **경로는 어디에 쓰든 항상 `절대경로:단일라인`.** `/abs/path/foo.cpp:42` 형식. 상대경로(`foo.cpp:42`)·파일명만·라인 범위(`:42-50`)는 emacs evil `gF`/compilation-mode가 점프 못 하므로 금지. `summary`·`architecture` 같은 산문 text에 인라인으로 넣어도 되지만, 그때도 반드시 절대경로:단일라인이어야 한다(절대경로면 문장 중간이어도 점프된다). `impact.refs`·`evidence.path`·`prerequisites.location`·`reading_order.path`도 동일.
 - **`text`는 한 항목 = 한 줄.** 산문 문단으로 뭉치지 않는다.
