@@ -371,8 +371,7 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
   - 연속된 같은 파일 항목은 첫 항목의 `****` 서브heading(번호 없음). 사이에 다른 파일 항목이 끼면 별도 `***` - 읽는 순서 우선.
     - 예외: 그룹이 건드린 파일이 하나뿐이면 nesting 없이 전부 번호 붙은 `***`. 묶으면 모든 항목이 1번 아래로 들어가 개요가 한 덩어리가 된다.
   - 코드 블록은 `code.kind`로: `diff` → `#+begin_src diff`, `new` → `#+begin_src <code.lang>`(org babel 언어명으로). `code.text`를 그대로 넣는다.
-    - 블록 본문은 heading 본문 들여쓰기에 맞춰 넣고, 원본의 상대 들여쓰기·diff 접두(`-`/`+`/공백)는 그대로. §포매팅이 블록 내용을 건드리지 않으므로 쓴 그대로 남는다.
-    - 첫 비공백 문자가 `*` 또는 `#+`인 줄은 그 앞에 `,`를 넣는다(org 표준 escape - 앞 공백은 유지, `C-c '`·export에서 제거됨). 안 하면 ` #+end_src` 같은 문맥 줄이 블록을 닫는다.
+    - 블록 본문은 [org-formatting.md](../shared/org-formatting.md)의 "블록 본문" 규칙대로 - 원본 들여쓰기·diff 접두 보존, `*`·`#+` 줄 `,` escape.
   - `deleted`는 heading `N. 삭제: =<symbol>=`, 링크 bullet 대신 "삭제 전: <파일 경로>" 평문 한 줄(HEAD에 없어 링크가 열리지 않는다), 블록은 `diff`.
   - `code`가 없는 항목(기계적 반복의 나머지)은 링크 bullet만.
 - `설계 포인트`: 근거는 커밋 메시지 본문·주석·ADR만. 세션 기억으로 채우지 않는다(§경계).
@@ -446,8 +445,4 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
 
 먼저 [code-locations.md](../shared/code-locations.md)의 검사를 생성·수정한 .org 파일에 실행하고, 출력이 없을 때까지 위반을 고친다. 커밋 메시지 example 블록과 `바뀐 곳` 코드 블록 안 라인의 출력은 위반이 아니다 - 고치지 않는다(§org 표기).
 
-그다음 emacs로 org 들여쓰기를 정렬한다(emacs에서 열었다 저장한 것과 같은 상태). 여러 파일을 한 번에 넘길 수 있다. 이때 line ending도 실행 OS에 맞춘다(`set-buffer-file-coding-system` - Windows CRLF, 그 외 LF). `org-src-tab-acts-natively`는 끈다 - 켜져 있으면 src 블록 내용을 언어 모드로 재들여쓰기해 diff 문맥 줄의 접두 공백이 사라지고 원본 코드 들여쓰기가 바뀐다. emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
-
-```bash
-emacs -Q --batch --eval '(progn (require (quote org)) (setq make-backup-files nil) (setq org-adapt-indentation t) (setq org-src-tab-acts-natively nil) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (set-buffer-file-coding-system (if (memq system-type (quote (windows-nt ms-dos))) (quote utf-8-dos) (quote utf-8-unix))) (save-buffer))))' <생성·수정한 .org 파일들>
-```
+그다음 [org-formatting.md](../shared/org-formatting.md)의 정렬을 실행한다.

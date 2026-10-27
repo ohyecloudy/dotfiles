@@ -61,11 +61,7 @@ disable-model-invocation: true
 
 전체 org 스캐폴드, 다이어그램 패턴, 톤은 [ORG-REPORT.md](ORG-REPORT.md) 참고.
 
-쓴 뒤 먼저 [code-locations.md](../shared/code-locations.md)의 검사를 실행하고 출력이 없을 때까지 위반을 고친다. 그다음 emacs로 org 들여쓰기를 정렬한다(emacs에서 열었다 저장한 것과 같은 상태). line ending도 실행 OS에 맞춘다. emacs가 없거나 실패하면 파일은 그대로 두고 사용자에게 그 사실만 알린다.
-
-```bash
-emacs -Q --batch --eval '(progn (require (quote org)) (setq make-backup-files nil) (setq org-adapt-indentation t) (let ((dir default-directory)) (dolist (f command-line-args-left) (find-file (expand-file-name f dir)) (org-mode) (org-indent-region (point-min) (point-max)) (set-buffer-file-coding-system (if (memq system-type (quote (windows-nt ms-dos))) (quote utf-8-dos) (quote utf-8-unix))) (save-buffer))))' <생성한 .org 파일>
-```
+쓴 뒤 먼저 [code-locations.md](../shared/code-locations.md)의 검사를 실행하고 출력이 없을 때까지 위반을 고친다. 그다음 [org-formatting.md](../shared/org-formatting.md)의 정렬을 실행한다.
 
 아직 인터페이스를 제안하지 말 것. 파일을 쓴 뒤 사용자에게 묻는다: "이 중 어느 것을 탐색하고 싶으세요?"
 
