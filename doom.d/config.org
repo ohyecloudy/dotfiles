@@ -2566,7 +2566,7 @@
 
 *** agent-shell rate limit indicator
 
-   Claude 구독 rate limit(5시간, 주간) 사용률을 헤더에 상시 표시. =/usage= 를 매번 치지 않기 위함. cost 는 불필요해서 cost 지시자 자리를 rate limit 으로 대체.
+   Claude 구독 rate limit(5시간, 주간) 사용률을 헤더에 상시 표시. =/usage= 를 매번 치지 않기 위함. 예) =5h 34% (2h13m) 7d 21% (3d4h)= - 괄호 안은 리셋까지 남은 시간. 헤더가 =usage_update= 때만 다시 그려지므로 남은 시간도 마지막 턴 기준. cost 는 불필요해서 cost 지시자 자리를 rate limit 으로 대체.
 
    =claude-agent-acp= 가 =rate_limit_event= 를 =usage_update= 의 =_meta._claude/rateLimit= 로 전달하지만 agent-shell 은 이를 버림. =unifiedWindows= 에 모든 윈도우의 utilization(0-1)과 resetsAt(epoch 초)이 들어 있어서 이것만 저장. 계정 단위 값이라 전역 변수에 보관.
 
@@ -2591,15 +2591,32 @@
                                update '(_meta _claude/rateLimit unifiedWindows))))
            (setq my/agent-shell-rate-limit-windows windows)))
 
+       (defun my/agent-shell-rate-limit-remaining (reset)
+         "Return time left until epoch seconds RESET as \"3d4h\", \"2h13m\" or \"7m\"."
+         (let* ((minute 60)
+                (hour (* 60 minute))
+                (day (* 24 hour))
+                (seconds (max 0 (- reset (float-time))))
+                (days (floor seconds day))
+                (hours (floor (mod seconds day) hour))
+                (minutes (floor (mod seconds hour) minute)))
+           (cond ((> days 0) (format "%dd%dh" days hours))
+                 ((> hours 0) (format "%dh%dm" hours minutes))
+                 (t (format "%dm" minutes)))))
+
        (defun my/agent-shell-rate-limit-indicator ()
-         "Return \"5h 34% 7d 21%\" for the header, or nil before any event."
+         "Return \"5h 34% (2h13m) 7d 21% (3d4h)\" for the header, or nil before any event."
          (let (parts (warn nil))
            (pcase-dolist (`(,key . ,label) my/agent-shell-rate-limit-labels)
              (when-let* ((window (map-elt my/agent-shell-rate-limit-windows key))
                          (ratio (map-elt window 'utilization)))
                (when (>= ratio my/agent-shell-rate-limit-warning-ratio)
                  (setq warn t))
-               (push (format "%s %d%%" label (round (* 100 ratio))) parts)))
+               (push (concat (format "%s %d%%" label (round (* 100 ratio)))
+                             (when-let* ((reset (map-elt window 'resetsAt)))
+                               (format " (%s)"
+                                       (my/agent-shell-rate-limit-remaining reset))))
+                     parts)))
            (when parts
              (propertize
               (string-join (nreverse parts) " ")
