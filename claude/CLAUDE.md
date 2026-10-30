@@ -6,13 +6,14 @@
 - 커밋 메시지/코드 주석/변수명은 영어
 - 설명은 변경 이유와 핵심만 - 문법을 희생하더라도 최대한 간결하게
   - 서술형 어미 생략, 명사형으로 끝낼 것
-  - 예) 에이전트가 호출해야 할 스킬을 제안한다. (X) → 에이전트가 호출해야 할 스킬을 제안 (O)
+  - 예) 에이전트가 호출해야 할 스킬을 제안한다. (X) -> 에이전트가 호출해야 할 스킬을 제안 (O)
 - 나열은 서술형 문단 대신 bullet list 활용
-- em dash(U+2014) 금지. 대신 하이픈(-) 사용
+- 기호(화살표, 대시, 따옴표, 말줄임표 등)는 ASCII만 사용. 한글 등 문자 자체는 예외
+  - 예) `→` -> `->`, `⇒` -> `=>`, `—`(em dash) -> `-`, `…` -> `...`, `“”` `‘’` -> `""` `''`, `×` -> `x`, `≈` -> `~`, `·` -> `,` 또는 `/`
 - 긴 코드 블록 대신 diff 형태로 변경점만 표시
 - 불확실한 부분은 추측하지 말고 먼저 물어볼 것
 - 코드 위치는 절대 경로 + 라인 번호로 표시 (emacs evil `gF`/compilation-mode 점프용)
-  - 예) `foo.cpp:42` (X) → `/home/user/project/src/foo.cpp:42` (O)
+  - 예) `foo.cpp:42` (X) -> `/home/user/project/src/foo.cpp:42` (O)
 
 ## Git
 
@@ -23,7 +24,7 @@
 
 ## Jira / Confluence
 
-- Jira/Confluence에 Jira·Confluence URL을 추가할 때는 항상 smartlink 사용
+- Jira/Confluence에 Jira/Confluence URL을 추가할 때는 항상 smartlink 사용
   - `editJiraIssue`/`createJiraIssue` 등에서 `contentFormat: adf` + `inlineCard` 노드로 삽입 (plain URL은 smartlink로 자동 변환 안 됨)
 
 ## Coding
@@ -56,7 +57,7 @@
 - org 문서 산문에 수동 줄바꿈(폭 맞춤 개행) 금지 - 한 줄로 이어 쓰기
 - 나열은 bullet list, 관심사 분리는 heading(`*`/`**`/`***`) 적극 활용
 - org 테이블은 표시 폭 100 컬럼 안팎 유지 (산문 줄바꿈 금지 규칙의 예외)
-  - 셀 내 개행 불가 → 긴 셀은 아래 행으로 이어 쓰기, 첫 컬럼 등 나머지 셀은 빈칸
+  - 셀 내 개행 불가 -> 긴 셀은 아래 행으로 이어 쓰기, 첫 컬럼 등 나머지 셀은 빈칸
   - 항목(논리 행) 사이에 구분선 `|---+---|`
   - 정렬은 emacs batch `org-table-align`으로 (한글 2칸 폭 반영, 수동 정렬 금지)
 
