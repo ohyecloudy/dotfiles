@@ -25,7 +25,10 @@
       "Read(./secrets/**)",
       "Read(~/.ssh/**)",
       "Read(~/.aws/**)",
-      "Read(~/.gnupg/**)"
+      "Read(~/.gnupg/**)",
+      "Read(~/org_roam/contact/**)",
+      "Read(~/org_roam/daily/**)",
+      "Read(~/org_roam/weekly/**)"
     ],
     "ask": [
       "Read(~/org_roam)",
