@@ -1267,6 +1267,13 @@
     ui 관련 설정들
 
     #+begin_src elisp
+      (defconst org-babel-header-args:elisp '((lexical . :any))
+        "Mirror `org-babel-header-args:emacs-lisp' for the `elisp' block alias.")
+    #+end_src
+
+    org는 =emacs-lisp= 언어에만 =:lexical= 헤더 인자를 등록한다. =elisp= 별칭(alias) 블록에서 =org-lint= 가 "Unknown header argument" 경고를 내지 않도록 같은 값을 등록한다.
+
+    #+begin_src elisp
       (after! org
         (setq org-startup-indented nil
               org-src-preserve-indentation nil))
@@ -2508,17 +2515,17 @@
    #+begin_src elisp :lexical t :tangle packages.el
      (package! shell-maker
        :recipe (:host github :repo "xenodium/shell-maker")
-       :pin "2fa9c3f72339fd7bc755bc166428b139720e5d0d")
+       :pin "88d7f97d95896e61f4a25e370406e533f98b71f2")
      (package! acp
        :recipe (:host github :repo "xenodium/acp.el")
-       :pin "62e33d8ca6ab6d7c458b6fb89a847d5ab49ee427")
+       :pin "2959da5fa8657da17a78ac6ceef303a50e3e69de")
      (package! agent-shell
        :recipe (:host github :repo "xenodium/agent-shell")
-       :pin "2ab0aba06a4dbf4225efdff47380f40a5d1f8898")
+       :pin "cd2b38ddc4c7664eaad47b5e3aa2e4ba7bc2a7dc")
    #+end_src
 
    - [[github:xenodium/acp.el][xenodium/acp.el - github.com]]
-     + =npm install -g @agentclientprotocol/claude-agent-acp@0.89.1=
+     + =npm install -g @agentclientprotocol/claude-agent-acp@0.99.1=
        - 머신 간 동일 동작을 위해 버전 고정. agent-shell 패키지 pin bump 시 같이 올릴 것
        - 설치 버전 확인: =npm ls -g @agentclientprotocol/claude-agent-acp=
        - 최신 버전 확인: =npm view @agentclientprotocol/claude-agent-acp version=
