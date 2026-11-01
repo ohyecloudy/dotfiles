@@ -1267,13 +1267,6 @@
     ui 관련 설정들
 
     #+begin_src elisp
-      (defconst org-babel-header-args:elisp '((lexical . :any))
-        "Mirror `org-babel-header-args:emacs-lisp' for the `elisp' block alias.")
-    #+end_src
-
-    org는 =emacs-lisp= 언어에만 =:lexical= 헤더 인자를 등록한다. =elisp= 별칭(alias) 블록에서 =org-lint= 가 "Unknown header argument" 경고를 내지 않도록 같은 값을 등록한다.
-
-    #+begin_src elisp
       (after! org
         (setq org-startup-indented nil
               org-src-preserve-indentation nil))
@@ -1457,6 +1450,15 @@
     =C-c C-e= 키로 =org-export-dispatch= 함수를 호출하면 Github Flavored Markdown으로 export할 수 있다
 
     [[https://github.com/larstvei/ox-gfm][larstvei/ox-gfm - github.com]]
+
+*** org-lint elisp header arguments
+
+    #+begin_src elisp
+      (defconst org-babel-header-args:elisp '((lexical . :any))
+        "Mirror `org-babel-header-args:emacs-lisp' for the `elisp' block alias.")
+    #+end_src
+
+    org는 =emacs-lisp= 언어에만 =:lexical= 헤더 인자를 등록한다. =elisp= 별칭(alias) 블록에서 =org-lint= 가 "Unknown header argument" 경고를 내지 않도록 같은 값을 등록한다.
 
 *** org babel
 
