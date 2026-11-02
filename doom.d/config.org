@@ -2517,7 +2517,7 @@
    #+begin_src elisp :lexical t :tangle packages.el
      (package! shell-maker
        :recipe (:host github :repo "xenodium/shell-maker")
-       :pin "88d7f97d95896e61f4a25e370406e533f98b71f2")
+       :pin "a0cb90df6ee5ad633ef7e639921ffa40548ac276")
      (package! acp
        :recipe (:host github :repo "xenodium/acp.el")
        :pin "2959da5fa8657da17a78ac6ceef303a50e3e69de")
