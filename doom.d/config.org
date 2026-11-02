@@ -1937,6 +1937,26 @@
                     #'my/org-gcal-skip-cancelled-without-time))
     #+end_src
 
+**** full sync에서도 취소된 일정 받기
+
+    sync token 만료(=org-gcal-down-days= 경과) 또는 HTTP 410이면 =timeMin=/=timeMax= 로 full sync를 한다. 이때 =singleEvents=True= 에 =showDeleted= 가 없으면 Calendar API가 취소된 인스턴스를 아예 안 돌려줘서, 마지막 incremental sync 이후 삭제된 일정은 로컬에 영원히 남는다. 이벤트 목록 요청에 =showDeleted=True= 를 붙여 full sync에서도 취소 인스턴스를 받아 기존 항목을 삭제하게 함. 로컬에 없는 취소 일정은 =org-gcal--sync-handle-events= 가 무시하므로 새로 생기지 않음
+
+    #+begin_src elisp :lexical t
+      (after! org-gcal
+        (defun my/org-gcal-request-show-deleted (orig-fn &rest args)
+          "Call ORIG-FN with ARGS, adding showDeleted to the events request."
+          (let ((request-fn (symbol-function 'request-deferred)))
+            (cl-letf (((symbol-function 'request-deferred)
+                       (lambda (url &rest settings)
+                         (apply request-fn url
+                                (plist-put settings :params
+                                           (cons '("showDeleted" . "True")
+                                                 (plist-get settings :params)))))))
+              (apply orig-fn args))))
+        (advice-add 'org-gcal--sync-request-events :around
+                    #'my/org-gcal-request-show-deleted))
+    #+end_src
+
 ** doom-modeline
 
    #+begin_src elisp
