@@ -284,6 +284,24 @@
 
    참고: [[http://ohyecloudy.com/emacsian/2022/05/28/create-link-section-by-scraping-links-from-current-org-docs/][org 문서에서 링크를 긁어서 링크 섹션을 만들기 - ohyecloudy.com]]
 
+** my-ox-gfm-link
+
+   #+begin_src elisp
+     (require 'my-ox-gfm-link)
+   #+end_src
+
+   설정 파일에 아래와 같이 bare URL로 남길 사이트 prefix를 정의
+
+   #+begin_example
+     (setq my/ox-gfm-link-url-only-prefixes '("https://atlassian.net/"))
+   #+end_example
+
+   GFM export 결과를 Jira, Confluence 등에 붙여넣을 때 bare URL이 smartlink로 변환되도록 링크를 정리한다. =org-md-link= 에 advice를 걸어 GFM 백엔드의 =http=, =https= 링크에만 적용하고 md, jekyll export는 건드리지 않는다.
+
+   - =my/ox-gfm-link-url-only-prefixes= 로 시작하는 URL은 description을 버리고 URL만 출력
+   - description 없는 링크는 =<url>= 대신 =url= 로 출력
+   - 한계: URL 뒤에 공백 없이 조사 등이 붙으면 GFM autolink가 그 텍스트까지 링크로 인식
+
 ** ox-confluence - 비활성화
 
    [[https://github.com/aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el][aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el - github.com]] 파일을 가져와서 조금 고친 패키지. confluence 마크업으로 익스포트를 지원한다.
