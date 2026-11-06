@@ -1,6 +1,6 @@
 # 코드 위치 표기 (정본)
 
-`code-tour`, `walkthrough`, `improve-codebase-architecture`가 공유하는 코드 위치 규칙. 출력 매체에 따라 형식이 갈린다.
+`code-tour`, `walkthrough`, `improve-codebase-architecture`, `poc`가 공유하는 코드 위치 규칙. 출력 매체에 따라 형식이 갈린다.
 
 - **org 문서 안**: org 링크. 사용자는 `]l`/`[l`(`org-next-link`/`org-previous-link`)로 위치 사이를 이동하고 `RET`으로 연다(`C-c C-RET` 다른 창, `C-o` 복귀). org 링크가 아닌 위치는 `]l`이 건너뛰므로, 하나라도 맨 경로면 탐색 흐름이 끊긴다.
 - **그 밖(채팅, `explain-change` JSON 등)**: 맨 경로 `/abs/path/foo.ts:42`. emacs evil `gF`나 compilation-mode로 연다. org 문서를 쓰는 스킬이 이 경로를 받아 링크로 바꾼다.

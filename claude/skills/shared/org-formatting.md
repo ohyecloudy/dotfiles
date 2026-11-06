@@ -1,6 +1,6 @@
 # org 정렬 (정본)
 
-org 문서를 쓰는 스킬(`code-tour`, `walkthrough`, `warm-start`, `to-spec`, `to-tickets`, `domain-modeling`, `improve-codebase-architecture`)이 공유하는 마무리 단계. 생성·수정한 .org를 emacs에서 열었다 저장한 것과 같은 상태로 만든다 - 사용자가 emacs로 열어 저장할 때 diff가 생기지 않게 하려고 둔다. 명령이 스킬마다 복사돼 있으면 한 곳만 고쳐져 갈라지므로 여기 하나만 둔다.
+org 문서를 쓰는 스킬(`code-tour`, `walkthrough`, `warm-start`, `to-spec`, `to-tickets`, `domain-modeling`, `improve-codebase-architecture`, `poc`)이 공유하는 마무리 단계. 생성·수정한 .org를 emacs에서 열었다 저장한 것과 같은 상태로 만든다 - 사용자가 emacs로 열어 저장할 때 diff가 생기지 않게 하려고 둔다. 명령이 스킬마다 복사돼 있으면 한 곳만 고쳐져 갈라지므로 여기 하나만 둔다.
 
 ## 정렬
 
