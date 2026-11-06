@@ -1479,6 +1479,21 @@
 
     org는 =emacs-lisp= 언어에만 =:lexical= 헤더 인자를 등록한다. =elisp= 별칭(alias) 블록에서 =org-lint= 가 "Unknown header argument" 경고를 내지 않도록 같은 값을 등록한다.
 
+*** org-lint jekyll liquid links
+
+    #+begin_src elisp
+      (defun my/org-lint-drop-liquid-fuzzy-links (reports)
+        "Drop fuzzy link REPORTS whose path is a Jekyll liquid tag like `{{ site.asseturl }}'."
+        (seq-remove (lambda (report)
+                      (string-prefix-p "Unknown fuzzy location \"{{" (cadr report)))
+                    reports))
+
+      (advice-add 'org-lint-invalid-fuzzy-link
+                  :filter-return #'my/org-lint-drop-liquid-fuzzy-links)
+    #+end_src
+
+    블로그 글은 =[[{{ site.asseturl }}/foo.jpg]]= 처럼 Jekyll liquid 태그로 이미지 경로를 쓴다. org는 이를 fuzzy 링크로 파싱해 "Unknown fuzzy location" 을 보고하므로 ={{= 로 시작하는 경로만 결과에서 제외한다.
+
 *** org babel
 
 **** ob-translate
