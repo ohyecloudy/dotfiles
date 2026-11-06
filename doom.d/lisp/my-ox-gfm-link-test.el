@@ -82,6 +82,20 @@
            "<file:"
            (my/ox-gfm-link-test--export "[[file:/tmp/a.txt]]"))))
 
+;;; Org-roam id links
+
+(ert-deftest my/ox-gfm-link-test/id-link-description-only ()
+  (should (string=
+           "see ABC now"
+           (my/ox-gfm-link-test--export
+            "see [[id:0ae58d5e-3668-4dac-a989-8cf051ab574c][ABC]] now"))))
+
+(ert-deftest my/ox-gfm-link-test/id-links-in-headline ()
+  (should (string=
+           "# ABC - abc"
+           (my/ox-gfm-link-test--export
+            "* [[id:0ae58d5e-3668-4dac-a989-8cf051ab574c][ABC]] - [[id:5cd90f26-1af9-4d32-953c-56b2107ffbce][abc]]"))))
+
 ;;; Other backends untouched
 
 (ert-deftest my/ox-gfm-link-test/md-backend-untouched ()
