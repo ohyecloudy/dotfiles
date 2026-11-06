@@ -2616,7 +2616,7 @@
 
    #+begin_src elisp :lexical t
      (after! agent-shell
-       (setq agent-shell-markdown-list-bullets '("-" "+")))
+       (setq agent-shell-markdown-list-bullets '("-")))
    #+end_src
 
 *** agent-shell rate limit indicator
