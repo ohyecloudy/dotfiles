@@ -2791,6 +2791,28 @@
         (add-hook 'agent-shell-mode-hook #'my/agent-shell-watch-config-options))
     #+end_src
 
+*** agent-shell workaround - emacs crash in bidi redisplay
+
+    agent-shell 출력 스트리밍 중 redisplay에서 Emacs가 abort하는 크래시 우회. 해당 버퍼에서 bidi 재배치를 꺼서 크래시 경로(=bidi_get_type=)를 타지 않게 함
+
+    - 증상: 크래시 덤프 4건(2026-10-12 2건, 11-06, 11-09)이 모두 같은 콜스택 - =wait_reading_process_output= -> =redisplay_internal= -> =display_line= -> =bidi_resolve_explicit= -> =bidi_get_type= -> =emacs_abort=
+    - 원인 추정: 덤프의 bidi 이터레이터가 읽은 문자 값이 음수(=0xFF121897=, =0xFFFC420A=). 한글 같은 다중 바이트 문자를 중간 바이트부터 읽은 것으로, redisplay 쪽 바이트/문자 위치 어긋남. Emacs 30.2 C 코드 버그로 추정 (Elisp로는 문자 경계를 깨뜨릴 수 없음)
+    - 부작용 없음: 한글/영어는 모두 좌->우 문자라 bidi 재배치가 필요 없음
+    - 뷰포트 상호작용(=agent-shell-prefer-viewport-interaction=)을 쓰므로 viewport 버퍼에도 적용
+    - 다른 버퍼에서도 같은 콜스택 크래시가 나면 =(setq-default bidi-display-reordering nil)= 로 전역 확대. 덤프 위치 =C:/Users/bincount/AppData/Local/CrashDumps/=, 백트레이스 =~/emacs_backtrace.txt=
+
+    #+begin_src elisp :lexical t
+      (after! agent-shell
+        (defun my/disable-bidi-reordering ()
+          "Disable bidi reordering in the current buffer to avoid a redisplay abort."
+          (setq-local bidi-display-reordering nil))
+
+        (dolist (hook '(agent-shell-mode-hook
+                        agent-shell-viewport-view-mode-hook
+                        agent-shell-viewport-edit-mode-hook))
+          (add-hook hook #'my/disable-bidi-reordering)))
+    #+end_src
+
 *** agent-shell keybindings
 
    #+begin_src elisp :lexical t
