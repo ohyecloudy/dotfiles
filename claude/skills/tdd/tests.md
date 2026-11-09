@@ -2,7 +2,7 @@
 
 ## 좋은 테스트
 
-**통합 스타일(integration-style)**: 내부 부품의 목(mock)이 아니라 실제 인터페이스를 통해 테스트한다.
+**인터페이스 경유(through-interface)**: 내부 부품의 목(mock)이 아니라 실제 인터페이스를 통해 테스트한다. 통합테스트와는 다르다 - [integration.md](integration.md) 참고.
 
 ```typescript
 // GOOD: Tests observable behavior
