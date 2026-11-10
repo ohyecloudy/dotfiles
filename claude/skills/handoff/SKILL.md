@@ -5,7 +5,7 @@ argument-hint: "다음 세션은 어디에 쓰일 예정인가?"
 disable-model-invocation: true
 ---
 
-새 에이전트가 작업을 이어갈 수 있도록 현재 대화를 요약한 handoff 문서를 작성한다. 현재 작업 공간이 아니라 사용자 OS의 임시 디렉터리에 저장한다.
+새 에이전트가 작업을 이어갈 수 있도록 현재 대화를 요약한 handoff 문서를 작성한다. 저장소에 아무것도 남지 않도록 저장소 밖 `~/handoff/YYYY-MM-DD-HHMM-<slug>.md`에 쓴다(`<slug>` = 다음 세션 주제 kebab). 디렉터리가 없으면 만든다. 문서가 저장소 밖에 있으므로 파일 참조는 전부 절대 경로로 쓰고, 작성 후 절대 경로만 알려준다(emacs evil `gF` 로 점프).
 
 문서에 "suggested skills" 섹션을 포함해, 에이전트가 호출해야 할 스킬을 제안한다.
 
