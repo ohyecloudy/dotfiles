@@ -23,8 +23,17 @@ disable-model-invocation: true
 
 **스캔하기 전에 범위부터: YAGNI.** 모듈을 깊게 만드는 건 이후 그 모듈에 대한 변경을 쉽게 만들어 되갚으므로, 최근 바뀐 부분에 가중치를 더 둔다. 보기 전에 *어디를* 볼지 먼저 정한다:
 
-- 사용자가 방향(모듈, 서브시스템, 통증 지점)을 지목했다면 그걸 취하고 아래 추론은 건너뛴다.
-- 아니면 커밋 히스토리(`git log --oneline`)를 충분히 거슬러 올라가 코드베이스의 핫스팟(hot spot) - 반복해서 등장하는 파일과 영역 - 을 찾고, 그 경로들이 먼저 눈길을 끌게 둔다. 변경이 흩어져 뚜렷한 핫스팟이 없으면 그물을 넓힌다.
+먼저 [smell_map.py](smell_map.py)로 냄새 지도를 잰다. 눈대중 대신 같은 저장소를 다시 재면 같은 숫자가 나오는 측정이다.
+
+```powershell
+$env:PYTHONIOENCODING='utf-8'; python "$env:USERPROFILE\.claude\skills\improve-codebase-architecture\smell_map.py" --repo <저장소> [--path <범위>] [--exclude <glob>]...
+```
+
+- 출력 JSON의 `hotspots`(수정 빈도 x 크기), `couplings`(경계를 넘어 함께 바뀌는 파일 쌍), `growth`(기간 내 순증가)와 `diagrams`(mermaid 3장)를 쓴다. 차트 정의는 [diagrams.md](../shared/diagrams.md)의 "저장소 진단".
+- 사용자가 방향(모듈, 서브시스템, 통증 지점)을 지목했다면 그 경로를 `--path`로 넘긴다. 지도는 그대로 리포트에 싣는다.
+- 아니면 상위 핫스팟과 결합 쌍이 탐색의 출발점이다. 지도에 걸린 게 없으면(전부 `empty_reason`) 그물을 넓힌다.
+- 결과에 잡음(데이터·생성 파일 등)이 상위를 차지하면 `--exclude`로 빼고 다시 잰다. 뺀 패턴은 리포트 범위 줄에 적는다.
+- 스크립트가 실패하면(git 저장소 아님, 커밋 없음) 그 메시지를 리포트에 적고 `git log --oneline` 눈대중으로 대신한다.
 
 손대려는 영역의 도메인 용어집(`CONTEXT.org`)과 ADR을 먼저 읽는다.
 
@@ -47,13 +56,14 @@ disable-model-invocation: true
 각 후보는 `**` 헤딩 하나로 렌더한다:
 
 - **Tags**: recommendation strength(`strong` / `worth_exploring` / `speculative`)와 의존성 분류를 헤딩 태그로
+- **Signals**: 냄새 지도에서 이 후보를 가리키는 수치(핫스팟 순위, 결합 쌍 횟수/결합도, 순증가). 지도에 안 걸리고 코드 읽기로 찾았으면 그렇게 적는다 - 지도는 우선순위일 뿐 필터가 아니다
 - **Files**: 관련된 파일/모듈
 - **Problem**: 현재 아키텍처가 왜 마찰을 일으키는가
 - **Solution**: 무엇이 바뀔지 평이한 설명
 - **Before / After**: `*** Before` / `*** After` 하위 헤딩에 같은 패턴으로 연속 배치해 얕음과 깊어짐을 보여준다
 - **Wins**: 지역성(locality)과 레버리지(leverage) 관점에서, 그리고 테스트가 어떻게 나아지는지로 설명
 
-리포트 맨 위에 **Top recommendation** 섹션을 둔다: 어느 후보를 먼저 다룰지와 이유, 그 후보 헤딩으로 가는 내부 링크.
+리포트 맨 위에 **Top recommendation** 섹션을 둔다: 어느 후보를 먼저 다룰지와 이유, 그 후보 헤딩으로 가는 내부 링크. 그 바로 아래 **냄새 지도** 섹션에 스크립트의 `diagrams` 3장을 싣는다.
 
 **도메인은 `CONTEXT.org` 어휘로, 아키텍처는 `codebase-design` 어휘로 말한다.** `CONTEXT.org`가 "Order"를 정의했다면 "the Order intake module"이라 부르고, "the FooBarHandler"나 "the Order service"라 부르지 않는다.
 

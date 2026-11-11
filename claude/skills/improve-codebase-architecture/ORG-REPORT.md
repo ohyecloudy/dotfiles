@@ -16,12 +16,28 @@
   - [[*<후보 헤딩 텍스트>]]
     + <이유 한 문장>
 
+* 냄새 지도
+
+  - 기간: <since> 이후 <days>일, 커밋 <N>개 / 추가 제외: <--exclude 패턴 | 없음>
+
+** 핫스팟 - 수정 빈도 x 크기
+
+   - <smell_map caption>
+   #+begin_src mermaid :file ~/architecture-review/<base>-smell-hotspot.png :width "2048"
+   <smell_map mermaid 그대로>
+   #+end_src
+
+** 함께 바뀌는 파일 - 경계를 넘는 결합                ← 같은 구조, :file ...-smell-co-change.png
+
+** 비대화 - 기간 내 순증가                            ← 같은 구조, :file ...-smell-growth.png
+
 * 후보
 
 ** <deepening 이름>                                      :strong:in_process:
 
    - Problem: <한 문장. 무엇이 아픈가>
    - Solution: <한 문장. 무엇이 바뀌는가>
+   - Signals: <핫스팟 n위 / X와 N회 함께 바뀜(M%) / 순증가 +L줄 | 없음 - 코드 읽기로 발견>
    - Files:
      - [[file:/abs/path/foo.ts::1][foo.ts:1]]
      - [[file:/abs/path/bar.ts::1][bar.ts:1]]
@@ -51,7 +67,8 @@
 ```
 
 - `<base>` = org 파일 이름(확장자 제외), `<slug>` = 후보 제목 kebab. PNG가 후보·before/after마다 고유해야 한다.
-- 도입 문단은 없다. 곧바로 Top recommendation, 그다음 후보로 들어간다.
+- 도입 문단은 없다. 곧바로 Top recommendation, 냄새 지도, 그다음 후보로 들어간다.
+- 냄새 지도 3장은 smell_map `diagrams`의 `caption`/`mermaid`를 그대로 싣는다(편집 금지). `mermaid` 대신 `empty_reason`이 오면 그 장은 "없음 - <empty_reason>" 한 줄.
 
 ## 후보 헤딩(Candidate heading)
 
@@ -62,6 +79,7 @@
   - strength: `strong` / `worth_exploring` / `speculative`
   - 의존성: `in_process` / `local_substitutable` / `ports_adapters` / `mock`
 - **Problem / Solution**: 각각 한 문장.
+- **Signals**: 냄새 지도 수치만. 지도는 우선순위일 뿐 필터가 아니다 - 지도 밖 후보는 `없음 - 코드 읽기로 발견`.
 - **Files**: 절대경로:라인 bullet.
 - **Before / After**: 중심축. 같은 패턴, 같은 노드 Id를 유지해 두 블록을 위아래로 비교할 수 있게 한다.
 - **Wins**: bullet, 각 한 줄 짧게.
