@@ -25,9 +25,19 @@ disable-model-invocation: true
 
 먼저 [smell_map.py](smell_map.py)로 냄새 지도를 잰다. 눈대중 대신 같은 저장소를 다시 재면 같은 숫자가 나오는 측정이다.
 
-```powershell
-$env:PYTHONIOENCODING='utf-8'; python "$env:USERPROFILE\.claude\skills\improve-codebase-architecture\smell_map.py" --repo <저장소> [--path <범위>] [--exclude <glob>]...
-```
+- Windows (PowerShell)
+
+  ```powershell
+  $env:PYTHONIOENCODING='utf-8'; python "$env:USERPROFILE\.claude\skills\improve-codebase-architecture\smell_map.py" --repo <저장소> [--path <범위>] [--exclude <glob>]...
+  ```
+
+- macOS / Linux (bash)
+
+  ```bash
+  PYTHONIOENCODING=utf-8 python3 ~/.claude/skills/improve-codebase-architecture/smell_map.py --repo <저장소> [--path <범위>] [--exclude <glob>]...
+  ```
+
+- Windows Git Bash에서는 bash 형식을 쓰지 않는다. mingw python이 `~` 경로를 `C:/c/...`로 잘못 바꿔 실패한다 - PowerShell 형식을 쓴다.
 
 - 출력 JSON의 `hotspots`(수정 빈도 x 크기), `couplings`(경계를 넘어 함께 바뀌는 파일 쌍), `growth`(기간 내 순증가)와 `diagrams`(mermaid 3장)를 쓴다. 차트 정의는 [diagrams.md](../shared/diagrams.md)의 "저장소 진단".
 - 사용자가 방향(모듈, 서브시스템, 통증 지점)을 지목했다면 그 경로를 `--path`로 넘긴다. 지도는 그대로 리포트에 싣는다.
