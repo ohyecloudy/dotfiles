@@ -134,22 +134,28 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
 ** <논리 단위 제목>
 
-   - <설명 한 줄>
-   [[file:/abs/path/foo.ts::40][foo.ts:40]]
-   #+begin_src ts
-   <근거 라인만>
-   #+end_src
-   - <설명 한 줄>
+   - <왜 읽나 한 줄>
 
-** <논리 단위 제목>                        ← 기존 코드를 고친 경우: evidence.before가 있으면 diff
+*** <단계> - <이 코드가 보여주는 것>
 
-   - <설명 한 줄>
-   [[file:/abs/path/bar.ts::88][bar.ts:88]]
-   #+begin_src diff
-   -<이전 라인>
-   +<이후 라인>
-   #+end_src
-   - <설명 한 줄>
+    - <무엇을 볼지 한 줄>
+    - 위치: [[file:/abs/path/foo.ts::40][foo.ts:40]]
+
+    #+begin_src ts
+    <근거 라인만>
+    #+end_src
+
+    - <의미 한 줄>                          ← 선택
+
+*** <단계> - <요약>                         ← 기존 코드를 고친 경우: evidence.before가 있으면 diff
+
+    - <무엇을 볼지 한 줄>
+    - 위치: [[file:/abs/path/bar.ts::88][bar.ts:88]]
+
+    #+begin_src diff
+    -<이전 라인>
+    +<이후 라인>
+    #+end_src
 
 * 사람 판단 필요
 
@@ -246,7 +252,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 ### org 표기
 
 - **코드 위치는 [code-locations.md](../shared/code-locations.md)의 org 규칙을 따른다** - 어디에 쓰든 `[[file:/abs/path/foo.ts::42][foo.ts:42]]`, 같은 파일 반복도 전체 target, 링크는 verbatim 금지. 채팅 보고의 경로는 맨 경로.
-- **본문은 [org-writing.md](../shared/org-writing.md)를 따른다** - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 공통 표기.
+- **본문은 [org-writing.md](../shared/org-writing.md)를 따른다** - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 코드 블록 배치, 공통 표기.
 - **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
 - **다이어그램은 `diagrams`를 그대로 org mermaid 블록으로 싣는다.**
   - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `:width "2048"`으로 폭 통일.
