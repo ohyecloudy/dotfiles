@@ -47,7 +47,7 @@ disable-model-invocation: true
 Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스트 유지).
 
 - 넘기는 것: §1에서 정한 범위 그대로 - 커밋 범위면 hash/범위, uncommitted면 diff 텍스트, 저장소 위치도 함께.
-- 요청할 다이어그램: `module`·`class`·`sequence` **3종 전부**.
+- 요청할 다이어그램: `auto` - 트리거에 해당하는 것만([diagrams.md](../shared/diagrams.md)).
 - §2에서 정한 낯선 영역(없으면 생략).
 
 분담:
@@ -97,14 +97,13 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
    - ADR-<NNN> 예외 - <무엇이 뚫리고 누가 승인했나>
 
 * 아키텍처 다이어그램                       ← diagrams 없으면 "없음" 한 줄
-                                            ← 노드 라벨은 `식별자<br/>역할 한 줄`, 엣지 라벨은 관계 동사. 비면 채워 넣는다
-                                            ← 캡션의 `?=추정` 범례는 추정 엣지가 실제로 있을 때만
-                                            ← class diagram은 엣지로 연결된 클래스만 포함 - 관계없는 클래스는 넣지 않는다
+                                            ← 순서: tree → overview → sequence(시점 순) → state/er/logic/class
+                                            ← 넓은 것(어디에) → 시점 간 연결 → 시점 안 순서 → 세부
 
-** <title>
+** <종류 한글명> - <title>                   ← 위치 / 개요 / 시퀀스 / 상태 / 데이터 / 분기 / 계약
 
    - <caption 한 줄>
-   #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>.png :width "2048"
+   #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>[-<시점 slug>].png :width "2048"
    <mermaid 소스>
    #+end_src
 
@@ -255,6 +254,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 - **본문은 [org-writing.md](../shared/org-writing.md)를 따른다** - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 코드 블록 배치, 공통 표기.
 - **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
 - **다이어그램은 `diagrams`를 그대로 org mermaid 블록으로 싣는다.**
-  - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `:width "2048"`으로 폭 통일.
+  - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `sequence`는 `-<시점 slug>`를 붙여 장마다 고유하게. `:width "2048"`으로 폭 통일.
+  - 표기·렌더 공통 규칙은 [diagrams.md](../shared/diagrams.md).
   - mermaid 소스는 편집·재작성 금지(verbatim `=` 규칙과 무관).
   - 렌더는 온디맨드 - 사용자가 `C-c C-c`/export로 PNG를 만든다(pre-render하지 않는다).
