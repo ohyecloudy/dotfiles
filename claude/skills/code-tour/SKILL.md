@@ -160,13 +160,13 @@ disable-model-invocation: true
 
    <시스템의 정체 한 문장>
 
-** 계층도
+** 단면도
 
-   #+begin_src mermaid :file ~/code-tour/<slug>-layers.png :width "2048"
-   <계층·의존 방향 flowchart>
+   #+begin_src mermaid :file ~/code-tour/<slug>-cross-section.png :width "2048"
+   <block-beta columns 1 - 층 = §3 단계, 위가 UI 쪽>
    #+end_src
 
-   - <계층도를 읽는 법 1~2줄>
+   - <단면도를 읽는 법 1~2줄>
 
 ** 디렉터리와 타깃
 
@@ -204,6 +204,12 @@ disable-model-invocation: true
 
 * 시나리오로 따라가기
 
+** 개요                                      ← 시나리오 2개 이상일 때만
+
+   #+begin_src mermaid :file ~/code-tour/<slug>-overview.png :width "2048"
+   <swimlane-beta TB - lane = 시나리오/시점, lane 넘는 엣지 = 넘기는 것>
+   #+end_src
+
 ** 시나리오 A: <가장 중요한 흐름>
 
    #+begin_src mermaid :file ~/code-tour/<slug>-scenario-a.png :width "2048"
@@ -224,7 +230,10 @@ disable-model-invocation: true
 ```
 
 - `0단계 전제`: 언어는 모르면 코드 곳곳이 소음으로 보이는 것 3~6개. 숙련도 낮음인 프레임워크마다 기반 절 2~5개. 각 단계의 `언어·프레임워크 포인트`에서 반복하지 않는다.
+- 단면도: 층은 §3 단계 중 범위에 있는 것만, 각 층 = `단계 - 대표 심볼<br/>책임 한 줄`. 화살표 없음 - 흐름은 시나리오 몫.
 - 시나리오: 단계를 가로지르는 핵심 흐름 1~4개. 각 화살표가 실제 호출이어야 한다.
+  - 한 시나리오가 여러 시점(등록과 실행 등)에 걸치면 시점마다 sequence를 나눈다(`<slug>-scenario-a-<시점 slug>.png`).
+  - 시나리오(또는 시점)가 2개 이상이면 맨 앞에 `개요` 1장 - 서로 무엇을 넘기며 이어지는지.
 - 대응표: 문서에 등장한 언어 포인트의 요약(프레임워크 항목은 주력 언어 쪽 대응이 있을 때만). 새 항목을 여기서 처음 소개하지 않는다.
 
 ### 7. 포매팅·보고
@@ -449,6 +458,7 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
 - **본문은 [org-writing.md](../shared/org-writing.md)를 따른다** - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 코드 블록 배치, 공통 표기.
 - **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
 - **다이어그램은 org mermaid 블록.**
+  - 표기·차트 문법은 [diagrams.md](../shared/diagrams.md) - 단면도 = `cross-section`, 개요 = `overview`, 시나리오 = `sequence`.
   - `:file`은 `~/code-tour/<slug>-<kind>.png`, `:width "2048"`으로 폭 통일.
   - 렌더는 온디맨드 - 사용자가 `C-c C-c`/export로 PNG를 만든다(pre-render하지 않는다).
 - **커밋 메시지 example 블록과 `바뀐 곳` 코드 블록은 예외.** 원문 보존이 목적이라 위 규칙(한 줄, verbatim, 조사, 코드 위치 링크)을 적용하지 않는다.
