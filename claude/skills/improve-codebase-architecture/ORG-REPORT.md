@@ -73,7 +73,7 @@
 
 후보에 맞는 패턴을 고른다. 섞는다. 모든 다이어그램이 똑같아 보이게 하지 마라. 다양성이 핵심의 일부다.
 
-flowchart/sequence/class의 노드 라벨(식별자`<br/>`역할), 엣지 라벨(관계 동사), 추정 표시(`?` 접두), 노드 상한(~15), `class` 한 줄 하나 규칙은 [explain-change](../explain-change/SKILL.md) §4를 그대로 따른다. `block`은 라벨 규칙만 적용한다.
+노드 라벨(식별자`<br/>`역할), 엣지 라벨(관계 동사), 추정 표시(`?` 접두), 노드 상한(~15), `class` 한 줄 하나, flowchart 한 장에 의존과 흐름을 섞지 않는 규칙은 [diagrams.md](../shared/diagrams.md)를 그대로 따른다. `block`은 라벨 규칙만 적용한다.
 
 이 리포트 전용 확장은 둘뿐이다. 모든 다이어그램에서 같은 정의를 쓴다.
 
@@ -87,14 +87,14 @@ classDef internal fill:#f1f5f9,color:#94a3b8,stroke:#cbd5e1
 - leakage는 엣지 동사로(`leaks pricing`), seam은 `subgraph` 라벨로(`seam: <이름>`). 선 모양·`linkStyle`로 의미를 얹지 않는다.
 - `subgraph` 라벨은 한 줄 - `<br/>`를 넣으면 내부 노드와 겹친다.
 
-### 의존성 / 콜 플로우 (`flowchart TD`, 주력)
+### 의존성 (`flowchart TD`, 주력)
 
-요점이 "X가 Y를 부르고 Y가 Z를 부르는데, 이 난장판을 봐라"일 때.
+요점이 "X가 Y를 알고 Y가 Z를 아는데, 이 결합을 봐라"일 때. 엣지는 정적 의존 동사만(`depends on`, `knows`, `leaks <무엇>`). 실행 순서가 요점이면 `왕복 횟수`로 그린다.
 
 ```mermaid
 flowchart TD
-  H["OrderHandler<br/>주문 요청 진입점"] -->|validates via| V["OrderValidator<br/>주문 규칙 검사"]
-  V -->|persists via| R["OrderRepo<br/>주문 저장"]
+  H["OrderHandler<br/>주문 요청 진입점"] -->|depends on| V["OrderValidator<br/>주문 규칙 검사"]
+  V -->|knows| R["OrderRepo<br/>주문 저장"]
   R -->|leaks pricing| P["PricingClient<br/>가격 조회"]
   classDef changed fill:#fde68a,stroke:#b45309,stroke-width:2px
   class V changed
@@ -107,15 +107,7 @@ flowchart TD
 
 ### 단면도(Cross-section) (`block`, 계층적 얕음에 좋음)
 
-호출이 통과하는 계층을 `columns 1`로 세로로 쌓는다. Before: 각자 아무것도 안 하는 얇은 계층 N개. After: 통합된 책임으로 라벨된 블록 1개(`changed`, 두꺼운 테두리).
-
-```mermaid
-block-beta
-  columns 1
-  a["OrderHandler<br/>요청 파싱만"]
-  b["OrderValidator<br/>규칙 위임만"]
-  c["OrderRepo<br/>저장 위임만"]
-```
+호출이 통과하는 계층을 `columns 1`로 세로로 쌓는다(문법은 [diagrams.md](../shared/diagrams.md)의 `cross-section`). Before: 각자 아무것도 안 하는 얇은 계층 N개(예: `OrderHandler<br/>요청 파싱만`, `OrderValidator<br/>규칙 위임만`). After: 통합된 책임으로 라벨된 블록 1개(`changed`, 두꺼운 테두리).
 
 ### 질량 다이어그램(Mass diagram) (`block`, "interface가 implementation만큼 넓음"에 좋음)
 
