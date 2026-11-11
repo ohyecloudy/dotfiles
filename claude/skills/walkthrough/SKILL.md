@@ -246,10 +246,8 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 ### org 표기
 
 - **코드 위치는 [code-locations.md](../shared/code-locations.md)의 org 규칙을 따른다** - 어디에 쓰든 `[[file:/abs/path/foo.ts::42][foo.ts:42]]`, 같은 파일 반복도 전체 target, 링크는 verbatim 금지. 채팅 보고의 경로는 맨 경로.
-- **한 항목 = 한 bullet = 물리적으로 한 줄.** 문장 중간 하드 줄바꿈 금지(길어도 한 줄, 표시는 emacs soft-wrap).
+- **본문은 [org-writing.md](../shared/org-writing.md)를 따른다** - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 공통 표기.
 - **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
-- **verbatim 뒤에 한글 조사를 붙이지 않는다.** `=Foo=에`는 org가 마크업으로 인식하지 못해 export에서 깨진다. 조사가 안 붙게 문장을 쓰고, 부득이하면 한 칸 띄운다.
-- **헤딩 아래 본문은 별 개수 + 1칸 들여쓴다**(`*` → 2칸, `**` → 3칸).
 - **다이어그램은 `diagrams`를 그대로 org mermaid 블록으로 싣는다.**
   - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `:width "2048"`으로 폭 통일.
   - mermaid 소스는 편집·재작성 금지(verbatim `=` 규칙과 무관).

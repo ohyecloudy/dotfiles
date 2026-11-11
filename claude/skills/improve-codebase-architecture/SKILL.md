@@ -61,7 +61,7 @@ disable-model-invocation: true
 
 전체 org 스캐폴드, 다이어그램 패턴, 톤은 [ORG-REPORT.md](ORG-REPORT.md) 참고.
 
-쓴 뒤 먼저 [code-locations.md](../shared/code-locations.md)의 검사를 실행하고 출력이 없을 때까지 위반을 고친다. 그다음 [org-formatting.md](../shared/org-formatting.md)의 정렬을 실행한다.
+본문은 [org-writing.md](../shared/org-writing.md)를 따른다. 쓴 뒤 먼저 [code-locations.md](../shared/code-locations.md)의 검사를 실행하고 출력이 없을 때까지 위반을 고친다. 그다음 [org-formatting.md](../shared/org-formatting.md)의 정렬을 실행한다.
 
 아직 인터페이스를 제안하지 말 것. 파일을 쓴 뒤 사용자에게 묻는다: "이 중 어느 것을 탐색하고 싶으세요?"
 
