@@ -92,6 +92,46 @@ After
     + 커밋: b470a1ac31
 ```
 
+## 코드 블록
+
+설명 bullet, 위치 링크, src 블록이 빈 줄 없이 번갈아 나오면 어느 설명이 어느 코드에 걸리는지 경계가 사라진다. 블록 본문의 들여쓰기·escape는 [org-formatting.md](org-formatting.md)의 "블록 본문"을 따른다.
+
+- heading 하나 = 코드 블록 하나. 블록이 둘이면 보여주는 사실도 둘이다 - heading을 나눈다.
+  - 논리 단위(`**`) 아래 코드가 나오는 단계마다 `***` heading. 요약은 그 코드가 보여주는 것.
+  - 논리 단위 본문에는 "왜 읽나" 개요 bullet만 둔다. 코드는 단계 heading 안에만.
+  - 코드 없는 마무리 bullet은 `*** 정리 - <요약>` heading으로 둔다(마지막 단계 뒤에 쓰면 그 단계로 흡수된다).
+- 단계 heading 안 순서
+  1. 설명 bullet - 코드에서 무엇을 볼지
+  2. `- 위치: [[file:...][파일:라인]]` - 코드 바로 앞 마지막 bullet. 심볼은 링크 뒤에
+  3. 코드 블록
+  4. 의미 bullet(선택) - 이 코드에만 걸리는 trade-off, 주의점
+- 블록 앞뒤에 빈 줄 하나.
+- 블록은 heading 본문 들여쓰기(bullet 기호와 같은 열)에서 시작한다. 그래야 list가 블록에서 끊긴다. bullet 텍스트 열(+2칸)에 쓰면 org가 블록을 마지막 bullet 소속으로 보고, 뒤 의미 bullet까지 같은 list로 이어진다.
+- 실행 절차(번호 목록) 안의 블록은 예외 - 그 단계 소속이므로 단계 텍스트 열에 둔다.
+
+```org
+** 1. 호스트 쪽 경로 - DLL 스캔부터 sink 호출까지
+
+   - 플러그인 코드를 읽기 전에 호스트가 어떻게 부르는지
+
+*** 알림 실행 - 별도 task, 토큰 None, 예외는 Error 로그로 삼킴
+
+    - NotificationService가 sink 호출을 Task.Run으로 감쌈
+      + 호출자 토큰은 None
+    - 위치: [[file:E:/ue/.../NotificationService.cs::385][NotificationService.cs:385]]
+
+    #+begin_src csharp
+    Task task = Task.Run(async () =>
+    ...
+    #+end_src
+
+    - 플러그인 예외가 서버를 죽이지 않음
+
+*** 정리 - Build 플러그인 참조 필요
+
+    - GoogleChat 플러그인은 HordeServer.Build.dll도 참조해야 INotificationSink를 구현 가능
+```
+
 ## 공통 표기
 
 - bullet은 물리적으로 한 줄. 문장 중간 하드 줄바꿈 금지(표시는 emacs soft-wrap).

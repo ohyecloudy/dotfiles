@@ -446,7 +446,7 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
 
 - **코드 위치는 [code-locations.md](../shared/code-locations.md)의 org 규칙을 따른다** - 어디에 쓰든 `[[file:/abs/path/foo.ts::42][foo.ts:42]]`, 같은 파일 반복도 전체 target, 링크는 verbatim 금지.
   - 채팅 보고의 경로는 맨 경로(정본의 "그 밖" 규칙).
-- **본문은 [org-writing.md](../shared/org-writing.md)를 따른다** - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 공통 표기.
+- **본문은 [org-writing.md](../shared/org-writing.md)를 따른다** - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 코드 블록 배치, 공통 표기.
 - **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
 - **다이어그램은 org mermaid 블록.**
   - `:file`은 `~/code-tour/<slug>-<kind>.png`, `:width "2048"`으로 폭 통일.
