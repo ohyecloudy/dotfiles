@@ -163,7 +163,7 @@ disable-model-invocation: true
 ** 단면도
 
    #+begin_src mermaid :file ~/code-tour/<slug>-cross-section.png :width "2048"
-   <block-beta columns 1 - 층 = §3 단계, 위가 UI 쪽>
+     <block-beta columns 1 - 층 = §3 단계, 위가 UI 쪽>
    #+end_src
 
    - <단면도를 읽는 법 1~2줄>
@@ -207,13 +207,13 @@ disable-model-invocation: true
 ** 개요                                      ← 시나리오 2개 이상일 때만
 
    #+begin_src mermaid :file ~/code-tour/<slug>-overview.png :width "2048"
-   <swimlane-beta TB - lane = 시나리오/시점, lane 넘는 엣지 = 넘기는 것>
+     <swimlane-beta TB - lane = 시나리오/시점, lane 넘는 엣지 = 넘기는 것>
    #+end_src
 
 ** 시나리오 A: <가장 중요한 흐름>
 
    #+begin_src mermaid :file ~/code-tour/<slug>-scenario-a.png :width "2048"
-   <sequenceDiagram>
+     <sequenceDiagram>
    #+end_src
 
    1. <단계> → [[file:/abs/path::line][파일명:line]] =심볼=
@@ -341,7 +341,7 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
 *** TODO =<sha>= <subject>
 
     #+begin_example
-    <git log -1 --format=%B <sha> 원문>
+      <git log -1 --format=%B <sha> 원문>
     #+end_example
 
 ** TODO 바뀐 곳
@@ -351,7 +351,7 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
     - [[file:/abs/path/foo.el::42][foo.el:42]]
 
     #+begin_src diff
-    <code.text>
+      <code.text>
     #+end_src
 
 **** =other-symbol= - <같은 파일 다음 위치>
@@ -359,7 +359,7 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
      - [[file:/abs/path/foo.el::80][foo.el:80]]
 
      #+begin_src emacs-lisp
-     <code.text>
+       <code.text>
      #+end_src
 
 ** TODO 설계 포인트

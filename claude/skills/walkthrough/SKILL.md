@@ -103,8 +103,9 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 ** <종류 한글명> - <title>                   ← 위치 / 개요 / 시퀀스 / 상태 / 데이터 / 분기 / 계약
 
    - <caption 한 줄>
+
    #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>[-<시점 slug>].png :width "2048"
-   <mermaid 소스>
+     <mermaid 소스>
    #+end_src
 
 * 사전 지식(prerequisite)                  ← 해당 없으면 섹션 통째 생략
@@ -141,7 +142,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
     - 위치: [[file:/abs/path/foo.ts::40][foo.ts:40]]
 
     #+begin_src ts
-    <근거 라인만>
+      <근거 라인만>
     #+end_src
 
     - <의미 한 줄>                          ← 선택
@@ -152,8 +153,8 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
     - 위치: [[file:/abs/path/bar.ts::88][bar.ts:88]]
 
     #+begin_src diff
-    -<이전 라인>
-    +<이후 라인>
+      -<이전 라인>
+      +<이후 라인>
     #+end_src
 
 * 사람 판단 필요

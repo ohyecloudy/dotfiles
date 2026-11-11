@@ -23,8 +23,9 @@
 ** 핫스팟 - 수정 빈도 x 크기
 
    - <smell_map caption>
+
    #+begin_src mermaid :file ~/architecture-review/<base>-smell-hotspot.png :width "2048"
-   <smell_map mermaid 그대로>
+     <smell_map mermaid 그대로>
    #+end_src
 
 ** 함께 바뀌는 파일 - 경계를 넘는 결합                ← 같은 구조, :file ...-smell-co-change.png
@@ -45,15 +46,17 @@
 *** Before
 
     - <caption 한 줄>
+
     #+begin_src mermaid :file ~/architecture-review/<base>-<slug>-before.png :width "2048"
-    <mermaid 소스>
+      <mermaid 소스>
     #+end_src
 
 *** After
 
     - <caption 한 줄>
+
     #+begin_src mermaid :file ~/architecture-review/<base>-<slug>-after.png :width "2048"
-    <mermaid 소스>
+      <mermaid 소스>
     #+end_src
 
 *** Wins

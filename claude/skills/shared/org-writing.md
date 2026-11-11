@@ -121,8 +121,8 @@ After
     - 위치: [[file:E:/ue/.../NotificationService.cs::385][NotificationService.cs:385]]
 
     #+begin_src csharp
-    Task task = Task.Run(async () =>
-    ...
+      Task task = Task.Run(async () =>
+      ...
     #+end_src
 
     - 플러그인 예외가 서버를 죽이지 않음

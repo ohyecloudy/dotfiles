@@ -208,7 +208,7 @@ poc.org `* 검증 근거`, `* 시도 로그`, `* 수동 확인 필요`를 Read�
     - 위치: [[file:/abs/path/foo.cpp::40][foo.cpp:40]]
 
     #+begin_src cpp
-    <근거 라인만>
+      <근거 라인만>
     #+end_src
 
     - <이 코드가 trade-off의 어느 쪽을 택한 것인지>
