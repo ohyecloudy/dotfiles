@@ -25,7 +25,7 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 1. **커밋 hash 또는 범위** + 저장소 위치 → 저장소에서 `git show <hash>` / `git diff <range>`로 diff를 직접 확보한다. 큰 변경도 truncation 없이 전량 확보한다.
 2. **diff 텍스트** (+ 가능하면 저장소 위치) → 그대로 분석 소스로 쓴다. 저장소 위치가 있으면 탐색 보강에 쓴다.
 
-호출자는 선택적으로 **원하는 다이어그램 종류**(`module`/`class`/`sequence`의 부분집합)를 함께 지정할 수 있다. 지정된 종류만 §4에서 탐색·생성하고, **지정이 없으면 다이어그램을 만들지 않는다**(안 그릴 걸 탐색하면 낭비 - 탐색 비용을 요청 범위에 맞춘다).
+호출자는 선택적으로 **원하는 다이어그램**을 함께 지정할 수 있다. `auto` 또는 [diagrams.md](../shared/diagrams.md) 카탈로그의 kind 부분집합, 그리고 선택적 장수 상한 `max: N`. 지정된 것만 §4에서 탐색·생성하고, **지정이 없으면 다이어그램을 만들지 않는다**(안 그릴 걸 탐색하면 낭비 - 탐색 비용을 요청 범위에 맞춘다).
 
 호출자는 선택적으로 **독자의 낯선 영역**([reader-profile.md](../shared/reader-profile.md)로 정한 언어·버전·프레임워크 숙련도)을 함께 넘길 수 있다. 넘기면 §3 사전 지식 판정에 쓴다. 이 스킬이 직접 묻거나 프로필 파일을 고치지는 않는다 - 서브에이전트로 호출되는 경우가 있어 사용자와 대화할 수 없다.
 
@@ -55,29 +55,17 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
   - `reader-unfamiliar`: 호출자가 넘긴 낯선 영역에 속하는, diff에 실제 등장한 언어 기능·프레임워크 기능. 선례가 있어도 포함한다 - 코드베이스엔 흔해도 독자는 모른다. 낯선 영역을 넘겨받지 않았으면 이 종류는 만들지 않는다(독자를 추측하지 않는다).
 - 정의·관련 모듈: 아키텍처 관찰의 근거.
 
-### 4. 다이어그램 구성 (요청된 종류만)
+### 4. 다이어그램 구성 (요청된 것만)
 
-입력에서 다이어그램 종류가 지정됐을 때만 수행한다. **변경 중심 + 2홉 이웃**을 대상으로, 요청된 종류의 mermaid 소스를 만든다(§3의 `impact` 탐색을 재사용해 2홉으로 확장한다).
+입력에서 다이어그램이 지정됐을 때만 수행한다. 차트 선택, 트리거, 표기 규칙은 [diagrams.md](../shared/diagrams.md)가 정본이다. **변경 중심 + 2홉 이웃**을 대상으로 한다(§3의 `impact` 탐색을 재사용해 2홉으로 확장한다).
 
-- **module**(`flowchart TD`): 변경이 닿은 모듈과 그 2홉 이웃, include/import/참조 엣지. 방향은 `TD` 고정 - `LR`은 노드가 가로로 늘어서 고정 폭 렌더에서 글자가 작아진다.
-- **class**(`classDiagram`): 변경이 닿은 클래스와 2홉 이웃, 상속/합성/연관 엣지.
-- **sequence**(`sequenceDiagram`): diff와 탐색으로 복원한 호출 순서.
-
-규율:
-
-- **엣지 라벨 = 관계 동사.** 무라벨 엣지는 "뭔가 연결돼 있다"까지만 읽힌다. `sends`·`creates`·`observes`처럼 무엇을 하는 관계인지 적는다.
-- **근거는 선 모양이 아니라 라벨로 표시한다.** 추정 엣지는 라벨 앞에 `?`를 붙인다(`?sends`). 라벨 채널을 쓰는 이유는 선 모양에 이미 관계 의미가 걸려 있어서다 - class의 `..>`는 UML 의존, sequence의 `-->>`는 응답 메시지라, 점선을 추정 뜻으로 겹쳐 쓰면 확인된 관계까지 추정으로 읽힌다. `basis` 규율을 그대로 상속한다 - grep/read로 확인한 것만 무표시.
-  - flowchart: `PCM -->|sends| Sel` / 추정은 `PCM -->|?sends| Sel`
-  - class: `Workout ..> Selection : creates` / 추정은 `: ?creates`
-  - sequence: `CV ->> WCM: chooseExercise(offset:)` / 추정은 `: ?chooseExercise(offset:)`
-- **캡션 범례는 조건부.** 추정 엣지가 하나라도 있을 때만 "?=추정"을 넣는다. 추정이 0이면 범례를 쓰지 않는다 - 늘 붙이면 오독을 부른다.
-- **추정이 전체 엣지의 1/3을 넘으면 그대로 내지 않는다.** grep/read로 더 확인하거나, 확인 못 한 엣지는 빼고 캡션에 "관계 N개 미확인"을 적는다. 절반이 추정인 그림은 리뷰어에게 노이즈다.
-- **노드 라벨 = 식별자 + 역할 한 줄.** 식별자만 두지 않는다. `<br/>`로 역할을 붙여 그림만 보고도 각 노드가 왜 있는지 알 수 있게 한다.
-  - 역할은 이름을 풀어 쓴 게 아니라 **책임 서술**. 예) `Sel["libre08Shared/WatchWorkoutSelection<br/>워치 운동 선택 정보를 공유하는 모듈"]`
-  - sequence는 `participant Sel as libre08Shared/WatchWorkoutSelection<br/>워치 운동 선택 정보 공유`, class는 `class Foo["Foo<br/>역할"]`.
-- **변경 노드는 하이라이트**(mermaid `classDef changed ...` + `class <Id> changed`)로 이웃과 구분한다. `class` 지정은 노드 하나당 한 줄 - 쉼표로 여러 식별자를 묶지 않는다(`class A,B changed`는 무효 구문).
-- **노드 상한 ~15.** 넘으면 가장 먼 홉·변경과 무관한 잎 노드부터 가지치기하고 캡션에 "외 N개 생략"을 적는다.
-- **유효 엣지가 0이면 그 종류는 생략한다**(빈 다이어그램 금지). 코드가 아니거나 관계가 없는 변경은 다이어그램이 안 나올 수 있다.
+- **선택**
+  - `auto`: 카탈로그 트리거에 해당하는 kind만 그린다. `module`은 고르지 않는다. 다른 장이 이미 답한 질문이면 생략한다.
+  - kind 부분집합: 그 kind만, 트리거와 무관하게 그린다(유효 엣지가 있을 때).
+  - `max: N`: 고른 결과가 N장을 넘으면 diagrams.md의 우선순위로 자른다.
+- **시점 분리**: 흐름이 여러 시점(로드/등록, 요청 처리, 갱신 등)에 걸치면 `sequence`를 시점마다 1장씩 만든다. 시점 이름이 그 장의 `title`이다.
+- **근거 표시**: 추정 엣지의 `?` 접두는 `basis` 규율을 그대로 상속한다 - grep/read로 확인한 것만 무표시.
+- 코드가 아니거나 관계가 없는 변경은 다이어그램이 안 나올 수 있다.
 
 ### 5. 읽는 순서
 
@@ -115,11 +103,11 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
   "prerequisites": [{ "concept": "개념명", "what": "무엇인지 한 줄", "location": "/abs/path.cpp:40", "reason": "no-precedent | reader-unfamiliar" }],
   "reading_order": [{ "path": "/abs/path.cpp:40", "why": "왜 여기부터", "symbol": "Foo::Bar", "code": { "kind": "diff|new|deleted", "lang": "cpp", "text": "<§5 규칙의 본문>" } }],
   "omitted":       [{ "text": "생략분과 이유" }],
-  "diagrams":      [{ "kind": "module|class|sequence", "title": "제목(한국어)", "caption": "무엇을 보는 그림인지 한 줄(추정 엣지 있으면 ?=추정 범례 포함)", "mermaid": "<mermaid 소스>" }]
+  "diagrams":      [{ "kind": "tree|overview|sequence|state|er|logic|class|cross-section|module", "title": "제목(한국어, sequence는 시점명)", "caption": "무엇을 보는 그림인지 한 줄(추정 엣지 있으면 ?=추정 범례 포함)", "mermaid": "<mermaid 소스>" }]
 }
 ```
 
-`stat`·`prerequisites`·`reading_order`·`omitted`·`diagrams`는 변경 단위 전체 레벨(파일은 논리 단위를 가로지르므로). `units[]`만 논리 단위별이다. `diagrams`는 입력에서 요청된 종류만, 유효 엣지가 있을 때만 채운다(요청 없으면 빈 배열). `reading_order[].symbol`·`code`는 `evidence: full`일 때만 있다.
+`stat`·`prerequisites`·`reading_order`·`omitted`·`diagrams`는 변경 단위 전체 레벨(파일은 논리 단위를 가로지르므로). `units[]`만 논리 단위별이다. `diagrams`는 입력 요청에 따라 §4로 고른 것만 채운다(요청 없으면 빈 배열). `sequence`는 시점마다 항목 하나. `reading_order[].symbol`·`code`는 `evidence: full`일 때만 있다.
 
 ## 작성 규칙
 
@@ -129,6 +117,6 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 - **`before`는 기존 라인을 고친 evidence에만 채운다.** 같은 diff hunk의 삭제(`-`) 라인에서 그대로 뽑는다(추가 git 조회 불필요) - 순수 신규 추가 라인이면 `before: ""`. diff 형식이라도 원본 hunk 그대로 덤프하지 않고 최소 대비 라인만.
 - **경로는 어디에 쓰든 항상 `절대경로:단일라인`.** `/abs/path/foo.cpp:42` 형식. 상대경로(`foo.cpp:42`)·파일명만·라인 범위(`:42-50`)는 emacs evil `gF`/compilation-mode가 점프 못 하므로 금지. `summary`·`architecture` 같은 산문 text에 인라인으로 넣어도 되지만, 그때도 반드시 절대경로:단일라인이어야 한다(절대경로면 문장 중간이어도 점프된다). `impact.refs`·`evidence.path`·`prerequisites.location`·`reading_order.path`도 동일.
 - **`text`는 한 항목 = 한 줄.** 산문 문단으로 뭉치지 않는다.
-- **다이어그램(`diagrams`)은 요청된 종류만, 유효 엣지가 있을 때만 낸다.** 노드 라벨은 실제 코드 식별자(클래스·파일·네임스페이스) + `<br/>` + 역할 한 줄이며, `["라벨"]`로 감싸 **구문상 유효한 mermaid**를 보장한다(`::`·`<>` 등 특수문자 포함 시에도 동일). 엣지에는 관계 동사 라벨을 달고, 추정은 라벨 앞 `?`로 표시한다(선 모양은 관계 의미 전용). 변경 노드는 하이라이트. 노드 상한 ~15, 초과분은 `caption`에 "외 N개 생략"으로 명시한다. `mermaid`엔 소스만 담고 org `#+begin_src` 래핑·`:file`·`:width`는 호출자 몫이다.
+- **다이어그램(`diagrams`)은 §4로 고른 것만 낸다.** 표기(노드 라벨, 관계 동사, `?` 추정, 하이라이트, 노드 상한)는 [diagrams.md](../shared/diagrams.md)를 따른다. `mermaid`엔 소스만 담고 org `#+begin_src` 래핑·`:file`·`:width`는 호출자 몫이다.
 - 설명·제목은 한국어. **모든 출력은 utf-8**(입력이 cp949 등이면 변환해 처리).
 - 변경이 없거나 코드가 아니면 `units: []`와 빈 배열들을 반환한다.
