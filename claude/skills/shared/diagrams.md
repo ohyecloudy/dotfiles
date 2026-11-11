@@ -27,6 +27,22 @@
 - 제외한 것과 이유
   - `architecture-beta` / 경계 `block`: 런타임 경계는 sequence `box`가, 저장소 위치는 `tree`가 답한다.
   - `eventmodeling`, `gantt`, `pie`, `gitGraph`, `timeline`, `mindmap` 등: 코드 이해에 답하는 질문이 없다.
+  - `sankey`: 방향과 합계가 있는 차트라 "함께 바뀜"(무방향, 합계 무의미)에 맞지 않는다.
+  - `radar`: 축마다 단위가 달라 모양이 쉽게 왜곡된다.
+  - `treemap`: "크다"는 보이지만 "나빠지고 있다"는 안 보인다.
+
+## 저장소 진단
+
+한 변경이 아니라 저장소가 나빠지는 곳을 찾는 차트. 재료가 diff가 아니라 git 이력이라 위 카탈로그의 `auto` 대상이 아니다. mermaid는 [smell_map.py](../improve-codebase-architecture/smell_map.py)가 생성하고, 쓰는 쪽은 그대로 싣는다(편집 금지) - quadrant 점 이름 따옴표, 크기, bar 색 같은 표기 함정을 스크립트가 고정한다.
+
+| kind | 차트 | 답하는 질문 | 측정 |
+| --- | --- | --- | --- |
+| `hotspot` | `quadrantChart` | 크고 자주 바뀌는 파일은 | x = 기간 내 수정 커밋 수, y = 빈 줄 제외 줄 수. 곱 상위 15개, 그 안에서 로그 min-max |
+| `co-change` | `flowchart TD` 무방향 | 서로 몰라야 할 파일이 같이 바뀌나 | 다른 디렉터리 쌍, 5회 이상, 결합도 30% 이상. 파일 30개 초과 커밋과 `.h`/`.cpp` 짝 제외 |
+| `growth` | `xychart-beta horizontal` bar | 어디가 부풀고 있나 | 기간 끝 - 시작 줄 수, 신규 파일은 0부터. 수정 상위 300개 텍스트 파일 중 상위 10 |
+
+- `co-change` 엣지 의미는 "함께 바뀜" 하나뿐이라 "의존과 흐름을 섞지 않음" 원칙과 충돌하지 않는다.
+- 기본 제외: 바이너리(`uasset`, `dll`, `xlsx` 등), 생성 코드(`*.generated.*`, `*Generated.*`), 서드파티/빌드 산출 디렉터리, lock 파일, 데이터(`csv`, `xml`, `xsd`, 로컬라이제이션). 데이터는 `--include-data`로 포함.
 
 ## 한 장에 한 관심사
 
