@@ -284,6 +284,15 @@
 
    참고: [[http://ohyecloudy.com/emacsian/2022/05/28/create-link-section-by-scraping-links-from-current-org-docs/][org 문서에서 링크를 긁어서 링크 섹션을 만들기 - ohyecloudy.com]]
 
+** my-org-src-diff
+
+   #+begin_src elisp
+     (after! org
+       (require 'my-org-src-diff))
+   #+end_src
+
+   =org-src-preserve-indentation= nil이라 src 블록 내용이 들여쓰기된 채로 diff-mode에 넘어가 =^-=, =^+= 패턴이 매치 안 됨. 들여쓰기를 걷어낸 사본을 diff-mode로 칠해서 face를 되돌려 붙이는 advice로 diff 블록 색상 복구.
+
 ** my-ox-gfm-link
 
    #+begin_src elisp
