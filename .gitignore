@@ -78,3 +78,6 @@ config.local.el
 
 # Claude Code synced account skills (auto-generated per machine)
 /claude/skills/synced/
+
+# mermaid-cli: track version pins only
+/bin/mermaid-cli/node_modules/

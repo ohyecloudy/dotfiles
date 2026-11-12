@@ -2102,34 +2102,24 @@
 
     #+begin_src elisp
       (after! mermaid-mode
-        (setq org-babel-default-header-args:mermaid
-              '((:results . "file") (:exports . "results") (:width . "2048")))
         (setq mermaid-flags
               (concat "-s 3 -c " (shell-quote-argument
                                   (expand-file-name "mermaid-config.json" doom-user-dir)))))
     #+end_src
 
-    mermaid 블록마다 크기 옵션을 쓰지 않고 여기서 통일한다. 4K 모니터 기준. 테마는 mermaid 설정 파일(=mermaid-config.json=)에서 =redux-color= 로 지정한다.
-
-    - =:width= (mmdc =-w=)는 뷰포트 폭일 뿐 그림을 늘리지 않음 - 작은 그림은 그대로 작게 나옴
-    - 해상도는 mmdc =-s= (device scale factor)가 정함 - mermaid-mode는 =:scale= 헤더를 처리하지 않아 =mermaid-flags= 로 넘김
-    - 원래 기본값(=:results=, =:exports=)을 같이 넣음 - 리스트를 통째로 교체하므로
-    - mmdc =-t= (=:theme=)는 =default=, =forest=, =dark=, =neutral= 만 허용 - =redux-color= 는 =-c= 설정 파일로 우회
-    - mermaid 설정 파일, puppeteer 설정 파일로는 크기를 못 뺌 - mmdc가 =-w= / =-s= 값으로 뷰포트를 덮어씀
-    - =mermaid-flags= 는 mermaid-mode 자체 컴파일(=mermaid-compile=)에도 붙음
-
-*** windows mmdc 경로
+*** mmdc 경로
 
     #+begin_src elisp
-      (when IS-WINDOWS
-        (setq mermaid-mmdc-location (expand-file-name "~/bin.local/mermaid-cli/node_modules/.bin/mmdc.cmd")))
+      (setq mermaid-mmdc-location
+            (expand-file-name (if IS-WINDOWS "mmdc.cmd" "mmdc")
+                              "~/bin/mermaid-cli/node_modules/.bin/"))
     #+end_src
 
-    windows에서는 직접 설치하고 경로를 지정한다.
+    전역 설치 대신 =~/bin/mermaid-cli= 에 버전을 고정해 설치하고 경로를 지정한다. windows/mac 버전 통일.
 
-    - mermaid-mode는 경로를 =shell-quote-argument= 로 그대로 감싸 셸에 넘김
-    - =~= 를 리터럴로 quoting해 셸이 홈 디렉토리로 확장하지 못함 (exit 127)
-    - =expand-file-name= 으로 미리 절대 경로로 바꿔 넘김
+    - =package.json= / =package-lock.json= 만 저장소에 둠 - =cd ~/bin/mermaid-cli && npm ci= 로 lock 그대로 설치
+    - puppeteer postinstall(헤드리스 크롬 다운로드)은 =package.json= 의 =allowScripts= 로 승인 - npm 11 기본 차단
+    - mermaid-mode는 경로를 =shell-quote-argument= 로 그대로 감싸 셸에 넘김 - =~= 가 확장되지 않아 =expand-file-name= 으로 절대 경로로
 
 ** evil
 

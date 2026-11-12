@@ -1,3 +1,11 @@
 {
-  "theme": "redux-color"
+  "theme": "redux-color",
+  "flowchart": { "useMaxWidth": false },
+  "sequence": { "useMaxWidth": false },
+  "er": { "useMaxWidth": false },
+  "state": { "useMaxWidth": false },
+  "class": { "useMaxWidth": false },
+  "block": { "useMaxWidth": false },
+  "quadrantChart": { "useMaxWidth": false },
+  "xyChart": { "useMaxWidth": false }
 }

@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "dependencies": {
+    "@mermaid-js/mermaid-cli": "12.2.0"
+  },
+  "allowScripts": {
+    "puppeteer@25.17.0": true
+  }
+}
