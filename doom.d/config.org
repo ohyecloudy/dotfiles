@@ -2090,6 +2090,23 @@
 
    org-babel 언어로 =mermaid= 를 추가해서 소스 코드 블럭 컴파일을 할 수 있게 한다.
 
+*** 렌더 크기 기본값
+
+    #+begin_src elisp
+      (after! ob-mermaid
+        (setq org-babel-default-header-args:mermaid
+              '((:results . "file") (:exports . "results")
+                (:width . "2048") (:scale . 3))))
+    #+end_src
+
+    mermaid 블록마다 크기 옵션을 쓰지 않고 여기서 통일한다. 4K 모니터 기준.
+
+    - =:width= (mmdc =-w=)는 뷰포트 폭일 뿐 그림을 늘리지 않음 - 작은 그림은 그대로 작게 나옴
+    - 해상도는 =:scale= (mmdc =-s=, device scale factor)이 정함
+    - =:scale= 은 숫자로 - ob-mermaid가 문자열 scale을 =number-to-string= 에 넘겨 에러
+    - 원래 기본값(=:results=, =:exports=)을 같이 넣음 - 리스트를 통째로 교체하므로
+    - mermaid 설정 파일(=ob-mermaid-default-config-file=), puppeteer 설정 파일로는 크기를 못 뺌 - mmdc가 =-w= / =-s= 값으로 뷰포트를 덮어씀
+
 *** windows mmdc 경로
 
     #+begin_src elisp
