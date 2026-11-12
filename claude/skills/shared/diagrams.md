@@ -2,8 +2,6 @@
 
 다이어그램을 그리는 스킬(`explain-change` -> `walkthrough`·`warm-start`, `code-tour`, `improve-codebase-architecture`)이 공유하는 차트 선택과 표기 규칙. 종류를 고정해 그리면 그림마다 답할 질문이 없어지고, flowchart 한 장에 로드 시점과 런타임 흐름이 섞인다. 그래서 **리뷰어 질문 -> 차트**로 고르고, 다른 장이 이미 답한 질문은 그리지 않는다. 스킬 고유 패턴(before/after 대비 등)은 각 스킬에 남긴다.
 
-렌더러는 `~/bin.local/mermaid-cli`의 mmdc 11.17.1(mermaid 11.17.x)로 고정한다. 12는 `-w` 옵션이 없어 ob-mermaid의 `:width`가 깨진다.
-
 ## 카탈로그
 
 닫힌 목록. 여기 없는 차트는 쓰지 않는다.
