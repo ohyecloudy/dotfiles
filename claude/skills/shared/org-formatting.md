@@ -27,6 +27,7 @@ emacs -Q --batch -l ~/.claude/skills/shared/org-format.el <생성·수정한 .or
 - src/example 블록 앞뒤에 빈 줄 하나를 넣는다.
   - 앞: 블록 위 `#+name:`/`#+caption:` 등 affiliated keyword가 있으면 그 위에.
   - 뒤: `#+RESULTS`가 붙어 있거나 파일 끝이면 넣지 않는다.
+- 통계 쿠키(statistics cookie) `[/]`/`[%]`를 다시 센다(`org-update-statistics-cookies`). 스킬은 빈 `[/]`만 쓰고 개수는 여기서 채운다 - 손으로 세면 틀린다.
 - line ending을 실행 OS에 맞춘다(Windows CRLF `utf-8-dos`, 그 외 LF `utf-8-unix`). Bash heredoc 등 앞 단계가 LF로 썼어도 여기서 맞춰진다.
 - `make-backup-files nil`: `~` 백업 파일을 남기지 않는다.
 - 여러 번 실행해도 결과가 같다.

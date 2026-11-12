@@ -100,6 +100,8 @@ Relative indentation, diff prefixes and whitespace-only lines are kept as is."
   (setq indent-tabs-mode nil)
   (org-indent-region (point-min) (point-max))
   (org-format--normalize-blocks)
+  ;; Fill [/] cookies so skills never count TODO children by hand.
+  (org-update-statistics-cookies 'all)
   (set-buffer-file-coding-system (if (memq system-type '(windows-nt ms-dos)) 'utf-8-dos 'utf-8-unix))
   (save-buffer))
 
