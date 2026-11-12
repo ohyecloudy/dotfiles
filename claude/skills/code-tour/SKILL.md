@@ -162,7 +162,7 @@ disable-model-invocation: true
 
 ** 단면도
 
-   #+begin_src mermaid :file ~/code-tour/<slug>-cross-section.png :width "2048"
+   #+begin_src mermaid :file ~/code-tour/<slug>-cross-section.png
      <block-beta columns 1 - 층 = §3 단계, 위가 UI 쪽>
    #+end_src
 
@@ -206,13 +206,13 @@ disable-model-invocation: true
 
 ** 개요                                      ← 시나리오 2개 이상일 때만
 
-   #+begin_src mermaid :file ~/code-tour/<slug>-overview.png :width "2048"
+   #+begin_src mermaid :file ~/code-tour/<slug>-overview.png
      <swimlane-beta TB - lane = 시나리오/시점, lane 넘는 엣지 = 넘기는 것>
    #+end_src
 
 ** 시나리오 A: <가장 중요한 흐름>
 
-   #+begin_src mermaid :file ~/code-tour/<slug>-scenario-a.png :width "2048"
+   #+begin_src mermaid :file ~/code-tour/<slug>-scenario-a.png
      <sequenceDiagram>
    #+end_src
 
@@ -459,7 +459,7 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
 - **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
 - **다이어그램은 org mermaid 블록.**
   - 표기·차트 문법은 [diagrams.md](../shared/diagrams.md) - 단면도 = `cross-section`, 개요 = `overview`, 시나리오 = `sequence`.
-  - `:file`은 `~/code-tour/<slug>-<kind>.png`, `:width "2048"`으로 폭 통일.
+  - `:file`은 `~/code-tour/<slug>-<kind>.png`. 크기 옵션은 블록에 쓰지 않는다(ob-mermaid 기본값).
   - 렌더는 온디맨드 - 사용자가 `C-c C-c`/export로 PNG를 만든다(pre-render하지 않는다).
 - **커밋 메시지 example 블록과 `바뀐 곳` 코드 블록은 예외.** 원문 보존이 목적이라 위 규칙(한 줄, verbatim, 조사, 코드 위치 링크)을 적용하지 않는다.
 

@@ -105,7 +105,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
    - <caption 한 줄>
 
-   #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>[-<시점 slug>].png :width "2048"
+   #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>[-<시점 slug>].png
      <mermaid 소스>
    #+end_src
 
@@ -183,7 +183,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
 *** 선택 흐름 - <kind>, <요약>               ← 선택. 다이어그램 트리거 맞을 때만
 
-    #+begin_src mermaid :file ~/walkthrough/<slug>-decision-<n>-chosen.png :width "2048"
+    #+begin_src mermaid :file ~/walkthrough/<slug>-decision-<n>-chosen.png
       <mermaid 소스 - 대안과 다른 노드만 :::highlight>
     #+end_src
 
@@ -193,7 +193,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
 *** 대안 흐름 - <kind>, <요약>               ← 선택 흐름과 같은 kind. 선택 흐름이 있을 때만
 
-    #+begin_src mermaid :file ~/walkthrough/<slug>-decision-<n>-alt.png :width "2048"
+    #+begin_src mermaid :file ~/walkthrough/<slug>-decision-<n>-alt.png
       <mermaid 소스>
     #+end_src
 
@@ -235,7 +235,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
 *** 정리 - <밟은 경로 한 구>
 
-    #+begin_src mermaid :file ~/walkthrough/<slug>-quiz-<체인 순번>.png :width "2048"
+    #+begin_src mermaid :file ~/walkthrough/<slug>-quiz-<체인 순번>.png
       <홉 번호를 붙인 경로>
     #+end_src
 
@@ -315,7 +315,7 @@ awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TOD
   - 선택 vs 대안: 차이가 분기 판정이면 `logic`, 호출 순서면 `sequence`, 설정/데이터 모양이면 `er`. 같은 kind로 선택 1장 + 대안 1장, 차이 노드만 `:::highlight`.
   - `열린 지점`, `뒤집기 비용` 등 다른 `***` heading도 내용이 kind 질문에 맞으면 쓴다.
   - heading 하나에 블록 하나([org-writing.md](../shared/org-writing.md) 코드 블록 규칙).
-  - `:file` = `~/walkthrough/<slug>-decision-<n>-<part>.png`(`<n>` = 항목 순번, `<part>` = `open` | `chosen` | `alt[-k]` | `cost`), `:width "2048"`.
+  - `:file` = `~/walkthrough/<slug>-decision-<n>-<part>.png`(`<n>` = 항목 순번, `<part>` = `open` | `chosen` | `alt[-k]` | `cost`).
   - 선택/대안 대비는 이 스킬 고유 패턴이다. 표기 규칙은 diagrams.md를 따른다.
 
 ### 확인 질문
@@ -345,7 +345,7 @@ awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TOD
 - **`*** 정리`**: 체인 마지막. 다이어그램 1장 + 홉별 링크 목록(`홉 <n>: <링크> - <일어나는 일>`) + 반사실/주의점 홉이면 대안 경로 한 줄.
   - 다이어그램은 홉 번호를 노드/메시지에 붙인다(`1. Compile`) - 결정 다이어그램(선택 vs 대안)과 달리 "밟은 순서"에 답한다.
   - kind: 홉이 함수 경계를 넘으면 `sequence`, 한 함수 안이면 `logic`, 설정/데이터 모양 추적이면 `er`. 표기는 [diagrams.md](../shared/diagrams.md).
-  - `:file` = `~/walkthrough/<slug>-quiz-<체인 순번>.png`, `:width "2048"`.
+  - `:file` = `~/walkthrough/<slug>-quiz-<체인 순번>.png`.
   - 1홉 질문 안에는 다이어그램을 넣지 않는다 - 코드 몇 줄이 더 빠르다.
 - **문서 안 참조는 순번 금지**("사람 판단 필요 3번째" X). `[[*<heading 제목>][<라벨>]]` 링크를 걸고, 필요한 내용은 그 자리에 발췌한다 - 문서 위아래로 오가게 하지 않는다.
   - 제목은 TODO 키워드/태그를 뺀 heading 텍스트와 완전 일치(org가 키워드를 매칭에서 제외 - 사용자가 `KEEP`/`REVERT`로 바꿔도 유지).
@@ -366,7 +366,7 @@ awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TOD
 - **본문은 [org-writing.md](../shared/org-writing.md)를 따른다** - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 코드 블록 배치, 공통 표기.
 - **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
 - **다이어그램은 `diagrams`를 그대로 org mermaid 블록으로 싣는다.**
-  - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `sequence`는 `-<시점 slug>`를 붙여 장마다 고유하게. `:width "2048"`으로 폭 통일.
+  - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `sequence`는 `-<시점 slug>`를 붙여 장마다 고유하게. 크기 옵션은 블록에 쓰지 않는다(ob-mermaid 기본값).
   - 표기·렌더 공통 규칙은 [diagrams.md](../shared/diagrams.md).
   - mermaid 소스는 편집·재작성 금지(verbatim `=` 규칙과 무관).
   - 렌더는 온디맨드 - 사용자가 `C-c C-c`/export로 PNG를 만든다(pre-render하지 않는다).

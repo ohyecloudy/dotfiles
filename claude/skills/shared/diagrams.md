@@ -149,6 +149,6 @@ block-beta
 
 ## org 렌더
 
-- org mermaid 블록: `#+begin_src mermaid :file <경로>.png :width "2048"`. `:width "2048"`으로 폭 통일.
+- org mermaid 블록: `#+begin_src mermaid :file <경로>.png`. 크기 옵션(`:width`, `:scale`)은 블록에 쓰지 않음 - doom config의 `org-babel-default-header-args:mermaid` 기본값(`:width "2048" :scale 3`)으로 통일. `:width`(mmdc `-w`)는 뷰포트 폭일 뿐 그림을 늘리지 않고, 해상도는 `:scale`(mmdc `-s`, device scale factor)이 정함.
 - `:file` 이름에 kind를 넣는다. `sequence`가 여러 장이면 시점 slug를 붙여 겹치지 않게 한다(`<slug>-sequence-load.png`).
 - 렌더는 온디맨드 - 사용자가 `C-c C-c`/export로 PNG를 만든다(pre-render하지 않는다).

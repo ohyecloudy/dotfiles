@@ -24,7 +24,7 @@
 
    - <smell_map caption>
 
-   #+begin_src mermaid :file ~/architecture-review/<base>-smell-hotspot.png :width "2048"
+   #+begin_src mermaid :file ~/architecture-review/<base>-smell-hotspot.png
      <smell_map mermaid 그대로>
    #+end_src
 
@@ -47,7 +47,7 @@
 
     - <caption 한 줄>
 
-    #+begin_src mermaid :file ~/architecture-review/<base>-<slug>-before.png :width "2048"
+    #+begin_src mermaid :file ~/architecture-review/<base>-<slug>-before.png
       <mermaid 소스>
     #+end_src
 
@@ -55,7 +55,7 @@
 
     - <caption 한 줄>
 
-    #+begin_src mermaid :file ~/architecture-review/<base>-<slug>-after.png :width "2048"
+    #+begin_src mermaid :file ~/architecture-review/<base>-<slug>-after.png
       <mermaid 소스>
     #+end_src
 
