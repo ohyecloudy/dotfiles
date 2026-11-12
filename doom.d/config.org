@@ -2076,36 +2076,47 @@
 
    #+begin_src elisp :tangle packages.el
      (package! mermaid-mode)
-     (package! ob-mermaid)
    #+end_src
 
-   mermaid 구문 강조와 들여쓰기 등을 지원하는 [[https://github.com/abrochard/mermaid-mode][abrochard/mermaid-mode]]를 설치한다. 그리고 org mode에서 mermaid 소스 코드 블럭을 사용할 수 있게 하는 [[https://github.com/arnm/ob-mermaid][arnm/ob-mermaid]]도 추가로 설치한다.
+   mermaid 구문 강조와 들여쓰기 등을 지원하는 [[https://github.com/abrochard/mermaid-mode][abrochard/mermaid-mode]]를 설치한다. org mode의 mermaid 소스 코드 블럭 실행(=org-babel-execute:mermaid=)도 mermaid-mode가 제공한다.
 
-   #+begin_src elisp
-     (after! ob-mermaid
-       (org-babel-do-load-languages 'org-babel-load-languages
-                                    (append org-babel-load-languages
-                                            '((mermaid . t)))))
-   #+end_src
+   - [[https://github.com/arnm/ob-mermaid][arnm/ob-mermaid]]는 쓰지 않음 - 같은 이름의 =org-babel-execute:mermaid= 를 정의해 나중에 로드된 쪽이 덮어씀
+   - 어느 쪽 함수가 남느냐에 따라 적용되는 설정이 달라짐(=ob-mermaid-*= vs =mermaid-flags=)
 
-   org-babel 언어로 =mermaid= 를 추가해서 소스 코드 블럭 컴파일을 할 수 있게 한다.
-
-*** 렌더 크기 기본값
+*** org babel 로드
 
     #+begin_src elisp
-      (after! ob-mermaid
-        (setq org-babel-default-header-args:mermaid
-              '((:results . "file") (:exports . "results")
-                (:width . "2048") (:scale . 3))))
+      (after! org
+        (add-hook '+org-babel-load-functions
+                  (lambda (lang)
+                    (when (string= lang "mermaid")
+                      (require 'mermaid-mode)))))
     #+end_src
 
-    mermaid 블록마다 크기 옵션을 쓰지 않고 여기서 통일한다. 4K 모니터 기준.
+    mermaid 블록을 실행할 때 mermaid-mode를 로드한다.
+
+    - Doom은 =ob-<lang>= -> =<lang>= 순으로 require - mermaid-mode는 둘 다 아니라 못 찾음
+    - =+org-babel-load-functions= 로 직접 로드 - non-nil을 반환하면 Doom이 =org-babel-load-languages= 에 등록
+
+*** 렌더 크기와 테마
+
+    #+begin_src elisp
+      (after! mermaid-mode
+        (setq org-babel-default-header-args:mermaid
+              '((:results . "file") (:exports . "results") (:width . "2048")))
+        (setq mermaid-flags
+              (concat "-s 3 -c " (shell-quote-argument
+                                  (expand-file-name "mermaid-config.json" doom-user-dir)))))
+    #+end_src
+
+    mermaid 블록마다 크기 옵션을 쓰지 않고 여기서 통일한다. 4K 모니터 기준. 테마는 mermaid 설정 파일(=mermaid-config.json=)에서 =redux-color= 로 지정한다.
 
     - =:width= (mmdc =-w=)는 뷰포트 폭일 뿐 그림을 늘리지 않음 - 작은 그림은 그대로 작게 나옴
-    - 해상도는 =:scale= (mmdc =-s=, device scale factor)이 정함
-    - =:scale= 은 숫자로 - ob-mermaid가 문자열 scale을 =number-to-string= 에 넘겨 에러
+    - 해상도는 mmdc =-s= (device scale factor)가 정함 - mermaid-mode는 =:scale= 헤더를 처리하지 않아 =mermaid-flags= 로 넘김
     - 원래 기본값(=:results=, =:exports=)을 같이 넣음 - 리스트를 통째로 교체하므로
-    - mermaid 설정 파일(=ob-mermaid-default-config-file=), puppeteer 설정 파일로는 크기를 못 뺌 - mmdc가 =-w= / =-s= 값으로 뷰포트를 덮어씀
+    - mmdc =-t= (=:theme=)는 =default=, =forest=, =dark=, =neutral= 만 허용 - =redux-color= 는 =-c= 설정 파일로 우회
+    - mermaid 설정 파일, puppeteer 설정 파일로는 크기를 못 뺌 - mmdc가 =-w= / =-s= 값으로 뷰포트를 덮어씀
+    - =mermaid-flags= 는 mermaid-mode 자체 컴파일(=mermaid-compile=)에도 붙음
 
 *** windows mmdc 경로
 
@@ -2114,28 +2125,11 @@
         (setq mermaid-mmdc-location (expand-file-name "~/bin.local/mermaid-cli/node_modules/.bin/mmdc.cmd")))
     #+end_src
 
-    #+begin_src elisp
-      (when IS-WINDOWS
-        (setq ob-mermaid-cli-path (expand-file-name "~/bin.local/mermaid-cli/node_modules/.bin/mmdc.cmd")))
-    #+end_src
-
     windows에서는 직접 설치하고 경로를 지정한다.
 
-    - =ob-mermaid= 는 경로를 =shell-quote-argument= 로 그대로 감싸 셸에 넘김
+    - mermaid-mode는 경로를 =shell-quote-argument= 로 그대로 감싸 셸에 넘김
     - =~= 를 리터럴로 quoting해 셸이 홈 디렉토리로 확장하지 못함 (exit 127)
     - =expand-file-name= 으로 미리 절대 경로로 바꿔 넘김
-
-*** 인라인 이미지 표시 폭
-
-    #+begin_src elisp
-      (after! org
-        (setq org-image-max-width 'window))
-    #+end_src
-
-    고해상도 다이어그램을 창 폭까지 크게 표시한다.
-
-    - 기본값 =fill-column= 은 인라인 이미지를 fill-column 폭으로 줄여 표시
-    - mermaid 블록을 =:scale 3= 으로 렌더하면 PNG가 2000px 이상이라 기본값에선 도로 작아짐
 
 ** evil
 

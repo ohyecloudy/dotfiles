@@ -52,8 +52,6 @@ pacman -S mingw64/mingw-w64-x86_64-fontconfig
 (when (featurep :system 'windows)
   (my-doctor--executable! mermaid-mmdc-location
                           "cd ~/bin.local;mkdir mermaid-cli;cd mermaid-cli;npm install @mermaid-js/mermaid-cli")
-  (my-doctor--executable! ob-mermaid-cli-path
-                          "cd ~/bin.local;mkdir mermaid-cli;cd mermaid-cli;npm install @mermaid-js/mermaid-cli")
   (my-doctor--executable! "es"
                           "winget install --id=voidtools.Everything.Cli -e")
   (my-doctor--executable! "git-bash.exe"
