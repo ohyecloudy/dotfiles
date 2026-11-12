@@ -2108,6 +2108,18 @@
     - =~= 를 리터럴로 quoting해 셸이 홈 디렉토리로 확장하지 못함 (exit 127)
     - =expand-file-name= 으로 미리 절대 경로로 바꿔 넘김
 
+*** 인라인 이미지 표시 폭
+
+    #+begin_src elisp
+      (after! org
+        (setq org-image-max-width 'window))
+    #+end_src
+
+    고해상도 다이어그램을 창 폭까지 크게 표시한다.
+
+    - 기본값 =fill-column= 은 인라인 이미지를 fill-column 폭으로 줄여 표시
+    - mermaid 블록을 =:scale 3= 으로 렌더하면 PNG가 2000px 이상이라 기본값에선 도로 작아짐
+
 ** evil
 
    #+begin_src elisp
