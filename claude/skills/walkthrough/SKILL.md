@@ -158,7 +158,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
       +<이후 라인>
     #+end_src
 
-* 사람 판단 필요                            ← 없으면 "없음" 한 줄. 항목 순서는 작성 규칙 참조
+* 사람 판단 필요 [/]                        ← 없으면 "없음" 한 줄(쿠키 없이). 항목 순서는 작성 규칙 참조
 
 ** TODO <고른 것> - <대안 대비 한 구>
 
@@ -201,12 +201,15 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
     - <바뀌는 파일/설정 포맷/테스트 - 사실만>
 
-* TODO 확인 질문                            ← 재료 없으면 "없음" 한 줄. 체인 순서는 작성 규칙 참조
+* TODO 확인 질문 [/]                        ← 재료 없으면 "없음" 한 줄(쿠키·drawer 없이). 체인 순서는 작성 규칙 참조
+  :PROPERTIES:
+  :COOKIE_DATA: todo recursive               ← 체인 아래 질문까지 센다
+  :END:
 
   - 질문 안 낸 재료                         ← 없으면 "없음"
     + [[*<재료 heading 제목>][<라벨>]] - <상한 | 확정 불가 | 사용자 답 | before 없음>
 
-** <체인 질문> - <N>홉, <아키텍처 델타 | 사람 판단 필요 | 워크스루 | 사전 지식>
+** <체인 질문> - <N>홉, <아키텍처 델타 | 사람 판단 필요 | 워크스루 | 사전 지식> [/]
 
    - 출처: [[*<재료 heading 제목>][<라벨>]]
    - 배경
@@ -259,7 +262,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
 ```bash
 f=<생성한 .org 파일>
-awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TODO|KEEP|REVERT|DONE) /, "", h); sub(/[ \t]+(:[^ \t]+:)?[ \t]*$/, "", h); H[h] = 1 } next } { s = $0; while (match(s, /\[\[\*[^]]+\]/)) { t = substr(s, RSTART + 3, RLENGTH - 4); if (!(t in H)) print FILENAME ":" FNR ": " t; s = substr(s, RSTART + RLENGTH) } }' "$f" "$f"
+awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TODO|KEEP|REVERT|DONE) /, "", h); gsub(/ *\[[0-9]*(%|\/[0-9]*)\]/, "", h); sub(/[ \t]+(:[^ \t]+:)?[ \t]*$/, "", h); H[h] = 1 } next } { s = $0; while (match(s, /\[\[\*[^]]+\]/)) { t = substr(s, RSTART + 3, RLENGTH - 4); if (!(t in H)) print FILENAME ":" FNR ": " t; s = substr(s, RSTART + RLENGTH) } }' "$f" "$f"
 ```
 
 그다음 [org-formatting.md](../shared/org-formatting.md)의 정렬을 실행한다.
@@ -301,6 +304,7 @@ awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TOD
 
 문서에서 가장 중요한 섹션이다. 목표는 리뷰어가 **세션 기록 없이** 항목마다 승인(`KEEP`) 또는 뒤집기(`REVERT`)를 판정하고, 그 결과를 후속 작업으로 추적하는 것.
 
+- **섹션 heading에 통계 쿠키 `[/]`**를 붙여 접힌 채로 남은 판정 수를 보이게 한다.
 - **항목 = `** TODO` heading 하나.** 스킬은 `TODO`로만 만든다. `KEEP`/`REVERT` 전환은 사용자 몫 - 사용자 답 항목도 `TODO`로 둔다(리뷰 시점 재확인).
 - **결정 주체**는 셋 중 하나: `에이전트 단독`(아무도 확인 안 함), `질문 후 무응답 진행`(물었으나 명시 답 없음), `사용자 답`(사용자가 고름).
 - **항목 순서**: 결정 주체(에이전트 단독 > 무응답 진행 > 사용자 답) -> 같은 그룹 안에서 뒤집기 비용 큰 순. 리뷰어가 승인 책임을 많이 지는 것부터.
@@ -369,6 +373,11 @@ awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TOD
 - heading 하나에 물음 하나, 한 문장. 묶으면 heading이 문단이 된다 - 홉으로 나눈다.
 - **확정 가능한 것만.** 출제 시점에 정답을 스스로 확정한다 - 확정 못 하면 그 홉은 버린다. 의견·취향을 묻지 않는다.
 - 상태: 질문 `*** TODO` -> 사용자가 `DONE`. 스킬은 `TODO`로만 만든다.
+- **진행 표시**: 접힌 상태에서 남은 질문이 보이게 통계 쿠키를 단다.
+  - 체인 `**` heading 끝에 `[/]` - 직속 `*** TODO` 질문을 센다.
+  - `* TODO 확인 질문` 끝에 `[/]` + `:COOKIE_DATA: todo recursive` drawer - 체인(TODO 키워드 없음)을 건너 질문 전체를 센다.
+  - 스킬은 빈 `[/]`만 쓴다. 개수는 §5 정렬(`org-update-statistics-cookies`)이 채우고, 이후엔 emacs가 상태 전환마다 갱신한다.
+  - heading 링크 매칭에서 org는 쿠키를 무시한다 - 링크 제목에 쿠키를 넣지 않는다.
 
 ### 판정 회피
 
