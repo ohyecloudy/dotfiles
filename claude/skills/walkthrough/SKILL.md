@@ -48,6 +48,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
 - 넘기는 것: §1에서 정한 범위 그대로 - 커밋 범위면 hash/범위, uncommitted면 diff 텍스트, 저장소 위치도 함께.
 - 요청할 다이어그램: `auto` - 트리거에 해당하는 것만([diagrams.md](../shared/diagrams.md)).
+- 변경 전 그림: `before: [sequence, state, er]` - 아키텍처 델타 유무는 코어 결과를 받아야 알 수 있으므로 항상 요청하고, 델타가 "없음"이면 문서에서 뺀다.
 - §2에서 정한 낯선 영역(없으면 생략).
 
 분담:
@@ -108,6 +109,22 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
    #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>[-<시점 slug>].png
      <mermaid 소스>
    #+end_src
+
+** <종류 한글명> - <title>                   ← 전/후 대비: 델타 있음 + diagrams[].before 있음. 작성 규칙 참조
+
+   - <caption 한 줄>
+
+*** 전                                      ← before가 ""이면 블록 대신 "없음 - 신규 흐름" 한 줄
+
+    #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>[-<시점 slug>]-before.png
+      <before 소스>
+    #+end_src
+
+*** 후
+
+    #+begin_src mermaid :file ~/walkthrough/<slug>-<kind>[-<시점 slug>]-after.png
+      <mermaid 소스>
+    #+end_src
 
 * 사전 지식(prerequisite)                  ← 해당 없으면 섹션 통째 생략
 
@@ -395,4 +412,9 @@ awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TOD
   - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `sequence`는 `-<시점 slug>`를 붙여 장마다 고유하게. 크기 옵션은 블록에 쓰지 않는다(ob-mermaid 기본값).
   - 표기·렌더 공통 규칙은 [diagrams.md](../shared/diagrams.md).
   - mermaid 소스는 편집·재작성 금지(verbatim `=` 규칙과 무관).
+  - **전/후 대비**(`sequence`·`state`·`er`): 아키텍처 델타가 "없음"이 아니고 그 항목에 `before`가 있으면 `*** 전` / `*** 후` 하위 heading 둘로 나눠 싣는다 - 델타 줄의 `<전> → <후>`를 그림으로 보여주기 위해.
+    + `before`가 소스: `*** 전`에 `before`, `*** 후`에 `mermaid`. `:file`은 `-before` / `-after`를 붙인다.
+    + `before: ""`(전에 없던 대상): `*** 전` 본문에 "없음 - 신규 흐름" 한 줄, 블록 없음.
+    + `before` 없음(전/후 동일) 또는 델타 "없음": 하위 heading 없이 지금처럼 한 장.
+    + 차이 표시(sequence `rect`, state/er `changed`)는 코어가 넣은 그대로 싣는다.
   - 렌더는 온디맨드 - 사용자가 `C-c C-c`/export로 PNG를 만든다(pre-render하지 않는다).
