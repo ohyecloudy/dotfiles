@@ -27,6 +27,8 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
 
 호출자는 선택적으로 **원하는 다이어그램**을 함께 지정할 수 있다. `auto` 또는 [diagrams.md](../shared/diagrams.md) 카탈로그의 kind 부분집합, 그리고 선택적 장수 상한 `max: N`. 지정된 것만 §4에서 탐색·생성하고, **지정이 없으면 다이어그램을 만들지 않는다**(안 그릴 걸 탐색하면 낭비 - 탐색 비용을 요청 범위에 맞춘다).
 
+호출자는 선택적으로 **변경 전 그림** `before: [sequence, state, er]`(부분집합)를 함께 지정할 수 있다. 지정한 kind의 다이어그램마다 변경 전 모양을 §4에서 복원해 `diagrams[].before`에 싣는다. 지정이 없으면 복원하지 않는다.
+
 호출자는 선택적으로 **독자의 낯선 영역**([reader-profile.md](../shared/reader-profile.md)로 정한 언어·버전·프레임워크 숙련도)을 함께 넘길 수 있다. 넘기면 §3 사전 지식 판정에 쓴다. 이 스킬이 직접 묻거나 프로필 파일을 고치지는 않는다 - 서브에이전트로 호출되는 경우가 있어 사용자와 대화할 수 없다.
 
 호출자는 선택적으로 **코드 분량 모드** `evidence: "minimal" | "full"`을 지정할 수 있다. 기본은 `minimal` - `reading_order`에 위치·이유만 싣는다. `full`이면 §5에서 `reading_order` 항목마다 심볼과 코드 본문까지 채운다(문서만 읽어도 diff를 대충 이해하게 하려는 호출자용).
@@ -64,6 +66,12 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
   - kind 부분집합: 그 kind만, 트리거와 무관하게 그린다(유효 엣지가 있을 때).
   - `max: N`: 고른 결과가 N장을 넘으면 diagrams.md의 우선순위로 자른다.
 - **시점 분리**: 흐름이 여러 시점(로드/등록, 요청 처리, 갱신 등)에 걸치면 `sequence`를 시점마다 1장씩 만든다. 시점 이름이 그 장의 `title`이다.
+- **변경 전 그림**(`before` 지정 시): 지정 kind의 각 다이어그램에 같은 대상(같은 시점/상태 머신/엔티티 묶음)의 변경 전 모양을 함께 만든다.
+  - 재료: base 리비전의 같은 2홉 범위 - 커밋 범위면 범위 시작, 커밋 하나면 부모, uncommitted면 HEAD(`git show <base>:<path>`). 저장소 없이 diff 텍스트만 있으면 `-` 라인과 문맥 라인으로 복원하고, 확인 못 한 엣지는 `?`.
+  - 전/후가 같으면(participant, 메시지, `alt`/`loop` 분기, 상태, 전이, 엔티티, 필드, 참조 모두 동일) `before`를 생략한다. 변경 전에 없던 대상이면 `before: ""`.
+  - 차이 표시는 양쪽 장 모두에 한다 - 전 장은 사라지거나 바뀐 것, 후 장(`mermaid`)은 추가되거나 바뀐 것.
+    + sequence: 차이 메시지 구간을 `rect rgb(255, 233, 168)` ... `end`로 감싼다. 변경 participant `box`는 그대로.
+    + state/er: 차이 상태/엔티티에 `classDef changed` 표기([diagrams.md](../shared/diagrams.md) 공통 표기).
 - **근거 표시**: 추정 엣지의 `?` 접두는 `basis` 규율을 그대로 상속한다 - grep/read로 확인한 것만 무표시.
 - 코드가 아니거나 관계가 없는 변경은 다이어그램이 안 나올 수 있다.
 
@@ -103,11 +111,11 @@ argument-hint: "커밋 hash/범위 또는 diff 소스 (+ 저장소 위치)"
   "prerequisites": [{ "concept": "개념명", "what": "무엇인지 한 줄", "location": "/abs/path.cpp:40", "reason": "no-precedent | reader-unfamiliar" }],
   "reading_order": [{ "path": "/abs/path.cpp:40", "why": "왜 여기부터", "symbol": "Foo::Bar", "code": { "kind": "diff|new|deleted", "lang": "cpp", "text": "<§5 규칙의 본문>" } }],
   "omitted":       [{ "text": "생략분과 이유" }],
-  "diagrams":      [{ "kind": "tree|overview|sequence|state|er|logic|class|cross-section|module", "title": "제목(한국어, sequence는 시점명)", "caption": "무엇을 보는 그림인지 한 줄(추정 엣지 있으면 ?=추정 범례 포함)", "mermaid": "<mermaid 소스>" }]
+  "diagrams":      [{ "kind": "tree|overview|sequence|state|er|logic|class|cross-section|module", "title": "제목(한국어, sequence는 시점명)", "caption": "무엇을 보는 그림인지 한 줄(추정 엣지 있으면 ?=추정 범례 포함)", "mermaid": "<mermaid 소스>", "before": "<변경 전 mermaid 소스 | \"\" = 전에 없던 대상>" }]
 }
 ```
 
-`stat`·`prerequisites`·`reading_order`·`omitted`·`diagrams`는 변경 단위 전체 레벨(파일은 논리 단위를 가로지르므로). `units[]`만 논리 단위별이다. `diagrams`는 입력 요청에 따라 §4로 고른 것만 채운다(요청 없으면 빈 배열). `sequence`는 시점마다 항목 하나. `reading_order[].symbol`·`code`는 `evidence: full`일 때만 있다.
+`stat`·`prerequisites`·`reading_order`·`omitted`·`diagrams`는 변경 단위 전체 레벨(파일은 논리 단위를 가로지르므로). `units[]`만 논리 단위별이다. `diagrams`는 입력 요청에 따라 §4로 고른 것만 채운다(요청 없으면 빈 배열). `sequence`는 시점마다 항목 하나. `diagrams[].before`는 `before` 요청 kind이고 전/후가 다를 때만 있다(§4). `reading_order[].symbol`·`code`는 `evidence: full`일 때만 있다.
 
 ## 작성 규칙
 
