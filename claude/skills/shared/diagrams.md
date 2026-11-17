@@ -67,7 +67,7 @@
 - **변경 노드는 하이라이트.** `classDef changed fill:#ffe9a8,stroke:#c08a00` + `class <Id> changed`. `class` 지정은 노드 하나당 한 줄 - `class A,B changed`는 무효 구문.
   - tree는 `파일명 :::highlight` (`:::` 앞 공백 필수).
   - sequence는 하이라이트가 없다. 변경 participant를 `box`로 묶는다.
-    + 예외: 변경 전/후 대비 장(`explain-change`의 `before`)은 차이 메시지 구간을 `rect rgb(255, 233, 168)`로 감싼다.
+    + 예외: 변경 전/후 대비 장(`explain-change`의 `before`)은 차이 메시지 구간을, `code-tour` 스펙 질문 답 장은 규칙을 지키는 분기 메시지 구간을 `rect rgb(255, 233, 168)`로 감싼다.
 - **노드 상한 ~15.** 넘으면 가장 먼 홉, 변경과 무관한 잎부터 가지치기하고 캡션에 "외 N개 생략".
 - **유효 엣지가 0이면 그리지 않는다.** 빈 다이어그램 금지(`tree`·`cross-section`은 노드만으로 성립).
 - 방향은 `TD`/`TB` 고정 - `LR`은 고정 폭 렌더에서 글자가 작아진다.
