@@ -1114,6 +1114,36 @@
         (add-hook 'org-roam-find-file-hook #'my/org-roam-time-stamp-setup-h))
     #+end_src
 
+*** org-roam agenda tag
+
+    org-roam 파일을 저장할 때 미완료 TODO heading(=org-not-done-keywords=)이 있으면 =#+filetags= 에 =agenda= 태그를 붙이고, 하나도 없으면 뗀다. agenda는 이 태그를 org-roam DB에서 조회해 대상 파일을 고르므로, org-roam 전체를 agenda에 넣지 않고도 place, note 등 어느 디렉터리에 있는 할 일이든 agenda에 나온다. 수동 태그는 여행이 끝난 뒤 떼는 걸 잊기 쉬워서 TODO 유무로 자동 관리한다.
+
+    =template/= 은 태그가 붙으면 그 템플릿으로 만든 새 노트에 태그가 복사되고, =secret/= 은 암호화 파일이라 제외한다.
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (defconst my/org-roam-agenda-excluded-dirs
+          '("template/" "secret/")
+          "Subdirectories of `org-roam-directory' that never get the `agenda' tag.")
+
+        (defun my/org-roam-agenda-excluded-file-p (file)
+          "Return non-nil if FILE is under `my/org-roam-agenda-excluded-dirs'."
+          (seq-some
+           (lambda (dir)
+             (string-prefix-p
+              (file-truename (expand-file-name dir org-roam-directory))
+              (file-truename file)))
+           my/org-roam-agenda-excluded-dirs))
+
+        (defun my/org-roam-agenda-tag-setup-h ()
+          "Sync the `agenda' file tag with open TODOs on save in this org-roam buffer."
+          (when (and (buffer-file-name)
+                     (not (my/org-roam-agenda-excluded-file-p (buffer-file-name))))
+            (add-hook 'before-save-hook #'my/org-agenda-update-filetag nil t)))
+
+        (add-hook 'org-roam-find-file-hook #'my/org-roam-agenda-tag-setup-h))
+    #+end_src
+
 *** daily week label
 
     daily 노트의 =* Week= 에 그 주의 ISO 라벨(=%G-w%V-<월요일 MM-DD>=, 예: =2026-w29-07-13=)을

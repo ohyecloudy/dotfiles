@@ -1,6 +1,7 @@
 ;;; my-org-agenda-files-test.el --- Tests for my-org-agenda-files  -*- lexical-binding: t; -*-
 
 (require 'ert)
+(require 'org)
 (require 'my-org-agenda-files)
 
 (defmacro my/org-agenda-files-test--with-dir (var files &rest body)
@@ -73,6 +74,86 @@
   (should (null (my/org-agenda-files-worklog
                  "/nonexistent-agenda-dir/"
                  (my/org-agenda-files-test--time 2026 11 18)))))
+
+;;; Auto agenda file tag
+
+(defun my/org-agenda-files-test--update (input)
+  "Run `my/org-agenda-update-filetag' on INPUT; return (TEXT . MODIFIED)."
+  (with-temp-buffer
+    (let ((org-todo-keywords '((sequence "TODO" "STARTED" "|" "DONE"))))
+      (org-mode)
+      (insert input)
+      (set-buffer-modified-p nil)
+      (my/org-agenda-update-filetag)
+      (cons (buffer-string) (buffer-modified-p)))))
+
+(defun my/org-agenda-files-test--run (input expected)
+  "Assert `my/org-agenda-update-filetag' turns INPUT into EXPECTED."
+  (should (string= expected (car (my/org-agenda-files-test--update input)))))
+
+(ert-deftest my/org-agenda-files-test/tag-insert-below-last-modified ()
+  (my/org-agenda-files-test--run
+   ":PROPERTIES:\n:ID: x\n:END:\n#+title: T\n#+last_modified: [2026-11-18]\n\n* TODO a\n"
+   ":PROPERTIES:\n:ID: x\n:END:\n#+title: T\n#+last_modified: [2026-11-18]\n#+filetags: :agenda:\n\n* TODO a\n"))
+
+(ert-deftest my/org-agenda-files-test/tag-insert-below-title ()
+  (my/org-agenda-files-test--run
+   "#+title: T\n\n* TODO a\n"
+   "#+title: T\n#+filetags: :agenda:\n\n* TODO a\n"))
+
+(ert-deftest my/org-agenda-files-test/tag-insert-below-drawer ()
+  (my/org-agenda-files-test--run
+   ":PROPERTIES:\n:ID: x\n:END:\n* TODO a\n"
+   ":PROPERTIES:\n:ID: x\n:END:\n#+filetags: :agenda:\n* TODO a\n"))
+
+(ert-deftest my/org-agenda-files-test/tag-insert-at-bob ()
+  (my/org-agenda-files-test--run
+   "* TODO a\n"
+   "#+filetags: :agenda:\n* TODO a\n"))
+
+(ert-deftest my/org-agenda-files-test/tag-append-keeps-other-tags ()
+  (my/org-agenda-files-test--run
+   "#+title: T\n#+filetags: :ue:csharp:\n\n* STARTED a\n"
+   "#+title: T\n#+filetags: :ue:csharp:agenda:\n\n* STARTED a\n"))
+
+(ert-deftest my/org-agenda-files-test/tag-remove-keeps-other-tags ()
+  (my/org-agenda-files-test--run
+   "#+title: T\n#+filetags: :ue:agenda:csharp:\n\n* DONE a\n"
+   "#+title: T\n#+filetags: :ue:csharp:\n\n* DONE a\n"))
+
+(ert-deftest my/org-agenda-files-test/tag-remove-deletes-empty-line ()
+  (my/org-agenda-files-test--run
+   "#+title: T\n#+filetags: :agenda:\n\n* a\n"
+   "#+title: T\n\n* a\n"))
+
+(ert-deftest my/org-agenda-files-test/tag-ignores-checkbox-and-plain-text ()
+  (my/org-agenda-files-test--run
+   "#+title: T\n\n* a\n- [ ] TODO later\nTODO here\n* TODOS\n"
+   "#+title: T\n\n* a\n- [ ] TODO later\nTODO here\n* TODOS\n"))
+
+(ert-deftest my/org-agenda-files-test/tag-nested-todo-heading ()
+  (my/org-agenda-files-test--run
+   "#+title: T\n\n* a\n** TODO b\n"
+   "#+title: T\n#+filetags: :agenda:\n\n* a\n** TODO b\n"))
+
+(ert-deftest my/org-agenda-files-test/tag-ignores-narrowing ()
+  (with-temp-buffer
+    (let ((org-todo-keywords '((sequence "TODO" "|" "DONE"))))
+      (org-mode)
+      (insert "#+title: T\n\n* a\n* TODO b\n")
+      (goto-char (point-min))
+      (re-search-forward "^\\* a")
+      (org-narrow-to-subtree)
+      (my/org-agenda-update-filetag)
+      (widen)
+      (should (string= "#+title: T\n#+filetags: :agenda:\n\n* a\n* TODO b\n"
+                       (buffer-string))))))
+
+(ert-deftest my/org-agenda-files-test/tag-unchanged-keeps-unmodified ()
+  (should-not (cdr (my/org-agenda-files-test--update
+                    "#+title: T\n#+filetags: :agenda:\n\n* TODO a\n")))
+  (should-not (cdr (my/org-agenda-files-test--update
+                    "#+title: T\n\n* DONE a\n"))))
 
 (provide 'my-org-agenda-files-test)
 ;;; my-org-agenda-files-test.el ends here
