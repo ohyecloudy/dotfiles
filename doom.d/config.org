@@ -721,7 +721,7 @@
 
     agenda 빌드 성능을 높이기 위해 파일을 선별적으로 agenda files로 세팅
 
-    daily는 오늘 기준 +-7일, worklog는 지난주/이번주/다음주 파일만 고른다. 선별 로직은 테스트를 위해 =lisp/my-org-agenda-files.el= 로 분리했다.
+    daily는 오늘 기준 +-7일, worklog는 지난주/이번주/다음주 파일만 고른다. 여기에 =agenda= 태그가 붙은 org-roam 파일(=org-roam agenda tag= 참고)을 org-roam DB에서 조회해 더한다. 선별 로직은 테스트를 위해 =lisp/my-org-agenda-files.el= 로 분리했다.
 
     #+begin_src elisp :lexical t
       (require 'my-org-agenda-files)
@@ -729,15 +729,49 @@
       (defvar my/org-gcal-directory (file-truename "~/org/calendar")
         "Directory for org-gcal synced files.")
 
-      (setq org-agenda-files (append
-                              (list (expand-file-name "project/" org-roam-directory)
-                                    (expand-file-name "weekly/" org-roam-directory)
-                                    (expand-file-name "monthly/" org-roam-directory)
-                                    my/org-gcal-directory)
-                              (my/org-agenda-files-daily
-                               (expand-file-name "daily/" org-roam-directory) (current-time))
-                              (my/org-agenda-files-worklog
-                               (expand-file-name "work/" org-roam-directory) (current-time))))
+      (setq org-agenda-files
+            (my/org-agenda-files-build org-roam-directory (list my/org-gcal-directory)
+                                       (current-time) nil))
+    #+end_src
+
+    시작 시 한 번만 계산하면 Emacs를 며칠 켜두는 동안 daily/worklog 날짜 범위가 밀리고, 새로 태그가 붙은 파일도 반영되지 않는다. 그래서 agenda를 만들기 직전(=org-agenda-prepare=)마다 목록을 다시 계산한다. =org-agenda= 메뉴를 거치지 않는 =org-todo-list= 등의 직접 호출도 모두 이 함수를 지난다. 시작 시 =setq= 는 refile 등 agenda 화면 밖 사용처를 위해 남겨둔다(태그 파일 제외).
+
+    다른 기기에서 sync된 파일의 태그는 DB에 아직 없을 수 있어서, 세션의 첫 agenda 때 =my/org-roam-db-sync-once= 로 한 번 sync한다. DB 조회가 실패해도 agenda는 태그 파일 없이 열리도록 에러를 메시지로만 남긴다.
+
+    #+begin_src elisp :lexical t
+      (defun my/org-roam-agenda-tagged-files ()
+        "Return files whose file-level node has the `agenda' tag in the org-roam DB."
+        (mapcar #'car
+                (org-roam-db-query
+                 [:select :distinct [nodes:file] :from [tags nodes]
+                  :where (and (= tags:node-id nodes:id)
+                              (= tags:tag $s1)
+                              (= nodes:level 0))]
+                 my/org-agenda-tag)))
+
+      (defun my/org-agenda-refresh-files (&rest _)
+        "Rebuild `org-agenda-files' right before an agenda is prepared."
+        (let ((tagged (condition-case err
+                          (progn
+                            (require 'org-roam)
+                            (my/org-roam-db-sync-once)
+                            (my/org-roam-agenda-tagged-files))
+                        (error
+                         (message "agenda: org-roam tagged files skipped: %s"
+                                  (error-message-string err))
+                         nil))))
+          (setq org-agenda-files
+                (my/org-agenda-files-build org-roam-directory (list my/org-gcal-directory)
+                                           (current-time) tagged))))
+
+      (advice-add 'org-agenda-prepare :before #'my/org-agenda-refresh-files)
+    #+end_src
+
+    =#+filetags= 는 파일 안 모든 heading에 상속되므로, 그대로 두면 agenda 항목마다 =:agenda:= 태그가 붙어 보인다. 파일 선별용 태그라서 상속을 막는다.
+
+    #+begin_src elisp :lexical t
+      (after! org
+        (add-to-list 'org-tags-exclude-from-inheritance my/org-agenda-tag))
     #+end_src
 
     #+begin_src elisp :lexical t

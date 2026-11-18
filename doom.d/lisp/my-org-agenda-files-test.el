@@ -75,6 +75,45 @@
                  "/nonexistent-agenda-dir/"
                  (my/org-agenda-files-test--time 2026 11 18)))))
 
+;;; Build
+
+(ert-deftest my/org-agenda-files-test/build-combines-sources ()
+  (my/org-agenda-files-test--with-dir dir '()
+    (make-directory (expand-file-name "daily/" dir))
+    (make-directory (expand-file-name "work/" dir))
+    (write-region "" nil (expand-file-name "daily/2026-11-18.org" dir))
+    (write-region "" nil (expand-file-name "work/1-worklog_2026_w47_a.org" dir))
+    (let ((tagged (expand-file-name "place/trip.org" dir)))
+      (should (equal (my/org-agenda-files-build
+                      dir '("/cal/") (my/org-agenda-files-test--time 2026 11 18)
+                      (list tagged))
+                     (list (expand-file-name "project/" dir)
+                           (expand-file-name "weekly/" dir)
+                           (expand-file-name "monthly/" dir)
+                           "/cal/"
+                           (expand-file-name "daily/2026-11-18.org" dir)
+                           (expand-file-name "work/1-worklog_2026_w47_a.org" dir)
+                           tagged))))))
+
+(ert-deftest my/org-agenda-files-test/build-drops-duplicate-tagged-files ()
+  (my/org-agenda-files-test--with-dir dir '()
+    (make-directory (expand-file-name "daily/" dir))
+    (let ((daily (expand-file-name "daily/2026-11-18.org" dir)))
+      (write-region "" nil daily)
+      (should (equal (seq-count
+                      (lambda (f) (equal f daily))
+                      (my/org-agenda-files-build
+                       dir nil (my/org-agenda-files-test--time 2026 11 18)
+                       (list daily)))
+                     1)))))
+
+(ert-deftest my/org-agenda-files-test/build-without-tagged-files ()
+  (should (equal (my/org-agenda-files-build
+                  "/nonexistent-roam/" nil
+                  (my/org-agenda-files-test--time 2026 11 18) nil)
+                 (mapcar (lambda (d) (expand-file-name d "/nonexistent-roam/"))
+                         '("project/" "weekly/" "monthly/")))))
+
 ;;; Auto agenda file tag
 
 (defun my/org-agenda-files-test--update (input)
