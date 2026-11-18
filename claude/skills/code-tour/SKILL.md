@@ -78,7 +78,7 @@ disable-model-invocation: true
   - 어휘·테스트 단계는 그리지 않는다 - 어휘는 단면도, 테스트가 고정한 흐름은 시나리오가 답한다.
   - 다른 장(단면도, 시나리오, 앞 단계 그림)이 이미 답한 질문은 그리지 않는다.
   - **그 단계 확인 질문의 답을 그대로 그리지 않는다**(§경계). 추적 질문의 경로를 그린 `sequence`, 스펙 질문의 분기를 그린 `logic`이 겹치면 그림에서 그 구간을 빼거나 질문을 바꾼다. 그림은 모양(무엇이 있나), 질문은 연결(왜·어떤 경로로)을 맡는다.
-  - 각 장 = `***` heading `<종류 한글명> - <title>`(종류 한글명 = 위치 / 개요 / 시퀀스 / 상태 / 데이터 / 분기 / 계약) + caption 한 줄 + 블록(heading 하나에 블록 하나, [org-writing.md](../shared/org-writing.md)).
+  - 각 장 = `***` heading. 모양은 [reading-doc.md](../shared/reading-doc.md)의 "그림 섹션".
 - **설계 포인트**: 코드에 박힌 결정과 그 이유. 주석·ADR에 근거가 있는 것만. `*굵게*` 한 구절 + 설명.
 - **언어·프레임워크 포인트**: 언어는 주력 언어(버전 포함)에 **직접 대응이 없거나 의미가 다른 것만** - 주력 언어에도 똑같이 있는 문법은 소음이다. 각 항목에 주력 언어의 가장 가까운 개념을 `≈` 로 붙인다. 프레임워크는 §1 숙련도별 분량을 따른다. 모든 항목에 이 코드의 실제 등장 위치 하나를 단다.
 - **확인 질문**: §5
@@ -87,8 +87,8 @@ disable-model-invocation: true
 
 질문이 이 문서의 핵심 산출물. 사용자가 그 heading 아래 답을 쓰고 검증 모드로 확인받는다 - 그래서 bullet이 아니라 heading이어야 한다.
 
-- 형식: `** TODO 확인 질문` 아래 질문마다 `*** TODO <질문>` heading(질문 단위로 `DONE` 전환), 그 아래 `**** 힌트 1` / `**** 힌트 2` / `**** 답` 서브heading(이 순서, 상태 키워드 없음). 사용자 답은 질문 본문, 즉 `**** 힌트 1` 위에 쓴다. 서브heading이라 문서를 열면 접혀 있다.
-- heading 하나에 물음 하나, 한 문장. "A는 무엇이고, B는 어디이며, 왜 C인가"처럼 묶으면 heading이 문단이 되고 검증 판정도 흐려진다 - 나눠서 별도 질문으로.
+- 공통 틀(`TODO` heading, 접힌 서브heading, 한 문장, 확정 가능한 것만, 통계 쿠키)은 [reading-doc.md](../shared/reading-doc.md)의 "확인 질문 공통 틀". 물음을 묶으면 검증 판정도 흐려진다.
+- 형식: `** TODO 확인 질문 [/]` 아래 질문마다 `*** TODO <질문>` heading, 그 아래 `**** 힌트 1` / `**** 힌트 2` / `**** 답` 서브heading(이 순서). 사용자 답은 질문 본문, 즉 `**** 힌트 1` 위에 쓴다.
 - 단계당 2~3개. 아래 세 종류 중 **최소 2종**을 섞는다 - 한 종류만이면 같은 근육만 쓴다.
   - 이유: "왜 X는 Y가 아니라 Z인가"
   - 스펙: "=<테스트 이름>= 이 통과하려면 코드의 어느 분기가 필요한가" - 테스트를 스펙으로 읽어 규칙을 도출하고 그 규칙을 지키는 구현을 찾게 한다. 테스트는 질문에 직접 준다 - "어떤 테스트가 깨지나"처럼 테스트를 찾게 하면 판정 대상이 테스트 이름이 되고 assert grep하는 찾기 연습으로 끝난다. heading에는 테스트 이름 verbatim만(링크 없음). 정답 = 테스트가 고정한 규칙 + 그 규칙을 지키는 분기. 출제 시 코드를 바꿔 실행하지 않고 테스트와 구현을 읽어 확정한다(저장소 무변경, 빌드 비용 회피).
@@ -117,7 +117,7 @@ disable-model-invocation: true
     - 노드 상한 ~8 - 답 경로 밖 이웃은 그리지 않는다. 표기는 [diagrams.md](../shared/diagrams.md).
 
 ```org
-** TODO 확인 질문
+** TODO 확인 질문 [/]
 
 *** TODO 워치가 같은 완료를 두 번 보냈을 때 두 번째 ack에는 무엇이 실리는가
 
@@ -230,7 +230,7 @@ disable-model-invocation: true
 
 ** TODO 언어·프레임워크 포인트
 
-** TODO 확인 질문
+** TODO 확인 질문 [/]
 
 *** TODO <질문>
 
@@ -324,7 +324,7 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
   - `diagrams` → `그림`(§5)
   - `prerequisites` → `언어·프레임워크 포인트`, 여러 그룹에 걸치는 `reader-unfamiliar`는 `0단계 전제`로 올린다
   - `impact` → 추적 질문 재료
-  - 결과의 경로는 맨 경로 - 문서에 옮길 때 org 링크로 바꾼다([code-locations.md](../shared/code-locations.md))
+  - 결과를 섹션으로 옮기는 공통 규칙은 [reading-doc.md](../shared/reading-doc.md)의 "explain-change 결과 매핑"
 - 질문 출제와 정답 확정(테스트 읽기 포함)은 코어가 아니라 이 스킬 몫이다.
 
 ### 4. 확인 질문
@@ -432,7 +432,7 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
 
 ** TODO 언어·프레임워크 포인트
 
-** TODO 확인 질문
+** TODO 확인 질문 [/]
 
 *** TODO <질문>
 
@@ -457,13 +457,8 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
   - heading / 링크 bullet / 코드 블록 사이에 빈 줄.
   - 연속된 같은 파일 항목은 첫 항목의 `****` 서브heading(번호 없음). 사이에 다른 파일 항목이 끼면 별도 `***` - 읽는 순서 우선.
     - 예외: 그룹이 건드린 파일이 하나뿐이면 nesting 없이 전부 번호 붙은 `***`. 묶으면 모든 항목이 1번 아래로 들어가 개요가 한 덩어리가 된다.
-  - 코드 블록은 `code.kind`로: `diff` → `#+begin_src diff`, `new` → `#+begin_src <code.lang>`(org babel 언어명으로). `code.text`를 그대로 넣는다.
-    - 블록 본문은 [org-formatting.md](../shared/org-formatting.md)의 "블록 본문" 규칙대로 - 원본 들여쓰기·diff 접두 보존, `*`·`#+` 줄 `,` escape.
-  - `deleted`는 heading `N. 삭제: =<symbol>=`, 링크 bullet 대신 "삭제 전: <파일 경로>" 평문 한 줄(HEAD에 없어 링크가 열리지 않는다), 블록은 `diff`.
-  - `code`가 없는 항목(기계적 반복의 나머지)은 링크 bullet만.
-- `그림`: `바뀐 곳`의 코드 블록을 읽기 전에 변경의 모양을 먼저 잡는 자리 - 넓은 것(어디에) → 시점 간 연결 → 시점 안 순서 → 세부 순으로 `diagrams`를 싣는다(`tree` → `overview` → `sequence` → `state`/`er`/`logic`/`class`).
-  - `diagrams[].before`가 있으면 `**** 전` / `**** 후` 대비, 없으면 한 장. 차이 표시(sequence `rect`, state/er `changed`)는 코어가 넣은 그대로.
-  - mermaid 소스는 편집·재작성 금지. 같은 그룹 `sequence`가 여러 장이면 `:file`에 시점 slug를 붙인다(`<slug>-g<그룹>-sequence-<시점 slug>.png`).
+  - 코드 블록(`code.kind`별 블록, `deleted`, `code` 없는 항목)은 [reading-doc.md](../shared/reading-doc.md)의 "explain-change 결과 매핑". `deleted` heading은 `N. 삭제: =<symbol>=`.
+- `그림`: `바뀐 곳`의 코드 블록을 읽기 전에 변경의 모양을 먼저 잡는 자리. [reading-doc.md](../shared/reading-doc.md)의 "그림 섹션" - 전/후는 `**** 전` / `**** 후`.
   - 전/후 대비 질문의 답과 그림이 겹쳐도 그대로 싣는다 - `바뀐 곳` diff가 이미 같은 정보를 보여준다.
 - `설계 포인트`: 근거는 커밋 메시지 본문·주석·ADR만. 세션 기억으로 채우지 않는다(§경계).
 - 해당 없는 하위 섹션은 생략(확인 질문은 생략 불가) - 생성 모드 §4와 같다.
@@ -523,22 +518,15 @@ push 전에 커밋을 **이해했는지** 확인한다. 질문 대상은 커밋�
 
 ## org 표기
 
-- **코드 위치는 [code-locations.md](../shared/code-locations.md)의 org 규칙을 따른다** - 어디에 쓰든 `[[file:/abs/path/foo.ts::42][foo.ts:42]]`, 같은 파일 반복도 전체 target, 링크는 verbatim 금지.
-  - 채팅 보고의 경로는 맨 경로(정본의 "그 밖" 규칙).
-- **본문은 [org-writing.md](../shared/org-writing.md)를 따른다** - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 코드 블록 배치, 공통 표기.
-- **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
-- **다이어그램은 org mermaid 블록.**
-  - 표기·차트 문법은 [diagrams.md](../shared/diagrams.md) - 단면도 = `cross-section`, 개요 = `overview`, 시나리오 = `sequence`.
-  - `:file`은 `~/code-tour/<slug>-<위치>.png` - 장마다 고유하게. 크기 옵션은 블록에 쓰지 않는다(ob-mermaid 기본값).
+- **코드 위치, 본문, 식별자, 문서 안 참조**는 [reading-doc.md](../shared/reading-doc.md)의 "org 표기".
+- **다이어그램**은 [reading-doc.md](../shared/reading-doc.md)의 "그림 섹션". 차트는 [diagrams.md](../shared/diagrams.md) - 단면도 = `cross-section`, 개요 = `overview`, 시나리오 = `sequence`.
+  - `:file`은 `~/code-tour/<slug>-<위치>.png`
     + 문서 전체 그림: `<kind>`(`cross-section`, `overview`), 시나리오는 `scenario-<a>[-<시점 slug>]`
     + 단계 `그림`: `s<단계 번호>-<kind>`
     + 변경 모드 그룹 `그림`: `g<그룹 번호>-<kind>[-<시점 slug>][-before|-after]`
     + 확인 질문 `답`: `q<단계 번호>-<질문 순번>[-before|-after]`, 변경 모드는 단계 번호 대신 `g<그룹 번호>`
-  - 렌더는 온디맨드 - 사용자가 `C-c C-c`/export로 PNG를 만든다(pre-render하지 않는다).
-- **커밋 메시지 example 블록과 `바뀐 곳` 코드 블록은 예외.** 원문 보존이 목적이라 위 규칙(한 줄, verbatim, 조사, 코드 위치 링크)을 적용하지 않는다.
+- **커밋 메시지 example 블록과 모든 코드 블록 본문은 예외.** 원문 보존이 목적이라 위 규칙(한 줄, verbatim, 조사, 코드 위치 링크)을 적용하지 않는다.
 
 ## 포매팅
 
-먼저 [code-locations.md](../shared/code-locations.md)의 검사를 생성·수정한 .org 파일에 실행하고, 출력이 없을 때까지 위반을 고친다. 커밋 메시지 example 블록과 `바뀐 곳` 코드 블록 안 라인의 출력은 위반이 아니다 - 고치지 않는다(§org 표기).
-
-그다음 [org-formatting.md](../shared/org-formatting.md)의 정렬을 실행한다.
+[reading-doc.md](../shared/reading-doc.md)의 "포매팅"(위치 검사 -> heading 링크 검사 -> 정렬)을 생성, 수정한 .org 파일에 실행한다. 커밋 메시지 example 블록과 코드 블록 안 라인의 위치 검사 출력은 위반이 아니다 - 고치지 않는다(§org 표기).
