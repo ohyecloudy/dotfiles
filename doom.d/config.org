@@ -1178,6 +1178,91 @@
         (add-hook 'org-roam-find-file-hook #'my/org-roam-agenda-tag-setup-h))
     #+end_src
 
+    저장 훅은 저장하는 파일에만 적용되므로, 이미 TODO가 있는 기존 파일은 =my/org-roam-agenda-tag-all= 로 한 번에 맞춘다. 기본은 바뀔 파일 목록만 보여주는 dry-run이고, =C-u= 를 붙여야 실제로 고친다. 파일을 버퍼로 열지 않고 임시 버퍼에서 고쳐 쓰므로 저장 훅이 돌지 않아 =#+last_modified= 는 그대로다(태그 정리만으로 수정 시각이 바뀌면 의미를 잃음).
+
+    7,900개 파일마다 =org-mode= 를 켜면 느리므로 TODO 계열 heading, =agenda= filetag, 파일 내 =#+TODO= 설정 중 하나라도 있는 파일만 후보로 고른다. 다른 버퍼에서 열려 있는 파일은 디스크에서 직접 고치면 충돌하므로 건너뛰고 목록에 남긴다.
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (defconst my/org-roam-agenda-tag-all-buffer "*agenda-tag-all*"
+          "Buffer that reports `my/org-roam-agenda-tag-all' results.")
+
+        (defun my/org-roam-agenda--candidate-regexp ()
+          "Return a regexp matching files that may need an `agenda' tag change."
+          (let ((keywords (with-temp-buffer
+                            (delay-mode-hooks (org-mode))
+                            org-not-done-keywords)))
+            (concat "^\\*+[ \t]+" (regexp-opt keywords) "\\(?:[ \t]\\|$\\)"
+                    "\\|^#\\+filetags:.*:" (regexp-quote my/org-agenda-tag) ":"
+                    "\\|^#\\+\\(?:seq_\\|typ_\\)?todo:")))
+
+        (defun my/org-roam-agenda--sync-file (file candidate-regexp apply)
+          "Sync the `agenda' tag of FILE; return `added', `removed' or nil.
+      Files not matching CANDIDATE-REGEXP are skipped. Writes FILE only when
+      APPLY is non-nil."
+          (with-temp-buffer
+            (insert-file-contents file)
+            (let ((coding last-coding-system-used))
+              (when (let ((case-fold-search t))
+                      (re-search-forward candidate-regexp nil t))
+                (delay-mode-hooks (org-mode))
+                (set-buffer-modified-p nil)
+                (let ((want (my/org-agenda-has-open-todo-p)))
+                  (my/org-agenda-update-filetag)
+                  (when (buffer-modified-p)
+                    (when apply
+                      (let ((coding-system-for-write coding))
+                        (write-region nil nil file nil 'silent)))
+                    (if want 'added 'removed)))))))
+
+        (defun my/org-roam-agenda--report (apply added removed skipped failed)
+          "Show the `my/org-roam-agenda-tag-all' result lists in a buffer.
+      APPLY tells whether files were written. ADDED, REMOVED and SKIPPED are file
+      lists; FAILED is a list of (FILE . ERROR-MESSAGE)."
+          (with-current-buffer (get-buffer-create my/org-roam-agenda-tag-all-buffer)
+            (let ((inhibit-read-only t))
+              (erase-buffer)
+              (org-mode)
+              (insert (if apply "#+title: agenda tag sync (applied)\n"
+                        "#+title: agenda tag sync (dry-run, C-u to apply)\n"))
+              (pcase-dolist (`(,title . ,files)
+                             `(("add" . ,added) ("remove" . ,removed)
+                               ("skipped: open in a buffer" . ,skipped)))
+                (insert (format "\n* %s (%d)\n\n" title (length files)))
+                (dolist (f (reverse files))
+                  (insert (format "- [[file:%s]]\n" f))))
+              (insert (format "\n* failed (%d)\n\n" (length failed)))
+              (pcase-dolist (`(,f . ,msg) (reverse failed))
+                (insert (format "- [[file:%s]] :: %s\n" f msg)))
+              (goto-char (point-min)))
+            (pop-to-buffer (current-buffer))))
+
+        (defun my/org-roam-agenda-tag-all (&optional apply)
+          "Sync the `agenda' file tag of every org-roam file with its open TODOs.
+      Without APPLY (prefix argument), only report the files that would change."
+          (interactive "P")
+          (let ((candidate-regexp (my/org-roam-agenda--candidate-regexp))
+                added removed skipped failed)
+            (dolist (file (org-roam-list-files))
+              (cond
+               ((or (string-suffix-p ".gpg" file)
+                    (my/org-roam-agenda-excluded-file-p file)))
+               ((find-buffer-visiting file)
+                (push file skipped))
+               (t
+                (condition-case err
+                    (pcase (my/org-roam-agenda--sync-file file candidate-regexp apply)
+                      ('added (push file added))
+                      ('removed (push file removed)))
+                  (error (push (cons file (error-message-string err)) failed))))))
+            (when (and apply (or added removed))
+              (org-roam-db-sync))
+            (my/org-roam-agenda--report apply added removed skipped failed)
+            (message "agenda tag %s: %d added, %d removed, %d skipped, %d failed"
+                     (if apply "applied" "dry-run")
+                     (length added) (length removed) (length skipped) (length failed)))))
+    #+end_src
+
 *** daily week label
 
     daily 노트의 =* Week= 에 그 주의 ISO 라벨(=%G-w%V-<월요일 MM-DD>=, 예: =2026-w29-07-13=)을
