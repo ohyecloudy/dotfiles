@@ -72,7 +72,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 | 확인 질문 | `아키텍처 델타` 요지 축 + `사람 판단 필요` 항목 + `워크스루` 논리 단위 + `사전 지식` 개념 + `evidence` 위치 |
 | 다루지 않은 변경 | `omitted` |
 
-코어 결과의 경로는 맨 경로 - 문서에 옮길 때 org 링크로 바꾼다([code-locations.md](../shared/code-locations.md)).
+코어 결과를 섹션으로 옮기는 공통 규칙(경로 -> org 링크, 코드 발췌, 그림, 델타, `omitted`)은 [reading-doc.md](../shared/reading-doc.md). 발췌 기준 커밋은 작성 시점 working tree.
 
 ```org
 #+title: Walkthrough - <한 줄 제목>
@@ -284,16 +284,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
 ### 5. 포매팅
 
-먼저 [code-locations.md](../shared/code-locations.md)의 검사를 생성한 .org 파일에 실행하고, 출력이 없을 때까지 위반을 고친다.
-
-이어서 문서 안 heading 링크(`[[*<제목>]`)가 실제 heading을 가리키는지 검사한다. 출력이 있으면 대상 없는 링크 - 제목을 맞추고 다시 실행한다.
-
-```bash
-f=<생성한 .org 파일>
-awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TODO|KEEP|REVERT|DONE) /, "", h); gsub(/ *\[[0-9]*(%|\/[0-9]*)\]/, "", h); sub(/[ \t]+(:[^ \t]+:)?[ \t]*$/, "", h); H[h] = 1 } next } { s = $0; while (match(s, /\[\[\*[^]]+\]/)) { t = substr(s, RSTART + 3, RLENGTH - 4); if (!(t in H)) print FILENAME ":" FNR ": " t; s = substr(s, RSTART + RLENGTH) } }' "$f" "$f"
-```
-
-그다음 [org-formatting.md](../shared/org-formatting.md)의 정렬을 실행한다.
+[reading-doc.md](../shared/reading-doc.md)의 "포매팅"(위치 검사 -> heading 링크 검사 -> 정렬)을 생성한 .org 파일에 실행한다.
 
 ### 6. 보고
 
@@ -312,21 +303,11 @@ awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TOD
 - **논리 단위별로 묶는다. 파일별이 아니다.** 파일 경계는 아키텍처 경계와 일치하지 않는다.
 - **완전성보다 선별.** 총량 상한은 없지만 리뷰어가 봐야 할 것만 싣는다.
 - **생략한 것은 `다루지 않은 변경`에 반드시 적는다.** 선별 요약은 *"이게 전부인가?"*에 답하지 못하면 신뢰받지 못한다. 포매팅, 기계적 반복, 자동 생성 파일 등을 한 줄로 묶어 명시한다.
-- **발췌는 최소 라인만.** hunk·함수 통째 복붙 금지. 논리 단위당 20줄 이내, 설명의 근거가 되는 줄만, 원본 인덴트 유지. 언어가 불명확하면 `#+begin_example`.
-- **기존 코드를 고친 evidence는 diff로 전/후를 보여준다.** `evidence.before`가 있으면 `#+begin_src diff`(`-`/`+` + 원본 인덴트), 없으면(순수 신규 추가) 지금처럼 `#+begin_src <lang>`. diff도 최소 대비 라인만 - git 원본 hunk를 그대로 복붙하지 않는다. `before`+`snippet` 합산으로 논리 단위당 20줄 상한은 동일.
-- **빈 섹션은 "없음"으로 명시한다.** 통째로 지우면 "해당 없음"과 "확인 안 함"이 구분되지 않는다. 예외는 `사전 지식`과 `아키텍처 델타 > ADR` 둘뿐.
+- **코드 발췌, 빈 섹션 "없음"**은 [reading-doc.md](../shared/reading-doc.md). 섹션째 생략해도 되는 예외는 `사전 지식`과 `아키텍처 델타 > ADR` 둘뿐.
 
 ### 아키텍처 델타
 
-**요약이지 나열이 아니다.** 리뷰어가 3초 안에 구조 변화를 잡는 게 목적 - `units[].architecture`를 그대로 펼치면 실패한다.
-
-- **요지 1줄 + 델타 5줄 상한.** 넘으면 뺀다. 세부는 워크스루 본문에 근거 코드와 함께 나오므로 잃는 정보가 없다.
-- **`요지`는 델타 전체를 한 줄로.** 나머지를 안 읽어도 구조 변화를 잡을 수 있게 쓴다.
-- **모든 줄이 `<축>: <전> → <후>`.** 신설·삭제도 `없음 → =AssetValidator=` / `=LegacyParser= → 없음`. 전후 대비가 안 잡히면 델타가 아니므로 워크스루로 내린다.
-- **축당 1줄.** 한 축에 여러 건이면 대표 하나만 쓰고 `외 N곳`으로 뭉친다. 예: =WatchWorkoutDisplay= → =WatchWorkoutSelection= , 시그니처 4곳 전파.
-- **축은 이번 변경에서 실제 움직인 것만.** 모듈·인터페이스·의존성·소유권·흐름은 흔한 예일 뿐 고정 목록이 아니다. 안 움직인 축은 줄째로 뺀다. 축이 전부 비면 섹션에 "없음" 한 줄.
-- **경로는 다음 줄에 단독으로.** 축당 대표 위치 1개만. 줄 끝에 붙이면 줄이 길어져 정작 스캔할 앞부분이 밀린다.
-- **ADR은 하위 섹션으로 분리한다.** 델타 줄과 섞으면 `전 → 후` 스캔이 끊긴다.
+[reading-doc.md](../shared/reading-doc.md)의 "아키텍처 델타". 세부는 `워크스루` 본문으로 내린다.
 
 ### 사람 판단 필요
 
@@ -348,7 +329,7 @@ awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TOD
 - **코드 발췌** - 리뷰어는 에이전트가 다음 구현을 하는 동안 읽으므로 링크 위치의 코드가 이미 바뀌었거나 없을 수 있다. 링크 없이 문서만으로 판정할 수 있게 발췌한다.
   - `선택 코드`: `선택` bullet 중 코드 동작(호출, 분기, 값)을 말하는 것마다 `****` 하나(제목 = 그 bullet 요약, 위치 + 블록). 한 bullet이 여러 홉이면 홉별 `****`로 나눈다. 경위/근거 bullet(spec 인용, 리뷰 경위 등)은 발췌하지 않는다. 코드 주장 bullet이 없어도 `위치`에서 선택이 강제되는 라인 `****` 하나는 둔다.
   - `대안 코드`: `#+begin_src diff` - `-` 쪽은 `선택 코드`의 현재 라인, `+` 쪽은 대안이었다면 쓸 라인. 실재하지 않는 코드이므로 첫 bullet에 "스케치 - 컴파일 확인 안 함".
-  - 블록당 10줄 안팎(확인 질문 `답`과 같은 기준), 항목 합계 상한 없음. 최소 라인만 - 함수 통째 복붙 금지.
+  - 분량은 [reading-doc.md](../shared/reading-doc.md) "코드 발췌"의 답/선택 코드 기준. 항목 합계 상한 없음.
 - **다이어그램** - `선택 흐름` + `대안 흐름` 짝은 항목마다 필수. 사람 판단 필요 항목은 두 갈래 중 하나를 고른 것이라 갈라지는 지점이 항상 있다.
   - 선택 vs 대안: 차이가 분기 판정이면 `logic`, 호출 순서면 `sequence`, 설정/데이터 모양이면 `er`, 셋 다 안 맞으면 `logic`. 같은 kind로 선택 1장 + 대안 1장(대안 여럿이면 대안마다 1장), 차이 노드만 `:::highlight`.
   - `열린 지점`, `뒤집기 비용` 등 다른 `***` heading도 내용이 kind 질문에 맞으면 쓴다.
@@ -399,16 +380,10 @@ awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TOD
   - kind: 홉이 함수 경계를 넘으면 `sequence`, 한 함수 안이면 `logic`, 설정/데이터 모양 추적이면 `er`. 표기는 [diagrams.md](../shared/diagrams.md).
   - `:file` = `~/walkthrough/<slug>-quiz-<체인 순번>.png`.
   - 1홉 질문 안에는 다이어그램을 넣지 않는다 - 코드 몇 줄이 더 빠르다.
-- **문서 안 참조는 순번 금지**("사람 판단 필요 3번째" X). `[[*<heading 제목>][<라벨>]]` 링크를 걸고, 필요한 내용은 그 자리에 발췌한다 - 문서 위아래로 오가게 하지 않는다.
-  - 제목은 TODO 키워드/태그를 뺀 heading 텍스트와 완전 일치(org가 키워드를 매칭에서 제외 - 사용자가 `KEEP`/`REVERT`로 바꿔도 유지).
-- heading 하나에 물음 하나, 한 문장. 묶으면 heading이 문단이 된다 - 홉으로 나눈다.
-- **확정 가능한 것만.** 출제 시점에 정답을 스스로 확정한다 - 확정 못 하면 그 홉은 버린다. 의견·취향을 묻지 않는다.
-- 상태: 질문 `*** TODO` -> 사용자가 `DONE`. 스킬은 `TODO`로만 만든다.
-- **진행 표시**: 접힌 상태에서 남은 질문이 보이게 통계 쿠키를 단다.
-  - 체인 `**` heading 끝에 `[/]` - 직속 `*** TODO` 질문을 센다.
-  - `* TODO 확인 질문` 끝에 `[/]` + `:COOKIE_DATA: todo recursive` drawer - 체인(TODO 키워드 없음)을 건너 질문 전체를 센다.
-  - 스킬은 빈 `[/]`만 쓴다. 개수는 §5 정렬(`org-update-statistics-cookies`)이 채우고, 이후엔 emacs가 상태 전환마다 갱신한다.
-  - heading 링크 매칭에서 org는 쿠키를 무시한다 - 링크 제목에 쿠키를 넣지 않는다.
+- **공통 틀**(`TODO` heading, 접힌 서브heading, 한 문장, 확정 가능한 것만, 통계 쿠키, 문서 안 참조 링크)은 [reading-doc.md](../shared/reading-doc.md)의 "확인 질문 공통 틀", "org 표기". 이 스킬에서의 적용:
+  - 확정 못 하는 홉은 버린다. 한 heading에 물음이 둘이면 홉으로 나눈다.
+  - 문서 안 참조 링크를 걸고 필요한 내용은 그 자리에 발췌한다 - 문서 위아래로 오가게 하지 않는다. org가 키워드를 매칭에서 제외하므로 사용자가 `KEEP`/`REVERT`로 바꿔도 링크가 유지된다.
+  - 통계 쿠키: 체인 `**` heading 끝에 `[/]`, `* TODO 확인 질문` 끝에 `[/]` + `:COOKIE_DATA: todo recursive` drawer(체인은 TODO 키워드 없음).
 
 ### 판정 회피
 
@@ -419,16 +394,7 @@ awk 'FNR==NR { if (match($0, /^\*+ /)) { h = substr($0, RLENGTH + 1); sub(/^(TOD
 
 ### org 표기
 
-- **코드 위치는 [code-locations.md](../shared/code-locations.md)의 org 규칙을 따른다** - 어디에 쓰든 `[[file:/abs/path/foo.ts::42][foo.ts:42]]`, 같은 파일 반복도 전체 target, 링크는 verbatim 금지. 채팅 보고의 경로는 맨 경로.
-- **본문은 [org-writing.md](../shared/org-writing.md)를 따른다** - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 코드 블록 배치, 공통 표기.
-- **식별자는 verbatim `=...=`로 감싼다**(예: =FLHitWindowRunner=). 안에 `=` 문자를 넣지 않는다(구문이 깨진다) - 대입식은 평문으로.
-- **다이어그램은 `diagrams`를 그대로 org mermaid 블록으로 싣는다.**
-  - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `sequence`는 `-<시점 slug>`를 붙여 장마다 고유하게. 크기 옵션은 블록에 쓰지 않는다(ob-mermaid 기본값).
-  - 표기·렌더 공통 규칙은 [diagrams.md](../shared/diagrams.md).
-  - mermaid 소스는 편집·재작성 금지(verbatim `=` 규칙과 무관).
-  - **전/후 대비**(`sequence`·`state`·`er`): 아키텍처 델타가 "없음"이 아니고 그 항목에 `before`가 있으면 `*** 전` / `*** 후` 하위 heading 둘로 나눠 싣는다 - 델타 줄의 `<전> → <후>`를 그림으로 보여주기 위해.
-    + `before`가 소스: `*** 전`에 `before`, `*** 후`에 `mermaid`. `:file`은 `-before` / `-after`를 붙인다.
-    + `before: ""`(전에 없던 대상): `*** 전` 본문에 "없음 - 신규 흐름" 한 줄, 블록 없음.
-    + `before` 없음(전/후 동일) 또는 델타 "없음": 하위 heading 없이 지금처럼 한 장.
-    + 차이 표시(sequence `rect`, state/er `changed`)는 코어가 넣은 그대로 싣는다.
-  - 렌더는 온디맨드 - 사용자가 `C-c C-c`/export로 PNG를 만든다(pre-render하지 않는다).
+- **코드 위치, 본문, 식별자 표기**는 [reading-doc.md](../shared/reading-doc.md)의 "org 표기".
+- **다이어그램**은 [reading-doc.md](../shared/reading-doc.md)의 "그림 섹션". 이 스킬에서의 적용:
+  - `:file`은 `~/walkthrough/<slug>-<kind>.png`(`<kind>` = 그 항목의 kind), `sequence`는 `-<시점 slug>`를 붙인다.
+  - 전/후 대비는 아키텍처 델타가 "없음"이 아닐 때만 - 델타 줄의 `<전> -> <후>`를 그림으로 보여주기 위해. 델타 "없음"이면 `before`가 있어도 한 장.
