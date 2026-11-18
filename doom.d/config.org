@@ -1792,11 +1792,9 @@
 
 *** org done task to daily
 
-    heading을 =DONE= 으로 바꾸면, 소속 파일부터 그 heading까지의 경로를 nested bullet
-    리스트로 변환해 오늘 daily note의 =Tasks= heading 밑에 자동으로 기록한다. 파일이
-    org-roam 노드(file-level =:ID:= 존재)면 최상위 조상 위에 파일로 가는 =id:= 링크를
-    루트로 추가한다. leaf 항목은 원본 heading으로 가는 링크로 만든다. daily note 안에서의
-    =DONE= 은 재기록을 막기 위해 제외한다.
+    heading을 =DONE= 으로 바꾸면, 소속 파일부터 그 heading까지의 경로를 nested bullet 리스트로 변환해 오늘 daily note의 =Tasks= heading 밑에 자동으로 기록한다. 파일이 org-roam 노드(file-level =:ID:= 존재)면 최상위 조상 위에 파일로 가는 =id:= 링크를 루트로 추가한다. leaf 항목은 원본 heading으로 가는 링크로 만든다.
+
+    org-roam 파일(=org-roam-file-p=)에서 바꾼 =DONE= 만 기록한다. daily/weekly/monthly(재기록 방지)와 secret(평문 노출)은 =my/org-daily-log-excluded-dirs= 로 제외하며, =org new node to daily= 도 같은 목록을 쓴다.
 
     #+begin_src elisp :lexical t
       (defconst my/org-daily-log-excluded-dirs
@@ -1872,18 +1870,15 @@
       (defun my/org-capture-done-task-to-today ()
         "On a DONE transition, log the completed heading into today's daily note.
       Builds the full heading path as a nested bullet list and inserts it under the
-      `Tasks' heading via `org-roam-dailies-capture-today'.  Daily/weekly/monthly
-      notes are skipped so the logged entries do not re-trigger this on themselves."
+      `Tasks' heading via `org-roam-dailies-capture-today'.  Only org-roam files are
+      logged; daily/weekly/monthly (re-trigger loop) and secret (plaintext
+      exposure) are skipped."
         (when (and org-state
                    (member org-state org-done-keywords)
                    (not (equal org-state org-last-state))
                    (buffer-file-name)
-                   (not (seq-some
-                         (lambda (dir)
-                           (string-prefix-p
-                            (file-truename (expand-file-name dir org-roam-directory))
-                            (file-truename (buffer-file-name))))
-                         '("daily/" "weekly/" "monthly/"))))
+                   (org-roam-file-p (buffer-file-name))
+                   (not (my/org-daily-log-excluded-file-p (buffer-file-name))))
           (setq my/org-done-task-bullets-string (my/org-done-heading->nested-bullets))
           (org-roam-dailies-capture-today nil "T")))
 
