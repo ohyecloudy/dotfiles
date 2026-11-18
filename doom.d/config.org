@@ -1799,6 +1799,18 @@
     =DONE= 은 재기록을 막기 위해 제외한다.
 
     #+begin_src elisp :lexical t
+      (defconst my/org-daily-log-excluded-dirs
+        '("daily/" "weekly/" "monthly/" "secret/")
+        "Subdirectories of `org-roam-directory' whose entries are not logged to daily.")
+
+      (defun my/org-daily-log-excluded-file-p (file)
+        "Return non-nil if FILE is under `my/org-daily-log-excluded-dirs'."
+        (seq-some (lambda (dir)
+                    (string-prefix-p
+                     (file-truename (expand-file-name dir org-roam-directory))
+                     (file-truename file)))
+                  my/org-daily-log-excluded-dirs))
+
       (defun my/org-heading-clean-text ()
         "Return the heading text at point without TODO/priority/tags/comment,
       statistics cookies (e.g. [1/1], [50%]), and org link markup (links are
@@ -1889,10 +1901,6 @@
       (defvar my/org-new-node-pending nil
         "Pending (ID . TITLE) of a newly captured org-roam node, or nil.")
 
-      (defconst my/org-new-node-excluded-dirs
-        '("daily/" "weekly/" "monthly/" "secret/")
-        "Subdirectories of `org-roam-directory' whose new nodes are not logged.")
-
       (defun my/org-new-node-mark-pending ()
         "Remember the node being captured when it lives in a brand-new file.
       Runs from `org-roam-capture-new-node-hook'."
@@ -1900,12 +1908,7 @@
               (title (org-roam-node-title org-roam-capture--node)))
           (when (and new-file
                      (org-string-nw-p title)
-                     (not (seq-some
-                           (lambda (dir)
-                             (string-prefix-p
-                              (file-truename (expand-file-name dir org-roam-directory))
-                              (file-truename new-file)))
-                           my/org-new-node-excluded-dirs)))
+                     (not (my/org-daily-log-excluded-file-p new-file)))
             (setq my/org-new-node-pending
                   (cons (org-roam-node-id org-roam-capture--node) title)))))
 
