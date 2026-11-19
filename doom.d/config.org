@@ -1405,6 +1405,8 @@
          org-cycle-separator-lines 0
          ;; 순서 없는 목록(unordered list)에서 bullet으로 들여쓰기를 할 때마다 +, -를 번갈아 사용한다
          org-list-demote-modify-bullet '(("+" . "-") ("-" . "+"))
+         ;; heading 통계 쿠키([/], [%])가 직계 자식뿐 아니라 하위 트리 전체 TODO를 센다. =:COOKIE_DATA: recursive= 를 기본값으로
+         org-hierarchical-todo-statistics nil
          ;; #+STARTUP: fold 를 기본값으로 한다. org 파일을 열었을 때, overview를 가장 먼저 보고 싶기 때문
          org-startup-folded 'show2levels))
     #+end_src
