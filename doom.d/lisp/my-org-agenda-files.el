@@ -61,17 +61,12 @@ and week."
                 (push f files)))))))
     files))
 
-(defconst my/org-agenda-files-roam-dirs '("project/" "weekly/" "monthly/")
-  "Subdirectories of the org-roam directory always included as a whole.")
-
 (defun my/org-agenda-files-build (roam-dir extra-dirs now tagged-files)
   "Return the agenda file list for ROAM-DIR at time NOW.
-Combines `my/org-agenda-files-roam-dirs', EXTRA-DIRS, date-relevant daily
-and worklog files, and TAGGED-FILES (files carrying the `agenda' tag)."
+Combines EXTRA-DIRS, date-relevant daily and worklog files, and
+TAGGED-FILES (files carrying the `agenda' tag)."
   (delete-dups
-   (append (mapcar (lambda (dir) (expand-file-name dir roam-dir))
-                   my/org-agenda-files-roam-dirs)
-           extra-dirs
+   (append extra-dirs
            (my/org-agenda-files-daily (expand-file-name "daily/" roam-dir) now)
            (my/org-agenda-files-worklog (expand-file-name "work/" roam-dir) now)
            tagged-files)))
