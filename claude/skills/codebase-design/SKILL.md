@@ -1,11 +1,11 @@
 ---
 name: codebase-design
-description: 깊은 모듈(deep module)을 설계하기 위한 공용 어휘. 사용자가 모듈의 인터페이스를 설계·개선하거나, 깊게 만들(deepening) 기회를 찾거나, 심(seam)을 어디에 둘지 정하거나, 코드를 더 테스트 가능하게 혹은 AI가 탐색하기 쉽게 만들려 할 때, 또는 다른 스킬이 이 deep-module 어휘를 필요로 할 때 사용.
+description: 깊은 모듈(deep module)을 설계하기 위한 공용 어휘. 사용자가 모듈의 인터페이스를 설계·개선하거나, 깊게 만들(deepening) 기회를 찾거나, 심(seam)을 어디에 둘지 정하거나, 코드를 더 테스트 가능하게 혹은 사람과 AI가 읽고 이해하기 쉽게 만들려 할 때, 또는 다른 스킬이 이 deep-module 어휘를 필요로 할 때 사용.
 ---
 
 # Codebase Design
 
-**깊은 모듈(deep module)**을 설계한다: 작은 인터페이스 뒤에 많은 동작을 두고, 깔끔한 심(seam)에 배치하며, 그 인터페이스를 통해 테스트한다. 코드를 설계하거나 재구조화하는 모든 곳에서 이 언어와 원칙을 쓴다. 목표는 호출자를 위한 레버리지(leverage), 유지보수자를 위한 지역성(locality), 그리고 모두를 위한 테스트 가능성(testability)이다.
+**깊은 모듈(deep module)**을 설계한다: 작은 인터페이스 뒤에 많은 동작을 두고, 깔끔한 심(seam)에 배치하며, 그 인터페이스를 통해 테스트한다. 코드를 설계하거나 재구조화하는 모든 곳에서 이 언어와 원칙을 쓴다. 목표는 호출자를 위한 레버리지(leverage), 유지보수자를 위한 지역성(locality), 모두를 위한 테스트 가능성(testability), 그리고 모두를 위한 이해 가능성(understandability) - 테스트를 하나도 돌리지 않고 모든 줄의 동작을 예측할 수 있는가 - 이다.
 
 ## 용어집(Glossary)
 
@@ -25,7 +25,7 @@ description: 깊은 모듈(deep module)을 설계하기 위한 공용 어휘. �
 
 **레버리지(Leverage)**: 호출자가 깊이에서 얻는 것. 배우는 인터페이스 단위당 더 많은 능력. 구현 하나가 N개의 호출부와 M개의 테스트에 걸쳐 되갚는다.
 
-**지역성(Locality)**: 유지보수자가 깊이에서 얻는 것. 변경·버그·지식·검증이 호출자들에 흩어지지 않고 한 곳에 모인다. 한 번 고치면 모든 곳이 고쳐진다.
+**지역성(Locality)**: 유지보수자가 깊이에서 얻는 것. 변경·버그·지식·검증이 호출자들에 흩어지지 않고 한 곳에 모인다. 한 번 고치면 모든 곳이 고쳐진다. 읽기도 마찬가지: 어떤 코드의 동작을 판단하려 읽어야 하는 범위가 그 코드와, 직접 호출하는 모듈의 인터페이스에서 끝난다(지역 추론, local reasoning). 질문 하나에 코드베이스의 큰 덩어리를 읽어야 한다면 지역성이 깨진 것이다.
 
 ## 깊음 vs 얕음(Deep vs shallow)
 
@@ -93,6 +93,36 @@ description: 깊은 모듈(deep module)을 설계하기 위한 공용 어휘. �
    ```
 
 3. **작은 표면적(Small surface area).** 메서드가 적을수록 필요한 테스트가 적다. 파라미터가 적을수록 테스트 셋업이 단순하다.
+
+## 이해 가능성을 위한 설계(Designing for understandability)
+
+좋은 인터페이스는 읽기를 짧게 끝나게 한다. 호출부를 읽는 사람(과 AI)은 호출되는 모듈의 구현이 아니라 인터페이스만 읽는다:
+
+1. **인터페이스를 contract로 적어라.** 약속하는 것(반환값, 에러 경로)과 약속하지 않는 것(에러 메시지 문구 등)을 구분한다. 행복 경로만 적지 마라. 지원하지 않는 입력은 의도적으로 "정의되지 않음"으로 남겨도 된다 - 단, 그렇다고 적어라. 호출자가 많을수록 contract는 바꾸기 어렵다.
+2. **불변식은 생성 시 한 번 세우고, 안쪽에서는 믿어라.** 같은 검사가 여러 호출부에서 반복되거나 "왜 여기서 검사하는지" 주석이 붙는다면, 그 보장을 타입의 생성 지점으로 옮겨라("Parse, don't validate"). 모든 변경 메서드가 불변식을 유지하고, 불변식은 데이터 옆에 적는다. 에러 처리를 없애는 게 아니라 입력이 들어오는 지점 한 곳으로 모으는 것이다.
+
+   ```typescript
+   // Hard to reason about: every caller re-checks and explains why
+   function shipOrder(order: OrderData) {
+     // items can be empty when created from the cart page, so guard
+     if (order.items.length === 0) throw new Error("empty order");
+   }
+
+   // Easy to reason about: checked once, trusted everywhere
+   /** Invariant: items is non-empty and total equals the sum of item prices. */
+   class Order {
+     static create(items: Item[]): Order | EmptyOrderError {}
+   }
+   function shipOrder(order: Order) {}
+   ```
+
+3. **숨은 입력과 출력을 드러내라.** 위 테스트 가능성 1, 2번에 더해, 숨은 입력(시계, 전역 변수, 파일 존재 여부, DB 상태)도 파라미터로 받는다. 효과는 어딘가에서 일어나야 하므로, 한쪽에 모아라: Command/Query Separation, Functional Core / Imperative Shell.
+4. **주석은 인터페이스만 적어라.** contract와 불변식은 적는다. 구현을 따라가며 설명하는 주석은 쓰지 마라 - 설명이 필요하다고 느끼면 이름 변경, 함수 추출, 분기 제거로 코드를 단순화하라. 설명 주석이 필요한 구현은 지역 추론이 깨진 신호다.
+
+인터페이스를 설계할 때 물어라:
+
+- 이 코드의 동작을 알려면 어디까지 읽어야 하나? 직접 호출하는 모듈의 인터페이스에서 멈추나?
+- 이 검사는 이미 보장된 값을 다시 확인하고 있지 않나?
 
 ## 관계(Relationships)
 
