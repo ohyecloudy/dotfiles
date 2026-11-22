@@ -2072,12 +2072,12 @@
          (setq org-gcal-remove-api-cancelled-events t))
     #+end_src
 
-    앞뒤 7일 이벤트를 동기화
+    지난 7일, 앞으로 14일 이벤트를 동기화. up-days가 과거, down-days가 미래 방향
 
     #+begin_src elisp :lexical t
       (after! org-gcal
         (setq org-gcal-up-days 7
-              org-gcal-down-days 7))
+              org-gcal-down-days 14))
     #+end_src
 
 **** 시간 정보 없는 취소 일정 갱신 에러 회피
