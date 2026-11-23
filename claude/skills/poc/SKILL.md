@@ -1,6 +1,6 @@
 ---
 name: poc
-description: grill-for-poc로 합의한 PoC(proof of concept)를 현재 작업 트리에서 빠르게 구현·실행 검증하고, 결론·trade-off·핵심 코드 학습을 org 문서로 정리. 팀에 일을 넘기기 전 결과 위주 검증용.
+description: grill-for-poc로 합의한 PoC(proof of concept)를 현재 작업 트리에서 빠르게 구현·실행 검증하고, 결론·trade-off(대안 비교 그림)·대안별 코드 그림과 워크스루·코드로 따라가는 확인 질문 체인을 org 문서로 정리. 팀에 일을 넘기기 전 결과 위주 검증용.
 disable-model-invocation: true
 ---
 
@@ -49,6 +49,7 @@ PoC status 어휘의 정본. 파일 맨 위 property drawer의 `:STATUS:` 속성
 - `구현` 대안 - 대안마다 `general-purpose` 1개, 순차
 - `분석만` 대안 - `Explore` 1개
 - 학습 섹션 - `구현` 대안마다 `general-purpose` 1개, 순차 (독자 프로필 판정은 메인)
+- 확인 질문 - `general-purpose` 1개, 결론 뒤
 
 ## 프로세스
 
@@ -76,7 +77,7 @@ PoC status 어휘의 정본. 파일 맨 위 property drawer의 `:STATUS:` 속성
 - 코드·문서 근거로만 비교하고 파일을 쓰지 말 것
 - 반환: 대안별로 비교 축마다 값 한 줄 + 근거 위치(`절대경로:라인`)
 
-Explore는 파일을 쓸 수 없으므로 메인이 반환값을 `* 시도 로그`에 대안별 한 줄로 기록한다(trade-off `(분석)` 셀 재료).
+Explore는 파일을 쓸 수 없으므로 메인이 반환값을 `* 시도 로그`에 대안별 bullet로 기록한다 - 축마다 값 한 줄 + 근거 위치 org 링크. trade-off `(분석)` 셀, 대안 비교 그림, 확인 질문 `분석만` 홉의 재료다.
 
 ### 4. 학습 섹션
 
@@ -108,7 +109,11 @@ poc.org `* 검증 근거`, `* 시도 로그`, `* 수동 확인 필요`를 Read�
 
 ### 6. 확인 질문
 
-`* TODO 확인 질문`을 trade-off 결정 지점 위주로 2~4개 쓴다. trade-off 표가 확정된 뒤라야 결정 지점이 보인다. `힌트 2`의 코드 위치는 `* 핵심 코드 워크스루` 섹션만 Read해 가져온다. 막히면 `힌트 1` -> `힌트 2` -> `답` 순으로 펼친다.
+trade-off 표와 대안 비교 그림이 확정된 뒤 - 그래야 결정 지점이 보인다 - Agent 도구로 `general-purpose` 서브에이전트에 [quiz-worker.md](quiz-worker.md)를 맡긴다.
+
+- 프롬프트: worker 파일 절대 경로, poc.org 절대 경로, 저장소 위치, 낯선 영역(없으면 생략).
+- worker가 `* TODO 확인 질문`을 trade-off 결정 지점 우선의 체인(체인당 2-3홉, 최대 4체인)으로 직접 채운다. 요약을 읽기로 끝내지 않고 코드로 한 홉씩 확인하게 하는 용도 - 막히면 `힌트` -> `답` 순으로 펼친다.
+- 실패 반환이면 섹션에 "생성 실패 - <원인>" 한 줄을 남기고 진행한다.
 
 ### 7. 포매팅
 
@@ -126,6 +131,7 @@ poc.org `* 검증 근거`, `* 시도 로그`, `* 수동 확인 필요`를 Read�
 - 검증할 질문에 대한 답 한 줄
 - status
 - `수동 확인 필요` 항목(있으면)
+- 그림 장 수(기존 흐름 / 대안별 / 대안 비교), 확인 질문 체인·질문 수
 - 커밋 범위 `<시작 커밋>..HEAD`
 - poc.org **절대 경로** (홈 아래면 `~`로 줄임, Windows는 `D:/...`처럼 슬래시)
 
@@ -285,21 +291,53 @@ poc.org `* 검증 근거`, `* 시도 로그`, `* 수동 확인 필요`를 Read�
        +<이후 라인>
      #+end_src
 
-* TODO 확인 질문
+* TODO 확인 질문 [/]                        ← quiz-worker 작성. 재료 없으면 "없음" 한 줄(쿠키·drawer 없이)
+  :PROPERTIES:
+  :COOKIE_DATA: todo recursive
+  :END:
 
-** TODO <대안 B를 택했다면 무엇이 달라지나>
+  - 질문 안 낸 재료                         ← 없으면 "없음"
+    + [[*<재료 heading 제목>][<라벨>]] - <상한 | 확정 불가 | 분석 근거 없음>
 
-*** 힌트 1
+** <체인 질문> - <N>홉, <trade-off | 사전 지식 | 워크스루> [/]
 
-    - <문서 안 재료 - trade-off 표의 어느 축 | 시도 로그 n번째>
+   - 출처: [[*<재료 heading 제목>][<라벨>]]
+   - 배경
+     + <출처 핵심 발췌 1-3 bullet>
+   - 출발점: [[file:/abs/path/foo.cpp::40][foo.cpp:40]]
 
-*** 힌트 2
+*** TODO 1. <1홉 질문 한 문장>
 
-    - <이어야 할 코드 위치> - [[file:/abs/path/foo.cpp::40][foo.cpp:40]]
+    - 볼 곳: [[file:/abs/path/foo.cpp::40][foo.cpp:40]]
 
-*** 답
+**** 힌트
 
-    - <정답 한두 문장>
+     - <볼 곳 안에서 무엇을 찾을지 - 심볼/조건 지목, 정답 문장 금지>
+
+**** 답
+
+     - <결론 한두 문장>                     ← 분석만 대안 홉이면 끝에 (분석)
+     - 위치: [[file:/abs/path/foo.cpp::40][foo.cpp:40]]
+
+     #+begin_src cpp
+       <답의 근거 최소 라인>
+     #+end_src
+
+     - 다음 홉: <무엇이 2번 질문으로 넘어가나>  ← 마지막 홉은 생략
+
+*** TODO 2. <마지막 홉 - trade-off면 "대안 X였다면 이 경로의 몇 번 홉이 어떻게 바뀌나">
+
+    ...
+
+*** 정리 - <밟은 경로 한 구>
+
+    #+begin_src mermaid :file ./quiz-<체인 순번>.png
+      <홉 번호를 붙인 경로>
+    #+end_src
+
+    - 홉 1: [[file:/abs/path/foo.cpp::40][foo.cpp:40]] - <이 홉에서 일어나는 일>
+    - 홉 2: [[file:/abs/path/bar.cpp::88][bar.cpp:88]] - <이 홉에서 일어나는 일>
+    - <반사실/주의점 홉이면 대안 경로 한 줄>
 
 * 수동 확인 필요
 
@@ -310,4 +348,7 @@ poc.org `* 검증 근거`, `* 시도 로그`, `* 수동 확인 필요`를 Read�
 ## org 작성 규칙
 
 - **코드 위치, 본문, 식별자, 빈 섹션, 문서 안 참조**는 [reading-doc.md](../shared/reading-doc.md)의 "org 표기". 섹션째 생략해도 되는 예외는 `사전 지식` 하나.
+- **다이어그램**은 [reading-doc.md](../shared/reading-doc.md)의 "그림 섹션", 차트 선택·표기는 [diagrams.md](../shared/diagrams.md). `:file`은 poc.org 옆 상대 경로 `./<위치>.png` - 디렉터리가 이미 `<slug>`라 접두를 붙이지 않는다.
+  - `<위치>` = `base-<kind>`(기존 흐름) / `<대안 slug>-<kind>`(대안별 그림) / `tradeoff-<대안 slug>`(대안 비교) / `quiz-<체인 순번>`(확인 질문 정리). `sequence`가 여러 장이면 `-<시점 slug>`.
+  - PNG는 렌더 산출물 - 사용자가 `C-c C-c`로 만든다. 8단계 문서 커밋에 넣지 않는다.
 - **코드 발췌**는 [reading-doc.md](../shared/reading-doc.md)의 "코드 발췌". 기준 커밋은 그 섹션을 쓰는 시점의 working tree(PoC 커밋은 작성 전에 끝나 있다).
