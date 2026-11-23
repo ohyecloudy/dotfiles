@@ -100,7 +100,7 @@ poc.org `* 검증 근거`, `* 시도 로그`, `* 수동 확인 필요`를 Read�
 
 ### 7. 포매팅
 
-먼저 [code-locations.md](../shared/code-locations.md)의 검사를 poc.org에 실행하고 출력이 없을 때까지 고친다. 그다음 [org-formatting.md](../shared/org-formatting.md)의 정렬을 실행한다.
+[reading-doc.md](../shared/reading-doc.md)의 "포매팅"(위치 검사 -> heading 링크 검사 -> 정렬)을 poc.org에 실행한다.
 
 ### 8. 문서 커밋
 
@@ -241,4 +241,5 @@ poc.org `* 검증 근거`, `* 시도 로그`, `* 수동 확인 필요`를 Read�
 
 ## org 작성 규칙
 
-- 본문은 [org-writing.md](../shared/org-writing.md)를 따른다 - 짧은 문장 plain list, 깊이별 기호 교대, 출처 위치, 공통 표기.
+- **코드 위치, 본문, 식별자, 빈 섹션, 문서 안 참조**는 [reading-doc.md](../shared/reading-doc.md)의 "org 표기". 섹션째 생략해도 되는 예외는 `사전 지식` 하나.
+- **코드 발췌**는 [reading-doc.md](../shared/reading-doc.md)의 "코드 발췌". 기준 커밋은 그 섹션을 쓰는 시점의 working tree(PoC 커밋은 작성 전에 끝나 있다).
