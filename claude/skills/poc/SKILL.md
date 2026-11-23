@@ -48,7 +48,7 @@ PoC status 어휘의 정본. 파일 맨 위 property drawer의 `:STATUS:` 속성
 - 착수, 결론, 확인 질문, 포매팅, 보고 - 메인
 - `구현` 대안 - 대안마다 `general-purpose` 1개, 순차
 - `분석만` 대안 - `Explore` 1개
-- 학습 섹션 - `general-purpose` 1개 (독자 프로필 판정은 메인)
+- 학습 섹션 - `구현` 대안마다 `general-purpose` 1개, 순차 (독자 프로필 판정은 메인)
 
 ## 프로세스
 
@@ -81,8 +81,12 @@ Explore는 파일을 쓸 수 없으므로 메인이 반환값을 `* 시도 로�
 ### 4. 학습 섹션
 
 - 독자 프로필: [reader-profile.md](../shared/reader-profile.md)로 PoC 코드의 언어·버전·프레임워크를 판정하고, 빠진 프로필은 물어 기록한 뒤 **낯선 영역**을 정한다. 비인터랙티브 원칙의 유일한 예외 - 이미 기록돼 있으면 묻지 않는다. 서브에이전트는 사용자와 대화할 수 없으므로 묻기는 여기서 끝낸다.
-- Agent 도구로 `general-purpose` 서브에이전트에 [learning-worker.md](learning-worker.md)를 맡긴다. 프롬프트: worker 파일 절대 경로, poc.org 절대 경로, 범위 `<시작 커밋>..HEAD`, 저장소 위치, 낯선 영역(없으면 생략).
-- worker가 `* 사전 지식`, `* 핵심 코드 워크스루`를 직접 채운다. 실패 반환이면 두 섹션에 "생성 실패 - <원인>" 한 줄을 남기고 진행한다.
+- 커밋이 있는 `구현` 대안마다 Agent 도구로 `general-purpose` 서브에이전트에 [learning-worker.md](learning-worker.md)를 맡긴다. 대안 순서대로 **순차** - 같은 poc.org에 쓰므로 병렬이면 서로 덮어쓴다.
+  - 프롬프트: worker 파일 절대 경로, poc.org 절대 경로, 대안명, 대안 커밋 범위(2단계 반환의 `커밋`을 `<첫 커밋>^..<마지막 커밋>`으로), 기존 흐름 작성 여부(첫 대안만 `예`), 저장소 위치, 낯선 영역(없으면 생략).
+  - 대안을 나누는 이유: 시작 커밋부터 한 범위로 분석하면 대안들의 코드가 한 그림에 겹친다. trade-off는 대안별 모양을 나란히 봐야 보인다.
+  - 커밋이 없는 대안(`blocked`·`disproved`로 코드 없이 끝남)은 건너뛰고 `** <대안명>`에 "커밋 없음 - <종료>" 한 줄.
+- worker가 `* 사전 지식`, `* 핵심 코드 워크스루`를 직접 채운다. 실패 반환이면 그 대안의 `** <대안명>`에 "생성 실패 - <원인>" 한 줄을 남기고 다음 대안으로 진행한다.
+- 전부 끝난 뒤 `* 사전 지식`이 비어 있으면 섹션째 지운다.
 
 ### 5. 결론 작성
 
@@ -187,35 +191,75 @@ poc.org `* 검증 근거`, `* 시도 로그`, `* 수동 확인 필요`를 Read�
     + <왜 버렸나 | 결과>
     + 커밋: <hash>
 
-* 사전 지식(prerequisite)                  ← 낯선 영역 없으면 섹션 통째 생략
+* 사전 지식(prerequisite)                  ← 항목 없으면 섹션 통째 생략
 
-** <개념명>
+** <개념명>                                 ← reason: no-precedent
+
+   - 무엇: <한 줄>
+   - 왜 여기 필요했나: <한 줄>
+   - 대안: <한 줄>
+   - 주의점: <한 줄>
+   - 등장 위치: [[file:/abs/path/foo.cpp::40][foo.cpp:40]]
+
+     #+begin_src cpp
+       <등장 라인 ~5줄>
+     #+end_src
+
+** <개념명>                                 ← reason: reader-unfamiliar
 
    - 무엇: <한 줄>
    - 독자가 아는 것으로는: <주력 언어·버전에서 같은 일을 하던 방식 | 해당 없음>
-   - 왜 여기 필요했나: <한 줄>
+   - 주의점: <한 줄>
    - 등장 위치: [[file:/abs/path/foo.cpp::40][foo.cpp:40]]
+
+     #+begin_src cpp
+       <등장 라인 ~5줄>
+     #+end_src
 
 * 핵심 코드 워크스루
 
-** <논리 단위 제목>
+** 기존 흐름                                ← 첫 구현 대안 범위의 before. 없으면 "없음 - 신규 흐름" 한 줄
 
-   - <왜 읽나 한 줄>
+*** <종류 한글명> - <title>
 
-*** <단계> - <이 코드가 보여주는 것>
+    - <caption 한 줄>
 
-    - <무엇을 볼지 한 줄>
-    - 위치: [[file:/abs/path/foo.cpp::40][foo.cpp:40]]
-
-    #+begin_src cpp
-      <근거 라인만>
+    #+begin_src mermaid :file ./base-<kind>[-<시점 slug>].png
+      <before 소스>
     #+end_src
 
-    - <이 코드가 trade-off의 어느 쪽을 택한 것인지>
+** <대안명>                                 ← 구현 대안마다. 커밋 없으면 "커밋 없음 - <종료>" 한 줄
 
-*** 정리 - <요약>                           ← 코드 없는 마무리가 있을 때만
+*** 그림 - <종류 한글명>, <title>           ← 순서: tree -> overview -> sequence -> state/er/logic/class. 없으면 "없음"
 
-    - <...>
+    - <caption 한 줄>
+
+    #+begin_src mermaid :file ./<대안 slug>-<kind>[-<시점 slug>].png
+      <mermaid 소스>
+    #+end_src
+
+*** <논리 단위 제목>
+
+    - <왜 읽나 한 줄>
+    - <이 코드가 trade-off의 어느 쪽을 택한 것인지>   ← 시도 로그 근거 없으면 생략
+
+**** <단계> - <이 코드가 보여주는 것>
+
+     - <무엇을 볼지 한 줄>
+     - 위치: [[file:/abs/path/foo.cpp::40][foo.cpp:40]]
+
+     #+begin_src cpp
+       <근거 라인만>
+     #+end_src
+
+**** <단계> - <요약>                        ← 기존 코드를 고친 경우 diff
+
+     - 위치: [[file:/abs/path/bar.cpp::88][bar.cpp:88]]
+
+     #+begin_src diff
+       -<이전 라인>
+       +<이후 라인>
+     #+end_src
 
 * TODO 확인 질문
 
