@@ -26,8 +26,10 @@ e.g. A page that obtains the title using the API. jira, confluence."
                 (string :tag "Replacement"))))
 
 (defcustom my/org-cliplink-url-refine-rules
-  '(("^\\(https?://[^/]+\\)/wiki/spaces/[^/]+/pages/\\([0-9]+\\)\\(?:/.*\\)?$"
-     "\\1/wiki/pages/viewpage.action?pageId=\\2"))
+  '(("^\\(https?://[^/]+\\)/wiki/spaces/[^/]+/pages/\\([0-9]+\\)\\(?:[/?#].*\\)?$"
+     "\\1/wiki/pages/viewpage.action?pageId=\\2")
+    ("^\\(https?://[^/]+/browse/[^/?#]+\\)[?#].*$"
+     "\\1"))
   "Alist of (REGEXP REPLACEMENT) rules used to refine URLs before org-cliplink processing."
   :group 'my/org-cliplink
   :type '(repeat

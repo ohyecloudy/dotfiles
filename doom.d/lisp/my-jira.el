@@ -10,7 +10,7 @@ Ecah element has the form '((:url MY_JIRA :api-url MY_JIRA_API :api-version :clo
 
 (defun my/jira-insert-heading-content ()
   (interactive)
-  (let* ((url (my/jira--url-clipboard-or-prompt))
+  (let* ((url (my/jira--remove-query (my/jira--url-clipboard-or-prompt)))
          (content (my/jira--content url))
          (summary (plist-get content :summary))
          (id (plist-get content :id))
@@ -39,6 +39,9 @@ Ecah element has the form '((:url MY_JIRA :api-url MY_JIRA_API :api-version :clo
         clipboard-content
       (read-string "Enter URL: "))))
 
+(defun my/jira--remove-query (url)
+  (replace-regexp-in-string "[?#].*\\'" "" url))
+
 (defun my/jira--find-host (url hosts)
   (car (seq-filter (lambda (elem)
                      (let ((host-url (plist-get elem :url)))
@@ -47,7 +50,7 @@ Ecah element has the form '((:url MY_JIRA :api-url MY_JIRA_API :api-version :clo
 
 (defun my/jira--issue-id (url)
   (save-match-data
-    (if (string-match "/browse/\\([^/]+\\)" url)
+    (if (string-match "/browse/\\([^/?#]+\\)" url)
         (match-string 1 url))))
 
 (defun my/jira--build-issue-api-url (base-url issue-id)

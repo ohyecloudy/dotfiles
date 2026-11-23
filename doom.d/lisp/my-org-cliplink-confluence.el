@@ -47,7 +47,7 @@ Ecah element has the form '((:url MY_CONFLUENCE_URL :api-version 6)
   (pcase api-version
     (:cloud (lambda (url)
               (save-match-data
-                (if (string-match "/pages/\\([[:digit:]]+\\)\\($\\|/\\)" url)
+                (if (string-match "/pages/\\([[:digit:]]+\\)\\($\\|[/?#]\\)" url)
                     (match-string 1 url)))))
     (6 (lambda (url)
          (save-match-data
