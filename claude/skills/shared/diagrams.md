@@ -24,7 +24,7 @@
 - **1장만 고를 때**(호출자가 `max: 1`): `overview`(시점 2개 이상) > `sequence`(시점 1개) > `tree` > 없음.
 - 제외한 것과 이유
   - `architecture-beta` / 경계 `block`: 런타임 경계는 sequence `box`가, 저장소 위치는 `tree`가 답한다.
-  - `eventmodeling`, `gantt`, `pie`, `gitGraph`, `timeline`, `mindmap` 등: 코드 이해에 답하는 질문이 없다.
+  - `eventmodeling`, `gantt`, `pie`, `gitGraph`, `timeline`, `mindmap` 등: 코드 이해에 답하는 질문이 없다. `pie`는 §측정 결과에서만 쓴다.
   - `sankey`: 방향과 합계가 있는 차트라 "함께 바뀜"(무방향, 합계 무의미)에 맞지 않는다.
   - `radar`: 축마다 단위가 달라 모양이 쉽게 왜곡된다.
   - `treemap`: "크다"는 보이지만 "나빠지고 있다"는 안 보인다.
@@ -41,6 +41,48 @@
 
 - `co-change` 엣지 의미는 "함께 바뀜" 하나뿐이라 "의존과 흐름을 섞지 않음" 원칙과 충돌하지 않는다.
 - 기본 제외: 바이너리(`uasset`, `dll`, `xlsx` 등), 생성 코드(`*.generated.*`, `*Generated.*`), 서드파티/빌드 산출 디렉터리, lock 파일, 데이터(`csv`, `xml`, `xsd`, 로컬라이제이션). 데이터는 `--include-data`로 포함.
+
+## 측정 결과
+
+코드 모양이 아니라 실행해서 얻은 수치("답이 무엇인가")를 보여주는 차트. 재료가 diff가 아니라 실행 증거라 위 카탈로그의 `auto` 대상이 아니다. 쓰는 곳: `poc` 결론, trade-off.
+
+| kind | 차트 | 답하는 질문 | 트리거 |
+| --- | --- | --- | --- |
+| `share` | `pie showData` | 전체 중 얼마가 X인가 | 서로 겹치지 않고 합이 전체가 되는 조각 2-5개 |
+| `measure` | `xychart-beta` bar (+ `line` 기준선) | 측정값끼리, 또는 기준 대비 얼마나 큰가 | 같은 단위 값 2개 이상, 또는 값 1개 + 합의된 기준 |
+| `series` | `xychart-beta` line (+ 기준선) | 반복 측정이 얼마나 흔들리나 | 같은 측정 3회 이상 |
+
+- **실측 값만 그린다.** 분석·추정 값은 그리지 않는다 - 그림에 들어가면 추정이 실측처럼 읽힌다.
+- **겹치는 조각은 `share` 금지.** 부분 합이 전체를 넘거나(공유 포함 집계) 나머지가 정의되지 않으면 `measure`로.
+- **값은 x축 라벨에 넣는다**(`"ContentInfo 로드 1.8초"`). `showDataLabel`은 작은 막대에서 글자가 점처럼 작아지고 `horizontal`에서는 안 보인다.
+- **라벨이 길거나 항목이 4개 이상이면 `horizontal`.** 세로 막대는 x축 라벨이 잘린다.
+- **색은 frontmatter로 고정** - 사용자 테마(`redux-color`)의 xychart 기본 막대색은 배경과 거의 같다. 첫 색 = 막대, 둘째 색 = 기준선.
+- **기준선은 범례가 없다** - title에 "빨간 선 = 기준 <값>"을 넣는다. 기준선 = 모든 x에 같은 값을 넣은 `line`.
+- **값 차이가 1,000배를 넘으면 그리지 않는다** - log scale이 없어 작은 쪽이 보이지 않는다. 텍스트로.
+- **title에 단위와 측정 횟수.** 예) `"구간 시간 (초, 1회)"`.
+- `quadrantChart`, `radar`는 여기서도 쓰지 않는다 - trade-off 축은 대부분 정성 값이라 점수를 매기면 지어낸 수치가 된다.
+
+```mermaid
+---
+config:
+  themeVariables:
+    xyChart:
+      plotColorPalette: "#4a78b5, #d9534f"
+---
+xychart-beta
+  title "2회 실행 메모리 차이 (%) - 빨간 선 = 기준 1%"
+  x-axis ["AnyTableBytes 0.03%", "UsedPhysical 2.8%"]
+  y-axis "차이 %" 0 --> 3
+  bar [0.03, 2.8]
+  line [1, 1]
+```
+
+```mermaid
+pie showData
+  title 로드 메모리 3,919 MiB 중 테이블 기인 (MiB)
+  "테이블 기인" : 2742
+  "그 외" : 1177
+```
 
 ## 한 장에 한 관심사
 
