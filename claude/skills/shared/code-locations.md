@@ -63,3 +63,4 @@ done
 
 - **`/abs/path/foo.ts:42`**(절대 경로 + 단일 라인). 디렉터리는 `/abs/path/dir/`.
 - 같은 파일이 반복돼도 매번 전체 경로. 라인 범위·파일명만·상대 경로 금지.
+- Windows는 드라이브 형식 `C:/...:42`. MSYS 형식 `/c/...`, `/c:/...`는 `gF`가 열지 못하고 채팅 응답은 Stop hook(`reply_style_guard.py`)이 되돌려 보낸다.
