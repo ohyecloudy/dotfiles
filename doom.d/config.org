@@ -2800,6 +2800,13 @@
        (setq agent-shell-markdown-list-bullets '("-")))
    #+end_src
 
+   표 테두리를 box 문자(=│ ─ ┼=) 대신 ASCII(=|= =-=)로 표시. 표 일부만 인용해도 markdown 표 모양으로 붙여넣어지도록
+
+   #+begin_src elisp :lexical t
+     (after! agent-shell
+       (setq agent-shell-markdown-table-use-unicode-borders nil))
+   #+end_src
+
 *** agent-shell rate limit indicator
 
    Claude 구독 rate limit(5시간, 주간) 사용률을 헤더에 상시 표시. =/usage= 를 매번 치지 않기 위함. 예) =5h 34% (2h13m) 7d 21% (3d4h)= - 괄호 안은 리셋까지 남은 시간. 헤더가 =usage_update= 때만 다시 그려지므로 남은 시간도 마지막 턴 기준. cost 는 불필요해서 cost 지시자 자리를 rate limit 으로 대체.
