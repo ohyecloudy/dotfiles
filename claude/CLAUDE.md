@@ -66,7 +66,12 @@
 - 전체 테스트 스위트 대신 관련 파일만 실행
 - 큰 변경은 작은 단계로 나눠서 각 단계가 동작하는 상태를 유지
 - 동작하는 코드를 확인 없이 리팩토링하지 말 것
-- IMPORTANT: 파일 삭제, 대규모 rename은 반드시 사전 확인
+- 임시 파일과 디렉터리는 `<임시 루트>/claude-tmp/<작업>` 아래에만 만듦. `<임시 루트>`는 Windows `$(cygpath -m "$TEMP")`, macOS `${TMPDIR:-/tmp}`
+  - `<임시 루트>/claude/`는 Claude Code가 쓰는 디렉터리라 사용 금지
+  - 작업이 끝나면 결과 보고 전에 `rm -r <임시 루트>/claude-tmp/<작업>`로 지움. 사전 확인 없이, 다른 명령과 묶지 않고 단독으로 실행
+  - 다시 볼 만한 결과물(재현 로그 등)은 남기고 보고에 경로를 적음
+  - 이 위치 밖(테스트 프로젝트, 저장소 빌드 산출물 등)에 만들어야 하면 만들기 전에 경로를 알림. 지울 때는 아래 사전 확인 규칙을 따름
+- IMPORTANT: 파일 삭제, 대규모 rename은 반드시 사전 확인 (위 임시 위치는 예외)
 - IMPORTANT: 권한이 거부되면 같은 효과를 내는 다른 명령, 테스트, 스크립트로 바꿔 실행하지 말고 멈춰서 물을 것
 
 ## Org
@@ -87,7 +92,6 @@
 ### Windows (Git Bash)
 
 - 네이티브 프로그램(python, emacs, mmdc, PowerShell, `git -C`)에 넘기는 경로는 `$(cygpath -m ...)` 또는 `C:/...`. `~`, `/c/...`, `/tmp`를 그대로 넘기지 말 것
-  - 임시 파일은 `/tmp` 대신 `$(cygpath -m "$TEMP")` 아래
 - python은 `-X utf8`로 실행 - `-I`는 `PYTHONUTF8`/`PYTHONIOENCODING`을 무시함
 - MSVC, UBT, cmd 출력은 cp949 - grep은 `grep -a`, 읽을 때 `iconv -f cp949 -t utf-8`
 - .bat은 `./x.bat args` 또는 `MSYS_NO_PATHCONV=1 cmd.exe /c 'D:\절대\경로.bat args'`. `cmd //c`는 배너만 찍고 exit 0이라 금지
