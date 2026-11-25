@@ -74,6 +74,8 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
 코어 결과를 섹션으로 옮기는 공통 규칙(경로 -> org 링크, 코드 발췌, 그림, 델타, `omitted`)은 [reading-doc.md](../shared/reading-doc.md). 발췌 기준 커밋은 작성 시점 working tree.
 
+사전 지식 링크는 [reading-doc.md](../shared/reading-doc.md)의 "요약 섹션에서 링크". 요약 섹션 = `* 헤드라인`(`사전 지식:` 목록은 항목마다 링크), `* 아키텍처 델타`.
+
 ```org
 #+title: Walkthrough - <한 줄 제목>
 #+todo: TODO | KEEP REVERT DONE              ← KEEP/REVERT = 사람 판단 필요 승인/뒤집기, DONE = 확인 질문
@@ -82,7 +84,7 @@ Skill 도구로 `explain-change`를 **인라인 호출**한다(세션 컨텍스�
 
   - <이번 변경의 정체 한 줄>
   - 범위: <SHA 범위 | uncommitted> - 파일 <N>개, +<A>/-<B>
-  - 사전 지식: <목록 | 없음>
+  - 사전 지식: <[[*<개념 heading>][<개념>]] 목록 | 없음>
   - 사람 판단 필요: <N>건 - 에이전트 단독 <a>, 무응답 진행 <b>, 사용자 답 <c>
   - 확인 질문: 체인 <C>개, 질문 <Q>개, 제외 <M>개 - 체인당 ~<홉 수 x 2>분, 막히면 =힌트= → =답= 순으로 펼침
 
