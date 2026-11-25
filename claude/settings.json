@@ -38,5 +38,89 @@
   "language": "korean",
   "autoUpdatesChannel": "stable",
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py pre || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(sed -i *)",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py pre || true"
+          },
+          {
+            "type": "command",
+            "if": "Bash(perl *)",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py pre || true"
+          },
+          {
+            "type": "command",
+            "if": "Bash(python *)",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py pre || true"
+          },
+          {
+            "type": "command",
+            "if": "Bash(python3 *)",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py pre || true"
+          },
+          {
+            "type": "command",
+            "if": "Bash(tee *)",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py pre || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py post || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(sed -i *)",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py post || true"
+          },
+          {
+            "type": "command",
+            "if": "Bash(perl *)",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py post || true"
+          },
+          {
+            "type": "command",
+            "if": "Bash(python *)",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py post || true"
+          },
+          {
+            "type": "command",
+            "if": "Bash(python3 *)",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py post || true"
+          },
+          {
+            "type": "command",
+            "if": "Bash(tee *)",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 eol_guard.py post || true"
+          }
+        ]
+      }
+    ]
+  }
 }

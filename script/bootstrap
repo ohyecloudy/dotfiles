@@ -39,6 +39,7 @@ safe_make_symbol_link $root_path/claude/CLAUDE.md ~/.claude/CLAUDE.md
 safe_make_symbol_link $root_path/claude/settings.json ~/.claude/settings.json
 safe_make_symbol_link $root_path/claude/skills ~/.claude/skills
 safe_make_symbol_link $root_path/claude/agents ~/.claude/agents
+safe_make_symbol_link $root_path/claude/hooks ~/.claude/hooks
 
 make_symbol_link_with_backup $root_path/git/gitconfig ~/.gitconfig
 make_symbol_link_with_backup $root_path/git/gitignore_global ~/.gitignore_global
