@@ -24,7 +24,7 @@ disable-model-invocation: true
 `PY=$(command -v python3 || command -v python)` - macOS에는 `python` 명령이 없을 수 있다. Python 3.9 이상(macOS 기본 `/usr/bin/python3`가 3.9).
 
 ```bash
-"$PY" -I -X utf8 "$HOME_W/.claude/skills/friction-audit/friction_audit.py" prepare <기간> "<Temp>/friction-audit-<YYYYMMDD-HHMM>" --exclude "${CLAUDE_SESSION_ID}"
+"$PY" -I -X utf8 "$HOME_W/.claude/skills/friction-audit/friction_audit.py" prepare <기간> "<Temp>/claude-tmp/friction-audit-<YYYYMMDD-HHMM>" --exclude "${CLAUDE_SESSION_ID}"
 ```
 
 - `<기간>`: 인자가 있으면 그대로, 없으면 `auto`.
@@ -96,6 +96,8 @@ disable-model-invocation: true
   - 원문 보존: `*** 사례`의 인용, 금지할 경로 형식을 보여 주는 예시(`/c/...` 등). 코드 위치 검사에 걸려도 고치지 않는다.
 
 ### 9. 보고
+
+보고 전에 1단계 출력 디렉터리를 `rm -r "<Temp>/claude-tmp/friction-audit-<YYYYMMDD-HHMM>"`로 지운다. 다른 명령과 묶지 않고 단독으로 실행한다.
 
 - 보고서 절대 경로
 - 기간, 세션 수, 서브에이전트 수

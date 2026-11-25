@@ -39,10 +39,10 @@ disable-model-invocation: true
 ### 2. 대화 추출
 
 ```bash
-"$PY" -I -X utf8 "$HOME_W/.claude/skills/session-notes/extract_session.py" "${CLAUDE_SESSION_ID}" "<Temp>/session-notes-<세션 id 8자>"
+"$PY" -I -X utf8 "$HOME_W/.claude/skills/session-notes/extract_session.py" "${CLAUDE_SESSION_ID}" "<Temp>/claude-tmp/session-notes-<세션 id 8자>"
 ```
 
-- `<Temp>`는 Windows면 `C:/Users/<user>/AppData/Local/Temp`처럼 python이 읽을 수 있는 경로.
+- `<Temp>`는 python이 읽을 수 있는 임시 루트. Windows는 `$(cygpath -m "$TEMP")`(예: `C:/Users/<user>/AppData/Local/Temp`), macOS/Linux는 `${TMPDIR:-/tmp}`.
 - 출력: `meta.txt`(jsonl 경로, 시간 범위)와 `part-<n>.txt`. 파트는 사용자 발언 경계에서 나뉜다.
 - 남기는 것: 사용자 발언 전문(`=== U<n> [시각] 사용자`), 에이전트 발언 전문, 도구 호출 한 줄, Bash 결과 앞뒤 15줄, 오류 결과.
 - 빼는 것: Read 결과, compact 요약, 메타 항목, 서브에이전트 기록. compact 요약을 빼도 compact 전 원본 발언이 jsonl에 그대로 있어 손실이 없다.
@@ -77,6 +77,8 @@ Agent 도구로 `general-purpose` 서브에이전트를 **병렬**로 띄운다.
 - [org-formatting.md](../shared/org-formatting.md)의 emacs 정렬을 돌린다. 분류 heading의 `[/]` 쿠키 개수가 여기서 채워진다.
 
 ### 7. 보고
+
+보고 전에 2단계 출력 디렉터리를 `rm -r "<Temp>/claude-tmp/session-notes-<세션 id 8자>"`로 지운다. 다른 명령과 묶지 않고 단독으로 실행한다.
 
 - 노트 절대 경로
 - 분류별 항목 수, `:충돌:` 항목 수
