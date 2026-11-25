@@ -418,7 +418,7 @@ trade-off 표와 대안 비교 그림이 확정된 뒤 - 그래야 결정 지점
 ## org 작성 규칙
 
 - **코드 위치, 본문, 식별자, 빈 섹션, 문서 안 참조**는 [reading-doc.md](../shared/reading-doc.md)의 "org 표기". 섹션째 생략해도 되는 예외는 `사전 지식`, `요약`(질문 하나), 결론 `그림`, `실측 비교`.
-- **대안은 짧은 이름으로만 부른다** - 결론, trade-off 표 열, 그림 heading, 시도 로그, 검증 근거, 확인 질문 전부. `A`/`B` 같은 문자 라벨 금지. `<대안 slug>`는 짧은 이름의 영어 kebab.
+- **대안은 짧은 이름으로만 부른다** - 결론, trade-off 표 열, 그림 heading, 시도 로그, 검증 근거, 확인 질문 전부. `A`/`B` 같은 문자 라벨 금지. org에서는 마크업 없이 평문(노드 순회 커맨드릿) - 이 문서의 백틱은 markdown 표기라 옮기지 않는다. `<대안 slug>`는 짧은 이름의 영어 kebab.
 - **다이어그램**은 [reading-doc.md](../shared/reading-doc.md)의 "그림 섹션", 차트 선택·표기는 [diagrams.md](../shared/diagrams.md). `:file`은 poc.org 옆 상대 경로 `./<위치>.png` - 디렉터리가 이미 `<slug>`라 접두를 붙이지 않는다.
   - `<위치>` = `result-q<n>-<kind>`(결론 결과 그림) / `tradeoff-measure-<축 slug>`(실측 비교) / `base-<kind>`(기존 흐름) / `<대안 slug>-<kind>`(대안별 그림) / `tradeoff-<대안 slug>`(대안 비교) / `quiz-<체인 순번>`(확인 질문 정리). 결론 그림이 같은 kind 2장이면 `-<내용 slug>`. `sequence`가 여러 장이면 `-<시점 slug>`.
   - PNG는 렌더 산출물 - 사용자가 `C-c C-c`로 만든다. 8단계 문서 커밋에 넣지 않는다.
