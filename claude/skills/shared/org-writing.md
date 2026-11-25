@@ -1,6 +1,6 @@
 # org 작성 (정본)
 
-org 문서를 쓰는 스킬(`code-tour`, `walkthrough`, `warm-start`, `to-spec`, `to-tickets`, `domain-modeling`, `improve-codebase-architecture`, `poc`, `session-notes`)이 공유하는 본문 작성 규칙. 한 bullet에 여러 사실을 몰아 쓰면 훑어 읽을 수 없어서 둔다. 스킬 고유 규칙(식별자 verbatim, 다이어그램 등)은 각 스킬에 남기고, 여기와 겹치는 규칙은 여기 하나만 둔다.
+org 문서를 쓰는 스킬(`code-tour`, `walkthrough`, `warm-start`, `to-spec`, `to-tickets`, `domain-modeling`, `improve-codebase-architecture`, `poc`, `session-notes`, `friction-audit`)이 공유하는 본문 작성 규칙. 한 bullet에 여러 사실을 몰아 쓰면 훑어 읽을 수 없어서 둔다. 스킬 고유 규칙(식별자 verbatim, 다이어그램 등)은 각 스킬에 남기고, 여기와 겹치는 규칙은 여기 하나만 둔다.
 
 ## 짧은 문장 plain list
 
