@@ -81,3 +81,6 @@ config.local.el
 
 # mermaid-cli: track version pins only
 /bin/mermaid-cli/node_modules/
+
+# python bytecode cache
+__pycache__/
