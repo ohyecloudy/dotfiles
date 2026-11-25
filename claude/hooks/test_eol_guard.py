@@ -74,7 +74,12 @@ class Case(unittest.TestCase):
 
 
 class WriteTests(Case):
-    def test_new_file_outside_git_uses_os_line_ending(self):
+    def test_new_file_outside_git_is_left_as_written(self):
+        self.write("plan.md", LF_TEXT)
+        self.assertEqual(self.read("plan.md"), LF_TEXT)
+
+    def test_new_file_in_git_without_eol_attr_uses_os_line_ending(self):
+        subprocess.run(["git", "init", "-q", self.dir], check=True)
         self.write("new.cpp", LF_TEXT)
         expected = CRLF_TEXT if os.linesep == "\r\n" else LF_TEXT
         self.assertEqual(self.read("new.cpp"), expected)
@@ -191,6 +196,7 @@ class MsysPythonTests(Case):
         self.run_msys("post", p)
         self.assertEqual(self.read("m.cpp"), CRLF_TEXT)
 
+        subprocess.run(["git", "init", "-q", self.dir], check=True)
         w = {"tool_name": "Write", "tool_use_id": "m2", "cwd": self.dir,
              "tool_input": {"file_path": self.path("n.cpp"), "content": "a\n"}}
         self.run_msys("pre", w)

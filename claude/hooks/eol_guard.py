@@ -151,8 +151,11 @@ def pre(payload):
     return None
 
 
-def git_eol_attr(path):
-    """Explicit eol from .gitattributes, or None when unset or outside a repository."""
+def new_file_eol(path):
+    """Line ending for a new file: .gitattributes eol, else the platform default inside a repository.
+
+    None outside a repository (or when git fails): no convention to follow, so the file stays as written.
+    """
     try:
         out = subprocess.run(
             ["git", "-C", os.path.dirname(path), "check-attr", "eol", "--", os.path.basename(path)],
@@ -161,7 +164,7 @@ def git_eol_attr(path):
     except (OSError, subprocess.CalledProcessError):
         return None
     value = out.rsplit(": ", 1)[-1]
-    return value if value in (CRLF, LF) else None
+    return value if value in (CRLF, LF) else NATIVE_EOL
 
 
 def post(payload):
@@ -180,12 +183,9 @@ def post(payload):
     for path, before in state.items():
         if not os.path.isfile(path):
             continue
-        if before == "new":
-            target = git_eol_attr(path) or NATIVE_EOL
-        else:
-            target = before
+        target = new_file_eol(path) if before == "new" else before
         now = file_eol(path)
-        if now in (SKIP, NONE) or now == target:
+        if target is None or now in (SKIP, NONE) or now == target:
             continue
         convert(path, target)
         restored.append("%s -> %s" % (path.replace("\\", "/"), target.upper()))
