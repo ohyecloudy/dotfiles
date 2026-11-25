@@ -34,19 +34,26 @@ MSYS_DRIVE_RE = re.compile(r"^/([a-zA-Z])/")
 
 
 def find_transcript(arg: str) -> Path:
-    path = Path(arg)
-    if path.suffix == ".jsonl":
+    """Falls back to the newest transcript only when the skill's session id
+    placeholder was left unsubstituted; any other unusable argument is an error
+    so a typo never silently reads the wrong session."""
+    arg = arg.strip()
+    if arg.endswith(".jsonl"):
+        path = Path(arg)
         if not path.is_file():
             sys.exit(f"transcript not found: {path}")
         return path
     if SESSION_ID_RE.match(arg):
         hits = list(PROJECTS_DIR.glob(f"*/{arg}.jsonl"))
-        if hits:
-            return hits[0]
-        print(f"warning: no transcript for session {arg}, using newest", file=sys.stderr)
+        if not hits:
+            sys.exit(f"no transcript for session {arg} under {PROJECTS_DIR}")
+        return hits[0]
+    if arg and not arg.startswith("${"):
+        sys.exit(f"not a session id or .jsonl path: {arg!r}")
     newest = max(PROJECTS_DIR.glob("*/*.jsonl"), key=lambda p: p.stat().st_mtime, default=None)
     if newest is None:
         sys.exit(f"no transcripts under {PROJECTS_DIR}")
+    print(f"warning: session id placeholder unsubstituted, using newest: {newest}", file=sys.stderr)
     return newest
 
 
