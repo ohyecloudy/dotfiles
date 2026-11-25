@@ -1386,6 +1386,25 @@
                         #'my/force-update-org-roam-node-read-if-memoized))))
     #+end_src
 
+*** org-roam completion width fix
+
+    Doom의 =+org--roam-fix-completion-width-for-vertico-a= 는 후보 노드 하나를 만들 때마다 =letf!= 로 =org-roam-node--format-entry= 에 advice를 붙였다 뗀다. 붙일 때마다 =current-load-list= 에 항목이 쌓이고 지워지지 않아서, =require= 가 이 리스트를 매번 훑느라 느려진다. 위의 60초 idle 메모이제이션 갱신도 매번 전체 노드 수만큼 쌓는다. agenda는 파일, 날짜마다 =require= 를 불러서 redo가 47초까지 느려졌다(리스트를 비우면 2.8초).
+
+    Doom advice를 지우고 같은 폭 계산을 =org-roam-node--format-entry= 에 한 번만 붙인다. upstream(=doomemacs/modules=)은 아직 같은 구조라서 고쳐지면 이 블록을 지운다.
+
+    #+begin_src elisp :lexical t
+      (after! org-roam
+        (advice-remove 'org-roam-node-read--to-candidate
+                       #'+org--roam-fix-completion-width-for-vertico-a)
+        (defadvice! my/org-roam-fix-completion-width-a (fn template node &optional width)
+          "Use the window width for org-roam completion candidates under vertico."
+          :around #'org-roam-node--format-entry
+          (funcall fn template node
+                   (if (bound-and-true-p vertico-mode)
+                       (if (minibufferp) (window-width) (1- (frame-width)))
+                     width))))
+    #+end_src
+
 *** org settings
 
     #+begin_src elisp
