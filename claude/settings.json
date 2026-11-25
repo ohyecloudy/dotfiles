@@ -42,6 +42,15 @@
   "hooks": {
     "PreToolUse": [
       {
+        "matcher": "Bash|PowerShell|Read|Grep|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 path_guard.py"
+          }
+        ]
+      },
+      {
         "matcher": "Write",
         "hooks": [
           {
