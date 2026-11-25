@@ -130,6 +130,16 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd ~/.claude/hooks && python3 -X utf8 reply_style_guard.py"
+          }
+        ]
+      }
     ]
   }
 }
