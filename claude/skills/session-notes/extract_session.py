@@ -31,7 +31,9 @@ COMMAND_NAME_RE = re.compile(r"<command-name>(.*?)</command-name>", re.S)
 COMMAND_ARGS_RE = re.compile(r"<command-args>(.*?)</command-args>", re.S)
 LOCAL_COMMAND_RE = re.compile(r"<local-command-(?:stdout|stderr|caveat)>.*?</local-command-(?:stdout|stderr|caveat)>", re.S)
 WRITE_TOOLS = ("Write", "Edit", "NotebookEdit")
-ORG_PATH_RE = re.compile(r"(?:[A-Za-z]:[/\\]|/[a-zA-Z]/|~/)[^\s'\"`<>|:*?]*?\.org(?![\w.])")
+# Absolute paths only: drive (C:/), home (~/), or root (/...; also MSYS /c/...).
+# Lookbehinds keep URL pieces like "https://h/x.org" from matching.
+ORG_PATH_RE = re.compile(r"(?:(?<![A-Za-z])[A-Za-z]:[/\\]|~/|(?<![\w.:/])/)[^\s'\"`<>|:*?]*?\.org(?![\w.])")
 MSYS_DRIVE_RE = re.compile(r"^/([a-zA-Z])/")
 
 
@@ -170,7 +172,7 @@ def split_parts(entries: list[str]) -> list[str]:
 
 
 def normalize_path(raw: str) -> str:
-    msys = MSYS_DRIVE_RE.match(raw)
+    msys = MSYS_DRIVE_RE.match(raw) if os.name == "nt" else None  # /c/... is a drive only on Windows
     if msys:
         raw = f"{msys.group(1).upper()}:/{raw[3:]}"
     return Path(raw).expanduser().as_posix()
