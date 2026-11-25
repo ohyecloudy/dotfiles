@@ -38,7 +38,7 @@ class Blocks(unittest.TestCase):
         for path in ("/c/Users/me/a.py:3", "/c:/Users/me/a.py:3", "/D:/work/x.cpp:10"):
             with self.subTest(path=path):
                 result = check(f"{KOREAN}`{path}` 수정")
-                self.assertIn(path.split(":")[0][:3], result["reason"])
+                self.assertIn(path, result["reason"])
 
     def test_english_reply(self):
         result = check("The Excel tab search box is done and committed as a single change.")
@@ -54,8 +54,11 @@ class Allows(unittest.TestCase):
         self.assertIsNone(check(reply))
 
     def test_fence_indented_under_list_item(self):
-        reply = KOREAN + "\n- 변경\n  ```diff\n  + cd /c/Users/me\n  ```\n"
+        reply = KOREAN + "\n- 변경\n  ```diff\n  + 예) /c/Users/me/a.py:3 (X)\n  ```\n"
         self.assertIsNone(check(reply))
+
+    def test_msys_path_without_line_is_not_a_code_location(self):
+        self.assertIsNone(check(KOREAN + "`cd /c/Users/me`, `/c/...` 형식, `/D:/work/` 디렉터리"))
 
     def test_short_english_and_unix_like_text(self):
         self.assertIsNone(check("OK, done."))
