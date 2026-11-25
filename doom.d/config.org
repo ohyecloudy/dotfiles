@@ -2966,6 +2966,8 @@
          (kbd "gF") #'evil-find-file-at-point-with-line
          ;; normal에만 바인딩되어 있어서 visual에도 바인딩
          (kbd "gr") #'agent-shell-viewport-reply
+         ;; 읽던 위치에서 permission 버튼 줄로 바로 이동해 y/n/! 응답
+         (kbd "gp") #'agent-shell-jump-to-latest-permission-button-row
          )
        ;; view-mode 의 [[(이전 페이지)와 맞춤. ]] 로 다시 compose 복귀
        (evil-define-key 'normal agent-shell-viewport-edit-mode-map
