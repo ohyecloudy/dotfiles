@@ -99,6 +99,8 @@ Relative indentation, diff prefixes and whitespace-only lines are kept as is."
   (org-mode)
   (setq indent-tabs-mode nil)
   (org-indent-region (point-min) (point-max))
+  ;; Hand-padded tables drift; Hangul counts as 2 columns here just as in the user's emacs.
+  (org-table-map-tables #'org-table-align t)
   (org-format--normalize-blocks)
   ;; Fill [/] cookies so skills never count TODO children by hand.
   (org-update-statistics-cookies 'all)
