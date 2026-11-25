@@ -74,3 +74,14 @@
 @~/.claude/CLAUDE.local.md 
 
 ## Gotchas
+
+### Windows (Git Bash)
+
+- 네이티브 프로그램(python, emacs, mmdc, PowerShell, `git -C`)에 넘기는 경로는 `$(cygpath -m ...)` 또는 `C:/...`. `~`, `/c/...`, `/tmp`를 그대로 넘기지 말 것
+  - 임시 파일은 `/tmp` 대신 `$(cygpath -m "$TEMP")` 아래
+- python은 `-X utf8`로 실행 - `-I`는 `PYTHONUTF8`/`PYTHONIOENCODING`을 무시함
+- MSVC, UBT, cmd 출력은 cp949 - grep은 `grep -a`, 읽을 때 `iconv -f cp949 -t utf-8`
+- .bat은 `./x.bat args` 또는 `MSYS_NO_PATHCONV=1 cmd.exe /c 'D:\절대\경로.bat args'`. `cmd //c`는 배너만 찍고 exit 0이라 금지
+- batch emacs는 `</dev/null`을 붙임 - 없으면 stdin을 기다리며 멈춤
+- 소스 수정은 Edit 도구 우선. CRLF 파일에 `sed -i` 금지 - CR이 사라짐
+- 여러 줄 스크립트는 heredoc 대신 Write로 파일을 만들어 실행. 문자열 치환은 매치 수를 assert
