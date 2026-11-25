@@ -32,6 +32,8 @@ emacs -Q --batch -l ~/.claude/skills/shared/org-format.el <생성·수정한 .or
 - `org-adapt-indentation t`: 헤딩 아래 본문을 별 개수 + 1칸으로 들여쓴다.
 - `org-src-tab-acts-natively nil`: src 블록 내용을 언어 모드로 재들여쓰기하지 않는다. 켜져 있으면 diff 문맥 줄의 접두 공백이 사라지고 원본 코드 들여쓰기가 바뀐다.
 - 모든 org 표를 `org-table-align`으로 정렬한다. 한글은 2칸 폭으로 센다.
+- heading 앞뒤 빈 줄을 정확히 하나로 맞춘다(planning 줄, drawer 뒤 기준). 사용자 emacs가 저장할 때 돌리는 dotfiles `doom.d/lisp/my-org-formatter.el`을 그대로 불러 쓴다.
+  - `~/.claude/skills`가 dotfiles `claude/skills`를 가리키는 symlink라고 보고 상대 경로로 찾는다. 파일이 없으면 오류로 멈춘다.
 - src/example 블록 본문을 `#+begin` 줄 + 2칸으로 옮긴다(`org-edit-src-content-indentation` 기본값 - `C-c '` 편집 후 저장해도 diff가 안 생긴다).
   - 가장 덜 들여쓴 줄을 기준으로 통째 이동해 상대 들여쓰기·diff 접두(`-`/`+`/공백)는 그대로다.
 - src/example 블록 앞뒤에 빈 줄 하나를 넣는다.

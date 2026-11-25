@@ -4,6 +4,17 @@
 
 (require 'org)
 
+;; The user's emacs runs this formatter on save; loading the same file keeps one source of the heading rules.
+;; Resolved through the ~/.claude/skills symlink to the dotfiles checkout.
+(defconst org-format-heading-formatter
+  (expand-file-name "../../../doom.d/lisp/my-org-formatter.el"
+                    (file-name-directory (file-truename load-file-name))))
+
+(unless (file-readable-p org-format-heading-formatter)
+  (error "org-format: heading formatter not found at %s (is ~/.claude/skills a symlink into dotfiles?)"
+         org-format-heading-formatter))
+(load org-format-heading-formatter nil t)
+
 (defconst org-format-block-content-offset 2
   "Columns block content sits right of its #+begin line.
 Matches the default `org-edit-src-content-indentation', so C-c ' round trips without diff.")
@@ -101,6 +112,7 @@ Relative indentation, diff prefixes and whitespace-only lines are kept as is."
   (org-indent-region (point-min) (point-max))
   ;; Hand-padded tables drift; Hangul counts as 2 columns here just as in the user's emacs.
   (org-table-map-tables #'org-table-align t)
+  (my/org-formatter-enforce)
   (org-format--normalize-blocks)
   ;; Fill [/] cookies so skills never count TODO children by hand.
   (org-update-statistics-cookies 'all)
