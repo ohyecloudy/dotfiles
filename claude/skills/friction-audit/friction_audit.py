@@ -12,6 +12,8 @@ Writes into <out dir>: sessions/<id8>/part-<n>.txt, signals.jsonl, batches.json,
 summary.json. Prints the summary.
 """
 
+from __future__ import annotations
+
 import importlib.util
 import json
 import re

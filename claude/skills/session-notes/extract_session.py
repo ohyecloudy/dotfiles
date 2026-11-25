@@ -11,6 +11,8 @@ meta.txt into <out dir> and prints their paths. --docs prints the .org files
 the session edited or mentioned by absolute path, one per line.
 """
 
+from __future__ import annotations
+
 import json
 import os
 import re
