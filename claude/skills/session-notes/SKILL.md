@@ -30,16 +30,16 @@ disable-model-invocation: true
   - 인자가 있으면 그 경로를 쓴다.
   - 없으면 탐지 모드를 돌려 목록을 보여주고, 사용자에게 번호로 고르게 한다(없음 선택 가능). 스킬, 설정 파일처럼 일의 재료가 아닌 문서는 사용자가 뺀다.
 
-`$HOME_W`는 홈 디렉터리의 python용 경로. Windows Git Bash에서는 `HOME_W=$(cygpath -m ~)`(예: `C:/Users/<user>`) - `~/...`를 그대로 넘기면 MSYS 경로 변환이 어긋나 `C:/c/Users/...`가 된다. macOS/Linux는 `HOME_W=$HOME`.
+`$HOME_W`는 홈 디렉터리의 python용 경로. Windows Git Bash에서는 `HOME_W=$(cygpath -m ~)`(예: `C:/Users/<user>`) - `~/...`를 그대로 넘기면 MSYS 경로 변환이 어긋나 `C:/c/Users/...`가 된다. macOS/Linux는 `HOME_W=$HOME`. `PY=$(command -v python3 || command -v python)` - macOS에는 `python` 명령이 없을 수 있다. `-X utf8`은 Windows에서 한글 출력이 cp949로 깨지지 않게 한다(`-I`가 `PYTHONIOENCODING` 등 환경 변수를 무시).
 
 ```bash
-python -I "$HOME_W/.claude/skills/session-notes/extract_session.py" "${CLAUDE_SESSION_ID}" --docs
+"$PY" -I -X utf8 "$HOME_W/.claude/skills/session-notes/extract_session.py" "${CLAUDE_SESSION_ID}" --docs
 ```
 
 ### 2. 대화 추출
 
 ```bash
-python -I "$HOME_W/.claude/skills/session-notes/extract_session.py" "${CLAUDE_SESSION_ID}" "<Temp>/session-notes-<세션 id 8자>"
+"$PY" -I -X utf8 "$HOME_W/.claude/skills/session-notes/extract_session.py" "${CLAUDE_SESSION_ID}" "<Temp>/session-notes-<세션 id 8자>"
 ```
 
 - `<Temp>`는 Windows면 `C:/Users/<user>/AppData/Local/Temp`처럼 python이 읽을 수 있는 경로.

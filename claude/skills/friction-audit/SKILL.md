@@ -21,8 +21,10 @@ disable-model-invocation: true
 
 `HOME_W`는 python이 읽을 수 있는 홈 경로. Windows Git Bash는 `HOME_W=$(cygpath -m ~)`, macOS/Linux는 `HOME_W=$HOME`. `<Temp>`도 같은 형식(`$(cygpath -m "$TEMP")` 또는 `${TMPDIR:-/tmp}`).
 
+`PY=$(command -v python3 || command -v python)` - macOS에는 `python` 명령이 없을 수 있다. Python 3.9 이상(macOS 기본 `/usr/bin/python3`가 3.9).
+
 ```bash
-python -I -X utf8 "$HOME_W/.claude/skills/friction-audit/friction_audit.py" prepare <기간> "<Temp>/friction-audit-<YYYYMMDD-HHMM>" --exclude "${CLAUDE_SESSION_ID}"
+"$PY" -I -X utf8 "$HOME_W/.claude/skills/friction-audit/friction_audit.py" prepare <기간> "<Temp>/friction-audit-<YYYYMMDD-HHMM>" --exclude "${CLAUDE_SESSION_ID}"
 ```
 
 - `<기간>`: 인자가 있으면 그대로, 없으면 `auto`.
