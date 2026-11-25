@@ -92,8 +92,8 @@ disable-model-invocation: true
 ### 8. 포매팅
 
 - 본문은 [org-writing.md](../shared/org-writing.md) 규칙.
-- [org-formatting.md](../shared/org-formatting.md)의 정렬을 돌린다. Windows Git Bash에서는 경로를 `cygpath -m`으로 넘기고 `</dev/null`을 붙인다(없으면 batch emacs가 입력을 기다리며 멈출 수 있다).
-- heading 링크 `[[*heading][...]]`가 모두 실제 heading을 가리키는지 [reading-doc.md](../shared/reading-doc.md) "포매팅"의 검사로 확인한다.
+- [reading-doc.md](../shared/reading-doc.md) "포매팅" 절차를 순서대로 모두 돌린다 - 코드 위치 검사, heading 링크 검사, [org-formatting.md](../shared/org-formatting.md)의 정렬(표 정렬 포함).
+  - 원문 보존: `*** 사례`의 인용, 금지할 경로 형식을 보여 주는 예시(`/c/...` 등). 코드 위치 검사에 걸려도 고치지 않는다.
 
 ### 9. 보고
 
