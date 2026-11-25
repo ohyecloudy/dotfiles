@@ -21,6 +21,8 @@
 - 불확실한 부분은 추측하지 말고 먼저 물어볼 것
 - 코드 위치는 절대 경로 + 라인 번호로 표시 (emacs evil `gF`/compilation-mode 점프용)
   - 예) `foo.cpp:42` (X) -> `/home/user/project/src/foo.cpp:42` (O)
+  - Windows는 드라이브 문자 형식. 예) `/c/Users/me/a.py:3`, `/c:/Users/me/a.py:3` (X) -> `C:/Users/me/a.py:3` (O)
+  - 진행 메시지(도구 호출 사이 텍스트)도 한국어
 
 ## Git
 
