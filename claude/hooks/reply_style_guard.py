@@ -23,7 +23,7 @@ FORBIDDEN_SYMBOLS = {
 }
 # MSYS (/c/Users) and URL-style (/c:/Users, /D:/work) drive paths; Emacs on Windows cannot open them.
 MSYS_PATH = re.compile(r"(?<![\w.~/:-])/[A-Za-z]:?/(?=[\w.~-])")
-FENCED_CODE = re.compile(r"^(```|~~~).*?^\1[^\n]*$", re.MULTILINE | re.DOTALL)
+FENCED_CODE = re.compile(r"^[ \t]*(```|~~~).*?^[ \t]*\1[^\n]*$", re.MULTILINE | re.DOTALL)
 INLINE_CODE = re.compile(r"`[^`\n]+`")
 HANGUL = re.compile(r"[\uac00-\ud7a3]")
 LATIN_LETTER = re.compile(r"[A-Za-z]")

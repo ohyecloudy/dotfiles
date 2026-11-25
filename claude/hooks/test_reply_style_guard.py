@@ -53,6 +53,10 @@ class Allows(unittest.TestCase):
         reply = KOREAN + "`\u2192` 금지\n```\nprint('\u2192 English text inside a fenced block only here')\ncd /c/Users/me\n```\n"
         self.assertIsNone(check(reply))
 
+    def test_fence_indented_under_list_item(self):
+        reply = KOREAN + "\n- 변경\n  ```diff\n  + cd /c/Users/me\n  ```\n"
+        self.assertIsNone(check(reply))
+
     def test_short_english_and_unix_like_text(self):
         self.assertIsNone(check("OK, done."))
         self.assertIsNone(check(KOREAN + "and/or, s/a/b/, ~/x/y, ./a/b"))
